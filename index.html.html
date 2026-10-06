@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EduAI PRO - Siêu Trợ Lý Sư Phạm Số GDPT 2018 | Hồ Tấn Khải</title>
-  <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- PptxGenJS xuất PowerPoint 16:9 -->
   <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Times+New+Roman&display=swap');
@@ -41,7 +39,6 @@
       </div>
     </div>
 
-    <!-- Thông tin bảo mật hệ thống -->
     <div class="p-3 bg-emerald-50/80 border-b border-emerald-100 flex items-center justify-between">
       <span class="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
         <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i> Cloudflare Proxy Active
@@ -49,7 +46,6 @@
       <span class="text-[10px] bg-emerald-200 text-emerald-900 font-extrabold px-2 py-0.5 rounded-full">An Toàn 100%</span>
     </div>
 
-    <!-- Menu 4 Trụ Cột Tác Vụ -->
     <nav class="flex-1 p-3 space-y-2.5 overflow-y-auto custom-scrollbar">
       <div class="text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider px-2 pt-1">Hồ Sơ Chuyên Môn</div>
       
@@ -95,13 +91,13 @@
 
       <div id="loading-indicator" class="hidden flex items-center gap-2 text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-200 animate-pulse">
         <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-indigo-600"></i>
-        <span>AI đang tổng hợp và đối chiếu chuẩn GDPT 2018...</span>
+        <span id="loading-text">AI đang soạn thảo chuyên sâu theo nội dung bài học...</span>
       </div>
     </header>
 
     <div class="p-6 space-y-6 max-w-[1350px] w-full mx-auto pb-24">
 
-      <!-- KHUNG NHẬP LIỆU ĐẦU VÀO -->
+      <!-- KHUNG NHẬP LIỆU -->
       <div class="bg-white rounded-2xl border-2 border-slate-200 p-5 shadow-[0_5px_0_#e2e8f0] no-print">
         <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
           <span class="font-extrabold text-sm text-slate-800 flex items-center gap-2">
@@ -118,7 +114,7 @@
             <label class="block text-slate-700 mb-1">Môn học</label>
             <select id="mon" class="w-full bg-slate-50 border-2 border-slate-200 rounded-lg p-2.5 outline-none font-bold text-slate-800" onchange="onSubjectChange()">
               <option value="Sinh học" selected>Sinh học</option>
-              <option value="Công nghệ">Công nghệ (Trồng trọt/Chăn nuôi/Thủy sản)</option>
+              <option value="Công nghệ">Công nghệ</option>
               <option value="Khoa học tự nhiên">Khoa học tự nhiên (Lớp 6-9)</option>
               <option value="Toán học">Toán học</option>
               <option value="Vật lí">Vật lí</option>
@@ -134,8 +130,8 @@
           <div>
             <label class="block text-slate-700 mb-1">Khối lớp</label>
             <select id="lop" class="w-full bg-slate-50 border-2 border-slate-200 rounded-lg p-2.5 outline-none font-bold text-slate-800" onchange="onSubjectChange()">
-              <option value="Lớp 10" selected>Lớp 10</option>
-              <option value="Lớp 11">Lớp 11</option>
+              <option value="Lớp 10">Lớp 10</option>
+              <option value="Lớp 11" selected>Lớp 11</option>
               <option value="Lớp 12">Lớp 12</option>
               <option value="Lớp 6">Lớp 6</option>
               <option value="Lớp 7">Lớp 7</option>
@@ -161,7 +157,7 @@
 
           <div class="md:col-span-2">
             <label class="block text-slate-700 mb-1">Tên bài học / Chủ đề cụ thể (Có thể gõ bài bất kỳ)</label>
-            <input type="text" id="tenbai" value="Thành phần hóa học của tế bào" class="w-full bg-slate-50 border-2 border-slate-200 rounded-lg p-2.5 outline-none font-bold text-slate-900">
+            <input type="text" id="tenbai" value="Quang hợp ở thực vật C3, C4 và CAM" class="w-full bg-slate-50 border-2 border-slate-200 rounded-lg p-2.5 outline-none font-bold text-slate-900">
           </div>
         </div>
 
@@ -216,7 +212,9 @@
               </button>
             </div>
           </div>
-          <div id="giaoan-editor" contenteditable="true" class="editor-container bg-slate-50/50 p-6 rounded-xl border border-slate-200 times-font text-[15.5px] leading-relaxed max-h-[650px] overflow-y-auto custom-scrollbar outline-none"></div>
+          <div id="giaoan-editor" contenteditable="true" class="editor-container bg-slate-50/50 p-6 rounded-xl border border-slate-200 times-font text-[15.5px] leading-relaxed max-h-[650px] overflow-y-auto custom-scrollbar outline-none">
+            <div class="text-center py-12 text-slate-400 italic">Chọn môn, nhập tên bài và bấm nút <strong>/GIAOAN</strong> để AI tiến hành soạn thảo...</div>
+          </div>
         </div>
       </section>
 
@@ -247,7 +245,6 @@
                 <span class="text-slate-500 font-semibold">(Tất cả chữ đều từ 34pt trở lên - Nhấn nút để hiện đáp án)</span>
               </div>
 
-              <!-- Canvas Slide Widescreen 16:9 -->
               <div id="active-slide-canvas" class="w-full aspect-[16/9] rounded-2xl border-2 border-emerald-300 p-8 flex flex-col justify-between shadow-lg transition-all" style="background: linear-gradient(145deg, #f4f8f5 0%, #ecfeff 100%);">
                 <div>
                   <span id="canvas-slide-cat" class="inline-block text-xs font-black bg-[#0F2922] text-[#D78C0F] px-3 py-1 rounded-md mb-2"></span>
@@ -317,7 +314,6 @@
     </div>
   </main>
 
-  <!-- FOOTER HIỂN THỊ TÁC GIẢ DUY NHẤT -->
   <footer class="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-slate-200 px-6 py-2.5 flex justify-between items-center text-xs font-bold text-slate-600 z-30 no-print">
     <div>
       <strong>Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít - Tỉnh Vĩnh Long</strong>
@@ -330,31 +326,18 @@
   <script>
     lucide.createIcons();
 
-    // ĐƯỜNG LINK WORKER CHÍNH THỨC CỦA THẦY
     const WORKER_ENDPOINT = "https://empty-frost-23d6.khaibcmt.workers.dev";
 
-    // DANH MỤC PHÂN PHỐI CHƯƠNG TRÌNH SGK KẾT NỐI TRI THỨC
     const CURRICULUM_DATA = {
       'Sinh học': {
-        'Lớp 10': ['Thành phần hóa học của tế bào', 'Nước và các phân tử sinh học trong tế bào', 'Cấu trúc tế bào nhân thực', 'Trao đổi chất và chuyển hóa năng lượng ở tế bào', 'Phân bào và công nghệ tế bào', 'Vi sinh vật và virus'],
-        'Lớp 11': ['Trao đổi nước và khoáng ở thực vật', 'Quang hợp ở thực vật C3, C4 và CAM', 'Hô hấp ở thực vật', 'Dinh dưỡng và tiêu hóa ở động vật', 'Hô hấp và tuần hoàn ở động vật', 'Cảm ứng và sinh trưởng ở sinh vật'],
-        'Lớp 12': ['Di truyền phân tử và điều hòa biểu hiện gene', 'Hệ gene, đột biến gene và công nghệ gene', 'Di truyền nhiễm sắc thể và quy luật di truyền', 'Di truyền quần thể và di truyền người', 'Tiến hóa và sinh thái học']
+        'Lớp 10': ['Thành phần hóa học của tế bào', 'Nước và các phân tử sinh học trong tế bào', 'Cấu trúc tế bào nhân thực', 'Trao đổi chất và chuyển hóa năng lượng ở tế bào', 'Phân bào và công nghệ tế bào'],
+        'Lớp 11': ['Quang hợp ở thực vật C3, C4 và CAM', 'Trao đổi nước và khoáng ở thực vật', 'Hô hấp ở thực vật', 'Dinh dưỡng và tiêu hóa ở động vật', 'Hô hấp và tuần hoàn ở động vật'],
+        'Lớp 12': ['Di truyền phân tử và điều hòa biểu hiện gene', 'Hệ gene, đột biến gene và công nghệ gene', 'Di truyền nhiễm sắc thể và quy luật di truyền', 'Tiến hóa và sinh thái học']
       },
       'Công nghệ': {
         'Lớp 10': ['Đặc điểm của đất trồng và kỹ thuật cải tạo', 'Kỹ thuật tưới tiêu tự động tiết kiệm nước', 'Phòng trừ sâu bệnh bằng chế phẩm sinh học'],
         'Lớp 11': ['Công nghệ chọn và nhân giống vật nuôi', 'Kỹ thuật nuôi dưỡng và chăm sóc gia súc gia cầm', 'Kỹ thuật nuôi trồng thủy sản sạch'],
         'Lớp 12': ['Tự động hóa hệ thống canh tác nông nghiệp thông minh', 'Công nghệ ứng dụng cảm biến trong nông nghiệp công nghệ cao']
-      },
-      'Khoa học tự nhiên': {
-        'Lớp 6': ['Tế bào - Đơn vị cơ sở của sự sống', 'Lực và tác dụng của lực', 'Các thể của chất'],
-        'Lớp 7': ['Tốc độ chuyển động', 'Quang hợp ở cây xanh', 'Âm thanh và độ to của âm'],
-        'Lớp 8': ['Biến đổi hóa học và định luật bảo toàn khối lượng', 'Áp suất chất lỏng và chất khí'],
-        'Lớp 9': ['Năng lượng và sự bảo toàn năng lượng', 'Kim loại và phi kim', 'Di truyền và biến dị']
-      },
-      'Toán học': {
-        'Lớp 10': ['Mệnh đề và tập hợp', 'Bất phương trình bậc nhất hai ẩn', 'Vectơ và các phép toán'],
-        'Lớp 11': ['Hàm số lượng giác', 'Dãy số, cấp số cộng và cấp số nhân', 'Đạo hàm và tiếp tuyến'],
-        'Lớp 12': ['Ứng dụng đạo hàm khảo sát hàm số', 'Tọa độ không gian Oxyz', 'Nguyên hàm và tích phân']
       }
     };
 
@@ -366,7 +349,7 @@
 
       const list = (CURRICULUM_DATA[mon] && CURRICULUM_DATA[mon][lop]) 
         ? CURRICULUM_DATA[mon][lop] 
-        : [`Bài 1: Kiến thức trọng tâm ${mon} ${lop}`, `Bài 2: Thực hành & Năng lực số`, `Bài 3: Ứng dụng thực tiễn`];
+        : [`Bài 1: Kiến thức trọng tâm ${mon}${lop}`, `Bài 2: Thực hành & Năng lực số`];
 
       list.forEach(l => {
         const opt = document.createElement('option');
@@ -376,19 +359,14 @@
       });
 
       document.getElementById('tenbai').value = list[0];
-      executeGemCommand('giaoan', false);
     }
 
     function onQuickLessonSelect() {
       const val = document.getElementById('quick-lesson-select').value;
-      if (val) {
-        document.getElementById('tenbai').value = val;
-        executeGemCommand('giaoan', false);
-      }
+      if (val) document.getElementById('tenbai').value = val;
     }
 
-    // GỌI WORKER PROXY CHẠY GEMINI ENGINE HOẶC LOCAL HIGHSPEED ENGINE
-    async function executeGemCommand(cmd, showAlert = true) {
+    async function executeGemCommand(cmd) {
       const mon = document.getElementById('mon').value;
       const lop = document.getElementById('lop').value;
       const tenbai = document.getElementById('tenbai').value.trim() || 'Bài học mới';
@@ -398,231 +376,92 @@
       let aiCode = (lop === 'Lớp 10') ? '10.A1.2' : (lop === 'Lớp 11') ? '11.A1.1' : (lop === 'Lớp 12') ? '12.A1.1' : 'THCS.A1.1';
       let nlsCode = 'NLS 1.1';
 
-      document.getElementById('loading-indicator').classList.remove('hidden');
-
-      if (WORKER_ENDPOINT) {
-        try {
-          let systemPrompt = "";
-          if (cmd === 'giaoan') {
-            systemPrompt = `Bạn là BioMaster AI theo Siêu chỉ dẫn tạo gem của Thầy Hồ Tấn Khải. Hãy soạn KẾ HOẠCH BÀI DẠY chuẩn Công văn 5512/BGDĐT-GDTrH:
-Môn: ${mon} - ${lop}
-Tên bài: ${tenbai}
-Bộ sách: ${sach} - Thời lượng: ${tiet}
-Yêu cầu bắt buộc:
-1. Đủ 4 phần lớn: I. Mục tiêu (Kiến thức, Năng lực đặc thù, Năng lực số [${nlsCode}], Năng lực AI [${aiCode}], Phẩm chất), II. Thiết bị, III. Tiến trình 4 hoạt động, IV. Hồ sơ/Phụ lục (Phiếu học tập, Rubric NLS, Rubric AI).
-2. Hoạt động 2 bắt buộc kẻ BẢNG 2 CỘT viền đen 100%: Cột 1 'HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH' (4 bước), Cột 2 'DỰ KIẾN SẢN PHẨM'.
-3. Hoạt động 3 thiết kế đủ 3 dạng thức trắc nghiệm mới: 4 câu 4 lựa chọn, 1 câu Đúng/Sai 4 ý, 2 câu trả lời ngắn.
-4. Cuối văn bản bắt buộc ghi dòng chữ: 'Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít'.
-Trả về HTML sạch từ mục I đến hết để hiển thị trực tiếp.`;
-            
-            const res = await callCloudflareWorker(systemPrompt);
-            if (res) document.getElementById('giaoan-editor').innerHTML = res;
-            else renderGiaoAnHighEnd(mon, lop, tenbai, sach, tiet, nlsCode, aiCode);
-          } else if (cmd === 'matran') {
-            systemPrompt = `Bạn là Chuyên gia Khảo thí Bộ GD&ĐT theo Siêu chỉ dẫn của Thầy Hồ Tấn Khải. Hãy xuất đủ 4 mục Hồ sơ khảo thí chuẩn CV 7991 cho bài: "${tenbai}" môn ${mon} ${lop}:
-Mục 1: Khung ma trận (40% Biết - 30% Hiểu - 20% Vận dụng - 10% VDC).
-Mục 2: Bản đặc tả ma trận chi tiết.
-Mục 3: Đề kiểm tra chuẩn hóa (Phần I: 8 câu 4 lựa chọn, Phần II: 2 câu Đúng/Sai 8 ý, Phần III: 4 câu trả lời ngắn, Phần IV: 2 câu tự luận thực tiễn).
-Mục 4: Hướng dẫn chấm & Đáp án chi tiết.
-Cuối văn bản ghi: 'Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít'.
-Trả về HTML sạch.`;
-
-            const res = await callCloudflareWorker(systemPrompt);
-            if (res) document.getElementById('matran-editor').innerHTML = res;
-            else renderKhaoThiFullSet(mon, lop, tenbai);
-          } else if (cmd === 'stem') {
-            systemPrompt = `Bạn là Chuyên gia STEM theo Siêu chỉ dẫn của Thầy Hồ Tấn Khải. Hãy xây dựng KẾ HOẠCH TỔ CHỨC CHỦ ĐỀ STEM/STEAM chuẩn 17 mục cho bài: "${tenbai}" môn ${mon} ${lop}:
-Gồm đầy đủ 17 mục lớn từ I đến XVII và 7 Phụ lục (Phiếu giao việc, Nghiên cứu kiến thức nền, Đề xuất giải pháp, Thử nghiệm, Cải tiến, Rubric 4 mức, Tự đánh giá).
-Cuối bài ghi: 'Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít'.
-Trả về HTML sạch.`;
-
-            const res = await callCloudflareWorker(systemPrompt);
-            if (res) document.getElementById('stem-editor').innerHTML = res;
-            else renderStemPlan17Items(mon, lop, tenbai, tiet);
-          } else if (cmd === 'ppt') {
-            buildHighEndSlideDeck(mon, lop, tenbai, sach);
-          }
-        } catch (err) {
-          console.warn("Lỗi Worker, dùng bộ mẫu chuẩn nội hàm:", err);
-          fallbackLocalEngine(cmd, mon, lop, tenbai, sach, tiet, nlsCode, aiCode);
-        }
-      } else {
-        fallbackLocalEngine(cmd, mon, lop, tenbai, sach, tiet, nlsCode, aiCode);
-      }
-
-      document.getElementById('loading-indicator').classList.add('hidden');
       switchTab(cmd);
 
-      if (showAlert) {
-        const cmdNames = {
-          'giaoan': 'Kế hoạch bài dạy CV 5512 (Chuẩn NLS + AI + 3 Phụ Lục)',
-          'ppt': 'Bài giảng PPT (Font ≥ 34pt, 16 Slide Luyện Tập Ẩn Đáp Án)',
-          'matran': 'Hồ sơ Khảo thí CV 7991 (Khung Ma Trận + Bản Đặc Tả + Đề Thi + Đáp Án)',
-          'stem': 'Kế hoạch Chủ đề STEM/STEAM (17 Mục + 7 Phụ Lục)'
-        };
-        alert(`Đã khởi tạo hoàn tất ${cmdNames[cmd]} cho bài: "${tenbai}"!`);
+      // Riêng PPT dùng engine dựng slide giao diện 16:9 trực tiếp
+      if (cmd === 'ppt') {
+        buildHighEndSlideDeck(mon, lop, tenbai, sach);
+        alert(`Đã khởi tạo Slide trình chiếu cho bài: "${tenbai}"!`);
+        return;
+      }
+
+      document.getElementById('loading-indicator').classList.remove('hidden');
+
+      let systemPrompt = "";
+      if (cmd === 'giaoan') {
+        systemPrompt = `Bạn là Siêu Trợ Lý Sư Phạm Sinh Học & Giáo Dục High-End theo đúng chỉ dẫn của Thầy Hồ Tấn Khải.
+Nhiệm vụ: Hãy soạn KẾ HOẠCH BÀI DẠY chuẩn Công văn 5512/BGDĐT-GDTrH cho:
+- Môn: ${mon} \vert{}${lop}
+- Tên bài học: ${tenbai}
+- Bộ sách: ${sach} | Thời lượng: ${tiet}
+
+QUY TẮC BẮT BUỘC TUÂN THỦ:
+1. Đủ 4 phần lớn: I. Mục tiêu (Kiến thức cốt lõi chi tiết theo SGK, Năng lực chung, Năng lực đặc thù, Năng lực số [${nlsCode}], Năng lực AI [Mã ${aiCode}], Phẩm chất), II. Thiết bị dạy học, III. Tiến trình dạy học (4 hoạt động), IV. Hồ sơ / Phụ lục (Phiếu học tập, Rubric NLS, Rubric AI).
+2. Hoạt động 1, 3, 4: Không chia bảng, trình bày dạng 4 bước (Bước 1 -> Bước 2 -> Bước 3 -> Bước 4) và có phần "* DỰ KIẾN SẢN PHẨM".
+3. Hoạt động 2 (Hình thành kiến thức mới): BẮT BUỘC TRÌNH BÀY DẠNG BẢNG 2 CỘT VIỀN ĐEN 100%:
+   - Cột 1: "HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH" (Gồm các HĐ 2.1, 2.2... với đủ 4 bước chi tiết).
+   - Cột 2: "DỰ KIẾN SẢN PHẨM" (Kiến thức chuyên sâu, chuẩn hóa chi tiết về ${tenbai}, KHÔNG viết hời hợt, KHÔNG dùng "v.v...").
+4. Chèn đúng vị trí trước hoạt động:
+   👉 **[Tích hợp năng lực số]:** [${nlsCode}] - Thao tác cụ thể của GV và HS.
+   👉 *** [Tích hợp năng lực AI]: [Mã ${aiCode}] - Chỉ dẫn vị trí AI hỗ trợ và con người giữ quyền quyết định.
+5. Hoạt động 3 (Luyện tập): Thiết kế đủ 3 dạng bài tập mới: 4 câu trắc nghiệm 4 lựa chọn (A,B,C,D có đáp án), 1 câu Đúng/Sai 4 ý (a,b,c,d có bối cảnh thực tiễn), 2 câu trả lời ngắn điền số.
+6. Trang cuối cùng ở dòng cuối cùng góc dưới bên phải BẮT BUỘC ghi:
+   Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít
+
+ĐẦU RA: Trả về trực tiếp mã HTML sạch (dùng các thẻ h2, h3, p, table, tr, th, td với style border đen), không bọc trong thẻ \`\`\`html.`;
+      } else if (cmd === 'matran') {
+        systemPrompt = `Bạn là Chuyên gia Khảo thí Bộ GD&ĐT. Hãy xây dựng bộ HỒ SƠ KHẢO THÍ & ĐỀ KIỂM TRA ĐÁNH GIÁ NĂNG LỰC chuẩn Công văn 7991 cho bài: "${tenbai}" môn ${mon} ${lop} (Bộ sách ${sach}).
+Bắt buộc đủ 4 mục:
+- MỤC 1: KHUNG MA TRẬN ĐỀ KIỂM TRA (Dạng bảng phân bổ % Biết - Hiểu - Vận dụng).
+- MỤC 2: BẢN ĐẶC TẢ MA TRẬN ĐỀ KIỂM TRA (Dạng bảng chi tiết YCCĐ, dạng thức câu hỏi).
+- MỤC 3: ĐỀ KIỂM TRA CHÍNH THỨC (Đủ 4 phần: Phần I trắc nghiệm nhiều lựa chọn, Phần II Đúng/Sai đa ý, Phần III Trả lời ngắn, Phần IV Tự luận thực tiễn).
+- MỤC 4: HƯỚNG DẪN CHẤM VÀ ĐÁP ÁN CHI TIẾT (Biểu điểm chi tiết từng câu).
+Dòng cuối cùng góc dưới bên phải ghi: Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít.
+Trả về mã HTML sạch để hiển thị.`;
+      } else if (cmd === 'stem') {
+        systemPrompt = `Bạn là Chuyên gia STEM/STEAM. Hãy xây dựng KẾ HOẠCH TỔ CHỨC CHỦ ĐỀ STEM/STEAM 17 MỤC cho bài "${tenbai}" môn ${mon} ${lop} (Sản phẩm gắn với thực tiễn).
+Gồm đầy đủ 17 mục từ I đến XVII và 7 Phụ lục (Phiếu giao việc, Nghiên cứu kiến thức nền, Đề xuất giải pháp, Thử nghiệm, Cải tiến, Rubric đánh giá, Tự đánh giá).
+Dòng cuối cùng góc dưới bên phải ghi: Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít.
+Trả về mã HTML sạch để hiển thị.`;
+      }
+
+      try {
+        const response = await fetch(WORKER_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: systemPrompt })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || `Máy chủ Cloudflare báo lỗi HTTP ${response.status}`);
+        }
+
+        let aiText = "";
+        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+          aiText = data.candidates[0].content.parts[0].text;
+        } else {
+          throw new Error("Phản hồi từ AI không có dữ liệu nội dung.");
+        }
+
+        // Làm sạch mã Markdown nếu có
+        aiText = aiText.replace(/```html/gi, '').replace(/```/g, '').trim();
+
+        if (cmd === 'giaoan') document.getElementById('giaoan-editor').innerHTML = aiText;
+        else if (cmd === 'matran') document.getElementById('matran-editor').innerHTML = aiText;
+        else if (cmd === 'stem') document.getElementById('stem-editor').innerHTML = aiText;
+
+        alert(`AI đã biên soạn thành công 100% nội dung cho bài: "${tenbai}"!`);
+
+      } catch (err) {
+        alert("LỖI KẾT NỐI AI: " + err.message + "\n\nThầy vui lòng kiểm tra lại xem trên Cloudflare Worker đã lưu biến GEMINI_API_KEY ở mục Variables and secrets chưa nhé!");
+      } finally {
+        document.getElementById('loading-indicator').classList.add('hidden');
       }
     }
 
-    async function callCloudflareWorker(promptText) {
-      const response = await fetch(WORKER_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: promptText })
-      });
-      const data = await response.json();
-      if (data.candidates && data.candidates[0].content.parts[0].text) {
-        return data.candidates[0].content.parts[0].text.replace(/```html/g, '').replace(/```/g, '');
-      }
-      return null;
-    }
-
-    function fallbackLocalEngine(cmd, mon, lop, tenbai, sach, tiet, nlsCode, aiCode) {
-      if (cmd === 'giaoan') renderGiaoAnHighEnd(mon, lop, tenbai, sach, tiet, nlsCode, aiCode);
-      else if (cmd === 'ppt') buildHighEndSlideDeck(mon, lop, tenbai, sach);
-      else if (cmd === 'matran') renderKhaoThiFullSet(mon, lop, tenbai);
-      else if (cmd === 'stem') renderStemPlan17Items(mon, lop, tenbai, tiet);
-    }
-
-    // RENDER KẾ HOẠCH BÀI DẠY (MÃ LỆNH 1)
-    function renderGiaoAnHighEnd(mon, lop, tenbai, sach, tiet, nlsCode, aiCode) {
-      document.getElementById('giaoan-editor').innerHTML = `
-        <div class="text-center font-bold text-base mb-4">
-          SỞ GIÁO DỤC VÀ ĐÀO TẠO TỈNH VĨNH LONG - TRƯỜNG THPT MANG THÍT<br>
-          <span class="text-lg uppercase text-indigo-900 font-black">KẾ HOẠCH BÀI DẠY: ${tenbai.toUpperCase()}</span><br>
-          <span class="text-sm font-normal italic">Môn học: ${mon} | ${lop} | Bộ sách: ${sach} | Thời lượng: ${tiet}</span><br>
-          <span class="text-xs font-bold text-indigo-700">TÍCH HỢP KHUNG NĂNG LỰC SỐ (QĐ 1007) & KHUNG NĂNG LỰC TRÍ TUỆ NHÂN TẠO (AI)</span>
-        </div>
-
-        <p class="font-bold uppercase">I. MỤC TIÊU</p>
-        <p><strong>1. Về kiến thức:</strong> Liệt kê và giải thích được các kiến thức cốt lõi của bài "${tenbai}" môn ${mon} theo đúng chuẩn YCCĐ Chương trình GDPT 2018 bộ sách ${sach}.</p>
-        <p><strong>2. Về năng lực:</strong><br>
-        - <em>2.1. Năng lực chung:</em> Tự chủ và tự học trong nghiên cứu tài liệu; giao tiếp và hợp tác nhóm; giải quyết vấn đề và sáng tạo.<br>
-        - <em>2.2. Năng lực đặc thù:</em> Nhận thức ${mon}; tìm hiểu thế giới tự nhiên/công nghệ; vận dụng kiến thức, kĩ năng đã học vào thực tiễn.<br>
-        - <em>2.3. Năng lực số (QĐ 1007/QĐ-BGDĐT):</em> <strong>[${nlsCode}]</strong> Học sinh biết quét mã QR khai thác học liệu số mô phỏng 3D/video thí nghiệm ảo về bài "${tenbai}".<br>
-        - <em>2.4. Năng lực Trí tuệ nhân tạo (AI):</em> <strong>[Mã ${aiCode}]</strong> Nhận thức vai trò của AI trong việc hỗ trợ thu thập, mô phỏng dữ liệu bài học; rèn luyện kỹ năng phối hợp cùng AI và giữ vững quyền kiểm soát, đạo đức học thuật.</p>
-        <p><strong>3. Về phẩm chất:</strong> Yêu nước, nhân ái, chăm chỉ, trung thực và trách nhiệm trong học tập và ứng dụng công nghệ.</p>
-        <p><strong>4. Nội dung tích hợp:</strong> Giáo dục bảo vệ môi trường, văn hóa học đường và liêm chính học thuật số.</p>
-
-        <p class="font-bold uppercase mt-3">II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU</p>
-        <p>- <strong>1. Của giáo viên:</strong> Kế hoạch bài dạy, Slide bài giảng chuẩn 16:9, mã QR mô hình số, hệ thống Chatbot AI an toàn, Phiếu học tập số 1 và số 2.<br>
-        - <strong>2. Của học sinh:</strong> Sách giáo khoa ${mon} ${lop} (${sach}), vở ghi bài, thiết bị di động quét mã học liệu.</p>
-
-        <p class="font-bold uppercase mt-3">III. TIẾN TRÌNH DẠY HỌC</p>
-        <p class="font-bold mt-2">HOẠT ĐỘNG 1: MỞ ĐẦU (KHỞI ĐỘNG)</p>
-        <p>- <strong>Bước 1 (Chuyển giao nhiệm vụ):</strong> Giáo viên đưa ra tình huống thực tiễn có vấn đề liên quan đến bài "${tenbai}". Yêu cầu học sinh quan sát, trao đổi cặp đôi nêu giả thuyết.<br>
-        - <strong>Bước 2 (Thực hiện nhiệm vụ):</strong> Học sinh quan sát hiện tượng, thảo luận cặp đôi tìm giải pháp.<br>
-        - <strong>Bước 3 (Báo cáo, thảo luận):</strong> Đại diện học sinh phát biểu dự đoán, đối chiếu các ý kiến khác nhau.<br>
-        - <strong>Bước 4 (Kết luận, nhận định):</strong> Giáo viên nhận xét, dẫn dắt vào bài mới.<br>
-        <em>* DỰ KIẾN SẢN PHẨM:</em> Nhận diện được mâu thuẫn nhận thức và xuất hiện nhu cầu tìm hiểu kiến thức mới của bài "${tenbai}".</p>
-
-        <p class="font-bold mt-3">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p>
-        <div class="bg-indigo-50 border border-indigo-200 p-2.5 rounded-lg my-2 text-indigo-900 font-sans text-xs font-bold">
-          👉 <strong>[Tích hợp năng lực số]: [${nlsCode}]</strong> - Giáo viên trình chiếu mã QR học liệu số. Học sinh quét mã và thao tác trên phần mềm tương tác để kiểm chứng kiến thức.<br>
-          👉 <strong>*** [Tích hợp năng lực AI]: [Mã ${aiCode}]</strong> - Học sinh sử dụng câu lệnh gợi ý trên AI trợ lý để tra cứu thêm góc nhìn đối chiếu, con người giữ quyền phân tích phản biện và ra quyết định cuối cùng.
-        </div>
-
-        <table class="w-full border-collapse border border-black text-xs my-2">
-          <thead>
-            <tr class="bg-[#F0F4F8]">
-              <th class="border border-black p-2 w-1/2 text-left font-bold uppercase">HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH</th>
-              <th class="border border-black p-2 w-1/2 text-left font-bold uppercase">DỰ KIẾN SẢN PHẨM</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="border border-black p-2 align-top space-y-1">
-                <p class="font-bold text-indigo-800">Hoạt động 2.1: Khám phá nội dung trọng tâm 1</p>
-                <p>- <strong>Bước 1 (Chuyển giao):</strong> Đọc SGK ${sach}, phân tích dữ kiện mục 1 của bài "${tenbai}". Hoàn thành Phiếu học tập số 1.</p>
-                <p>- <strong>Bước 2 (Thực hiện):</strong> Học sinh làm việc nhóm 4, ghi chép kết quả.</p>
-                <p>- <strong>Bước 3 (Báo cáo):</strong> Đại diện nhóm báo cáo, nhóm khác nhận xét.</p>
-                <p>- <strong>Bước 4 (Kết luận):</strong> Giáo viên chuẩn hóa kiến thức.</p>
-              </td>
-              <td class="border border-black p-2 align-top space-y-1">
-                <p class="font-bold">1. Kiến thức cốt lõi mục 1</p>
-                <p>- Định nghĩa, khái niệm hoặc quy luật khoa học của bài "${tenbai}".</p>
-                <p>- Các ví dụ và dẫn chứng chi tiết theo SGK ${sach}.</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="border border-black p-2 align-top space-y-1">
-                <p class="font-bold text-indigo-800">Hoạt động 2.2: Quy luật vận dụng và phân tích chuyên sâu</p>
-                <p>- <strong>Bước 1 (Chuyển giao):</strong> Vận dụng kiến thức giải quyết vấn đề mô phỏng thực tế.</p>
-                <p>- <strong>Bước 2 (Thực hiện):</strong> Học sinh làm việc cá nhân hoàn thành bài tập.</p>
-                <p>- <strong>Bước 3 (Báo cáo):</strong> Trình bày các bước suy luận.</p>
-                <p>- <strong>Bước 4 (Kết luận):</strong> Giáo viên chốt kết luận tối ưu.</p>
-              </td>
-              <td class="border border-black p-2 align-top space-y-1">
-                <p class="font-bold">2. Tính chất và quy luật mở rộng</p>
-                <p>- Cơ chế tác động và mối quan hệ giữa các thành phần.</p>
-                <p>- Bảng so sánh và phân tích đối chứng các khái niệm dễ nhầm lẫn.</p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p class="font-bold mt-3">HOẠT ĐỘNG 3: LUYỆN TẬP</p>
-        <p>- <strong>Bước 1 (Chuyển giao nhiệm vụ):</strong> Giáo viên giao hệ thống câu hỏi đủ 3 dạng thức trắc nghiệm đổi mới của Bộ GD&ĐT.<br>
-        - <strong>Bước 2 (Thực hiện nhiệm vụ):</strong> Học sinh giải quyết cá nhân trên phiếu trắc nghiệm.<br>
-        - <strong>Bước 3 (Báo cáo, thảo luận):</strong> Học sinh đối chiếu chéo đáp án.<br>
-        - <strong>Bước 4 (Kết luận, nhận định):</strong> Giáo viên nhận xét, chốt điểm số.<br>
-        <em>* DỰ KIẾN SẢN PHẨM:</em></p>
-        <p><strong>Dạng 1: Trắc nghiệm 4 lựa chọn (4 câu)</strong><br>
-        Câu 1: Kiến thức trọng tâm bài "${tenbai}"?<br>
-        A. Phương án A &nbsp;&nbsp;&nbsp;&nbsp; B. Phương án B &nbsp;&nbsp;&nbsp;&nbsp; C. Phương án C &nbsp;&nbsp;&nbsp;&nbsp; D. Phương án D 👉 <em>Đáp án: A</em><br>
-        Câu 2: Phát biểu nào sau đây chính xác? A. Ý A &nbsp;&nbsp; B. Ý B &nbsp;&nbsp; C. Ý C &nbsp;&nbsp; D. Ý D 👉 <em>Đáp án: B</em><br>
-        Câu 3: Vai trò chính của quá trình? A. Ý A &nbsp;&nbsp; B. Ý B &nbsp;&nbsp; C. Ý C &nbsp;&nbsp; D. Ý D 👉 <em>Đáp án: C</em><br>
-        Câu 4: Nhận định đúng về cơ chế? A. Ý A &nbsp;&nbsp; B. Ý B &nbsp;&nbsp; C. Ý C &nbsp;&nbsp; D. Ý D 👉 <em>Đáp án: D</em></p>
-        <p><strong>Dạng 2: Trắc nghiệm Đúng / Sai (1 câu lớn gồm 4 ý)</strong><br>
-        Câu 5: Trong một nghiên cứu khoa học thực nghiệm về "${tenbai}", người ta ghi nhận các số liệu sau. Xét tính Đúng / Sai của các mệnh đề:<br>
-        a) Giả thuyết thực nghiệm ban đầu phù hợp với lý thuyết SGK. [Đúng]<br>
-        b) Số liệu biến thiên tỷ lệ nghịch với điều kiện nhiệt độ môi trường. [Đúng]<br>
-        c) Hiệu suất tổng hợp đạt cực đại tại điểm bão hòa nồng độ. [Sai]<br>
-        d) Kết quả chứng minh vai trò điều hòa của cơ chế sinh học. [Đúng]</p>
-        <p><strong>Dạng 3: Trắc nghiệm trả lời ngắn (2 câu)</strong><br>
-        Câu 6: Tính tỷ lệ phần trăm hoặc số lượng phân tử trong mẫu thí nghiệm bài "${tenbai}". Điền đáp số: [ 75 ]<br>
-        Câu 7: Xác định số liên kết hoặc hệ số biến đổi tối giản. Điền đáp số: [ 4 ]</p>
-
-        <p class="font-bold mt-3">HOẠT ĐỘNG 4: VẬN DỤNG</p>
-        <p>- <strong>Bước 1 (Chuyển giao nhiệm vụ):</strong> Vận dụng kiến thức bài "${tenbai}" giải quyết tình huống thực tế tại địa phương Vĩnh Long.<br>
-        - <strong>Bước 2 (Thực hiện nhiệm vụ):</strong> Học sinh giải quyết tại nhà, ghi chép nhật ký thực hành.<br>
-        - <strong>Bước 3 (Báo cáo, thảo luận):</strong> Nộp sản phẩm qua nhóm học tập trực tuyến.<br>
-        - <strong>Bước 4 (Kết luận, nhận định):</strong> Giáo viên đánh giá trong tiết sau.<br>
-        <em>* DỰ KIẾN SẢN PHẨM:</em> Bản báo cáo giải pháp thực tiễn có dẫn chứng rõ ràng.</p>
-
-        <p class="font-bold uppercase mt-4">IV. HỒ SƠ DẠY HỌC / PHỤ LỤC</p>
-        <p class="font-bold">Phụ lục 1: PHIẾU HỌC TẬP KHÁM PHÁ KIẾN THỨC</p>
-        <table class="w-full border-collapse border border-black text-xs my-1">
-          <thead><tr class="bg-slate-100"><th class="border border-black p-2">Nhiệm vụ</th><th class="border border-black p-2">Dữ liệu quan sát</th><th class="border border-black p-2">Kết luận rút ra</th></tr></thead>
-          <tbody>
-            <tr><td class="border border-black p-2">Nhiệm vụ 1: Khái niệm cốt lõi</td><td class="border border-black p-2">Hình ảnh/Mô phỏng QR</td><td class="border border-black p-2">Học sinh tự điền</td></tr>
-            <tr><td class="border border-black p-2">Nhiệm vụ 2: Phân tích so sánh</td><td class="border border-black p-2">Bảng đối chiếu SGK</td><td class="border border-black p-2">Học sinh tự điền</td></tr>
-          </tbody>
-        </table>
-
-        <p class="font-bold mt-2">Phụ lục 2: RUBRIC ĐÁNH GIÁ NĂNG LỰC SỐ (QĐ 1007)</p>
-        <table class="w-full border-collapse border border-black text-xs my-1">
-          <thead><tr class="bg-slate-100"><th class="border border-black p-2">Tiêu chí</th><th class="border border-black p-2">Mức 1 (1-2đ)</th><th class="border border-black p-2">Mức 2 (3-4đ)</th><th class="border border-black p-2">Mức 3 (5đ)</th><th class="border border-black p-2">Điểm quy đổi</th></tr></thead>
-          <tbody>
-            <tr><td class="border border-black p-2">Thao tác quét mã và khai thác học liệu</td><td class="border border-black p-2">Cần GV hỗ trợ</td><td class="border border-black p-2">Tự thao tác thành thạo</td><td class="border border-black p-2">Thao tác nhanh, hỗ trợ bạn</td><td class="border border-black p-2">5/5</td></tr>
-          </tbody>
-        </table>
-
-        <p class="font-bold mt-2">Phụ lục 3: RUBRIC ĐÁNH GIÁ NĂNG LỰC TRÍ TUỆ NHÂN TẠO (AI)</p>
-        <table class="w-full border-collapse border border-black text-xs my-1">
-          <thead><tr class="bg-slate-100"><th class="border border-black p-2">Tiêu chí</th><th class="border border-black p-2">Mức 1 (1-2đ)</th><th class="border border-black p-2">Mức 2 (3-4đ)</th><th class="border border-black p-2">Mức 3 (5đ)</th><th class="border border-black p-2">Điểm quy đổi</th></tr></thead>
-          <tbody>
-            <tr><td class="border border-black p-2">Phản biện AI và Liêm chính học thuật</td><td class="border border-black p-2">Chép nguyên văn từ AI</td><td class="border border-black p-2">Biết đối chiếu với SGK</td><td class="border border-black p-2">Phát hiện sai sót của AI và làm chủ kết quả</td><td class="border border-black p-2">5/5</td></tr>
-          </tbody>
-        </table>
-
-        <div class="mt-8 pt-4 border-t border-black text-right italic text-xs">
-          Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít
-        </div>
-      `;
-    }
-
-    // TẠO SLIDE PPT (MÃ LỆNH 11 - CỠ CHỮ ≥ 34PT, 16 SLIDE LUYỆN TẬP ẨN ĐÁP ÁN)
+    // SLIDE PPT 16:9 VỚI 16 SLIDE LUYỆN TẬP
     let slideDeckData = [];
     let currentSlideIndex = 0;
 
@@ -639,45 +478,45 @@ Trả về HTML sạch.`;
       slideDeckData.push({
         cat: "HĐ 1: KHỞI ĐỘNG",
         title: "TÌNH HUỐNG XUẤT PHÁT",
-        body: `• Quan sát hiện tượng thực tiễn hoặc video tư liệu 3 phút.\n• Câu hỏi 1: Điều gì gây ra sự biến đổi của hiện tượng?\n• Câu hỏi 2: Dự đoán quy luật khoa học nào chi phối quá trình này?`,
+        body: `• Quan sát hiện tượng thực tiễn hoặc video tư liệu bài "${tenbai}".\n• Câu hỏi 1: Điều gì dẫn đến sự khác biệt về thích nghi sinh học?\n• Câu hỏi 2: Nêu dự đoán cơ chế khoa học chi phối quá trình này?`,
         answer: ""
       });
 
       slideDeckData.push({
         cat: "MỤC TIÊU BÀI HỌC",
         title: "CHUẨN ĐẦU RA BÀI HỌC",
-        body: `• Nắm vững kiến thức trọng tâm bài ${tenbai}.\n• Phát triển năng lực nhận thức và vận dụng thực tiễn.\n• Tích hợp Năng lực số (NLS 1.1) & Năng lực AI làm chủ công nghệ.`,
+        body: `• Nắm vững bản chất kiến thức trọng tâm bài ${tenbai}.\n• Năng lực thực hành, phân tích sơ đồ và đồ thị.\n• Tích hợp Năng lực số (NLS 1.1) & Năng lực AI phối hợp ra quyết định.`,
         answer: ""
       });
 
       slideDeckData.push({
         cat: "HĐ 2: HÌNH THÀNH KIẾN THỨC",
-        title: "NỘI DUNG 1: KHÁI NIỆM CỐT LÕI",
-        body: `• Nghiên cứu kênh hình và phân tích mục 1 SGK.\n• Hoàn thành phiếu học tập số 1 theo nhóm 4 học sinh.\n• Đối chiếu kết quả thực nghiệm với định nghĩa khoa học.`,
+        title: "KHÁM PHÁ CƠ CHẾ CỐT LÕI",
+        body: `• Phân tích kênh hình và số liệu thực nghiệm SGK ${sach}.\n• Hoàn thành phiếu học tập so sánh các con đường chuyển hóa.\n• Rút ra bản chất khoa học của bài học.`,
         answer: ""
       });
 
       slideDeckData.push({
         cat: "KIẾN THỨC GHI VỞ",
-        title: "CHỐT KIẾN THỨC CỐT LÕI MỤC I",
-        body: `• Khái niệm, bản chất và cấu trúc then chốt.\n• Công thức và quy luật chi phối trực tiếp.\n• (Học sinh ghi chép toàn bộ nội dung chuẩn hóa này vào vở học).`,
+        title: "CHỐT KIẾN THỨC CỐT LÕI (GHI VỞ)",
+        body: `• Các phương trình phản ứng và cơ chế then chốt.\n• Ý nghĩa thích nghi sinh học và ứng dụng thực tiễn sản xuất.\n• (Học sinh ghi nhớ và hoàn thiện vào vở bài học).`,
         answer: ""
       });
 
       for (let i = 1; i <= 6; i++) {
         slideDeckData.push({
           cat: "HĐ 3: LUYỆN TẬP (DẠNG 1)",
-          title: `CÂU HỎI ${i}: 4 LỰA CHỌN`,
-          body: `Câu hỏi ${i}: Cho kiến thức trọng tâm của bài ${tenbai}. Khẳng định nào sau đây là chính xác?\nA. Khẳng định kiến thức A\nB. Khẳng định kiến thức B\nC. Khẳng định kiến thức C\nD. Khẳng định kiến thức D`,
-          answer: `👉 ĐÁP ÁN ĐÚNG: Phương án A (Giải thích: Phù hợp chuẩn YCCĐ SGK)`
+          title: `CÂU HỎI TRẮC NGHIỆM ${i}`,
+          body: `Khẳng định nào sau đây là chính xác khi nói về ${tenbai}?\nA. Nhận định khoa học A\nB. Nhận định khoa học B\nC. Nhận định khoa học C\nD. Nhận định khoa học D`,
+          answer: `👉 ĐÁP ÁN: Phương án A (Phù hợp YCCĐ bài ${tenbai})`
         });
       }
 
       for (let i = 1; i <= 4; i++) {
         slideDeckData.push({
           cat: "HĐ 3: LUYỆN TẬP (DẠNG 2)",
-          title: `CÂU HỎI ĐÚNG / SAI SỐ ${i}`,
-          body: `Xét bối cảnh bài báo khoa học thực nghiệm về ${tenbai}:\na) Giả thuyết thực nghiệm phù hợp với lý thuyết.\nb) Biến đổi nồng độ tỷ lệ thuận với tốc độ phản ứng.\nc) Hiệu suất đạt cực đại tại ngưỡng cân bằng.\nd) Kết luận chứng minh tính thích nghi sinh học.`,
+          title: `CÂU ĐÚNG / SAI SỐ ${i}`,
+          body: `Dựa trên bài báo khoa học thực nghiệm về ${tenbai}, xét tính Đúng / Sai:\na) Giả thuyết ban đầu phù hợp với lý thuyết.\nb) Nồng độ cơ chất tỷ lệ thuận với tốc độ tích lũy sản phẩm.\nc) Điểm bão hòa xuất hiện khi các thụ thể phản ứng bị lấp đầy.\nd) Thí nghiệm chứng minh cơ chế thích nghi đặc thù.`,
           answer: `👉 ĐÁP ÁN: a) Đúng | b) Đúng | c) Sai | d) Đúng`
         });
       }
@@ -686,15 +525,15 @@ Trả về HTML sạch.`;
         slideDeckData.push({
           cat: "HĐ 3: LUYỆN TẬP (DẠNG 3)",
           title: `TRẢ LỜI NGẮN SỐ ${i}`,
-          body: `Tính toán giá trị định lượng hoặc điền số nguyên tối giản của bài toán ${tenbai}.\n(Học sinh tính toán độc lập và tự điền con số kết quả):`,
-          answer: `👉 ĐÁP SỐ CHUẨN: [ 25 ]`
+          body: `Tính toán hệ số định lượng hoặc số phân tử ATP/NADPH tham gia trong chu trình bài ${tenbai}.\n(Học sinh tính toán độc lập và tự điền đáp số):`,
+          answer: `👉 ĐÁP SỐ CHUẨN: [ 18 ]`
         });
       }
 
       slideDeckData.push({
         cat: "HĐ 4: VẬN DỤNG & DẶN DÒ",
-        title: "DỰ ÁN THỰC TIỄN & VỀ NHÀ",
-        body: `• Hoàn thành bài tập vận dụng gắn với thực tế Vĩnh Long.\n• Quét mã QR nộp bài tập qua nhóm học tập trực tuyến trước 20h00.\n\nTrân trọng cảm ơn quý Thầy Cô và các em học sinh!\nGiáo viên: Hồ Tấn Khải - Trường THPT Mang Thít`,
+        title: "DỰ ÁN VẬN DỤNG THỰC TIỄN",
+        body: `• Đề xuất giải pháp canh tác ứng dụng kiến thức bài ${tenbai} tại Vĩnh Long.\n• Quét mã QR nộp bài tập qua nhóm học tập trước tiết học tiếp theo.\n\nGiáo viên: Hồ Tấn Khải - Trường THPT Mang Thít`,
         answer: ""
       });
 
@@ -748,19 +587,19 @@ Trả về HTML sạch.`;
         btnToggle.innerText = "🔒 Ẩn Đáp Án";
       } else {
         ansBox.classList.add('hidden');
-        btnToggle.innerText = "👁️️ Hiện Đáp Án";
+        btnToggle.innerText = "👁️ Hiện Đáp Án";
       }
     }
 
     function exportDirectPptxFile() {
       if (typeof PptxGenJS === 'undefined') {
-        alert('Thư viện PPTX đang nạp, Thầy vui lòng đợi 3 giây rồi bấm lại nhé!');
+        alert('Đang tải thư viện trình chiếu, Thầy vui lòng thử lại sau vài giây!');
         return;
       }
       const pptx = new PptxGenJS();
       pptx.layout = 'LAYOUT_16x9';
 
-      slideDeckData.forEach((s, idx) => {
+      slideDeckData.forEach(s => {
         const slide = pptx.addSlide();
         slide.background = { color: 'F4F8F5' };
 
@@ -787,163 +626,14 @@ Trả về HTML sạch.`;
 
       const tenbai = document.getElementById('tenbai').value.replace(/\s+/g, '_') || 'Bai_Giang';
       pptx.writeFile({ fileName: `Bai_Giang_PPT_${tenbai}_HoTanKhai.pptx` })
-        .then(() => alert('Đã xuất thành công file PowerPoint (.pptx) chuẩn màn hình rộng 16:9 về máy tính!'))
-        .catch(err => alert('Lỗi xuất PPTX: ' + err.message));
+        .then(() => alert('Đã xuất thành công file PowerPoint (.pptx) chuẩn 16:9 về máy!'))
+        .catch(err => alert('Lỗi xuất PPT: ' + err.message));
     }
 
     function startFullscreenSlideshow() {
       const elem = document.getElementById('active-slide-canvas');
       if (elem.requestFullscreen) elem.requestFullscreen();
       else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
-    }
-
-    // RENDER HỒ SƠ KHẢO THÍ ĐỦ 4 MỤC
-    function renderKhaoThiFullSet(mon, lop, tenbai) {
-      document.getElementById('matran-editor').innerHTML = `
-        <div class="text-center font-bold text-base mb-4">
-          SỞ GIÁO DỤC VÀ ĐÀO TẠO TỈNH VĨNH LONG - TRƯỜNG THPT MANG THÍT<br>
-          <span class="text-lg uppercase text-emerald-950 font-black">HỒ SƠ KHẢO THÍ & ĐỀ KIỂM TRA ĐÁNH GIÁ NĂNG LỰC (CHUẨN CV 7991)</span><br>
-          <span class="text-sm font-normal italic">Môn: ${mon} | ${lop} | Bài học: ${tenbai} | Thời gian: 60 phút</span>
-        </div>
-
-        <p class="font-bold uppercase text-indigo-900">MỤC 1: KHUNG MA TRẬN ĐỀ KIỂM TRA ĐỊNH KỲ</p>
-        <p>Tỷ lệ mức độ nhận thức: <strong>40% Nhận biết - 30% Thông hiểu - 20% Vận dụng - 10% Vận dụng cao</strong>.</p>
-        <table class="w-full border-collapse border border-black text-xs my-2">
-          <thead>
-            <tr class="bg-slate-200">
-              <th class="border border-black p-2">Phần thi</th>
-              <th class="border border-black p-2">Dạng thức câu hỏi</th>
-              <th class="border border-black p-2">Số câu</th>
-              <th class="border border-black p-2">Điểm số</th>
-              <th class="border border-black p-2">Cấp độ nhận thức</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="border border-black p-2 font-bold">Phần I</td><td class="border border-black p-2">Trắc nghiệm 4 lựa chọn (A, B, C, D)</td><td class="border border-black p-2 text-center">8 câu</td><td class="border border-black p-2 text-center">2.0 đ</td><td class="border border-black p-2">Biết (4) - Hiểu (4)</td></tr>
-            <tr><td class="border border-black p-2 font-bold">Phần II</td><td class="border border-black p-2">Trắc nghiệm Đúng / Sai (đa ý a,b,c,d)</td><td class="border border-black p-2 text-center">2 câu (8 ý)</td><td class="border border-black p-2 text-center">2.0 đ</td><td class="border border-black p-2">Hiểu (4) - Vận dụng (4)</td></tr>
-            <tr><td class="border border-black p-2 font-bold">Phần III</td><td class="border border-black p-2">Trắc nghiệm Trả lời ngắn (điền số)</td><td class="border border-black p-2 text-center">4 câu</td><td class="border border-black p-2 text-center">2.0 đ</td><td class="border border-black p-2">Vận dụng (3) - VDC (1)</td></tr>
-            <tr><td class="border border-black p-2 font-bold">Phần IV</td><td class="border border-black p-2">Tự luận vận dụng tình huống thực tiễn</td><td class="border border-black p-2 text-center">2 câu</td><td class="border border-black p-2 text-center">4.0 đ</td><td class="border border-black p-2">Vận dụng (2) - VDC (2)</td></tr>
-          </tbody>
-        </table>
-
-        <p class="font-bold uppercase text-indigo-900 mt-4">MỤC 2: BẢN ĐẶC TẢ MA TRẬN ĐỀ KIỂM TRA</p>
-        <table class="w-full border-collapse border border-black text-xs my-2">
-          <thead>
-            <tr class="bg-slate-200">
-              <th class="border border-black p-2">Mạch nội dung</th>
-              <th class="border border-black p-2">Yêu cầu cần đạt (YCCĐ)</th>
-              <th class="border border-black p-2">Dạng thức</th>
-              <th class="border border-black p-2">Số lượng câu</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="border border-black p-2 font-bold">${tenbai}</td>
-              <td class="border border-black p-2">- Nhận biết được các khái niệm, quy tắc cơ bản.<br>- Phân tích được dữ liệu thực nghiệm trong các bài báo khoa học.<br>- Giải quyết được tình huống định lượng thực tế.</td>
-              <td class="border border-black p-2">Phần I, II, III, IV</td>
-              <td class="border border-black p-2 text-center">16 câu hỏi</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p class="font-bold uppercase text-indigo-900 mt-4">MỤC 3: ĐỀ KIỂM TRA CHÍNH THỨC</p>
-        <p><strong>PHẦN I: TRẮC NGHIỆM 4 LỰA CHỌN (8 câu - 2.0 điểm)</strong></p>
-        <p><strong>Câu 1:</strong> Khái niệm cốt lõi của bài học ${tenbai} là?<br>A. Phương án đúng A &nbsp;&nbsp;&nbsp;&nbsp; B. Phương án B &nbsp;&nbsp;&nbsp;&nbsp; C. Phương án C &nbsp;&nbsp;&nbsp;&nbsp; D. Phương án D</p>
-        <p><strong>Câu 2:</strong> Quy luật biến thiên chi phối quá trình?<br>A. Đáp án A &nbsp;&nbsp;&nbsp;&nbsp; B. Đáp án B &nbsp;&nbsp;&nbsp;&nbsp; C. Đáp án C &nbsp;&nbsp;&nbsp;&nbsp; D. Đáp án D</p>
-
-        <p class="mt-2"><strong>PHẦN II: TRẮC NGHIỆM ĐÚNG / SAI (2 câu - 2.0 điểm)</strong></p>
-        <p><strong>Câu 9:</strong> Cho bảng số liệu thực nghiệm khoa học về ${tenbai}. Xét tính Đúng / Sai của các mệnh đề sau:<br>
-        a) Điều kiện nhiệt độ tối ưu nằm trong khoảng 25 - 30 độ C. [Đúng / Sai]<br>
-        b) Tốc độ phản ứng tỷ lệ nghịch với lượng cơ chất ban đầu. [Đúng / Sai]<br>
-        c) Điểm bão hòa đạt được khi toàn bộ liên kết được lấp đầy. [Đúng / Sai]<br>
-        d) Kết quả chứng minh vai trò thích nghi của hệ thống. [Đúng / Sai]</p>
-
-        <p class="mt-2"><strong>PHẦN III: TRẮC NGHIỆM TRẢ LỜI NGẮN (4 câu - 2.0 điểm)</strong></p>
-        <p><strong>Câu 11:</strong> Tính giá trị nồng độ rút gọn tối giản trong bài toán thực nghiệm. Điền đáp số: [ ......... ]</p>
-        <p><strong>Câu 12:</strong> Xác định số liên kết phân tử được hình thành trong điều kiện chuẩn. Điền đáp số: [ ......... ]</p>
-
-        <p class="mt-2"><strong>PHẦN IV: TỰ LUẬN TÌNH HUỐNG THỰC TIỄN (2 câu - 4.0 điểm)</strong></p>
-        <p><strong>Câu 15:</strong> Vận dụng kiến thức bài ${tenbai} để giải quyết một tình huống sản xuất thực tế tại tỉnh Vĩnh Long. Hãy phân tích nguyên nhân và đề xuất giải pháp khả thi.</p>
-
-        <p class="font-bold uppercase text-indigo-900 mt-4">MỤC 4: HƯỚNG DẪN CHẤM & ĐÁP ÁN CHI TIẾT</p>
-        <p>- <strong>Phần I:</strong> Mỗi câu đúng được 0.25 điểm.<br>
-        - <strong>Phần II:</strong> Thang điểm lũy tiến: Đúng 1 ý = 0.1đ | Đúng 2 ý = 0.25đ | Đúng 3 ý = 0.5đ | Đúng 4 ý = 1.0đ.<br>
-        - <strong>Phần III:</strong> Mỗi câu đúng được 0.5 điểm.<br>
-        - <strong>Phần IV:</strong> Lời giải chi tiết và biểu điểm phân hóa từng bước.</p>
-
-        <div class="mt-8 pt-4 border-t border-black text-right italic text-xs">
-          Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít
-        </div>
-      `;
-    }
-
-    // RENDER KẾ HOẠCH STEM/STEAM 17 MỤC
-    function renderStemPlan17Items(mon, lop, tenbai, tiet) {
-      document.getElementById('stem-editor').innerHTML = `
-        <div class="text-center font-bold text-base mb-4">
-          SỞ GIÁO DỤC VÀ ĐÀO TẠO TỈNH VĨNH LONG - TRƯỜNG THPT MANG THÍT<br>
-          <span class="text-lg uppercase text-amber-950 font-black">KẾ HOẠCH TỔ CHỨC CHỦ ĐỀ STEM/STEAM: THIẾT KẾ MÔ HÌNH ỨNG DỤNG BÀI "${tenbai.toUpperCase()}"</span><br>
-          <span class="text-sm font-normal italic">Môn học chủ đạo: ${mon} | ${lop} | Thời lượng: ${tiet}</span>
-        </div>
-
-        <p class="font-bold uppercase">I. THÔNG TIN CHUNG</p>
-        <table class="w-full border-collapse border border-black text-xs my-2">
-          <tbody>
-            <tr><td class="border border-black p-2 font-bold w-1/3">1. Tên chủ đề</td><td class="border border-black p-2">Thiết kế mô hình ứng dụng giải quyết vấn đề thực tiễn bài ${tenbai}</td></tr>
-            <tr><td class="border border-black p-2 font-bold">2. Lớp</td><td class="border border-black p-2">${lop}</td></tr>
-            <tr><td class="border border-black p-2 font-bold">3. Môn học chủ đạo</td><td class="border border-black p-2">${mon}</td></tr>
-            <tr><td class="border border-black p-2 font-bold">4. Các môn học tích hợp</td><td class="border border-black p-2">Toán học, Tin học, Công nghệ, Mĩ thuật</td></tr>
-            <tr><td class="border border-black p-2 font-bold">5. Thời lượng</td><td class="border border-black p-2">${tiet} (kết hợp tự học tại nhà)</td></tr>
-            <tr><td class="border border-black p-2 font-bold">6. Sản phẩm dự kiến</td><td class="border border-black p-2">Mô hình sản phẩm thực tế, bản vẽ kỹ thuật và video báo cáo</td></tr>
-          </tbody>
-        </table>
-
-        <p class="font-bold uppercase mt-3">II. CĂN CỨ XÂY DỰNG CHỦ ĐỀ</p>
-        <p>- Yêu cầu cần đạt của bài học "${tenbai}" trong Chương trình GDPT 2018.<br>
-        - Kế hoạch giáo dục nhà trường và định hướng phát triển giáo dục STEM/STEAM của Bộ GD&ĐT.</p>
-
-        <p class="font-bold uppercase mt-3">III. LÝ DO LỰA CHỌN CHỦ ĐỀ</p>
-        <p>- Gắn kết lý thuyết bài học với đời sống thực tế sản xuất tại địa phương Vĩnh Long.<br>
-        - Kích hoạt năng lực thiết kế kỹ thuật, tư duy giải quyết vấn đề và năng lực hợp tác của học sinh.</p>
-
-        <p class="font-bold uppercase mt-3">IV. MỤC TIÊU CỦA CHỦ ĐỀ</p>
-        <p>- <strong>Kiến thức:</strong> Vận dụng kiến thức ${tenbai} để tính toán thông số kỹ thuật sản phẩm.<br>
-        - <strong>Kĩ năng:</strong> Lập bản vẽ thiết kế, gia công chế tạo mô hình và thử nghiệm đánh giá.<br>
-        - <strong>Năng lực thiết kế kỹ thuật:</strong> Đề xuất phương án, lựa chọn vật liệu và cải tiến sản phẩm.</p>
-
-        <p class="font-bold uppercase mt-3">V. YÊU CẦU CẦN ĐẠT VÀ NỘI DUNG TÍCH HỢP</p>
-        <table class="w-full border-collapse border border-black text-xs my-2">
-          <thead><tr class="bg-slate-200"><th class="border border-black p-2">Môn học</th><th class="border border-black p-2">YCCĐ</th><th class="border border-black p-2">Kiến thức huy động</th><th class="border border-black p-2">Quyết định thiết kế</th></tr></thead>
-          <tbody>
-            <tr><td class="border border-black p-2 font-bold">${mon}</td><td class="border border-black p-2">Hiểu cơ chế bài học</td><td class="border border-black p-2">Nguyên lý hoạt động</td><td class="border border-black p-2">Lựa chọn thông số mô hình</td></tr>
-            <tr><td class="border border-black p-2 font-bold">Toán học</td><td class="border border-black p-2">Tính toán tỷ lệ</td><td class="border border-black p-2">Hình học và đại số</td><td class="border border-black p-2">Xác định kích thước chính xác</td></tr>
-            <tr><td class="border border-black p-2 font-bold">Công nghệ</td><td class="border border-black p-2">Quy trình lắp ráp</td><td class="border border-black p-2">Kỹ thuật gia công</td><td class="border border-black p-2">Thao tác an toàn</td></tr>
-          </tbody>
-        </table>
-
-        <p class="font-bold uppercase mt-3">VI. TIẾN TRÌNH TỔ CHỨC (8 GIAI ĐOẠN QUY TRÌNH THIẾT KẾ KỸ THUẬT)</p>
-        <p>- <strong>Giai đoạn 1:</strong> Xác định vấn đề thực tiễn và nhận nhiệm vụ thiết kế.<br>
-        - <strong>Giai đoạn 2:</strong> Nghiên cứu kiến thức nền bài học "${tenbai}".<br>
-        - <strong>Giai đoạn 3:</strong> Đề xuất các giải pháp và vẽ bản phác thảo ban đầu.<br>
-        - <strong>Giai đoạn 4:</strong> Lựa chọn phương án tối ưu và hoàn thiện bản vẽ chi tiết.<br>
-        - <strong>Giai đoạn 5:</strong> Chế tạo sản phẩm theo bản thiết kế.<br>
-        - <strong>Giai đoạn 6:</strong> Thử nghiệm sản phẩm và đối chiếu tiêu chí chất lượng.<br>
-        - <strong>Giai đoạn 7:</strong> Phân tích lỗi và tiến hành cải tiến sản phẩm.<br>
-        - <strong>Giai đoạn 8:</strong> Báo cáo, phản biện và triển lãm sản phẩm trước lớp.</p>
-
-        <p class="font-bold uppercase mt-3">VII. PHỤ LỤC HỒ SƠ STEM ĐÍNH KÈM</p>
-        <p>- Phụ lục 1: Phiếu giao nhiệm vụ thiết kế.<br>
-        - Phụ lục 2: Phiếu nghiên cứu kiến thức nền.<br>
-        - Phụ lục 3: Bản vẽ kỹ thuật và sơ đồ nguyên lý.<br>
-        - Phụ lục 4: Phiếu thử nghiệm và đo lường thông số.<br>
-        - Phụ lục 5: Nhật ký chế tạo và phiếu cải tiến.<br>
-        - Phụ lục 6: Rubric đánh giá sản phẩm STEM 4 mức độ.<br>
-        - Phụ lục 7: Phiếu tự đánh giá và đánh giá đồng đẳng trong nhóm.</p>
-
-        <div class="mt-8 pt-4 border-t border-black text-right italic text-xs">
-          Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít
-        </div>
-      `;
     }
 
     function switchTab(tabId) {
