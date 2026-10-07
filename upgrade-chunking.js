@@ -1,11 +1,9 @@
 /**
- * EDUPHYSICS / EDUAI PRO - ALL-IN-ONE ENGINE v5.0
- * Gom chung: Đọc Drive + Sinh bài phân đoạn 3 tầng + Bám sát 100% SGK + Đánh giá năng lực số & AI
+ * EDUPHYSICS / EDUAI PRO - ALL-IN-ONE ENGINE v5.1 (Fixed Model Discovery & Clean URL)
  */
 
-// 1. CẤU HÌNH ĐƯỜNG DẪN GOOGLE APPS SCRIPT ĐỌC DRIVE (Nếu có)
-// Thầy dán URL Web App triển khai từ Google Apps Script vào giữa 2 dấu ngoặc kép bên dưới:
-const DRIVE_APP_URL = " https://script.google.com/macros/s/AKfycbyUAoctNBlViQVDcYxZr8h0DjAU2vaGk-QZfDWYl7LNlfgPj6JWRFsLZpBTAWvWuHtnzw/exec"; 
+// 1. CẤU HÌNH ĐƯỜNG DẪN GOOGLE APPS SCRIPT ĐỌC DRIVE (Đã làm sạch khoảng trắng)
+const DRIVE_APP_URL = "https://script.google.com/macros/s/AKfycbyUAoctNBlViQVDcYxZr8h0DjAU2vaGk-QZfDWYl7LNlfgPj6JWRFsLZpBTAWvWuHtnzw/exec"; 
 
 // Chặn các popup cảnh báo cũ làm gián đoạn trải nghiệm
 window.alert = function(msg) { console.warn("[EduAI Notice]:", msg); };
@@ -16,7 +14,7 @@ async function fetchSgkContentFromDrive(lessonName) {
         return "";
     }
     try {
-        const fetchUrl = `${DRIVE_APP_URL}?lesson=${encodeURIComponent(lessonName)}`;
+        const fetchUrl = `${DRIVE_APP_URL.trim()}?lesson=${encodeURIComponent(lessonName)}`;
         const res = await fetch(fetchUrl);
         const json = await res.json();
         if (json && json.status === "success" && json.data) {
@@ -28,6 +26,9 @@ async function fetchSgkContentFromDrive(lessonName) {
     }
     return "";
 }
+
+// Biến lưu model hợp lệ sau khi tự động nhận diện từ Google AI
+let activeVerifiedModel = null;
 
 // 2. BỘ MÁY ĐIỀU PHỐI VÀ BIÊN SOẠN CHUYÊN SÂU
 async function executeActionGenerate(type) {
@@ -41,7 +42,6 @@ async function executeActionGenerate(type) {
     const docContainer = document.getElementById('container-a4-doc');
     let savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
 
-    // Nếu là Slide hoặc Đề thi thì gọi hàm có sẵn
     if (type !== '5512') {
         if (typeof renderMaTranDeKiemTra === 'function' && type === '7991') {
             renderMaTranDeKiemTra(subject, grade, book);
@@ -63,11 +63,10 @@ async function executeActionGenerate(type) {
         return;
     }
 
-    // Hiển thị giao diện thanh tiến trình trực quan
     docContainer.innerHTML = `
         <div style="text-align: center; padding: 60px 20px; font-family: sans-serif;">
             <div style="font-size: 36px; color: #0284c7; margin-bottom: 12px;"><i class="fa-solid fa-spinner fa-spin"></i></div>
-            <h3 style="font-size: 16pt; font-weight: bold; color: #0f172a;" id="chunk-status-text">Đang kết nối AI biên soạn theo thời gian thực...</h3>
+            <h3 style="font-size: 16pt; font-weight: bold; color: #0f172a;" id="chunk-status-text">Đang đồng bộ AI và trích xuất Drive...</h3>
             <p style="color: #64748b; font-size: 11pt;" id="chunk-step-detail">Khởi tạo và đối chiếu ngữ liệu bài học: <strong>${lessonTitle}</strong></p>
             <div style="width: 100%; max-width: 460px; background: #e2e8f0; height: 10px; border-radius: 6px; margin: 15px auto; overflow: hidden;">
                 <div id="chunk-progress-bar" style="width: 15%; height: 100%; background: linear-gradient(90deg, #0284c7, #10b981); transition: width 0.4s;"></div>
@@ -84,17 +83,37 @@ async function executeActionGenerate(type) {
         if (stTxt) stTxt.innerText = stepText;
     };
 
-    // Hàm gọi AI an toàn với các Model mới nhất
+    // Hàm gọi AI tự động tìm Model khả dụng của tài khoản Google
     async function queryGemini(promptText) {
-        const endpoints = [
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${savedKey}`,
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${savedKey}`,
-            `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${savedKey}`,
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${savedKey}`
-        ];
+        if (!activeVerifiedModel) {
+            try {
+                const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${savedKey}`);
+                const listData = await listRes.json();
+                if (listData.models && Array.isArray(listData.models)) {
+                    const valid = listData.models.find(m => 
+                        m.supportedGenerationMethods && 
+                        m.supportedGenerationMethods.includes('generateContent') &&
+                        (m.name.includes('flash') || m.name.includes('gemini'))
+                    );
+                    if (valid) {
+                        activeVerifiedModel = valid.name; // Trả về dạng 'models/gemini-...'
+                        console.log("Model kích hoạt tự động:", activeVerifiedModel);
+                    }
+                }
+            } catch (e) {
+                console.warn("Không lấy được ListModels:", e);
+            }
+        }
+
+        const modelSequence = activeVerifiedModel 
+            ? [activeVerifiedModel] 
+            : ['models/gemini-2.5-flash', 'models/gemini-2.0-flash', 'models/gemini-1.5-flash', 'models/gemini-1.5-flash-latest'];
 
         let lastErr = "";
-        for (const url of endpoints) {
+        for (const mName of modelSequence) {
+            const cleanModel = mName.startsWith('models/') ? mName : `models/${mName}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/${cleanModel}:generateContent?key=${savedKey}`;
+
             try {
                 const response = await fetch(url, {
                     method: 'POST',
@@ -107,6 +126,7 @@ async function executeActionGenerate(type) {
 
                 const data = await response.json();
                 if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+                    activeVerifiedModel = cleanModel;
                     return data.candidates[0].content.parts[0].text.replace(/```html/gi, '').replace(/```/gi, '');
                 }
                 if (data.error) {
@@ -116,18 +136,18 @@ async function executeActionGenerate(type) {
                 lastErr = err.message;
             }
         }
-        throw new Error(lastErr || "Máy chủ AI không trả lời. Vui lòng kiểm tra lại kết nối mạng hoặc API Key.");
+        throw new Error(lastErr || "Máy chủ AI không phản hồi hoặc model chưa được kích hoạt.");
     }
 
     try {
         const tName = (typeof teacherName !== 'undefined') ? teacherName : "Trần Thị Mỹ Thanh";
         const sName = (typeof schoolName !== 'undefined') ? schoolName : "Trường THPT Mang Thít";
 
-        // BƯỚC 0: TRÍCH XUẤT NGỮ LIỆU TỪ GOOGLE DRIVE (NẾU CÓ CẤU HÌNH)
-        updateStatus(20, "Đang tra cứu ngữ liệu bài học...", "Đối chiếu kho dữ liệu SGK và hướng dẫn sư phạm...");
+        // BƯỚC 0: TRÍCH XUẤT NGỮ LIỆU TỪ GOOGLE DRIVE
+        updateStatus(20, "Đang tra cứu ngữ liệu từ Drive...", "Đọc nội dung SGK từ Google Apps Script...");
         const driveContent = await fetchSgkContentFromDrive(lessonTitle);
 
-        // GIAI ĐOẠN 1: BẢNG HÀNH CHÍNH, MỤC TIÊU (NLS + AI) & THIẾT BỊ
+        // GIAI ĐOẠN 1: MỤC TIÊU & THIẾT BỊ
         updateStatus(40, "Giai đoạn 1/3: Soạn Mục tiêu & Thiết bị...", "Xác lập kiến thức cốt lõi, chỉ số NLS 2.1 và Năng lực AI...");
         const prompt1 = `
 Hãy đóng vai trò Chuyên gia Sư phạm GDPT 2018 cao cấp môn ${subject}.
@@ -152,7 +172,7 @@ CHỈ TRẢ VỀ CÁC THẺ HTML THUẦN (div, table, p, h2, h3...). Không dùn
         const prompt2 = `
 Hãy đóng vai trò Chuyên gia Sư phạm môn ${subject} ${grade} bộ sách ${book}.
 Nhiệm vụ: Soạn TIẾN TRÌNH DẠY HỌC (Hoạt động 1 và Hoạt động 2) cho bài: "${lessonTitle}".
-${driveContent ? `NGỮ LIỆU GỐC TRÍCH XUẤT TỪ TÀI LIỆU SGK:\n${driveContent}\n` : ''}
+${driveContent ? `NGỮ LIỆU GỐC TRÍCH XUẤT TỪ GOOGLE DRIVE:\n${driveContent}\n` : ''}
 ${customGuide ? `Ghi chú chuyên môn: ${customGuide}` : ''}
 
 QUY CHUẨN BẮT BUỘC ĐỂ ĐẢM BẢO CHI TIẾT 100% NHƯ SGK:
@@ -171,7 +191,7 @@ QUY CHUẨN BẮT BUỘC ĐỂ ĐẢM BẢO CHI TIẾT 100% NHƯ SGK:
 CHỈ TRẢ VỀ MÃ HTML THUẦN.`;
         const htmlPart2 = await queryGemini(prompt2);
 
-        // GIAI ĐOẠN 3: HOẠT ĐỘNG 3 (3 DẠNG BÀI TẬP), HOẠT ĐỘNG 4 & PHỤ LỤC (PHIẾU + 2 RUBRIC)
+        // GIAI ĐOẠN 3: HOẠT ĐỘNG 3, HOẠT ĐỘNG 4 & PHỤ LỤC
         updateStatus(90, "Giai đoạn 3/3: Soạn Luyện tập, Vận dụng & Phụ lục...", "Tạo 3 dạng bài tập đánh giá năng lực, Phiếu học tập và 2 Rubric...");
         const prompt3 = `
 Hãy đóng vai trò Chuyên gia Sư phạm môn ${subject} ${grade}.
@@ -191,7 +211,6 @@ YÊU CẦU:
 CHỈ TRẢ VỀ MÃ HTML THUẦN.`;
         const htmlPart3 = await queryGemini(prompt3);
 
-        // HOÀN THIỆN VÀ RENDER LÊN KHỔ A4
         updateStatus(100, "Hoàn thành 100% từ Google Gemini AI!", "Đang trình bày lên khổ A4...");
         setTimeout(() => {
             docContainer.innerHTML = htmlPart1 + "<br>" + htmlPart2 + "<br>" + htmlPart3;
@@ -213,4 +232,4 @@ CHỈ TRẢ VỀ MÃ HTML THUẦN.`;
         `;
     }
 }
-console.log("EduAI-Pro: All-In-One Unified Engine v5.0 Loaded Successfully!");
+console.log("EduAI-Pro: All-In-One Unified Engine v5.1 Loaded Successfully!");
