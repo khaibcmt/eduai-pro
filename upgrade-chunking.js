@@ -1,24 +1,18 @@
 /**
- * EDUPHYSICS / EDUAI PRO - FULL CONTENT DIRECT PARSER ENGINE
- * Tự động bóc tách nội dung chi tiết từ Drive điền vào từng mục giáo án CV 5512
+ * EDUPHYSICS / EDUAI PRO - RAG AI GENERATOR ENGINE v6.0
+ * Kết hợp: Trích xuất SGK từ Drive + Sinh nội dung chuyên sâu bằng Gemini AI
+ * Chuẩn mực CV 5512 + NLS 2.1 + AI + Không bị lặp chữ Bài
  */
 
+// 1. CẤU HÌNH LIÊN KẾT GOOGLE APPS SCRIPT ĐỌC DRIVE
 const DRIVE_APP_URL = "https://script.google.com/macros/s/AKfycbyUAoctNBlViQVDcYxZr8h0DjAU2vaGk-QZfDWYl7LNlfgPj6JWRFsLZpBTAWvWuHtnzw/exec"; 
 
-window.alert = function(msg) { console.warn("[EduSystem Notice]:", msg); };
+window.alert = function(msg) { console.warn("[EduAI Notice]:", msg); };
 
-// Hàm lấy dữ liệu từ Google Drive
+// Hàm trích xuất dữ liệu từ Drive (nếu có để làm ngữ liệu nền tảng)
 async function fetchSgkContentFromDrive(lessonName) {
     if (!DRIVE_APP_URL || DRIVE_APP_URL.trim() === "" || DRIVE_APP_URL.includes("DÁN_URL")) return "";
-
     const cleanLesson = lessonName.trim();
-    const cacheKey = "eduai_sgk_v4_" + cleanLesson.toLowerCase();
-
-    const cachedData = localStorage.getItem(cacheKey);
-    if (cachedData && cachedData.trim().length > 30) {
-        return cachedData;
-    }
-
     const matchLessonNum = cleanLesson.match(/bài\s*\d+/i);
     const searchKeyword = matchLessonNum ? matchLessonNum[0] : cleanLesson;
 
@@ -26,49 +20,17 @@ async function fetchSgkContentFromDrive(lessonName) {
         const fetchUrl = `${DRIVE_APP_URL.trim()}?lesson=${encodeURIComponent(searchKeyword)}`;
         const res = await fetch(fetchUrl);
         const json = await res.json();
-
-        if (json && json.status === "success" && json.data && json.data.trim().length > 10) {
-            localStorage.setItem(cacheKey, json.data);
+        if (json && json.status === "success" && json.data && json.data.trim().length > 20) {
+            console.log("Đã nạp thành công ngữ liệu SGK từ Drive!");
             return json.data;
         }
     } catch (e) {
-        console.error("[Drive Error]:", e);
+        console.warn("Không kết nối được Drive Web App, chuyển sang chế độ AI tri thức chuẩn:", e);
     }
     return "";
 }
 
-// Hàm chia nhỏ văn bản từ Drive thành các phần kiến thức
-function parseContentSections(rawText) {
-    if (!rawText || rawText.trim().length < 20) {
-        return {
-            mainBody: "Nội dung đang được cập nhật từ tệp tài liệu Google Drive...",
-            summary: "Nắm vững các khái niệm và bản chất của bài học.",
-            exercises: "Thực hiện hệ thống câu hỏi cuối bài trong SGK."
-        };
-    }
-
-    // Tách dòng và làm sạch
-    const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-    
-    // Tạo cấu trúc phân đoạn trực tiếp
-    let formattedBody = "";
-    lines.forEach(line => {
-        if (/^(I|II|III|IV|V|\d+\.)/i.test(line)) {
-            formattedBody += `<p style="font-weight: bold; color: #1e3a8a; margin-top: 10px; margin-bottom: 4px;">${line}</p>`;
-        } else if (/^-\s*/.test(line)) {
-            formattedBody += `<p style="margin: 2px 0 2px 15px;">${line}</p>`;
-        } else {
-            formattedBody += `<p style="margin: 4px 0; text-indent: 15px;">${line}</p>`;
-        }
-    });
-
-    return {
-        mainBody: formattedBody,
-        summary: lines.slice(0, 3).join("; "),
-        exercises: lines.filter(l => l.toLowerCase().includes("câu") || l.toLowerCase().includes("bài tập")).slice(0, 4).join("<br>") || "Học sinh hoàn thành các câu hỏi thảo luận và bài tập trong SGK."
-    };
-}
-
+// 2. BỘ ĐIỀU PHỐI VÀ BIÊN SOẠN BẰNG GEMINI AI
 async function executeActionGenerate(type) {
     if (typeof switchViewMode === 'function') switchViewMode(type);
 
@@ -78,193 +40,181 @@ async function executeActionGenerate(type) {
     const rawLessonTitle = (typeof currentSelectedLesson !== 'undefined' && currentSelectedLesson) ? currentSelectedLesson : "Bài học đang chọn";
     const customGuide = document.getElementById('ai-custom-instructions')?.value || "";
     const docContainer = document.getElementById('container-a4-doc');
+    let savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
 
-    if (type !== '5512') return;
+    if (type !== '5512') {
+        if (typeof renderMaTranDeKiemTra === 'function' && type === '7991') {
+            renderMaTranDeKiemTra(subject, grade, book);
+        } else if (typeof renderPowerPointSlideDeck === 'function' && type === 'slide') {
+            renderPowerPointSlideDeck(subject, grade, book, rawLessonTitle);
+        }
+        return;
+    }
 
+    if (!savedKey) {
+        if (docContainer) {
+            docContainer.innerHTML = `
+                <div style="text-align: center; padding: 50px 20px; font-family: sans-serif;">
+                    <p style="color: #ef4444; font-size: 14pt; font-weight: bold;">⚠️ Chưa có mã API Key của Google AI!</p>
+                    <p style="color: #475569;">Vui lòng bấm vào nút <strong>Cài API AI</strong> ở góc trên đầu trang và dán mã khóa vào.</p>
+                </div>
+            `;
+        }
+        return;
+    }
+
+    // Tự động chuẩn hóa tiêu đề bài học (loại bỏ lặp từ "BÀI")
     let cleanTitle = rawLessonTitle.trim().replace(/^(bài|bài học|chủ đề)\s*[:\-\s]*/gi, '');
     const formattedLessonHeading = `BÀI ${cleanTitle.toUpperCase()}`;
 
     docContainer.innerHTML = `
         <div style="text-align: center; padding: 60px 20px; font-family: sans-serif;">
             <div style="font-size: 36px; color: #0284c7; margin-bottom: 12px;"><i class="fa-solid fa-spinner fa-spin"></i></div>
-            <h3 style="font-size: 16pt; font-weight: bold; color: #0f172a;">Đang tải và đồng bộ nội dung từ Drive...</h3>
-            <p style="color: #64748b;">${formattedLessonHeading}</p>
+            <h3 style="font-size: 16pt; font-weight: bold; color: #0f172a;" id="chunk-status-text">Đang kích hoạt AI và tra cứu Drive...</h3>
+            <p style="color: #64748b; font-size: 11pt;" id="chunk-step-detail">Khởi tạo kế hoạch bài dạy: <strong>${formattedLessonHeading}</strong></p>
+            <div style="width: 100%; max-width: 460px; background: #e2e8f0; height: 10px; border-radius: 6px; margin: 15px auto; overflow: hidden;">
+                <div id="chunk-progress-bar" style="width: 15%; height: 100%; background: linear-gradient(90deg, #0284c7, #10b981); transition: width 0.4s;"></div>
+            </div>
         </div>
     `;
+
+    const updateStatus = (percent, statusText, stepText) => {
+        const bar = document.getElementById('chunk-progress-bar');
+        const sTxt = document.getElementById('chunk-status-text');
+        const stTxt = document.getElementById('chunk-step-detail');
+        if (bar) bar.style.width = percent + '%';
+        if (sTxt) sTxt.innerText = statusText;
+        if (stTxt) stTxt.innerText = stepText;
+    };
+
+    // Hàm gọi AI qua danh mục model thế hệ 3 khả dụng
+    async function queryGemini(promptText) {
+        const activeModels = [
+            'gemini-3.1-pro-preview',
+            'gemini-3.5-flash',
+            'gemini-3-flash-preview',
+            'gemini-flash-latest'
+        ];
+
+        let lastErr = "";
+        for (const m of activeModels) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${savedKey}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptText }] }],
+                        generationConfig: { 
+                            maxOutputTokens: 8192, 
+                            temperature: 0.35 
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+                    return data.candidates[0].content.parts[0].text.replace(/```html/gi, '').replace(/```/gi, '');
+                }
+                if (data.error) {
+                    lastErr = data.error.message || JSON.stringify(data.error);
+                }
+            } catch (err) {
+                lastErr = err.message;
+            }
+        }
+        throw new Error(lastErr || "Máy chủ AI không phản hồi.");
+    }
 
     try {
         const tName = (typeof teacherName !== 'undefined') ? teacherName : "Trần Thị Mỹ Thanh";
         const sName = (typeof schoolName !== 'undefined') ? schoolName : "Trường THPT Nguyễn Văn Thiệt";
 
-        // Lấy nội dung thô từ Drive và bóc tách
-        const rawContent = await fetchSgkContentFromDrive(rawLessonTitle);
-        const parsed = parseContentSections(rawContent);
+        // BƯỚC 0: TẢI NGỮ LIỆU TỪ DRIVE (NẾU CÓ)
+        updateStatus(20, "Đang tra cứu ngữ liệu từ Drive...", "Đọc nội dung SGK từ Google Apps Script...");
+        const driveContent = await fetchSgkContentFromDrive(rawLessonTitle);
 
-        const fullLessonHtml = `
-            <div style="font-family: 'Times New Roman', serif; font-size: 13pt; line-height: 1.35; color: #000; text-align: justify;">
-                <!-- HÀNH CHÍNH -->
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; border: none;">
-                    <tr>
-                        <td style="width: 45%; text-align: center; vertical-align: top; border: none; padding: 0;">
-                            <strong>SỞ GD&ĐT VĨNH LONG</strong><br>
-                            <strong>${sName.toUpperCase()}</strong><br>
-                            <span style="display: inline-block; width: 80px; border-bottom: 1px solid #000; margin-top: 3px;"></span>
-                        </td>
-                        <td style="width: 55%; text-align: center; vertical-align: top; border: none; padding: 0;">
-                            <strong>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong><br>
-                            <strong>Độc lập - Tự do - Hạnh phúc</strong><br>
-                            <span style="display: inline-block; width: 120px; border-bottom: 1px solid #000; margin-top: 3px;"></span>
-                        </td>
-                    </tr>
-                </table>
+        // GIAI ĐOẠN 1: MỤC TIÊU & THIẾT BỊ
+        updateStatus(40, "Giai đoạn 1/3: Soạn Mục tiêu & Thiết bị...", "Xác lập kiến thức cốt lõi, NLS 2.1 và Năng lực AI...");
+        const prompt1 = `
+Hãy đóng vai trò Chuyên gia Sư phạm GDPT 2018 cao cấp môn ${subject}.
+Nhiệm vụ: Viết mã HTML chuẩn trang A4 gồm phần Hành chính, I. MỤC TIÊU và II. THIẾT BỊ DẠY HỌC cho bài học: "${formattedLessonHeading}", môn ${subject} ${grade}, bộ sách ${book}.
+Giáo viên: ${tName} - ${sName}.
+${driveContent ? `NGỮ LIỆU THAM KHẢO TỪ DRIVE:\n${driveContent.substring(0, 3000)}\n` : ''}
+${customGuide ? `Yêu cầu bổ sung của GV: ${customGuide}` : ''}
 
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <h2 style="font-size: 15pt; font-weight: bold; margin: 5px 0;">KẾ HOẠCH BÀI DẠY</h2>
-                    <h3 style="font-size: 14pt; font-weight: bold; margin: 5px 0; color: #1e3a8a;">${formattedLessonHeading}</h3>
-                    <p style="margin: 3px 0;">Môn: ${subject} ${grade} | Bộ sách: ${book}</p>
-                    <p style="margin: 3px 0; font-style: italic;">Giáo viên thực hiện: ${tName}</p>
-                </div>
+YÊU CẦU ĐỊNH DẠNG:
+- Bảng hành chính đầu trang (SỞ GD&ĐT VĨNH LONG / ${sName.toUpperCase()} / CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM).
+- Tên KẾ HOẠCH BÀI DẠY: ${formattedLessonHeading}.
+- I. MỤC TIÊU:
+  + 1. Kiến thức: Nêu chi tiết các kiến thức cốt lõi HS cần đạt theo SGK ${book}.
+  + 2. Năng lực: Gồm 2.1 Năng lực chung; 2.2 Năng lực đặc thù môn ${subject}; 2.3 Năng lực số: Mã [NLS 2.1]; 2.4 Năng lực AI: Mã [${grade}.A1.2] (Phối hợp cùng AI, kiểm chứng và ra quyết định).
+  + 3. Phẩm chất: Chăm chỉ, Trung thực, Trách nhiệm.
+- II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU của Giáo viên và Học sinh.
+CHỈ TRẢ VỀ CÁC THẺ HTML THUẦN (div, table, p, h2, h3...). Không dùng ký hiệu markdown.`;
+        const htmlPart1 = await queryGemini(prompt1);
 
-                <!-- I. MỤC TIÊU -->
-                <p><strong>I. MỤC TIÊU</strong></p>
-                <p><strong>1. Về kiến thức:</strong></p>
-                <p style="margin-left: 20px;">- Trình bày và phân tích được các nội dung trọng tâm của ${formattedLessonHeading}: ${parsed.summary}.</p>
-                <p style="margin-left: 20px;">- Vận dụng kiến thức khoa học đã học để giải thích hiện tượng và thực hiện các nhiệm vụ học tập liên quan.</p>
+        // GIAI ĐOẠN 2: HOẠT ĐỘNG 1 & HOẠT ĐỘNG 2 (BẢNG 2 CỘT CHI TIẾT ĐỂ GHI VỞ)
+        updateStatus(70, "Giai đoạn 2/3: Soạn Hoạt động 2 (Bảng 2 cột)...", "Sinh chi tiết nội dung từng đề mục, định nghĩa, sơ đồ/công thức...");
+        const prompt2 = `
+Hãy đóng vai trò Chuyên gia Sư phạm môn ${subject} ${grade} bộ sách ${book}.
+Nhiệm vụ: Soạn TIẾN TRÌNH DẠY HỌC (Hoạt động 1 và Hoạt động 2) cho bài: "${formattedLessonHeading}".
+${driveContent ? `NGỮ LIỆU GỐC TRÍCH XUẤT TỪ GOOGLE DRIVE:\n${driveContent}\n` : ''}
+${customGuide ? `Ghi chú chuyên môn: ${customGuide}` : ''}
 
-                <p><strong>2. Về năng lực:</strong></p>
-                <p style="margin-left: 20px;"><strong>2.1. Năng lực chung:</strong> Tự chủ, tự học; giao tiếp và hợp tác nhóm; giải quyết vấn đề sáng tạo.</p>
-                <p style="margin-left: 20px;"><strong>2.2. Năng lực đặc thù:</strong> Nhận thức khoa học; tìm hiểu tự nhiên; vận dụng kiến thức, kĩ năng đã học.</p>
-                <p style="margin-left: 20px;"><strong>2.3. Tích hợp năng lực số (NLS 2.1):</strong> Khai thác học liệu số, phần mềm tra cứu, mô phỏng trực quan phục vụ tìm hiểu nội dung bài học.</p>
+QUY CHUẨN BẮT BUỘC:
+1. HOẠT ĐỘNG 1: Mở đầu 4 bước (Chuyển giao, Thực hiện, Báo cáo, Kết luận) kèm mục "* DỰ KIẾN SẢN PHẨM". Không chia bảng.
+2. Hai khung tích hợp:
+   - 👉 [Tích hợp năng lực số]: [NLS 2.1] Khai thác mô hình, học liệu số, tra cứu.
+   - 👉 [Tích hợp năng lực AI]: [Mã ${grade}.A1.2] Khai thác AI tra cứu dữ liệu; đối chiếu SGK để kết luận.
+3. HOẠT ĐỘNG 2: BẮT BUỘC TRÌNH BÀY DẠNG BẢNG 2 CỘT KẺ VIỀN ĐEN 100%.
+   - Cột 1: HOẠT ĐỘNG CỦA GV VÀ HS (Ghi chi tiết 4 bước Chuyển giao, Thực hiện, Báo cáo, Kết luận).
+   - Cột 2: DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ CỦA HỌC SINH):
+     + BẮT BUỘC VIẾT ĐẦY ĐỦ NỘI DUNG CHI TIẾT (các định nghĩa, đặc điểm, cấu tạo, công thức/sơ đồ), KHÔNG ĐƯỢC để trống, KHÔNG ghi chung chung tóm tắt.
+     + Phân chia theo đúng các đề mục I, II, III chuẩn mực của bài trong SGK.
+CHỈ TRẢ VỀ MÃ HTML THUẦN.`;
+        const htmlPart2 = await queryGemini(prompt2);
 
-                <p><strong>3. Về phẩm chất:</strong> Chăm chỉ, trung thực, có tinh thần trách nhiệm trong học tập và hợp tác nhóm.</p>
+        // GIAI ĐOẠN 3: HOẠT ĐỘNG 3, HOẠT ĐỘNG 4 & PHỤ LỤC
+        updateStatus(90, "Giai đoạn 3/3: Soạn Luyện tập, Vận dụng & Phụ lục...", "Tạo 3 dạng bài tập đánh giá năng lực và 2 Rubric...");
+        const prompt3 = `
+Hãy đóng vai trò Chuyên gia Sư phạm môn ${subject} ${grade}.
+Nhiệm vụ: Viết mã HTML cho Hoạt động 3, Hoạt động 4 và IV. HỒ SƠ DẠY HỌC cho bài: "${formattedLessonHeading}".
+${customGuide ? `Ghi chú chuyên môn: ${customGuide}` : ''}
 
-                <!-- II. THIẾT BỊ DẠY HỌC -->
-                <p><strong>II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU</strong></p>
-                <p>- <strong>Giáo viên:</strong> Giáo án, SGK ${book}, máy chiếu/tivi, hình ảnh/video trực quan, Phiếu học tập số 1.</p>
-                <p>- <strong>Học sinh:</strong> Vở ghi, SGK ${book}, dụng cụ học tập, thiết bị có kết nối Internet để tra cứu tư liệu khi được giao nhiệm vụ.</p>
+YÊU CẦU:
+1. HOẠT ĐỘNG 3 (Luyện tập): 4 bước kèm "* DỰ KIẾN SẢN PHẨM" gồm ĐỦ 3 DẠNG THỨC:
+   - Dạng 1: Trắc nghiệm 4 lựa chọn (4 câu cụ thể có A, B, C, D rõ ràng, in đậm đáp án đúng).
+   - Dạng 2: Trắc nghiệm Đúng/Sai (1 câu gồm 4 ý a, b, c, d bối cảnh khoa học thực tế).
+   - Dạng 3: Trắc nghiệm trả lời ngắn (2 câu hỏi tự luận ngắn/điền số).
+2. HOẠT ĐỘNG 4 (Vận dụng): Bài toán kỹ thuật/đời sống thực tiễn gắn với Vĩnh Long / Mang Thít.
+3. IV. HỒ SƠ DẠY HỌC / PHỤ LỤC:
+   - Phụ lục 1: PHIẾU HỌC TẬP SỐ 1 (Dạng bảng phân tích).
+   - Phụ lục 2: RUBRIC ĐÁNH GIÁ NĂNG LỰC SỐ (Bảng 5 cột kẻ đen: Tiêu chí, Mức 1, Mức 2, Mức 3, Điểm).
+   - Phụ lục 3: RUBRIC ĐÁNH GIÁ NĂNG LỰC AI (Bảng 5 cột kẻ đen: Tiêu chí, Mức 1, Mức 2, Mức 3, Điểm).
+CHỈ TRẢ VỀ MÃ HTML THUẦN.`;
+        const htmlPart3 = await queryGemini(prompt3);
 
-                <!-- III. TIẾN TRÌNH DẠY HỌC -->
-                <p><strong>III. TIẾN TRÌNH DẠY HỌC</strong></p>
+        updateStatus(100, "Hoàn thành 100% nội dung giáo án!", "Đang trình bày lên khổ A4...");
+        setTimeout(() => {
+            docContainer.innerHTML = htmlPart1 + "<br>" + htmlPart2 + "<br>" + htmlPart3;
+        }, 300);
 
-                <p><strong>HOẠT ĐỘNG 1: MỞ ĐẦU (XÁC ĐỊNH VẤN ĐỀ)</strong></p>
-                <p><strong>a) Mục tiêu:</strong> Tạo hứng thú, kích thích tư duy tìm hiểu về ${formattedLessonHeading}.</p>
-                <p><strong>b) Nội dung:</strong> Quan sát hình ảnh, tình huống gợi mở để phát hiện vấn đề học tập.</p>
-                <p><strong>c) Sản phẩm:</strong> Câu trả lời dự đoán, nhận định ban đầu của học sinh.</p>
-                <p><strong>d) Tổ chức thực hiện:</strong></p>
-                <p style="margin-left: 20px;">- <em>Bước 1 (Chuyển giao):</em> GV đưa ra tình huống thực tế gắn liền với ${formattedLessonHeading}.</p>
-                <p style="margin-left: 20px;">- <em>Bước 2 (Thực hiện):</em> HS thảo luận nhanh theo cặp.</p>
-                <p style="margin-left: 20px;">- <em>Bước 3 (Báo cáo):</em> Đại diện 1-2 HS phát biểu nhận định.</p>
-                <p style="margin-left: 20px;">- <em>Bước 4 (Kết luận):</em> GV ghi nhận và dẫn dắt vào bài mới.</p>
-                <p style="margin-left: 20px;"><strong>* DỰ KIẾN SẢN PHẨM:</strong> Các suy đoán ban đầu của học sinh về chủ đề bài học.</p>
-
-                <!-- KHUNG NĂNG LỰC SỐ -->
-                <div style="border: 2px dashed #0284c7; background-color: #f0f9ff; padding: 10px 14px; margin: 15px 0; border-radius: 6px;">
-                    <p style="margin: 0; font-weight: bold; color: #0369a1;">👉 [TÍCH HỢP NĂNG LỰC SỐ]: [NLS 2.1] Khai thác dữ liệu số và mô hình trực quan</p>
-                    <p style="margin: 4px 0 0 0; font-size: 11pt; color: #0f172a;">
-                        - Thao tác GV: Cung cấp liên kết hoặc mã QR tài liệu/hình ảnh phân tích trên màn hình chiếu.<br>
-                        - Thao tác HS: Quét mã QR, tra cứu trên học liệu số để trích xuất đặc điểm cấu tạo, tính chất của đối tượng nghiên cứu.
-                    </p>
-                </div>
-
-                <p><strong>HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</strong></p>
-                <p><strong>a) Mục tiêu:</strong> Chiếm lĩnh toàn bộ kiến thức cốt lõi của ${formattedLessonHeading} theo SGK ${book}.</p>
-                <p><strong>b) Nội dung:</strong> Đọc tài liệu SGK từ dữ liệu bài học, thảo luận nhóm hoàn thành Phiếu học tập số 1.</p>
-                <p><strong>c) Sản phẩm:</strong> Vở ghi của học sinh với đầy đủ định nghĩa, sơ đồ và nội dung chi tiết.</p>
-                <p><strong>d) Tổ chức thực hiện:</strong></p>
-
-                <!-- BẢNG 2 CỘT CV 5512 -->
-                <table style="width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px;" border="1">
-                    <thead>
-                        <tr style="background-color: #f1f5f9;">
-                            <th style="width: 45%; padding: 8px; border: 1px solid #000; text-align: center; font-weight: bold;">HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH</th>
-                            <th style="width: 55%; padding: 8px; border: 1px solid #000; text-align: center; font-weight: bold;">DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ CỦA HỌC SINH)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #000; vertical-align: top;">
-                                <p style="margin-top: 0;"><strong>Bước 1: Chuyển giao nhiệm vụ</strong></p>
-                                <p>- GV yêu cầu học sinh đọc nội dung bài học, kết hợp Phiếu học tập số 1.</p>
-                                <p>- Giao các nhóm phân tích từng đề mục kiến thức.</p>
-                                
-                                <p><strong>Bước 2: Thực hiện nhiệm vụ</strong></p>
-                                <p>- Học sinh làm việc cá nhân kết hợp thảo luận nhóm.</p>
-                                <p>- GV theo dõi, hỗ trợ gợi mở định hướng.</p>
-
-                                <p><strong>Bước 3: Báo cáo, thảo luận</strong></p>
-                                <p>- Đại diện các nhóm trình bày kết quả.</p>
-                                <p>- Lớp nhận xét, phản biện, bổ sung.</p>
-
-                                <p style="margin-bottom: 0;"><strong>Bước 4: Kết luận, nhận định</strong></p>
-                                <p style="margin-bottom: 0;">- GV chuẩn hóa kiến thức, hướng dẫn học sinh ghi chép bài vào vở.</p>
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #000; vertical-align: top;">
-                                <p style="margin-top: 0; font-weight: bold; color: #1e3a8a;">NỘI DUNG CHI TIẾT TRÍCH XUẤT TỪ SGK / DRIVE:</p>
-                                <div>
-                                    ${parsed.mainBody}
-                                </div>
-                                ${customGuide ? `<hr style="margin: 8px 0; border: none; border-top: 1px dashed #94a3b8;"><p style="font-style: italic; color: #0f766e;"><strong>Ghi chú chuyên môn:</strong> ${customGuide}</p>` : ''}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <p><strong>HOẠT ĐỘNG 3: LUYỆN TẬP</strong></p>
-                <p><strong>a) Mục tiêu:</strong> Củng cố và khắc sâu kiến thức vừa học.</p>
-                <p><strong>b) Nội dung:</strong> Giải quyết hệ thống bài tập trắc nghiệm và câu hỏi tự luận theo nội dung bài.</p>
-                <p><strong>c) Sản phẩm:</strong> Câu trả lời và kết quả bài làm vào vở của học sinh.</p>
-                <p><strong>d) Tổ chức thực hiện:</strong> GV phát đề, HS làm bài độc lập rồi thảo luận đáp án.</p>
-                <p><strong>* DỰ KIẾN SẢN PHẨM:</strong></p>
-                <div style="margin-left: 20px;">
-                    ${parsed.exercises}
-                </div>
-
-                <p><strong>HOẠT ĐỘNG 4: VẬN DỤNG</strong></p>
-                <p><strong>a) Mục tiêu:</strong> Vận dụng kiến thức bài học để giải thích các vấn đề thực tiễn trong đời sống và sản xuất.</p>
-                <p><strong>b) Nội dung:</strong> Liên hệ thực tế địa phương (Vĩnh Long / Mang Thít) về các ứng dụng liên quan.</p>
-                <p><strong>c) Sản phẩm:</strong> Bài viết hoặc báo cáo thu hoạch ngắn nộp vào tiết sau.</p>
-                <p><strong>d) Tổ chức thực hiện:</strong> Giao việc về nhà theo nhóm hoặc cá nhân.</p>
-                <p><strong>* DỰ KIẾN SẢN PHẨM:</strong> Bản thu hoạch giải quyết tình huống thực tế của học sinh.</p>
-
-                <!-- IV. HỒ SƠ DẠY HỌC / PHỤ LỤC -->
-                <p><strong>IV. HỒ SƠ DẠY HỌC / PHỤ LỤC</strong></p>
-                <p><strong>Phụ lục 1: PHIẾU HỌC TẬP SỐ 1</strong></p>
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;" border="1">
-                    <tr style="background-color: #f8fafc;">
-                        <th style="padding: 6px; border: 1px solid #000; width: 25%;">Nhiệm vụ</th>
-                        <th style="padding: 6px; border: 1px solid #000; width: 75%;">Nội dung thực hiện</th>
-                    </tr>
-                    <tr>
-                        <td style="padding: 6px; border: 1px solid #000; text-align: center;">Nhiệm vụ 1</td>
-                        <td style="padding: 6px; border: 1px solid #000;">Nêu các khái niệm, định nghĩa và đặc điểm chính của ${formattedLessonHeading}.</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 6px; border: 1px solid #000; text-align: center;">Nhiệm vụ 2</td>
-                        <td style="padding: 6px; border: 1px solid #000;">Phân tích cấu trúc, cơ chế hoạt động hoặc các quy tắc vận dụng theo tài liệu SGK.</td>
-                    </tr>
-                </table>
-
-                <p><strong>Phụ lục 2: RUBRIC ĐÁNH GIÁ NĂNG LỰC SỐ (NLS 2.1)</strong></p>
-                <table style="width: 100%; border-collapse: collapse;" border="1">
-                    <tr style="background-color: #f8fafc;">
-                        <th style="padding: 6px; border: 1px solid #000; width: 25%;">Tiêu chí</th>
-                        <th style="padding: 6px; border: 1px solid #000; width: 25%;">Mức 1 (Chưa đạt)</th>
-                        <th style="padding: 6px; border: 1px solid #000; width: 25%;">Mức 2 (Đạt)</th>
-                        <th style="padding: 6px; border: 1px solid #000; width: 25%;">Mức 3 (Tốt)</th>
-                    </tr>
-                    <tr>
-                        <td style="padding: 6px; border: 1px solid #000; font-weight: bold;">Khai thác dữ liệu số & học liệu trực tuyến</td>
-                        <td style="padding: 6px; border: 1px solid #000;">Chưa biết quét mã hoặc truy cập học liệu số khi được giao nhiệm vụ.</td>
-                        <td style="padding: 6px; border: 1px solid #000;">Truy cập được tư liệu và trả lời câu hỏi dưới sự hướng dẫn của giáo viên.</td>
-                        <td style="padding: 6px; border: 1px solid #000;">Chủ động tra cứu thành thạo, phân tích đúng bản chất khoa học của bài học.</td>
-                    </tr>
-                </table>
-            </div>
-        `;
-
-        docContainer.innerHTML = fullLessonHtml;
     } catch (err) {
         console.error("Lỗi:", err);
-        docContainer.innerHTML = `<div style="padding: 20px; color: red;">⚠️ Lỗi: ${err.message}</div>`;
+        docContainer.innerHTML = `
+            <div style="padding: 25px; background: #fef2f2; border: 2px solid #ef4444; border-radius: 10px; color: #991b1b; font-family: sans-serif; max-width: 650px; margin: 30px auto; text-align: left;">
+                <h4 style="margin: 0 0 10px 0; font-size: 13pt; font-weight: bold;">⚠️ Thông Báo Kết Nối:</h4>
+                <p style="font-size: 11pt; margin: 5px 0;"><strong>Chi tiết:</strong> ${err.message}</p>
+                <hr style="border: 0; border-top: 1px solid #fca5a5; margin: 12px 0;">
+                <p style="font-size: 10pt; line-height: 1.6; color: #7f1d1d;">
+                    👉 <strong>Cách xử lý:</strong><br>
+                    1. Kiểm tra lại mã API Key trên Google AI Studio.<br>
+                    2. Bấm vào nút <strong>Cài API AI</strong> trên web để lưu lại khóa API.
+                </p>
+            </div>
+        `;
     }
 }
+console.log("EduAI-Pro: RAG AI Generator Engine v6.0 Loaded Successfully!");
