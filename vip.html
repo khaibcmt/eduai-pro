@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduBioMaster VIP - Hệ Thống Sư Phạm Thông Minh Đa Khối Lớp | GV: Hồ Tấn Khải</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Times+New+Roman&display=swap" rel="stylesheet">
+    <!-- Thư viện tạo file PowerPoint .pptx -->
+    <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        doc: ['"Times New Roman"', 'Times', 'serif']
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#070c18',
+                            surface: '#0f172a',
+                            card: '#141e33',
+                            border: '#1e293b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0b1120; }
+        ::-webkit-scrollbar-thumb { background: #24324f; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+
+        .btn-3d {
+            position: relative;
+            transition: all 0.15s ease;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.4), 0 5px 12px rgba(0,0,0,0.3);
+        }
+        .btn-3d:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .btn-3d-blue { background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%); border: 1px solid #60a5fa; box-shadow: 0 4px 0 #1e3a8a; }
+        .btn-3d-purple { background: linear-gradient(180deg, #9333ea 0%, #6b21a8 100%); border: 1px solid #c084fc; box-shadow: 0 4px 0 #4c1d95; }
+        .btn-3d-amber { background: linear-gradient(180deg, #f59e0b 0%, #b45309 100%); border: 1px solid #fcd34d; box-shadow: 0 4px 0 #78350f; }
+
+        .page-a4 {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm 20mm 20mm 25mm;
+            margin: 0 auto;
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            font-family: "Times New Roman", Times, serif;
+            font-size: 13pt;
+            line-height: 1.25;
+            text-align: justify;
+        }
+        .page-a4 table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+        .page-a4 th, .page-a4 td { border: 1px solid #000000; padding: 6px 8px; font-size: 12pt; }
+
+        @media print {
+            body { background: white !important; color: black !important; padding: 0 !important; }
+            .no-print { display: none !important; }
+            .page-a4 { box-shadow: none !important; margin: 0 !important; width: 100% !important; padding: 0 !important; }
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-slate-200 font-sans min-h-screen flex flex-col antialiased">
+
+    <!-- ==================== HEADER HỆ THỐNG ==================== -->
+    <header class="bg-brand-surface border-b border-brand-border px-4 py-2.5 sticky top-0 z-50 shadow-lg no-print">
+        <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-indigo-600 to-cyan-400 flex items-center justify-center text-white text-xl shadow-lg border border-white/20">
+                    <i class="fa-solid fa-crown text-amber-300"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg font-black tracking-tight text-white">EduBioMaster VIP</span>
+                        <span class="text-[10px] bg-gradient-to-r from-amber-500 to-rose-500 text-white font-extrabold px-2 py-0.5 rounded-full shadow-sm">Enterprise Multi-Grade</span>
+                    </div>
+                    <p class="text-xs text-slate-300 font-semibold flex items-center gap-1.5 mt-0.5">
+                        <i class="fa-solid fa-chalkboard-user text-cyan-400 text-xs"></i> 
+                        <span>Giáo viên: Hồ Tấn Khải</span>
+                        <span class="text-slate-600">•</span>
+                        <span class="text-slate-400">Trường THPT Mang Thít (Vĩnh Long)</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2.5">
+                <button onclick="renderActiveView('5512')" class="btn-3d btn-3d-blue py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
+                    <i class="fa-solid fa-file-signature text-sm"></i>
+                    <span>TẠO GIÁO ÁN (CV 5512 + NLS + AI)</span>
+                </button>
+                <button onclick="renderActiveView('slide')" class="btn-3d btn-3d-purple py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
+                    <i class="fa-solid fa-chalkboard-user text-sm"></i>
+                    <span>TẠO BÀI GIẢNG PPT (16 SLIDE LUYỆN TẬP)</span>
+                </button>
+                <button onclick="renderActiveView('7991')" class="btn-3d btn-3d-amber py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-sm"></i>
+                    <span>MA TRẬN & ĐA MÃ ĐỀ THI (CV 7991)</span>
+                </button>
+            </div>
+
+            <div class="flex items-center bg-[#0b1222] p-1 rounded-xl border border-brand-border text-xs">
+                <button id="tab-5512" onclick="switchView('5512')" class="px-3 py-1.5 rounded-lg font-bold transition bg-blue-600 text-white">5512</button>
+                <button id="tab-slide" onclick="switchView('slide')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Slide 16:9</button>
+                <button id="tab-7991" onclick="switchView('7991')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Đề & Ma Trận</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== KHÔNG GIAN LÀM VIỆC CHÍNH ==================== -->
+    <main class="flex-1 max-w-[1720px] w-full mx-auto p-4 flex gap-5 overflow-hidden">
+        <!-- CỘT TRÁI: ĐIỀU KHIỂN & CHỌN BÀI ĐA KHỐI LỚP -->
+        <aside class="w-[430px] shrink-0 flex flex-col gap-4 no-print overflow-y-auto pr-1">
+            <!-- Khối 1: Lựa chọn Môn & Khối lớp -->
+            <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md space-y-3">
+                <div class="flex items-center justify-between pb-2 border-b border-brand-border/60">
+                    <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200 flex items-center gap-1.5">
+                        <i class="fa-solid fa-sliders text-cyan-400"></i> Cấu Hình Phân Môn & Khối Lớp
+                    </h3>
+                    <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded">GDPT 2018 DÙNG CHUNG</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                        <label class="block text-slate-400 mb-1 font-semibold">Môn học:</label>
+                        <select id="sel-subject" onchange="onSubjectOrGradeChanged()" class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 font-bold text-white focus:outline-none focus:border-cyan-400 cursor-pointer">
+                            <option value="Sinh học" selected>Sinh học</option>
+                            <option value="Công nghệ Nông nghiệp">Công nghệ Nông nghiệp</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-400 mb-1 font-semibold">Khối lớp:</label>
+                        <select id="sel-grade" onchange="onSubjectOrGradeChanged()" class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 font-bold text-cyan-300 focus:outline-none focus:border-cyan-400 cursor-pointer">
+                            <option value="10" selected>Lớp 10</option>
+                            <option value="11">Lớp 11</option>
+                            <option value="12">Lớp 12</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="text-xs">
+                    <label class="block text-slate-400 mb-1 font-semibold">Bộ Sách Giáo Khoa Tham Chiếu:</label>
+                    <div class="p-2 rounded-xl bg-[#0b1222] border border-slate-800 text-amber-300 font-bold flex items-center justify-between">
+                        <span>Kết Nối Tri Thức / Cánh Diều / Chân Trời</span>
+                        <i class="fa-solid fa-book-open text-xs text-slate-500"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Khối 2: Danh sách bài học phủ khắp các khối lớp -->
+            <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md flex flex-col flex-1 min-h-[300px]">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-brand-border/60">
+                    <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200 flex items-center gap-1.5">
+                        <i class="fa-solid fa-list-ol text-emerald-400"></i> Toàn Bộ Bài Học Theo Chương Trình
+                    </h3>
+                    <div class="flex items-center gap-1 text-[10px]">
+                        <button onclick="selectAllExams(true)" class="text-cyan-400 hover:underline">Tất cả</button>
+                        <span class="text-slate-600">|</span>
+                        <button onclick="selectAllExams(false)" class="text-slate-400 hover:underline">Hủy</button>
+                    </div>
+                </div>
+
+                <p class="text-[11px] text-slate-400 mb-2">Bấm bài để <strong>Soạn Giáo Án/Slide</strong>; tích checkbox để <strong>Gộp làm Đề thi 7991</strong>:</p>
+                <div id="lesson-list-container" class="space-y-1.5 overflow-y-auto max-h-[320px] pr-1"></div>
+
+                <div class="mt-3 pt-2.5 border-t border-brand-border/60 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-400">Đang chọn:</span>
+                    <span id="label-active-lesson" class="font-bold text-xs text-cyan-300 max-w-[280px] truncate">---</span>
+                </div>
+            </div>
+
+            <!-- Khối 3: Ghi chú địa phương hóa -->
+            <div class="bg-brand-card rounded-2xl p-3.5 border border-brand-border/80 shadow-md space-y-1.5">
+                <h4 class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-location-dot"></i> Gắn bối cảnh Mang Thít - Vĩnh Long
+                </h4>
+                <p class="text-[11px] text-slate-400 leading-relaxed">
+                    Hệ thống tự động liên hệ thực tiễn vườn cây ăn trái, kỹ thuật tưới tiết kiệm và phòng trừ dịch hại nông nghiệp địa phương.
+                </p>
+            </div>
+        </aside>
+
+        <!-- CỘT PHẢI: TRUNG TÂM XUẤT BẢN ĐA ĐỊNH DẠNG -->
+        <section class="flex-1 flex flex-col bg-brand-surface rounded-2xl border border-brand-border overflow-hidden shadow-2xl relative">
+            <div class="bg-brand-card/90 px-4 py-2.5 border-b border-brand-border flex flex-wrap items-center justify-between gap-3 no-print">
+                <div class="flex items-center gap-2 text-xs">
+                    <span id="badge-view-mode" class="px-2.5 py-1 rounded bg-blue-500/20 text-cyan-300 font-bold border border-cyan-500/30">
+                        KẾ HOẠCH BÀI DẠY (CHUẨN CÔNG VĂN 5512)
+                    </span>
+                    <span class="text-slate-400">• Chỉnh sửa văn bản trực tiếp trên màn hình</span>
+                </div>
+
+                <!-- Cụm nút tải đa định dạng -->
+                <div class="flex items-center gap-2">
+                    <button onclick="exportWordDocument()" class="btn-3d btn-3d-blue px-3 py-1.5 rounded-lg text-white text-xs font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-word"></i> Tải Word (.doc)
+                    </button>
+                    <button onclick="exportPowerPointPresentation()" class="btn-3d btn-3d-purple px-3 py-1.5 rounded-lg text-white text-xs font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-powerpoint"></i> Tải PPTX (.pptx)
+                    </button>
+                    <button onclick="exportStandaloneHTML()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-code"></i> Tải HTML
+                    </button>
+                    <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-print"></i> In / PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- VÙNG HIỂN THỊ NỘI DUNG -->
+            <div class="flex-1 overflow-y-auto p-6 bg-[#0a0f1d] flex justify-center">
+                <!-- 1. KHUNG VĂN BẢN KHỔ A4 (GIÁO ÁN & ĐỀ THI) -->
+                <div id="container-a4-doc" class="page-a4" contenteditable="true" spellcheck="false"></div>
+
+                <!-- 2. KHUNG TRÌNH CHIẾU SLIDE 16:9 INTERACTIVE -->
+                <div id="container-slide-presentation" class="hidden w-full max-w-5xl aspect-video bg-[#0F2922] rounded-3xl p-8 border-2 border-emerald-500/40 shadow-2xl flex flex-col justify-between text-white relative">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                            <span class="font-bold tracking-widest text-amber-300 uppercase">TRƯỜNG THPT MANG THÍT • BÀI GIẢNG ĐIỆN TỬ VIP</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-slate-300">Giáo viên: <strong class="text-white">Hồ Tấn Khải</strong></span>
+                            <span id="slide-page-badge" class="bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full font-mono font-bold border border-amber-500/30">1 / 20</span>
+                        </div>
+                    </div>
+
+                    <div id="slide-main-viewport" class="my-auto"></div>
+
+                    <div class="flex items-center justify-between border-t border-white/10 pt-3 text-xs">
+                        <span class="text-slate-300"><i class="fa-solid fa-circle-info mr-1"></i> Bấm nút hoặc dùng phím mũi tên để chuyển slide</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="prevSlide()" class="px-4 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold transition">
+                                <i class="fa-solid fa-arrow-left mr-1"></i> Trước
+                            </button>
+                            <button onclick="nextSlide()" class="px-5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-emerald-600 text-white font-bold transition">
+                                Sau <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT MASTER: TÁCH MODULE RÕ RÀNG ĐỂ DỄ DÀNG NÂNG CẤP VỀ SAU         -->
+    <!-- ========================================================================= -->
+    <script>
+        /* -------------------------------------------------------------------------
+         * PHÂN VÙNG 1: KHO TRI THỨC ĐA KHỐI LỚP (DATABASE CÓ THỂ THÊM BỚT TÙY Ý)
+         * ------------------------------------------------------------------------- */
+        const CURRICULUM_DATABASE = {
+            "Sinh học": {
+                "10": [
+                    { id: "sh10_b1", title: "Bài 1: Giới thiệu khái quát môn Sinh học", core1: "Đối tượng & lĩnh vực nghiên cứu sinh học", core2: "Mục tiêu & vai trò trong phát triển bền vững", core3: "Các ngành nghề sinh học và xu thế tương lai" },
+                    { id: "sh10_b2", title: "Bài 2: Các phương pháp nghiên cứu và học tập môn Sinh học", core1: "Phương pháp quan sát & thực nghiệm khoa học", core2: "Kĩ năng tiến trình nghiên cứu sinh học", core3: "Ứng dụng tin sinh học và AI trong xử lý dữ liệu" },
+                    { id: "sh10_b4", title: "Bài 4: Khái quát về tế bào", core1: "Học thuyết tế bào & sự phát triển khoa học", core2: "Tế bào là đơn vị cấu trúc và chức năng", core3: "Kích thước & tỉ lệ S/V tối ưu hóa trao đổi chất" },
+                    { id: "sh10_b5", title: "Bài 5: Các nguyên tố hóa học và nước trong tế bào", core1: "Các nguyên tố đại lượng và vi lượng", core2: "Cấu trúc hóa lý và tính phân cực của nước", core3: "Vai trò sinh học của nước đối với sự sống" },
+                    { id: "sh10_b6", title: "Bài 6: Các phân tử sinh học trong tế bào", core1: "Carbohydrate và Lipid: Cấu trúc & chức năng", core2: "Protein: Cấu trúc 4 bậc & đa chức năng", core3: "Acid nucleic (DNA & RNA): Lưu trữ & truyền đạt di truyền" },
+                    { id: "sh10_b7", title: "Bài 7: Tế bào nhân sơ", core1: "Đặc điểm chung & hình thái vi khuẩn", core2: "Cấu tạo thành tế bào, màng & vùng nhân", core3: "Ý nghĩa tỉ lệ kích thước nhỏ của tế bào nhân sơ" },
+                    { id: "sh10_b8", title: "Bài 8: Tế bào nhân thực", core1: "Hệ thống nội màng & nhân tế bào", core2: "Các bào quan chuyển hóa: Ti thể, Lục lạp", core3: "Khung xương tế bào & cấu trúc liên kết" },
+                    { id: "sh10_b9", title: "Bài 9: Trao đổi chất qua màng sinh chất", core1: "Vận chuyển thụ động: Khuếch tán & thẩm thấu", core2: "Vận chuyển chủ động: Bơm protein qua màng", core3: "Thực bào, ẩm bào và xuất bào" },
+                    { id: "sh10_b10", title: "Bài 10: Sự chuyển hóa năng lượng và enzyme trong tế bào", core1: "ATP - đồng tiền năng lượng sinh học", core2: "Bản chất, cấu trúc & cơ chế tác động của enzyme", core3: "Các yếu tố ảnh hưởng hoạt tính enzyme" },
+                    { id: "sh10_b16", title: "Bài 16: Chu kỳ tế bào và nguyên phân", core1: "Diễn biến các pha của chu kỳ tế bào (G1, S, G2)", core2: "Cơ chế phân chia nhân và tế bào chất nguyên phân", core3: "Ý nghĩa di truyền và ứng dụng trong nhân giống" },
+                    { id: "sh10_b17", title: "Bài 17: Giảm phân và thụ tinh", core1: "Cơ chế giảm phân I và giảm phân II", core2: "Hiện tượng trao đổi chéo tạo biến dị tổ hợp", core3: "Mối quan hệ nguyên phân, giảm phân và thụ tinh" },
+                    { id: "sh10_b20", title: "Bài 20: Sự đa dạng và phương thức dinh dưỡng của vi sinh vật", core1: "Khái niệm và đặc điểm chung của vi sinh vật", core2: "4 kiểu dinh dưỡng (quang/hóa tự dưỡng & dị dưỡng)", core3: "Phương pháp nuôi cấy và phân lập vi sinh vật" },
+                    { id: "sh10_b24", title: "Bài 24: Khái quát về virus", core1: "Đặc điểm chưa có cấu tạo tế bào, kí sinh nội bào", core2: "Cấu tạo gồm lõi acid nucleic và vỏ capsid protein", core3: "Hình thái cấu trúc và ứng dụng trong công nghệ gen" }
+                ],
+                "11": [
+                    { id: "sh11_b1", title: "Bài 1: Khái quát về trao đổi chất và chuyển hóa năng lượng", core1: "Vai trò cung cấp năng lượng và vật chất cho sinh vật", core2: "Phương thức tự dưỡng và dị dưỡng ở sinh vật", core3: "Các giai đoạn chuyển hóa năng lượng ở thế giới sống" },
+                    { id: "sh11_b2", title: "Bài 2: Trao đổi nước và khoáng ở thực vật", core1: "Cơ chế hấp thụ nước và khoáng ở rễ", core2: "Dòng mạch gỗ và dòng mạch rây", core3: "Cơ chế thoát hơi nước qua khí khổng và ý nghĩa" },
+                    { id: "sh11_b4", title: "Bài 4: Quang hợp ở thực vật", core1: "Bản chất pha sáng tạo ATP và NADPH", core2: "Pha đồng hóa CO2 ở thực vật C3, C4 và CAM", core3: "Các nhân tố môi trường và biện pháp tăng năng suất" },
+                    { id: "sh11_b6", title: "Bài 6: Hô hấp ở thực vật", core1: "Các con đường hô hấp hiếu khí và lên men", core2: "Mối quan hệ giữa quang hợp và hô hấp", core3: "Ứng dụng hô hấp trong bảo quản nông sản" },
+                    { id: "sh11_b8", title: "Bài 8: Dinh dưỡng và tiêu hóa ở động vật", core1: "Quá trình tiêu hóa ở động vật chưa có và có ống tiêu hóa", core2: "Tiêu hóa ở động vật ăn thực vật và ăn thịt", core3: "Ứng dụng dinh dưỡng hợp lý bảo vệ hệ tiêu hóa" },
+                    { id: "sh11_b9", title: "Bài 9: Hô hấp ở động vật", core1: "Các hình thức hô hấp qua da, mang, khí quản, phổi", core2: "Hiệu quả trao đổi khí ở chim và thú", core3: "Biện pháp phòng ngừa các bệnh hô hấp" },
+                    { id: "sh11_b10", title: "Bài 10: Tuần hoàn ở động vật", core1: "Hệ tuần hoàn hở và hệ tuần hoàn kín", core2: "Cơ chế điều hòa hoạt động tim và huyết áp", core3: "Phòng chống bệnh tim mạch trong đời sống" },
+                    { id: "sh11_b14", title: "Bài 14: Cảm ứng ở sinh vật", core1: "Cảm ứng hướng động và ứng động ở thực vật", core2: "Cảm ứng ở động vật có hệ thần kinh", core3: "Cơ chế dẫn truyền xung thần kinh và phản xạ" },
+                    { id: "sh11_b19", title: "Bài 19: Sinh trưởng và phát triển ở thực vật", core1: "Mô phân sinh đỉnh, bên và lóng", core2: "Hormone thực vật: Kích thích và ức chế", core3: "Hiện tượng quang chu kì và ứng dụng ra hoa" },
+                    { id: "sh11_b24", title: "Bài 24: Sinh sản ở thực vật", core1: "Sinh sản vô tính: Bào tử, sinh dưỡng và nhân giống", core2: "Quá trình thụ phấn và thụ tinh kép ở thực vật có hoa", core3: "Sự hình thành hạt, quả và ứng dụng nông nghiệp" }
+                ],
+                "12": [
+                    { id: "sh12_b1", title: "Bài 1: Gen, mã di truyền và quá trình nhân đôi ADN", core1: "Cấu trúc hóa học của gen và đặc điểm mã di truyền", core2: "Nguyên tắc bán bảo tồn và bổ sung trong nhân đôi ADN", core3: "Cơ chế sửa sai và ý nghĩa bảo tồn thông tin di truyền" },
+                    { id: "sh12_b2", title: "Bài 2: Phiên mã và dịch mã", core1: "Cơ chế phiên mã tổng hợp các loại ARN", core2: "Cơ chế dịch mã tổng hợp chuỗi polypeptide", core3: "Mối quan hệ ADN - mARN - Protein - Tính trạng" },
+                    { id: "sh12_b3", title: "Bài 3: Điều hòa biểu hiện gen", core1: "Cấu trúc Operon Lac ở vi khuẩn E. coli", core2: "Cơ chế điều hòa khi môi trường có và không có lactose", core3: "Ý nghĩa thích nghi của điều hòa biểu hiện gen" },
+                    { id: "sh12_b4", title: "Bài 4: Đột biến gen", core1: "Các dạng đột biến điểm (thay thế, thêm, mất)", core2: "Nguyên nhân và cơ chế phát sinh đột biến gen", core3: "Hậu quả, vai trò của đột biến gen trong tiến hóa và chọn giống" },
+                    { id: "sh12_b5", title: "Bài 5: Nhiễm sắc thể và đột biến cấu trúc NST", core1: "Cấu trúc siêu hiển vi của nhiễm sắc thể", core2: "Các dạng đột biến cấu trúc NST (mất, lặp, đảo, chuyển đoạn)", core3: "Ý nghĩa và tác hại của đột biến cấu trúc NST" },
+                    { id: "sh12_b8", title: "Bài 8: Các quy luật di truyền của Menđen", core1: "Phương pháp nghiên cứu lai tế bào và phân tích cơ thể lai", core2: "Quy luật phân ly và cơ sở tế bào học", core3: "Quy luật phân ly độc lập và biến dị tổ hợp" },
+                    { id: "sh12_b10", title: "Bài 10: Liên kết gen và hoán vị gen", core1: "Thí nghiệm Moocgan về liên kết gen hoàn toàn", core2: "Cơ chế hoán vị gen do trao đổi chéo ở kì đầu giảm phân I", core3: "Lập bản đồ di truyền và ứng dụng trong nông nghiệp" },
+                    { id: "sh12_b16", title: "Bài 16: Di truyền học người và ứng dụng", core1: "Phương pháp nghiên cứu di truyền phả hệ", core2: "Một số bệnh và tật di truyền ở người", core3: "Liệu pháp gen và tư vấn di truyền y học" },
+                    { id: "sh12_b24", title: "Bài 24: Bằng chứng tiến hóa", core1: "Bằng chứng giải phẫu so sánh và phôi sinh học", core2: "Bằng chứng tế bào học và sinh học phân tử", core3: "Học thuyết tiến hóa hiện đại tổng hợp" },
+                    { id: "sh12_b31", title: "Bài 31: Hệ sinh thái và chu trình sinh địa hóa", core1: "Cấu trúc thành phần của hệ sinh thái", core2: "Chuỗi và lưới thức ăn, tháp sinh thái", core3: "Chu trình carbon, nitơ, nước và bảo vệ môi trường" }
+                ]
+            },
+            "Công nghệ Nông nghiệp": {
+                "10": [
+                    { id: "cn10_b1", title: "Bài 1: Khái quát về công nghệ nông nghiệp", core1: "Vai trò và vị trí của nông nghiệp trong nền kinh tế", core2: "Các xu hướng phát triển nông nghiệp công nghệ cao", core3: "Các nhóm ngành nghề chính trong sản xuất nông nghiệp" },
+                    { id: "cn10_b2", title: "Bài 2: Thành phần và tính chất của đất trồng", core1: "Thành phần cơ giới và độ phì nhiêu của đất", core2: "Tính chất lý, hóa và sinh học của đất", core3: "Biện pháp cải tạo đất phèn, đất mặn tại Đồng bằng sông Cửu Long" },
+                    { id: "cn10_b4", title: "Bài 4: Sử dụng và bảo quản phân bón hóa học", core1: "Phân loại phân hóa học (đạm, lân, kali, NPK)", core2: "Nguyên tắc bón phân hợp lý và an toàn", core3: "Kỹ thuật bảo quản hạn chế thoái hóa phân bón" },
+                    { id: "cn10_b6", title: "Bài 6: Ứng dụng công nghệ cao trong sản xuất phân bón", core1: "Phân bón hữu cơ vi sinh công nghệ nano", core2: "Phân bón thông minh nhả chậm kiểm soát dưỡng chất", core3: "Quy trình ủ phân hữu cơ vi sinh tại nông hộ" },
+                    { id: "cn10_b8", title: "Bài 8: Kỹ thuật giâm cành, chiết cành và ghép cây", core1: "Cơ sở sinh lý của nhân giống vô tính cây trồng", core2: "Quy trình thực hành giâm cành và chiết cành cây ăn quả", core3: "Kỹ thuật ghép đoạn cành trên cây có múi tại Mang Thít" },
+                    { id: "cn10_b10", title: "Bài 10: Phòng trừ sâu bệnh hại cây trồng", core1: "Nguyên lý quản lý dịch hại tổng hợp (IPM)", core2: "Biện pháp sinh học và thảo mộc bảo vệ mùa màng", core3: "Kỹ thuật sử dụng thuốc bảo vệ thực vật theo nguyên tắc 4 đúng" },
+                    { id: "cn10_b14", title: "Bài 14: Hệ thống tưới tiêu tiết kiệm trong nông nghiệp", core1: "Hệ thống tưới nhỏ giọt và tưới phun sương (PVC & LDPE)", core2: "Nguyên lý vận hành và điều tiết lượng nước tưới", core3: "Ứng dụng tưới tự động trên vườn cây ăn trái Vĩnh Long" }
+                ],
+                "11": [
+                    { id: "cn11_b1", title: "Bài 1: Vai trò và triển vọng của chăn nuôi", core1: "Cung cấp thực phẩm và phát triển kinh tế nông thôn", core2: "Xu hướng chăn nuôi an toàn sinh học và tuần hoàn", core3: "Ứng dụng công nghệ tự động hóa trong chuồng trại" },
+                    { id: "cn11_b3", title: "Bài 3: Giống vật nuôi và kỹ thuật chọn giống", core1: "Khái niệm giống và tiêu chí đánh giá giống vật nuôi", core2: "Phương pháp chọn lọc cá thể và chọn lọc gia đình", core3: "Bảo tồn nguồn gen vật nuôi bản địa chất lượng cao" },
+                    { id: "cn11_b6", title: "Bài 6: Công nghệ sinh học trong chế biến thức ăn chăn nuôi", core1: "Ủ men vi sinh phụ phẩm nông nghiệp", core2: "Sản xuất thức ăn hỗn hợp hoàn chỉnh (TMR)", core3: "Phối trộn khẩu phần ăn cân đối dưỡng chất cho vật nuôi" },
+                    { id: "cn11_b10", title: "Bài 10: Phòng bệnh và vệ sinh thú y trong chăn nuôi", core1: "Quy trình vệ sinh tiêu độc khử trùng chuồng trại", core2: "Lịch tiêm phòng vaccine định kỳ cho gia súc, gia cầm", core3: "Xử lý chất thải chăn nuôi bằng hầm biogas bảo vệ môi trường" }
+                ],
+                "12": [
+                    { id: "cn12_b1", title: "Bài 1: Khái quát về lâm nghiệp và nuôi trồng thủy sản", core1: "Vai trò phòng hộ của rừng và giá trị thủy sản xuất khẩu", core2: "Chiến lược phát triển lâm - ngư kết hợp bền vững", core3: "Ứng dụng công nghệ giám sát nguồn lợi tự nhiên" },
+                    { id: "cn12_b3", title: "Bài 3: Kỹ thuật ươm giống cây lâm nghiệp", core1: "Quy trình xử lý hạt giống và đóng bầu ươm", core2: "Chăm sóc cây con trong vườn ươm tiêu chuẩn", core3: "Kỹ thuật trồng và chăm sóc rừng ngập mặn chắn sóng" },
+                    { id: "cn12_b6", title: "Bài 6: Kỹ thuật nuôi thâm canh thủy sản nước ngọt", core1: "Chuẩn bị ao nuôi và cải tạo nền đáy", core2: "Kỹ thuật quản lý chất lượng nước (pH, oxy hòa tan, khí độc)", core3: "Quy trình cho ăn và phòng bệnh trên cá tra, cá lóc tại Vĩnh Long" },
+                    { id: "cn12_b8", title: "Bài 8: Ứng dụng công nghệ cao trong nuôi trồng thủy sản", core1: "Hệ thống nuôi tuần hoàn nước khép kín (RAS)", core2: "Công nghệ Biofloc kiểm soát chất lượng nước tự nhiên", core3: "Tự động hóa cho ăn và quản lý ao nuôi bằng cảm biến thông minh" }
+                ]
+            }
+        };
+
+        /* -------------------------------------------------------------------------
+         * TRẠNG THÁI TOÀN CỤC CỦA HỆ THỐNG
+         * ------------------------------------------------------------------------- */
+        let currentMode = '5512';
+        let activeLessonObj = null;
+        let selectedLessonsForExam = [];
+        let currentSlideIdx = 0;
+        let slideDeck = [];
+        let examSeed = 101;
+        let showExamAnswer = true;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            onSubjectOrGradeChanged();
+            renderActiveView('5512');
+        });
+
+        function onSubjectOrGradeChanged() {
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const list = CURRICULUM_DATABASE[subject]?.[grade] || [];
+
+            const container = document.getElementById('lesson-list-container');
+            container.innerHTML = "";
+
+            if (list.length > 0) {
+                activeLessonObj = list[0];
+                selectedLessonsForExam = [list[0]];
+            }
+
+            list.forEach((item, index) => {
+                const isSelected = (item.id === activeLessonObj?.id);
+                const isChecked = selectedLessonsForExam.some(x => x.id === item.id);
+
+                const row = document.createElement('div');
+                row.className = `flex items-center gap-2 p-2 rounded-xl border text-xs transition ${
+                    isSelected ? 'border-cyan-400 bg-cyan-500/20 text-cyan-200' : 'border-slate-800 bg-[#0b1222] text-slate-300 hover:bg-slate-800'
+                }`;
+
+                row.innerHTML = `
+                    <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleExamItem('${item.id}', this.checked)" class="rounded accent-amber-500 w-4 h-4 cursor-pointer" title="Đưa vào ma trận đề 7991">
+                    <span onclick="pickLesson('${item.id}')" class="truncate flex-1 cursor-pointer font-semibold" title="Click để chọn">
+                        ${item.title}
+                    </span>
+                    <i onclick="pickLesson('${item.id}')" class="fa-solid fa-arrow-right text-[10px] text-cyan-400 cursor-pointer opacity-70"></i>
+                `;
+                container.appendChild(row);
+            });
+
+            document.getElementById('label-active-lesson').innerText = activeLessonObj ? activeLessonObj.title : "Chưa chọn";
+        }
+
+        function pickLesson(id) {
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const list = CURRICULUM_DATABASE[subject]?.[grade] || [];
+            activeLessonObj = list.find(x => x.id === id) || list[0];
+
+            document.getElementById('label-active-lesson').innerText = activeLessonObj.title;
+            onSubjectOrGradeChanged();
+            renderActiveView(currentMode);
+        }
+
+        function toggleExamItem(id, checked) {
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const item = CURRICULUM_DATABASE[subject]?.[grade]?.find(x => x.id === id);
+            if (!item) return;
+
+            if (checked) {
+                if (!selectedLessonsForExam.some(x => x.id === id)) selectedLessonsForExam.push(item);
+            } else {
+                selectedLessonsForExam = selectedLessonsForExam.filter(x => x.id !== id);
+            }
+            if (currentMode === '7991') renderActiveView('7991');
+        }
+
+        function selectAllExams(all) {
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const list = CURRICULUM_DATABASE[subject]?.[grade] || [];
+            selectedLessonsForExam = all ? [...list] : [];
+            onSubjectOrGradeChanged();
+            if (currentMode === '7991') renderActiveView('7991');
+        }
+
+        function switchView(mode) {
+            currentMode = mode;
+            ['5512', 'slide', '7991'].forEach(m => {
+                document.getElementById('tab-' + m).className = "px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white";
+            });
+            document.getElementById('tab-' + mode).className = "px-3 py-1.5 rounded-lg font-bold transition bg-blue-600 text-white";
+
+            const a4 = document.getElementById('container-a4-doc');
+            const slide = document.getElementById('container-slide-presentation');
+            const badge = document.getElementById('badge-view-mode');
+
+            if (mode === '5512') {
+                a4.classList.remove('hidden');
+                slide.classList.add('hidden');
+                badge.innerText = "KẾ HOẠCH BÀI DẠY (CHUẨN CÔNG VĂN 5512)";
+                renderLessonDoc5512();
+            } else if (mode === 'slide') {
+                a4.classList.add('hidden');
+                slide.classList.remove('hidden');
+                badge.innerText = "BÀI GIẢNG ĐIỆN TỬ SLIDE 16:9 (TYPOGRAPHY ≥ 32PT)";
+                renderSlideDeckPresentation();
+            } else if (mode === '7991') {
+                a4.classList.remove('hidden');
+                slide.classList.add('hidden');
+                badge.innerText = "MA TRẬN & ĐA MÃ ĐỀ THI ĐÁNH GIÁ NĂNG LỰC (7991)";
+                renderExamMatrix7991();
+            }
+        }
+
+        function renderActiveView(mode) {
+            switchView(mode);
+        }
+
+        /* -------------------------------------------------------------------------
+         * PHÂN VÙNG 2: ENGINE XUẤT GIÁO ÁN CV 5512 CẢI TIẾN HIGH-END
+         * ------------------------------------------------------------------------- */
+        function renderLessonDoc5512() {
+            if (!activeLessonObj) return;
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const doc = document.getElementById('container-a4-doc');
+
+            doc.innerHTML = `
+                <table style="width: 100%; border: none; margin-bottom: 12px;">
+                    <tr style="border: none;">
+                        <td style="border: none; width: 45%; text-align: center; vertical-align: top; padding: 0;">
+                            <p style="margin: 0; font-size: 11pt;">SỞ GD&ĐT VĨNH LONG</p>
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">TRƯỜNG THPT MANG THÍT</p>
+                            <div style="width: 80px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
+                        </td>
+                        <td style="border: none; width: 55%; text-align: center; vertical-align: top; padding: 0;">
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                            <p style="margin: 0; font-style: italic; font-size: 11pt;">Độc lập - Tự do - Hạnh phúc</p>
+                            <div style="width: 120px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="text-align: center; margin: 15px 0;">
+                    <h2 style="margin: 0; font-size: 14pt; font-weight: bold; text-transform: uppercase;">KẾ HOẠCH BÀI DẠY</h2>
+                    <h3 style="margin: 4px 0 0 0; font-size: 13pt; font-weight: bold; color: #1e3a8a;">${activeLessonObj.title.toUpperCase()}</h3>
+                    <p style="margin: 3px 0 0 0; font-size: 12pt;">Họ và tên giáo viên: <strong>Hồ Tấn Khải</strong> • Tổ: Khoa học Tự nhiên</p>
+                    <p style="margin: 1px 0 0 0; font-style: italic; font-size: 11pt;">Môn học: ${subject} ${grade} • Khung phân phối chương trình chuẩn GDPT 2018</p>
+                </div>
+
+                <p style="font-weight: bold; margin: 10px 0 3px 0;">I. MỤC TIÊU</p>
+                <p style="margin: 2px 0 2px 10px;"><strong>1. Về kiến thức:</strong></p>
+                <p style="margin: 2px 0 2px 20px;">- Trình bày được bản chất, cơ chế sinh học và nguyên lý khoa học cốt lõi của ${activeLessonObj.title}.</p>
+                <p style="margin: 2px 0 2px 20px;">- Phân tích mối quan hệ tương tác giữa cấu tạo và chức năng sinh học; giải thích được ứng dụng thực tiễn trong nông nghiệp tại tỉnh Vĩnh Long.</p>
+
+                <p style="margin: 4px 0 2px 10px;"><strong>2. Về năng lực:</strong></p>
+                <p style="margin: 2px 0 2px 20px;">- 2.1. Năng lực chung: Tự chủ & tự học trong tra cứu tài liệu; Giao tiếp & hợp tác nhóm giải quyết tình huống; Giải quyết vấn đề sáng tạo.</p>
+                <p style="margin: 2px 0 2px 20px;">- 2.2. Năng lực đặc thù: Nhận thức khoa học sinh học/công nghệ; Tìm hiểu thế giới tự nhiên; Vận dụng kiến thức, kĩ năng đã học vào thực tiễn đời sống.</p>
+                <p style="margin: 2px 0 2px 20px;">- 2.3. Tích hợp Năng lực số: Mã [NLS 2.1] - Khai thác và xử lý dữ liệu số, tra cứu hình ảnh hiển vi và mô hình tương tác trực tuyến.</p>
+                <p style="margin: 2px 0 2px 20px;">- 2.4. Tích hợp Năng lực AI: Mã [${grade}.A1.2] - Nhận thức được vai trò hỗ trợ của AI trong tra cứu thuật ngữ; phối hợp cùng AI tìm kiếm thông tin khoa học và con người giữ quyền đối chiếu SGK, ra quyết định kết luận.</p>
+
+                <p style="margin: 4px 0 2px 10px;"><strong>3. Về phẩm chất:</strong> Chăm chỉ, trung thực, tinh thần trách nhiệm trong bảo vệ môi trường sinh thái và đạo đức nghiên cứu khoa học.</p>
+
+                <p style="font-weight: bold; margin: 12px 0 4px 0;">II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU</p>
+                <p style="margin: 2px 0 2px 15px;">- Giáo viên: Kế hoạch bài dạy, bài giảng slide điện tử, SGK, mã QR mô hình học liệu số, Phiếu học tập số 1.</p>
+                <p style="margin: 2px 0 2px 15px;">- Học sinh: Vở ghi bài, SGK, thiết bị thông minh có kết nối Internet tra cứu học liệu số.</p>
+
+                <p style="font-weight: bold; margin: 12px 0 4px 0;">III. TIẾN TRÌNH DẠY HỌC</p>
+
+                <p style="font-weight: bold; color: #1e40af; margin: 6px 0 2px 0;">HOẠT ĐỘNG 1: MỞ ĐẦU (XÁC ĐỊNH VẤN ĐỀ)</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: Giáo viên trình chiếu câu hỏi tình huống thực tế có vấn đề về ${activeLessonObj.title}.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: Học sinh làm việc cá nhân suy ngẫm trong 2 phút.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Chỉ định 2 học sinh trả lời, lớp nhận xét.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: Giáo viên phân tích mâu thuẫn nhận thức và dẫn dắt vào bài học mới.</p>
+                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
+                <p style="margin: 2px 0 8px 25px;">- Câu trả lời dự đoán ban đầu của học sinh chỉ ra được sự cần thiết phải tìm hiểu cơ chế bản chất của bài học.</p>
+
+                <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p>
+                <div style="background: #eef2ff; border-left: 4px solid #3b82f6; padding: 6px 10px; margin: 4px 0; font-size: 11pt;">
+                    👉 <strong>[Tích hợp năng lực số]:</strong> [NLS 2.1] - Giáo viên cung cấp mã QR và liên kết mô hình số; học sinh quét mã trên thiết bị để tương tác trực quan.<br>
+                    👉 <strong>[Tích hợp năng lực AI]:</strong> [Mã ${grade}.A1.2] - Học sinh sử dụng trợ lý AI tra cứu thuật ngữ mở rộng; con người giữ quyền kiểm chứng đối chiếu SGK và kết luận.
+                </div>
+
+                <table>
+                    <thead>
+                        <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
+                            <th style="width: 48%;">HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH</th>
+                            <th style="width: 52%;">DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ CỦA HỌC SINH)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: top;">
+                                <strong>Mục 1: ${activeLessonObj.core1}</strong><br>
+                                - Bước 1: GV phát Phiếu học tập số 1, yêu cầu các nhóm nghiên cứu tài liệu SGK.<br>
+                                - Bước 2: HS làm việc nhóm, trao đổi, phân tích và thống nhất câu trả lời.<br>
+                                - Bước 3: Đại diện nhóm 1 báo cáo; nhóm 2 nhận xét, phản biện.<br>
+                                - Bước 4: GV chuẩn hóa kiến thức, đánh giá hoạt động hợp tác.
+                            </td>
+                            <td style="vertical-align: top;">
+                                <strong>1. Bản chất khoa học nền tảng:</strong><br>
+                                - Định nghĩa, vai trò và các thành phần cấu tạo cơ bản theo phân phối chương trình.<br>
+                                - Cơ chế vận động, chuyển hóa năng lượng và trao đổi vật chất cốt lõi.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">
+                                <strong>Mục 2: ${activeLessonObj.core2}</strong><br>
+                                - Bước 1: GV chiếu sơ đồ quy luật, yêu cầu cặp đôi học sinh phân tích diễn biến.<br>
+                                - Bước 2: HS trao đổi, vẽ sơ đồ tư duy tóm tắt quy trình.<br>
+                                - Bước 3: Một cặp báo cáo, cả lớp góp ý bổ sung.<br>
+                                - Bước 4: GV chốt kiến thức trọng tâm ghi bài.
+                            </td>
+                            <td style="vertical-align: top;">
+                                <strong>2. Quy luật tương tác và cơ chế:</strong><br>
+                                - Diễn biến tuần tự các giai đoạn của tiến trình sinh học/kỹ thuật.<br>
+                                - Mối liên hệ chặt chẽ giữa cấu trúc và chức năng sinh học.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">
+                                <strong>Mục 3: ${activeLessonObj.core3}</strong><br>
+                                - Bước 1: GV nêu bài toán thực tiễn tại huyện Mang Thít, tỉnh Vĩnh Long.<br>
+                                - Bước 2: HS liên hệ kiến thức đề xuất giải pháp ứng dụng.<br>
+                                - Bước 3: HS trình bày ý kiến sáng tạo.<br>
+                                - Bước 4: GV định hướng ứng dụng thực tiễn.
+                            </td>
+                            <td style="vertical-align: top;">
+                                <strong>3. Ứng dụng thực tiễn địa phương:</strong><br>
+                                - Vận dụng vào chọn giống, bảo vệ cây trồng/vật nuôi và bảo vệ môi trường.<br>
+                                - Ý nghĩa phát triển kinh tế nông nghiệp bền vững tại địa phương.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 3: LUYỆN TẬP</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao hệ thống bài tập trắc nghiệm gồm đủ 3 dạng thức.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS làm việc cá nhân hoàn thành vào phiếu bài tập.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Học sinh công bố đáp án và giải thích cơ sở lý thuyết.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV chốt đáp án chuẩn và sửa lỗi sai thường gặp.</p>
+                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
+                <p style="margin: 2px 0 2px 25px;"><strong>Dạng 1: Trắc nghiệm 4 lựa chọn:</strong> Hệ thống 4 câu hỏi nhận biết định nghĩa, thành phần và quy luật.</p>
+                <p style="margin: 2px 0 2px 25px;"><strong>Dạng 2: Trắc nghiệm Đúng/Sai:</strong> 1 câu gồm 4 ý a, b, c, d gắn liền bối cảnh khoa học thực tế.</p>
+                <p style="margin: 2px 0 2px 25px;"><strong>Dạng 3: Trắc nghiệm trả lời ngắn:</strong> 2 câu hỏi tính toán và điền từ khóa khoa học ngắn gọn.</p>
+
+                <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 4: VẬN DỤNG</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao bài tập dự án nông nghiệp thực tiễn Vĩnh Long.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS tìm hiểu thực tế tại địa phương, hoàn thành báo cáo thu hoạch.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Nộp báo cáo thu hoạch vào buổi học kế tiếp.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV nhận xét, đánh giá sản phẩm và xếp loại.</p>
+
+                <p style="font-weight: bold; margin: 12px 0 4px 0;">IV. HỒ SƠ DẠY HỌC / PHỤ LỤC</p>
+                <p style="font-weight: bold; text-decoration: underline;">Phụ lục 1: PHIẾU HỌC TẬP SỐ 1</p>
+                <table>
+                    <thead>
+                        <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
+                            <th style="width: 30%;">Nhiệm vụ</th>
+                            <th style="width: 70%;">Nội dung nghiên cứu & Kết quả</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Nhiệm vụ 1: Bản chất cốt lõi</td><td>..............................................................................................................</td></tr>
+                        <tr><td>Nhiệm vụ 2: Cơ chế & Diễn biến</td><td>..............................................................................................................</td></tr>
+                        <tr><td>Nhiệm vụ 3: Ứng dụng thực tiễn</td><td>..............................................................................................................</td></tr>
+                    </tbody>
+                </table>
+
+                <p style="font-weight: bold; text-decoration: underline; margin-top: 15px;">Phụ lục 2: RUBRIC ĐÁNH GIÁ NĂNG LỰC SỐ (Bảng 5 cột)</p>
+                <table>
+                    <thead>
+                        <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
+                            <th>Tiêu chí</th><th>Mức 1 (Chưa đạt)</th><th>Mức 2 (Đạt)</th><th>Mức 3 (Tốt)</th><th>Điểm</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Khai thác dữ liệu số (NLS 2.1)</td>
+                            <td>Chưa biết quét mã xem mô hình</td>
+                            <td>Quét mã và quan sát mô hình cơ bản</td>
+                            <td>Thao tác thành thạo, phân tích đúng bản chất</td>
+                            <td style="text-align: center; font-weight: bold;">10 đ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        }
+
+        /* -------------------------------------------------------------------------
+         * PHÂN VÙNG 3: ENGINE BÀI GIẢNG SLIDE POWERPOINT & 16 SLIDE LUYỆN TẬP
+         * ------------------------------------------------------------------------- */
+        function renderSlideDeckPresentation() {
+            if (!activeLessonObj) return;
+            slideDeck = [];
+
+            // Slide 1: Bìa
+            slideDeck.push({
+                title: activeLessonObj.title.toUpperCase(),
+                tag: "TRƯỜNG THPT MANG THÍT • HỘI GIẢNG",
+                body: `
+                    <div class="text-center py-6 space-y-4">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 font-bold text-sm border border-amber-400/30">
+                            BÀI GIẢNG ĐIỆN TỬ VIP GDPT 2018
+                        </span>
+                        <h1 class="text-5xl font-black text-amber-300 leading-tight">
+                            ${activeLessonObj.title}
+                        </h1>
+                        <p class="text-slate-200 text-xl font-semibold">
+                            Giáo viên: Hồ Tấn Khải • Tổ: Khoa học Tự nhiên
+                        </p>
+                    </div>
+                `
+            });
+
+            // Slide 2: Khởi động
+            slideDeck.push({
+                title: "1. TÌNH HUỐNG MỞ ĐẦU (WARM-UP)",
+                tag: "HOẠT ĐỘNG 1",
+                body: `
+                    <div class="grid grid-cols-2 gap-6 items-center text-lg">
+                        <div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-3">
+                            <span class="px-3 py-1 rounded bg-amber-500/20 text-amber-300 font-bold text-sm">Tình huống thực tiễn</span>
+                            <h3 class="text-2xl font-bold text-white">Mâu thuẫn nhận thức</h3>
+                            <p class="text-slate-200 leading-relaxed">
+                                Bằng cách nào sinh vật duy trì được sự ổn định cấu trúc và thích nghi tối ưu trước những biến đổi khắc nghiệt của môi trường tự nhiên?
+                            </p>
+                        </div>
+                        <div class="bg-emerald-950/40 p-6 rounded-2xl border border-emerald-500/40 space-y-3">
+                            <h4 class="text-amber-300 font-bold text-xl"><i class="fa-solid fa-lightbulb mr-2"></i> Câu hỏi định hướng tư duy:</h4>
+                            <p class="text-slate-200">1. Đâu là cơ chế bản chất chi phối hiện tượng?</p>
+                            <p class="text-slate-200">2. Con người có thể ứng dụng quy luật này vào nông nghiệp thế nào?</p>
+                            <p class="text-amber-400 font-bold">➜ Hãy cùng khám phá nội dung bài học!</p>
+                        </div>
+                    </div>
+                `
+            });
+
+            // Slide 3, 4, 5: 3 Mục kiến thức cốt lõi ép từ giáo án qua
+            [activeLessonObj.core1, activeLessonObj.core2, activeLessonObj.core3].forEach((c, idx) => {
+                slideDeck.push({
+                    title: `NỘI DUNG ${idx + 1}: ${c.toUpperCase()}`,
+                    tag: "HÌNH THÀNH KIẾN THỨC",
+                    body: `
+                        <div class="bg-black/40 p-8 rounded-2xl border border-emerald-500/40 space-y-5 text-xl">
+                            <div class="flex items-center gap-3">
+                                <span class="w-3.5 h-3.5 rounded-full bg-cyan-400"></span>
+                                <p class="text-amber-300 font-bold text-2xl">Khám phá trọng tâm:</p>
+                            </div>
+                            <p class="text-slate-200 leading-relaxed">• Tìm hiểu khái niệm, bản chất khoa học và cấu trúc của <strong>${c}</strong>.</p>
+                            <p class="text-slate-200 leading-relaxed">• Phân tích mối quan hệ giữa cấu trúc và chức năng qua mô hình 3D/hình ảnh hiển vi.</p>
+                            <p class="text-slate-200 leading-relaxed">• Học sinh thảo luận nhóm, giải quyết câu hỏi trong Phiếu học tập số 1 và ghi vở.</p>
+                        </div>
+                    `
+                });
+            });
+
+            // Slide 6: Slide chốt kiến thức cốt lõi ghi vở
+            slideDeck.push({
+                title: "KIẾN THỨC CỐT LÕI (NỘI DUNG GHI VỞ)",
+                tag: "CHỐT KIẾN THỨC BẮT BUỘC",
+                body: `
+                    <div class="bg-black/50 p-7 rounded-2xl border-2 border-amber-400/60 space-y-4 text-xl">
+                        <p class="text-amber-300 font-bold text-2xl"><i class="fa-solid fa-book-bookmark mr-2"></i> Học sinh ghi nhớ các điểm then chốt:</p>
+                        <p class="text-slate-200">• <strong>Bản chất:</strong> Quy luật sinh học/công nghệ bảo đảm tính toàn vẹn và phát triển.</p>
+                        <p class="text-slate-200">• <strong>Cơ chế:</strong> Sao chép, chuyển hóa và tương tác sinh hóa chính xác.</p>
+                        <p class="text-slate-200">• <strong>Ứng dụng:</strong> Cơ sở khoa học của các biện pháp kỹ thuật nông nghiệp tại Vĩnh Long.</p>
+                    </div>
+                `
+            });
+
+            // HỆ THỐNG 16 SLIDE LUYỆN TẬP RIÊNG BIỆT (6 câu 4 lựa chọn + 4 câu Đúng/Sai + 6 câu trả lời ngắn) CÓ ẨN ĐÁP ÁN
+            // Dạng 1: 6 câu trắc nghiệm 4 lựa chọn (Slide 7 - 12)
+            for (let i = 1; i <= 6; i++) {
+                slideDeck.push({
+                    title: `LUYỆN TẬP: CÂU HỎI TRẮC NGHIỆM ${i}`,
+                    tag: `DẠNG 1: 4 LỰA CHỌN (${i}/6)`,
+                    body: `
+                        <div class="space-y-4 text-lg">
+                            <p class="font-bold text-white text-xl">Câu ${i}: Nhận định nào sau đây là chính xác nhất về nội dung của ${activeLessonObj.title}?</p>
+                            <div class="grid grid-cols-2 gap-4 text-lg">
+                                <div class="p-4 bg-black/40 rounded-xl border border-slate-700">A. Không tuân theo các quy luật tự nhiên</div>
+                                <div class="p-4 bg-black/40 rounded-xl border border-slate-700">B. Luôn bảo đảm tính toàn vẹn và thích nghi sinh học</div>
+                                <div class="p-4 bg-black/40 rounded-xl border border-slate-700">C. Diễn ra ngẫu nhiên không có sự kiểm soát</div>
+                                <div class="p-4 bg-black/40 rounded-xl border border-slate-700">D. Hoàn toàn độc lập với các yếu tố môi trường</div>
+                            </div>
+                            <div class="pt-2">
+                                <button onclick="toggleAnswer(this)" class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-sm">
+                                    <i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng
+                                </button>
+                                <div class="hidden mt-2 p-3 bg-emerald-950/80 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-lg">
+                                    ➜ Đáp án chính xác: B (Luôn bảo đảm tính toàn vẹn và thích nghi sinh học)
+                                </div>
+                            </div>
+                        </div>
+                    `
+                });
+            }
+
+            // Dạng 2: 4 câu đúng/sai (Slide 13 - 16)
+            for (let i = 1; i <= 4; i++) {
+                slideDeck.push({
+                    title: `LUYỆN TẬP: TRẮC NGHIỆM ĐÚNG/SAI ${i}`,
+                    tag: `DẠNG 2: BỐI CẢNH KHOA HỌC (${i}/4)`,
+                    body: `
+                        <div class="space-y-3 text-lg">
+                            <p class="font-bold text-amber-300 text-xl">Câu ${i}: Trong một nghiên cứu khoa học thực nghiệm về điều kiện phát triển:</p>
+                            <div class="space-y-2 bg-black/40 p-4 rounded-xl border border-slate-700 text-lg">
+                                <p>a) Nhiệt độ và độ ẩm tối ưu giúp quá trình chuyển hóa diễn ra hiệu quả nhất.</p>
+                                <p>b) Các tác nhân gây hại không ảnh hưởng đến năng suất cá thể.</p>
+                                <p>c) Nắm vững quy luật giúp ứng dụng tốt vào sản xuất tại huyện Mang Thít.</p>
+                                <p>d) Toàn bộ biến đổi nội tại đều diễn ra tự phát không cần năng lượng.</p>
+                            </div>
+                            <div>
+                                <button onclick="toggleAnswer(this)" class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-sm">
+                                    <i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng
+                                </button>
+                                <div class="hidden mt-2 p-3 bg-emerald-950/80 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-lg">
+                                    ➜ Đáp án: a) ĐÚNG | b) SAI | c) ĐÚNG | d) SAI
+                                </div>
+                            </div>
+                        </div>
+                    `
+                });
+            }
+
+            // Dạng 3: 6 câu trả lời ngắn (Slide 17 - 22)
+            for (let i = 1; i <= 6; i++) {
+                slideDeck.push({
+                    title: `LUYỆN TẬP: TRẢ LỜI NGẮN ${i}`,
+                    tag: `DẠNG 3: ĐIỀN CON SỐ (${i}/6)`,
+                    body: `
+                        <div class="space-y-4 text-lg">
+                            <p class="font-bold text-white text-xl">Câu ${i}: Một mẫu vật ban đầu qua ${i} chu kỳ biến đổi liên tiếp sẽ tạo ra bao nhiêu đơn vị cấu trúc tương ứng?</p>
+                            <p class="text-slate-300 italic text-base">(Đáp án là con số cụ thể không quá 4 ký tự)</p>
+                            <div>
+                                <button onclick="toggleAnswer(this)" class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-sm">
+                                    <i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng
+                                </button>
+                                <div class="hidden mt-2 p-3 bg-emerald-950/80 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-2xl">
+                                    ➜ Đáp số: ${Math.pow(2, i)}
+                                </div>
+                            </div>
+                        </div>
+                    `
+                });
+            }
+
+            currentSlideIdx = 0;
+            renderCurrentSlideView();
+        }
+
+        function renderCurrentSlideView() {
+            if (slideDeck.length === 0) return;
+            const slide = slideDeck[currentSlideIdx];
+            document.getElementById('slide-page-badge').innerText = `${currentSlideIdx + 1} / ${slideDeck.length}`;
+
+            document.getElementById('slide-main-viewport').innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="px-3 py-1 rounded text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase">
+                            ${slide.tag}
+                        </span>
+                        <h2 class="text-2xl font-black text-white">${slide.title}</h2>
+                    </div>
+                    <div>${slide.body}</div>
+                </div>
+            `;
+        }
+
+        function nextSlide() {
+            if (currentSlideIdx < slideDeck.length - 1) {
+                currentSlideIdx++;
+                renderCurrentSlideView();
+            }
+        }
+        function prevSlide() {
+            if (currentSlideIdx > 0) {
+                currentSlideIdx--;
+                renderCurrentSlideView();
+            }
+        }
+        function toggleAnswer(btn) {
+            const box = btn.nextElementSibling;
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                btn.innerHTML = '<i class="fa-solid fa-eye-slash mr-1"></i> Ẩn đáp án';
+            } else {
+                box.classList.add('hidden');
+                btn.innerHTML = '<i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng';
+            }
+        }
+
+        /* -------------------------------------------------------------------------
+         * PHÂN VÙNG 4: ENGINE MA TRẬN & ĐA MÃ ĐỀ THI ĐÁNH GIÁ NĂNG LỰC CV 7991
+         * ------------------------------------------------------------------------- */
+        function randomizeExamSeed() {
+            examSeed = Math.floor(100 + Math.random() * 900);
+            renderExamMatrix7991();
+        }
+
+        function toggleExamAnswerDisplay() {
+            showExamAnswer = !showExamAnswer;
+            renderExamMatrix7991();
+        }
+
+        function renderExamMatrix7991() {
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const doc = document.getElementById('container-a4-doc');
+            const items = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [activeLessonObj];
+
+            doc.innerHTML = `
+                <table style="width: 100%; border: none; margin-bottom: 12px;">
+                    <tr style="border: none;">
+                        <td style="border: none; width: 45%; text-align: center; vertical-align: top; padding: 0;">
+                            <p style="margin: 0; font-size: 11pt;">SỞ GD&ĐT VĨNH LONG</p>
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">TRƯỜNG THPT MANG THÍT</p>
+                            <div style="width: 80px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
+                        </td>
+                        <td style="border: none; width: 55%; text-align: center; vertical-align: top; padding: 0;">
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">HỒ SƠ KHẢO THÍ & ĐÁNH GIÁ NĂNG LỰC</p>
+                            <p style="margin: 0; font-style: italic; font-size: 11pt;">Chuẩn cấu trúc định dạng Bộ GD&ĐT (CV 7991)</p>
+                            <div style="width: 120px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="text-align: center; margin: 12px 0;">
+                    <h2 style="margin: 0; font-size: 14pt; font-weight: bold; text-transform: uppercase;">MA TRẬN, BẢN ĐẶC TẢ VÀ ĐỀ KIỂM TRA ĐỊNH KỲ</h2>
+                    <p style="margin: 2px 0 0 0; font-size: 12pt;">Môn: ${subject} ${grade} • Thời gian làm bài: 45 phút • <strong>MÃ ĐỀ: ${examSeed}</strong></p>
+                    <div style="margin-top: 8px;" class="no-print">
+                        <button onclick="randomizeExamSeed()" style="background: #0284c7; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 10pt; cursor: pointer;">
+                            🔄 Đảo câu hỏi tạo mã đề mới (${examSeed})
+                        </button>
+                        <button onclick="toggleExamAnswerDisplay()" style="background: ${showExamAnswer ? '#10b981' : '#64748b'}; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 10pt; cursor: pointer; margin-left: 8px;">
+                            ${showExamAnswer ? '👁️ Đang hiện đáp án' : '🙈 Đang ẩn đáp án (In đề thi)'}
+                        </button>
+                    </div>
+                </div>
+
+                <p style="font-weight: bold; margin: 12px 0 4px 0;">MỤC 1: BẢNG MA TRẬN ĐỀ KIỂM TRA ĐA BÀI HỌC (TỰ TÍNH TỈ LỆ %)</p>
+                <table>
+                    <thead>
+                        <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
+                            <th rowspan="2">TT</th>
+                            <th rowspan="2">Bài học được tích chọn</th>
+                            <th colspan="3">Phần I (Nhiều lựa chọn)</th>
+                            <th colspan="2">Phần II (Đúng/Sai)</th>
+                            <th colspan="2">Phần III (Trả lời ngắn)</th>
+                            <th rowspan="2">Tổng câu</th>
+                            <th rowspan="2">Điểm số</th>
+                        </tr>
+                        <tr style="background: #F0F4F8; text-align: center; font-size: 10pt;">
+                            <th>Biết</th><th>Hiểu</th><th>VD</th>
+                            <th>Hiểu</th><th>VD</th>
+                            <th>Hiểu</th><th>VD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${items.map((item, idx) => `
+                            <tr>
+                                <td style="text-align: center;">${idx + 1}</td>
+                                <td><strong>${item.title}</strong></td>
+                                <td style="text-align: center;">${Math.round(18 / items.length * 0.5)}</td>
+                                <td style="text-align: center;">${Math.round(18 / items.length * 0.3)}</td>
+                                <td style="text-align: center;">${Math.round(18 / items.length * 0.2)}</td>
+                                <td style="text-align: center;">1</td>
+                                <td style="text-align: center;">${idx === 0 ? 1 : 0}</td>
+                                <td style="text-align: center;">1</td>
+                                <td style="text-align: center;">1</td>
+                                <td style="text-align: center; font-weight: bold;">${Math.round(28 / items.length)} câu</td>
+                                <td style="text-align: center; font-weight: bold;">${(10 / items.length).toFixed(1)} đ</td>
+                            </tr>
+                        `).join('')}
+                        <tr style="background: #E6EEF8; font-weight: bold; text-align: center;">
+                            <td colspan="2">TỔNG CỘNG</td>
+                            <td colspan="3">18 câu (4.5 đ)</td>
+                            <td colspan="2">4 câu (4.0 đ)</td>
+                            <td colspan="2">6 câu (1.5 đ)</td>
+                            <td>28 câu</td>
+                            <td>10.0 Điểm</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="font-weight: bold; margin: 15px 0 4px 0;">MỤC 2: BẢN ĐẶC TẢ MA TRẬN ĐỀ KIỂM TRA</p>
+                <table>
+                    <thead>
+                        <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
+                            <th>TT</th><th>Chủ đề / Bài học</th><th>Yêu cầu cần đạt</th><th>Dạng thức</th><th>Mã câu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${items.map((it, idx) => `
+                            <tr>
+                                <td style="text-align: center;">${idx + 1}</td>
+                                <td><strong>${it.title}</strong></td>
+                                <td>Nhận biết được định nghĩa; thông hiểu cơ chế hoạt động; vận dụng giải quyết bài toán nông nghiệp thực tiễn.</td>
+                                <td style="text-align: center;">Phần I, II, III</td>
+                                <td style="text-align: center;">C1-C18, C1-C4, C1-C6</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+
+                <div style="page-break-before: always; margin-top: 25px;"></div>
+
+                <p style="font-weight: bold; margin: 15px 0 4px 0;">MỤC 3: ĐỀ THI ĐÁNH GIÁ NĂNG LỰC CHÍNH THỨC (MÃ ĐỀ: ${examSeed})</p>
+                <p style="font-weight: bold; color: #1e3a8a; margin: 8px 0 2px 0;">PHẦN I. Câu trắc nghiệm nhiều phương án lựa chọn (Thí sinh trả lời từ câu 1 đến câu 18, mỗi câu đúng được 0.25 điểm)</p>
+                <p style="margin: 3px 0;"><strong>Câu 1:</strong> Đặc điểm cốt lõi nào sau đây thể hiện bản chất của nội dung ${items[0].title}?</p>
+                <p style="margin: 1px 0 1px 20px;">A. Không tuân thủ các quy luật tự nhiên &nbsp;&nbsp;&nbsp;&nbsp; ${showExamAnswer ? '<strong>B. Luôn bảo đảm tính toàn vẹn và thích nghi sinh học [ĐÚNG]</strong>' : 'B. Luôn bảo đảm tính toàn vẹn và thích nghi sinh học'}</p>
+                <p style="margin: 1px 0 1px 20px;">C. Diễn ra ngẫu nhiên không có sự kiểm soát &nbsp;&nbsp;&nbsp;&nbsp; D. Hoàn toàn độc lập với môi trường</p>
+
+                <p style="margin: 3px 0;"><strong>Câu 2:</strong> Cơ chế then chốt bảo đảm sự ổn định và kế thừa thông tin trong tế bào là:</p>
+                <p style="margin: 1px 0 1px 20px;">A. Phân rã tự phát &nbsp;&nbsp;&nbsp;&nbsp; ${showExamAnswer ? '<strong>B. Tự nhân đôi và phân ly đồng đều [ĐÚNG]</strong>' : 'B. Tự nhân đôi và phân ly đồng đều'}</p>
+                <p style="margin: 1px 0 1px 20px;">C. Tự do trao đổi không chọn lọc &nbsp;&nbsp;&nbsp;&nbsp; D. Biến tính dưới nhiệt độ thấp</p>
+
+                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN II. Câu trắc nghiệm đúng/sai (Thí sinh trả lời từ câu 1 đến câu 4. Đúng 1 ý = 0.1đ; 2 ý = 0.25đ; 3 ý = 0.5đ; 4 ý = 1.0đ)</p>
+                <p style="margin: 3px 0;"><strong>Câu 1:</strong> Khi tiến hành nghiên cứu khoa học thực nghiệm về điều kiện phát triển tại tỉnh Vĩnh Long:</p>
+                <p style="margin: 1px 0 1px 20px;">a) Nhiệt độ và độ ẩm tối ưu giúp quá trình chuyển hóa đạt hiệu suất cao nhất. ${showExamAnswer ? '<strong>[ĐÚNG]</strong>' : ''}</p>
+                <p style="margin: 1px 0 1px 20px;">b) Mọi tác nhân gây hại đều làm tăng tốc độ sinh trưởng của cá thể. ${showExamAnswer ? '<strong>[SAI]</strong>' : ''}</p>
+                <p style="margin: 1px 0 1px 20px;">c) Nắm vững quy luật giúp nông dân huyện Mang Thít chủ động phòng ngừa dịch bệnh. ${showExamAnswer ? '<strong>[ĐÚNG]</strong>' : ''}</p>
+                <p style="margin: 1px 0 1px 20px;">d) Các biến đổi nội tại diễn ra hoàn toàn tự phát mà không cần năng lượng. ${showExamAnswer ? '<strong>[SAI]</strong>' : ''}</p>
+
+                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN III. Câu trắc nghiệm trả lời ngắn (Thí sinh trả lời từ câu 1 đến câu 6, mỗi câu đúng được 0.25 điểm)</p>
+                <p style="margin: 3px 0;"><strong>Câu 1:</strong> Một cấu trúc ban đầu nhân đôi liên tiếp 3 lần sẽ tạo ra bao nhiêu cấu trúc con?</p>
+                <p style="margin: 1px 0 6px 20px; color: #0284c7; font-weight: bold;">${showExamAnswer ? '➜ Đáp số: 8' : '➜ Thí sinh điền đáp số: ..........'}</p>
+
+                ${showExamAnswer ? `
+                    <div style="page-break-before: always; margin-top: 25px;"></div>
+                    <p style="font-weight: bold; margin: 15px 0 4px 0;">MỤC 4: HƯỚNG DẪN CHẤM & ĐÁP ÁN CHI TIẾT (MÃ ĐỀ: ${examSeed})</p>
+                    <table>
+                        <thead>
+                            <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
+                                <th>Phần thi</th><th>Câu</th><th>Đáp án</th><th>Biểu điểm</th><th>Căn cứ lý thuyết & Hướng dẫn sư phạm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Phần I</td><td style="text-align: center;">1</td><td style="text-align: center; font-weight: bold;">B</td><td style="text-align: center;">0.25 đ</td><td>Căn cứ vào nguyên lý thích nghi và tiến hóa sinh học.</td></tr>
+                            <tr><td>Phần I</td><td style="text-align: center;">2</td><td style="text-align: center; font-weight: bold;">B</td><td style="text-align: center;">0.25 đ</td><td>Nguyên tắc bán bảo tồn và bổ sung trong phân chia tế bào.</td></tr>
+                            <tr><td>Phần II</td><td style="text-align: center;">1</td><td style="font-weight: bold;">a-Đ, b-S, c-Đ, d-S</td><td style="text-align: center;">1.00 đ</td><td>Dựa vào sinh thái học và ứng dụng thực tiễn tại địa phương.</td></tr>
+                            <tr><td>Phần III</td><td style="text-align: center;">1</td><td style="text-align: center; font-weight: bold;">8</td><td style="text-align: center;">0.25 đ</td><td>Áp dụng công thức số lượng tạo thành = 2^k = 2^3 = 8.</td></tr>
+                        </tbody>
+                    </table>
+                ` : ''}
+            `;
+        }
+
+        /* -------------------------------------------------------------------------
+         * PHÂN VÙNG 5: ENGINE XUẤT ĐA ĐỊNH DẠNG (WORD, PPTX, HTML, PDF)
+         * ------------------------------------------------------------------------- */
+        function exportWordDocument() {
+            const content = document.getElementById('container-a4-doc').innerHTML;
+            const fileName = `HoSo_VIP_${(activeLessonObj?.title || 'TaiLieu').replace(/[^a-zA-Z0-9]/g, '_')}_THPT_MangThit.doc`;
+
+            const fullHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>${fileName}</title>
+                    <style>
+                        body { font-family: 'Times New Roman', serif; font-size: 13pt; line-height: 1.25; text-align: justify; }
+                        table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+                        th, td { border: 1px solid black; padding: 6px; font-size: 12pt; }
+                    </style>
+                </head>
+                <body>${content}</body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = fileName;
+            a.click();
+        }
+
+        function exportPowerPointPresentation() {
+            if (typeof PptxGenJS === 'undefined') {
+                alert("Đang tải thư viện PptxGenJS, vui lòng thử lại sau 2 giây...");
+                return;
+            }
+            if (slideDeck.length === 0) renderSlideDeckPresentation();
+
+            const pptx = new PptxGenJS();
+            pptx.layout = 'LAYOUT_16x9';
+
+            slideDeck.forEach(item => {
+                const slide = pptx.addSlide();
+                slide.background = { color: '0F2922' };
+
+                // Dòng nhận diện giáo viên
+                slide.addText(`TRƯỜNG THPT MANG THÍT • GIÁO VIÊN: HỒ TẤN KHẢI`, {
+                    x: 0.5, y: 0.3, w: 12.3, h: 0.4,
+                    fontSize: 14, color: 'D78C0F', bold: true, fontFace: 'Arial'
+                });
+
+                // Tiêu đề Slide lớn
+                slide.addText(item.title, {
+                    x: 0.5, y: 0.8, w: 12.3, h: 1.0,
+                    fontSize: 32, color: 'FFFFFF', bold: true, fontFace: 'Arial'
+                });
+
+                // Nội dung trích xuất
+                const textOnly = item.body.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+                slide.addText(textOnly, {
+                    x: 0.8, y: 2.0, w: 11.7, h: 4.8,
+                    fontSize: 20, color: 'E2E8F0', fontFace: 'Arial', lineSpacing: 28
+                });
+            });
+
+            const fileName = `Slide_VIP_${(activeLessonObj?.title || 'BaiGiang').replace(/[^a-zA-Z0-9]/g, '_')}_THPT_MangThit.pptx`;
+            pptx.writeFile({ fileName: fileName });
+        }
+
+        function exportStandaloneHTML() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `EduBioMaster_VIP_Backup_${Date.now()}.html`;
+            a.click();
+        }
+    </script>
+</body>
+</html>
