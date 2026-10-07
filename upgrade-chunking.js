@@ -1,7 +1,8 @@
 /**
- * EDUPHYSICS / EDUAI PRO - FULL INTEGRATED CACHE & PPT ENGINE v8.0
- * 1. Chọn bài là tự nạp ngay 0.05s nếu đã tạo trước đó.
- * 2. Ép toàn bộ kiến thức sang Slide PPT + Giữ nguyên 16 Slide Luyện tập.
+ * EDUPHYSICS / EDUAI PRO - FULL INTEGRATED CACHE & PPT ENGINE v8.1
+ * 1. Chống lỗi máy chủ quá tải (Ưu tiên gọi Flash).
+ * 2. Lưu vĩnh viễn: Chọn bài là nạp ngay 0.05s nếu đã tạo.
+ * 3. Ép toàn bộ kiến thức sang Slide PPT + Đủ 16 Slide Luyện tập.
  */
 
 const DRIVE_APP_URL = "https://script.google.com/macros/s/AKfycbyUAoctNBlViQVDcYxZr8h0DjAU2vaGk-QZfDWYl7LNlfgPj6JWRFsLZpBTAWvWuHtnzw/exec"; 
@@ -72,14 +73,19 @@ function checkAndAutoLoadCachedLesson() {
 }
 
 // Lắng nghe sự kiện thay đổi bài học trên giao diện
-document.addEventListener("DOMContentLoaded", () => {
+function initAutoCacheListeners() {
     const lessonSelect = document.getElementById('sel-lesson');
     if (lessonSelect) {
         lessonSelect.addEventListener('change', () => {
-            setTimeout(checkAndAutoLoadCachedLesson, 100);
+            setTimeout(checkAndAutoLoadCachedLesson, 150);
         });
     }
-});
+}
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAutoCacheListeners);
+} else {
+    initAutoCacheListeners();
+}
 
 // ============================================================================
 // 2. ÉP NỘI DUNG TỪ GIÁO ÁN SANG SLIDE POWERPOINT + 16 SLIDE LUYỆN TẬP
@@ -132,7 +138,6 @@ window.renderPowerPointSlideDeck = function(subject, grade, book, lessonTitle) {
 
     // Tạo HTML bài giảng PowerPoint
     let slidesHtml = `
-        <!-- SLIDE 1: TRANG BÌA -->
         <div class="ppt-slide" style="width: 100%; min-height: 460px; background: linear-gradient(135deg, #1e3a8a, #0284c7); color: white; border-radius: 12px; padding: 40px; margin-bottom: 25px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
             <h4 style="font-size: 15pt; text-transform: uppercase; letter-spacing: 2px; margin: 0; color: #93c5fd;">BÀI GIẢNG ĐIỆN TỬ</h4>
             <h1 style="font-size: 26pt; font-weight: bold; margin: 15px 0;">${formattedTitle}</h1>
@@ -262,8 +267,14 @@ async function executeActionGenerate(type) {
         if (stTxt) stTxt.innerText = stepText;
     };
 
+    // ĐÃ SẮP XẾP LẠI: ƯU TIÊN GỌI FLASH ĐỂ TRÁNH LỖI QUÁ TẢI (HIGH DEMAND)
     async function queryGemini(promptText) {
-        const activeModels = ['gemini-3.1-pro-preview', 'gemini-3.5-flash', 'gemini-3-flash-preview', 'gemini-flash-latest'];
+        const activeModels = [
+            'gemini-3.5-flash',
+            'gemini-flash-latest',
+            'gemini-3-flash-preview',
+            'gemini-3.1-pro-preview'
+        ];
         let lastErr = "";
         for (const m of activeModels) {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${savedKey}`;
@@ -342,4 +353,4 @@ Chỉ trả về HTML.`;
         docContainer.innerHTML = `<div style="padding: 20px; color: red;">⚠️ Lỗi: ${err.message}</div>`;
     }
 }
-console.log("EduAI-Pro: Full Integrated Cache & PPT Engine v8.0 Loaded!");
+console.log("EduAI-Pro: Full Integrated Cache & PPT Engine v8.1 Loaded!");
