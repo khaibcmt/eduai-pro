@@ -1,8 +1,8 @@
 /**
- * EDUPHYSICS / EDUAI PRO - ALL-IN-ONE ENGINE v5.1 (Fixed Model Discovery & Clean URL)
+ * EDUPHYSICS / EDUAI PRO - ALL-IN-ONE ENGINE v5.2 (Triệt Tiêu Hoàn Toàn Lỗi Model Not Found)
  */
 
-// 1. CẤU HÌNH ĐƯỜNG DẪN GOOGLE APPS SCRIPT ĐỌC DRIVE (Đã làm sạch khoảng trắng)
+// 1. CẤU HÌNH ĐƯỜNG DẪN GOOGLE APPS SCRIPT ĐỌC DRIVE
 const DRIVE_APP_URL = "https://script.google.com/macros/s/AKfycbyUAoctNBlViQVDcYxZr8h0DjAU2vaGk-QZfDWYl7LNlfgPj6JWRFsLZpBTAWvWuHtnzw/exec"; 
 
 // Chặn các popup cảnh báo cũ làm gián đoạn trải nghiệm
@@ -26,9 +26,6 @@ async function fetchSgkContentFromDrive(lessonName) {
     }
     return "";
 }
-
-// Biến lưu model hợp lệ sau khi tự động nhận diện từ Google AI
-let activeVerifiedModel = null;
 
 // 2. BỘ MÁY ĐIỀU PHỐI VÀ BIÊN SOẠN CHUYÊN SÂU
 async function executeActionGenerate(type) {
@@ -83,36 +80,17 @@ async function executeActionGenerate(type) {
         if (stTxt) stTxt.innerText = stepText;
     };
 
-    // Hàm gọi AI tự động tìm Model khả dụng của tài khoản Google
+    // Hàm gọi AI trực tiếp với danh sách Model mới nhất (Không dùng gemini-pro)
     async function queryGemini(promptText) {
-        if (!activeVerifiedModel) {
-            try {
-                const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${savedKey}`);
-                const listData = await listRes.json();
-                if (listData.models && Array.isArray(listData.models)) {
-                    const valid = listData.models.find(m => 
-                        m.supportedGenerationMethods && 
-                        m.supportedGenerationMethods.includes('generateContent') &&
-                        (m.name.includes('flash') || m.name.includes('gemini'))
-                    );
-                    if (valid) {
-                        activeVerifiedModel = valid.name; // Trả về dạng 'models/gemini-...'
-                        console.log("Model kích hoạt tự động:", activeVerifiedModel);
-                    }
-                }
-            } catch (e) {
-                console.warn("Không lấy được ListModels:", e);
-            }
-        }
-
-        const modelSequence = activeVerifiedModel 
-            ? [activeVerifiedModel] 
-            : ['models/gemini-2.5-flash', 'models/gemini-2.0-flash', 'models/gemini-1.5-flash', 'models/gemini-1.5-flash-latest'];
+        const activeModels = [
+            'gemini-2.5-flash',
+            'gemini-2.0-flash',
+            'gemini-1.5-flash'
+        ];
 
         let lastErr = "";
-        for (const mName of modelSequence) {
-            const cleanModel = mName.startsWith('models/') ? mName : `models/${mName}`;
-            const url = `https://generativelanguage.googleapis.com/v1beta/${cleanModel}:generateContent?key=${savedKey}`;
+        for (const m of activeModels) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${savedKey}`;
 
             try {
                 const response = await fetch(url, {
@@ -126,7 +104,6 @@ async function executeActionGenerate(type) {
 
                 const data = await response.json();
                 if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-                    activeVerifiedModel = cleanModel;
                     return data.candidates[0].content.parts[0].text.replace(/```html/gi, '').replace(/```/gi, '');
                 }
                 if (data.error) {
@@ -232,4 +209,4 @@ CHỈ TRẢ VỀ MÃ HTML THUẦN.`;
         `;
     }
 }
-console.log("EduAI-Pro: All-In-One Unified Engine v5.1 Loaded Successfully!");
+console.log("EduAI-Pro: All-In-One Unified Engine v5.2 Loaded Successfully!");
