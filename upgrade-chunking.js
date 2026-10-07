@@ -86,7 +86,21 @@ async function executeActionGenerate(type) {
 
         if (res1) {
             updateStatus(70, "Google AI đang tạo Hoạt động 2...", "Xây dựng bảng 2 cột kiến thức chi tiết 100% SGK...");
-            const p2 = `Viết mã HTML Hoạt động 2 dạng BẢNG 2 CỘT KẺ VIỀN ĐEN 100% cho bài: ${lessonTitle}, môn ${subject} ${grade}. Cột 1: HOẠT ĐỘNG CỦA GV VÀ HS (4 bước). Cột 2: DỰ KIẾN SẢN PHẨM (chi tiết kiến thức, công thức, định nghĩa đầy đủ để HS ghi vở). Đính kèm khung Năng lực số và Năng lực AI. Chỉ xuất mã HTML.`;
+            const p2 = `Bạn là Chuyên gia biên soạn SGK ${subject} ${grade} bộ sách ${book}.
+Nhiệm vụ: Viết mã HTML Hoạt động 1 và HOẠT ĐỘNG 2 cho bài: "${lessonTitle}".
+${customGuide ? `NGỮ LIỆU BẮT BUỘC TỪ GIÁO VIÊN: ${customGuide}` : ''}
+
+YÊU CẦU NGHIÊM NGẶT ĐỂ ĐẢM BẢO ĐẦY ĐỦ NHƯ SGK:
+1. HOẠT ĐỘNG 1: Khởi động 4 bước kèm * DỰ KIẾN SẢN PHẨM. Đính kèm 2 khung [Tích hợp năng lực số: NLS 2.1] và [Tích hợp năng lực AI: ${grade}.A1.2].
+2. HOẠT ĐỘNG 2: BẮT BUỘC DẠNG BẢNG 2 CỘT KẺ VIỀN ĐEN 100%.
+   - Cột 1: HOẠT ĐỘNG CỦA GV VÀ HS (Ghi chi tiết 4 bước: Chuyển giao, Thực hiện, Báo cáo, Kết luận).
+   - Cột 2: DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ CỦA HỌC SINH):
+     + Phải chia thành các mục I, II, III theo đúng thứ tự các đề mục lớn trong SGK ${book}.
+     + Nêu nguyên văn các định nghĩa cốt lõi, không viết tắt, không dùng từ "v.v...".
+     + Ghi rõ từng công thức toán học/vật lí, giải thích rõ từng đại lượng, ký hiệu và đơn vị trong hệ SI (ví dụ: v: vận tốc (m/s), s: quãng đường (m), t: thời gian (s)...).
+     + Phân tích dạng đồ thị hoặc bảng số liệu thực nghiệm nếu bài học có đồ thị.
+     + Đưa ra ví dụ minh họa và nhận xét lưu ý quan trọng.
+Chỉ trả về thẻ HTML div/table/p/tr/td, không dùng thẻ markdown.`;. Cột 1: HOẠT ĐỘNG CỦA GV VÀ HS (4 bước). Cột 2: DỰ KIẾN SẢN PHẨM (chi tiết kiến thức, công thức, định nghĩa đầy đủ để HS ghi vở). Đính kèm khung Năng lực số và Năng lực AI. Chỉ xuất mã HTML.`;
             const res2 = await queryGemini(p2);
 
             updateStatus(90, "Google AI đang tạo bài tập và phụ lục...", "Hệ thống trắc nghiệm 3 dạng và 2 bảng Rubric...");
