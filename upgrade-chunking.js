@@ -84,9 +84,9 @@ async function executeActionGenerate(type) {
     // Hàm gọi AI chuẩn xác theo đúng danh mục model đang hoạt động của Key
     async function queryGemini(promptText) {
         const activeModels = [
-            'gemini-2.5-flash',
-            'gemini-flash-latest',
-            'gemini-2.5-pro'
+            'gemini-3.8-flash',
+            'gemini-3.8-flash-latest',
+            'gemini-3.1-pro'
         ];
 
         let lastErr = "";
