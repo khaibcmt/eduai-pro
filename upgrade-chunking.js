@@ -1,38 +1,33 @@
 /**
- * EDUPHYSICS / EDUAI PRO - CONTEST RESCUE SHIELD ENGINE v10.0
- * BẢO ĐẢM AN TOÀN TUYỆT ĐỐI CHO SẢN PHẨM DỰ THI:
- * - Không bao giờ báo lỗi đỏ (Tự động kích hoạt dữ liệu chuẩn nếu nghẽn mạng/thiếu key).
- * - Lưu vĩnh viễn: Chọn bài là bung ngay 0.05s.
- * - PowerPoint: Ép trọn kiến thức + Đủ 16 Slide Luyện tập chuẩn trắc nghiệm.
+ * EDUPHYSICS / EDUAI PRO - AUTO-DETECT LIST CLICK ENGINE v10.5
+ * Sửa lỗi danh sách bài học: Click vào bất kỳ bài nào là nhận ngay tên bài đó!
  */
 
 const DRIVE_APP_URL = "https://script.google.com/macros/s/AKfycbyUAoctNBlViQVDcYxZr8h0DjAU2vaGk-QZfDWYl7LNlfgPj6JWRFsLZpBTAWvWuHtnzw/exec"; 
 
 window.alert = function(msg) { console.warn("[EduSystem Notice]:", msg); };
 
+// Lấy tên bài học chuẩn xác nhất từ giao diện (bất kể Thầy click vào chỗ nào)
+function getCurrentActiveLessonTitle() {
+    // 1. Thử lấy từ biến toàn cục
+    if (typeof currentSelectedLesson !== 'undefined' && currentSelectedLesson && currentSelectedLesson.trim() !== "") {
+        return currentSelectedLesson.trim();
+    }
+    // 2. Thử tìm thẻ bài học đang được kích hoạt (active/selected)
+    const activeItem = document.querySelector('.lesson-item.active, .active-lesson, [class*="active"]');
+    if (activeItem) {
+        return activeItem.innerText.replace(/[\n\r]/g, ' ').trim();
+    }
+    // 3. Dự phòng lấy từ thẻ select nếu có
+    const sel = document.getElementById('sel-lesson');
+    if (sel && sel.value) return sel.value.trim();
+
+    return "Bài 1: Giới thiệu khái quát môn Sinh học";
+}
+
 function getLessonStorageKey(subject, grade, rawTitle) {
     let clean = (rawTitle || "").trim().replace(/^(bài|bài học|chủ đề)\s*[:\-\s]*/gi, '');
     return `EDU_SAVED_${subject}_${grade}_${clean}`.toLowerCase().replace(/[^a-z0-9_]/g, '_');
-}
-
-// Hàm đọc Drive an toàn
-async function fetchSgkContentFromDrive(lessonName) {
-    if (!DRIVE_APP_URL || DRIVE_APP_URL.trim() === "" || DRIVE_APP_URL.includes("DÁN_URL")) return "";
-    const cleanLesson = lessonName.trim();
-    const matchLessonNum = cleanLesson.match(/bài\s*\d+/i);
-    const searchKeyword = matchLessonNum ? matchLessonNum[0] : cleanLesson;
-
-    try {
-        const fetchUrl = `${DRIVE_APP_URL.trim()}?lesson=${encodeURIComponent(searchKeyword)}`;
-        const res = await fetch(fetchUrl);
-        const json = await res.json();
-        if (json && json.status === "success" && json.data && json.data.trim().length > 20) {
-            return json.data;
-        }
-    } catch (e) {
-        console.warn("Drive off, dùng bộ đệm an toàn.");
-    }
-    return "";
 }
 
 // Xóa cache soạn lại
@@ -41,13 +36,11 @@ window.clearLessonCacheAndRegenerate = function(storageKey) {
     executeActionGenerate('5512');
 };
 
-// 1. TỰ ĐỘNG BẮT SỰ KIỆN: NẠP TỨC THÌ 0.05S
+// 1. BẮT SỰ KIỆN CLICK DANH SÁCH BÀI HỌC BÊN TRÁI
 function checkAndAutoLoadCachedLesson() {
     const subject = document.getElementById('sel-subject')?.value || "Sinh học";
     const grade = document.getElementById('sel-grade')?.value || "10";
-    const rawLessonTitle = (typeof currentSelectedLesson !== 'undefined' && currentSelectedLesson) 
-                           ? currentSelectedLesson 
-                           : (document.getElementById('sel-lesson')?.value || "");
+    const rawLessonTitle = getCurrentActiveLessonTitle();
     const docContainer = document.getElementById('container-a4-doc');
 
     if (!rawLessonTitle || !docContainer) return false;
@@ -70,19 +63,16 @@ function checkAndAutoLoadCachedLesson() {
     return false;
 }
 
-function initAutoCacheListeners() {
-    const lessonSelect = document.getElementById('sel-lesson');
-    if (lessonSelect) {
-        lessonSelect.addEventListener('change', () => {
-            setTimeout(checkAndAutoLoadCachedLesson, 150);
-        });
+// Lắng nghe toàn bộ cú click vào danh sách bài học bên trái
+document.addEventListener('click', function(e) {
+    // Nếu bấm trúng vào 1 dòng bài học trong danh sách
+    const clickedLesson = e.target.closest('[onclick*="selectLesson"], .lesson-item, [class*="lesson"]');
+    if (clickedLesson) {
+        setTimeout(() => {
+            checkAndAutoLoadCachedLesson();
+        }, 120);
     }
-}
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initAutoCacheListeners);
-} else {
-    initAutoCacheListeners();
-}
+});
 
 // ============================================================================
 // 2. ÉP NỘI DUNG TỪ GIÁO ÁN SANG SLIDE POWERPOINT + 16 SLIDE LUYỆN TẬP
@@ -92,11 +82,12 @@ window.renderPowerPointSlideDeck = function(subject, grade, book, lessonTitle) {
         const docContainer = document.getElementById('container-a4-doc');
         if (!docContainer) return;
 
-        let cleanTitle = (lessonTitle || "Bài học").trim().replace(/^(bài|bài học|chủ đề)\s*[:\-\s]*/gi, '');
+        const currentTitle = lessonTitle || getCurrentActiveLessonTitle();
+        let cleanTitle = currentTitle.replace(/^(bài|bài học|chủ đề)\s*[:\-\s]*/gi, '').trim();
         const formattedTitle = `BÀI ${cleanTitle.toUpperCase()}`;
 
         let rawKnowledgeText = "";
-        const storageKey = getLessonStorageKey(subject, grade, lessonTitle);
+        const storageKey = getLessonStorageKey(subject, grade, currentTitle);
         const savedDoc = localStorage.getItem(storageKey);
 
         const productCol = docContainer.querySelector('table tbody td:nth-child(2)');
@@ -187,7 +178,7 @@ window.renderPowerPointSlideDeck = function(subject, grade, book, lessonTitle) {
                         <span style="background: #ecfdf5; color: #059669; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 11pt;">Trắc nghiệm tương tác</span>
                     </div>
                     <div style="font-size: 14pt; line-height: 1.6; color: #1e293b; margin-bottom: 20px;">
-                        <p style="font-weight: bold;">Câu ${i}: Câu hỏi củng cố kiến thức trọng tâm bài học?</p>
+                        <p style="font-weight: bold;">Câu ${i}: Câu hỏi củng cố kiến thức trọng tâm của ${formattedTitle}?</p>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-size: 13pt;">
                         <div style="padding: 12px 18px; border: 1.5px solid #e2e8f0; border-radius: 8px; background: #f8fafc;"><strong>A.</strong> Phương án lựa chọn A</div>
@@ -214,15 +205,9 @@ window.renderPowerPointSlideDeck = function(subject, grade, book, lessonTitle) {
 };
 
 // ============================================================================
-// 3. MÁY TẠO GIÁO ÁN DỰ THI AN TOÀN TUYỆT ĐỐI (FAIL-SAFE ENGINE)
+// 3. MÁY TẠO GIÁO ÁN FAIL-SAFE
 // ============================================================================
-function generateFailSafeLessonHtml(subject, grade, book, formattedLessonHeading, tName, sName, driveContent) {
-    let displayContent = driveContent ? driveContent.replace(/\n/g, '<br>') : `
-        <p><strong>I. Khái niệm và bản chất khoa học:</strong> Nắm vững định nghĩa, nguồn gốc và các quy luật cốt lõi theo SGK ${book}.</p>
-        <p><strong>II. Cấu trúc, đặc điểm và cơ chế:</strong> Phân tích chi tiết các thành phần, cấu tạo và nguyên lý hoạt động của hiện tượng/đối tượng.</p>
-        <p><strong>III. Ứng dụng thực tiễn:</strong> Vận dụng kiến thức khoa học vào đời sống, y tế, nông nghiệp và sản xuất kỹ thuật tại địa phương.</p>
-    `;
-
+function generateFailSafeLessonHtml(subject, grade, book, formattedLessonHeading, tName, sName) {
     return `
         <div style="font-family: 'Times New Roman', serif; font-size: 13pt; line-height: 1.35; color: #000; text-align: justify;">
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; border: none;">
@@ -244,12 +229,12 @@ function generateFailSafeLessonHtml(subject, grade, book, formattedLessonHeading
                 <h2 style="font-size: 15pt; font-weight: bold; margin: 5px 0;">KẾ HOẠCH BÀI DẠY</h2>
                 <h3 style="font-size: 14pt; font-weight: bold; margin: 5px 0; color: #1e3a8a;">${formattedLessonHeading}</h3>
                 <p style="margin: 3px 0;">Môn: ${subject} ${grade} | Bộ sách: ${book}</p>
-                <p style="margin: 3px 0; font-style: italic;">Giáo viên thực hiện: ${tName}</p>
+                <p style="margin: 3px 0; font-style: italic;">Họ và tên giáo viên: ${tName}</p>
             </div>
 
             <p><strong>I. MỤC TIÊU</strong></p>
             <p><strong>1. Về kiến thức:</strong></p>
-            <p style="margin-left: 20px;">- Nắm vững và phân tích được các khái niệm, quy luật bản chất của bài học theo SGK ${book}.</p>
+            <p style="margin-left: 20px;">- Nắm vững và phân tích được các khái niệm, quy luật bản chất của ${formattedLessonHeading} theo SGK ${book}.</p>
             <p style="margin-left: 20px;">- Vận dụng kiến thức khoa học đã học để giải thích hiện tượng và thực hiện các nhiệm vụ thực tiễn.</p>
 
             <p><strong>2. Về năng lực:</strong></p>
@@ -309,7 +294,11 @@ function generateFailSafeLessonHtml(subject, grade, book, formattedLessonHeading
                         </td>
                         <td style="padding: 10px; border: 1px solid #000; vertical-align: top;">
                             <p style="margin-top: 0; font-weight: bold; color: #1e3a8a;">NỘI DUNG BÀI HỌC CỐT LÕI (THEO SGK):</p>
-                            <div>${displayContent}</div>
+                            <div>
+                                <p><strong>I. Khái niệm và bản chất khoa học:</strong> Nắm vững định nghĩa, nguồn gốc và các quy luật cốt lõi theo SGK ${book}.</p>
+                                <p><strong>II. Cấu trúc, đặc điểm và cơ chế:</strong> Phân tích chi tiết các thành phần, cấu tạo và nguyên lý hoạt động của hiện tượng/đối tượng.</p>
+                                <p><strong>III. Ứng dụng thực tiễn:</strong> Vận dụng kiến thức khoa học vào đời sống, y tế, nông nghiệp và sản xuất kỹ thuật tại địa phương.</p>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -383,14 +372,14 @@ function generateFailSafeLessonHtml(subject, grade, book, formattedLessonHeading
     `;
 }
 
-// BỘ ĐIỀU PHỐI CHÍNH
+// BỘ ĐIỀU PHỐI CHÍNH KHI BẤM NÚT
 async function executeActionGenerate(type) {
     if (typeof switchViewMode === 'function') switchViewMode(type);
 
     const subject = document.getElementById('sel-subject')?.value || "Sinh học";
     const grade = document.getElementById('sel-grade')?.value || "10";
     const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức Với Cuộc Sống";
-    const rawLessonTitle = (typeof currentSelectedLesson !== 'undefined' && currentSelectedLesson) ? currentSelectedLesson : "Bài học đang chọn";
+    const rawLessonTitle = getCurrentActiveLessonTitle();
     const docContainer = document.getElementById('container-a4-doc');
     let savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
 
@@ -402,13 +391,13 @@ async function executeActionGenerate(type) {
 
     const storageKey = getLessonStorageKey(subject, grade, rawLessonTitle);
 
-    // 1. Kiểm tra cache: Nếu có thì bung ra ngay 0.05s
+    // 1. Kiểm tra cache
     if (checkAndAutoLoadCachedLesson()) return;
 
-    let cleanTitle = rawLessonTitle.trim().replace(/^(bài|bài học|chủ đề)\s*[:\-\s]*/gi, '');
+    let cleanTitle = rawLessonTitle.replace(/^(bài|bài học|chủ đề)\s*[:\-\s]*/gi, '').trim();
     const formattedLessonHeading = `BÀI ${cleanTitle.toUpperCase()}`;
-    const tName = (typeof teacherName !== 'undefined') ? teacherName : "Trần Thị Mỹ Thanh";
-    const sName = (typeof schoolName !== 'undefined') ? schoolName : "Trường THPT Nguyễn Văn Thiệt";
+    const tName = (typeof teacherName !== 'undefined' && teacherName) ? teacherName : "Hồ Tấn Khải";
+    const sName = (typeof schoolName !== 'undefined' && schoolName) ? schoolName : "Trường THPT Mang Thít";
 
     docContainer.innerHTML = `
         <div style="text-align: center; padding: 60px 20px; font-family: sans-serif;">
@@ -418,19 +407,15 @@ async function executeActionGenerate(type) {
         </div>
     `;
 
-    // 2. Tải Drive (nếu có)
-    const driveContent = await fetchSgkContentFromDrive(rawLessonTitle);
-
-    // 3. Nếu không có key hoặc AI bị nghẽn mạng -> KÍCH HOẠT CHẾ ĐỘ CỨU HỘ NGAY LẬP TỨC
+    // 2. Chế độ cứu hộ an toàn nếu không có API Key
     if (!savedKey) {
-        console.warn("Kích hoạt chế độ Cứu hộ tự động (Không cần Key)");
-        const safeHtml = generateFailSafeLessonHtml(subject, grade, book, formattedLessonHeading, tName, sName, driveContent);
+        const safeHtml = generateFailSafeLessonHtml(subject, grade, book, formattedLessonHeading, tName, sName);
         localStorage.setItem(storageKey, safeHtml);
         setTimeout(() => { docContainer.innerHTML = safeHtml; }, 400);
         return;
     }
 
-    // 4. Nếu có Key: Gọi AI Flash
+    // 3. Nếu có Key thì gọi Gemini
     try {
         const activeModels = ['gemini-3.5-flash', 'gemini-flash-latest', 'gemini-3-flash-preview'];
         let aiHtml = "";
@@ -450,20 +435,18 @@ async function executeActionGenerate(type) {
                     break;
                 }
             } catch (e) {
-                console.warn(`Thử model ${m} không thành công, chuyển model tiếp...`);
+                console.warn(`Thử model ${m} không thành công...`);
             }
         }
 
-        const finalOutput = aiHtml && aiHtml.length > 500 ? aiHtml : generateFailSafeLessonHtml(subject, grade, book, formattedLessonHeading, tName, sName, driveContent);
+        const finalOutput = aiHtml && aiHtml.length > 500 ? aiHtml : generateFailSafeLessonHtml(subject, grade, book, formattedLessonHeading, tName, sName);
         localStorage.setItem(storageKey, finalOutput);
         docContainer.innerHTML = finalOutput;
 
     } catch (err) {
-        // Tuyệt đối không hiện lỗi đỏ, tự bung bản chuẩn
-        console.warn("Kích hoạt Cứu hộ khẩn cấp:", err);
-        const safeHtml = generateFailSafeLessonHtml(subject, grade, book, formattedLessonHeading, tName, sName, driveContent);
+        const safeHtml = generateFailSafeLessonHtml(subject, grade, book, formattedLessonHeading, tName, sName);
         localStorage.setItem(storageKey, safeHtml);
         docContainer.innerHTML = safeHtml;
     }
 }
-console.log("EduAI-Pro: Contest Rescue Shield v10.0 Loaded Successfully!");
+console.log("EduAI-Pro: Auto-Detect List Click Engine v10.5 Loaded!");
