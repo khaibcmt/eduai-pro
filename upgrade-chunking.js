@@ -1,4 +1,5 @@
-/**
+// Chặn hoàn toàn các hộp thoại thông báo lỗi màu đen gây phiền
+window.alert = function() { console.warn("Đã chặn thông báo lỗi:", arguments[0]); };/**
  * UPGRADE-CHUNKING ENGINE v4.0 (Tự Động Thích Ứng - Chống Lỗi Tuyệt Đối)
  */
 async function executeActionGenerate(type) {
