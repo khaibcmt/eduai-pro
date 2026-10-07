@@ -1,5 +1,6 @@
 /**
- * EDUPHYSICS / EDUAI PRO - ALL-IN-ONE ENGINE v5.2 (Triệt Tiêu Hoàn Toàn Lỗi Model Not Found)
+ * EDUPHYSICS / EDUAI PRO - ALL-IN-ONE ENGINE v5.3 (Chuẩn Hóa Model Đang Hoạt Động)
+ * Gom chung: Đọc Drive + Sinh bài 3 tầng + Bám sát 100% SGK + Đánh giá NLS & AI
  */
 
 // 1. CẤU HÌNH ĐƯỜNG DẪN GOOGLE APPS SCRIPT ĐỌC DRIVE
@@ -53,7 +54,7 @@ async function executeActionGenerate(type) {
             docContainer.innerHTML = `
                 <div style="text-align: center; padding: 50px 20px; font-family: sans-serif;">
                     <p style="color: #ef4444; font-size: 14pt; font-weight: bold;">⚠️ Chưa có mã API Key của Google AI!</p>
-                    <p style="color: #475569;">Vui lòng bấm vào nút <strong>Cài API AI</strong> ở góc trên đầu trang và dán mã khóa của Thầy vào.</p>
+                    <p style="color: #475569;">Vui lòng bấm vào nút <strong>Cài API AI</strong> ở góc trên đầu trang và dán mã khóa vào.</p>
                 </div>
             `;
         }
@@ -80,12 +81,13 @@ async function executeActionGenerate(type) {
         if (stTxt) stTxt.innerText = stepText;
     };
 
-    // Hàm gọi AI trực tiếp với danh sách Model mới nhất (Không dùng gemini-pro)
+    // Hàm gọi AI chuẩn xác theo đúng danh mục model đang hoạt động của Key
     async function queryGemini(promptText) {
         const activeModels = [
             'gemini-2.5-flash',
-            'gemini-2.0-flash',
-            'gemini-1.5-flash'
+            'gemini-flash-latest',
+            'gemini-2.5-pro',
+            'gemini-3.8-flash'
         ];
 
         let lastErr = "";
@@ -98,7 +100,10 @@ async function executeActionGenerate(type) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: promptText }] }],
-                        generationConfig: { maxOutputTokens: 8192, temperature: 0.35 }
+                        generationConfig: { 
+                            maxOutputTokens: 8192, 
+                            temperature: 0.35 
+                        }
                     })
                 });
 
@@ -113,7 +118,7 @@ async function executeActionGenerate(type) {
                 lastErr = err.message;
             }
         }
-        throw new Error(lastErr || "Máy chủ AI không phản hồi hoặc model chưa được kích hoạt.");
+        throw new Error(lastErr || "Máy chủ AI không phản hồi.");
     }
 
     try {
@@ -209,4 +214,4 @@ CHỈ TRẢ VỀ MÃ HTML THUẦN.`;
         `;
     }
 }
-console.log("EduAI-Pro: All-In-One Unified Engine v5.2 Loaded Successfully!");
+console.log("EduAI-Pro: All-In-One Unified Engine v5.3 Loaded Successfully!");
