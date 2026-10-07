@@ -1,7 +1,6 @@
 /**
- * EDUPHYSICS / EDUAI PRO - RAG AI GENERATOR ENGINE v6.0
- * Kết hợp: Trích xuất SGK từ Drive + Sinh nội dung chuyên sâu bằng Gemini AI
- * Chuẩn mực CV 5512 + NLS 2.1 + AI + Không bị lặp chữ Bài
+ * EDUPHYSICS / EDUAI PRO - AUTO CACHE & RESUME ENGINE v7.0
+ * Tính năng: Bài nào tạo xong thì lưu vĩnh viễn, lần sau mở ra xuất tức thì trong 0.05s
  */
 
 // 1. CẤU HÌNH LIÊN KẾT GOOGLE APPS SCRIPT ĐỌC DRIVE
@@ -9,7 +8,7 @@ const DRIVE_APP_URL = "https://script.google.com/macros/s/AKfycbyUAoctNBlViQVDcY
 
 window.alert = function(msg) { console.warn("[EduAI Notice]:", msg); };
 
-// Hàm trích xuất dữ liệu từ Drive (nếu có để làm ngữ liệu nền tảng)
+// Hàm trích xuất dữ liệu thô từ Drive
 async function fetchSgkContentFromDrive(lessonName) {
     if (!DRIVE_APP_URL || DRIVE_APP_URL.trim() === "" || DRIVE_APP_URL.includes("DÁN_URL")) return "";
     const cleanLesson = lessonName.trim();
@@ -21,16 +20,21 @@ async function fetchSgkContentFromDrive(lessonName) {
         const res = await fetch(fetchUrl);
         const json = await res.json();
         if (json && json.status === "success" && json.data && json.data.trim().length > 20) {
-            console.log("Đã nạp thành công ngữ liệu SGK từ Drive!");
             return json.data;
         }
     } catch (e) {
-        console.warn("Không kết nối được Drive Web App, chuyển sang chế độ AI tri thức chuẩn:", e);
+        console.warn("Không kết nối được Drive Web App:", e);
     }
     return "";
 }
 
-// 2. BỘ ĐIỀU PHỐI VÀ BIÊN SOẠN BẰNG GEMINI AI
+// Hàm hỗ trợ xóa bộ nhớ nếu muốn soạn lại bài này từ đầu
+window.clearLessonCacheAndRegenerate = function(cacheKey) {
+    localStorage.removeItem(cacheKey);
+    executeActionGenerate('5512');
+};
+
+// 2. BỘ ĐIỀU PHỐI VÀ BIÊN SOẠN
 async function executeActionGenerate(type) {
     if (typeof switchViewMode === 'function') switchViewMode(type);
 
@@ -51,6 +55,34 @@ async function executeActionGenerate(type) {
         return;
     }
 
+    // Chuẩn hóa tiêu đề bài học (chống lặp 2 chữ Bài)
+    let cleanTitle = rawLessonTitle.trim().replace(/^(bài|bài học|chủ đề)\s*[:\-\s]*/gi, '');
+    const formattedLessonHeading = `BÀI ${cleanTitle.toUpperCase()}`;
+
+    // Khóa định danh lưu trữ cho riêng từng bài
+    const storageKey = `SAVED_DOC_5512_${subject}_${grade}_${formattedLessonHeading}`.replace(/\s+/g, '_');
+
+    // =========================================================================
+    // KIỂM TRA BỘ NHỚ LƯU TRỮ TRƯỚC: NẾU ĐÃ CÓ BÀI TẠO RỒI THÌ XUẤT NGAY 0.05 GIÂY
+    // =========================================================================
+    const existingLessonHtml = localStorage.getItem(storageKey);
+    if (existingLessonHtml && existingLessonHtml.trim().length > 200) {
+        console.log(`[Cache Hit]: Bài "${formattedLessonHeading}" đã có sẵn. Đang nạp tức thì từ bộ nhớ!`);
+        docContainer.innerHTML = `
+            <div style="background: #ecfdf5; border: 1px solid #10b981; border-radius: 8px; padding: 10px 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; font-family: sans-serif;">
+                <span style="color: #065f46; font-size: 11pt;">⚡ <strong>Đã nạp tức thì từ bộ nhớ máy!</strong> (Bài này Thầy đã tạo trước đó).</span>
+                <button onclick="clearLessonCacheAndRegenerate('${storageKey}')" style="background: #0284c7; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 10pt; font-weight: bold;">
+                    🔄 Soạn lại bài này
+                </button>
+            </div>
+            ${existingLessonHtml}
+        `;
+        return;
+    }
+
+    // =========================================================================
+    // NẾU CHƯA CÓ TRONG BỘ NHỚ -> BẮT ĐẦU GỌI DRIVE & AI ĐỂ SOẠN MỚI
+    // =========================================================================
     if (!savedKey) {
         if (docContainer) {
             docContainer.innerHTML = `
@@ -63,15 +95,11 @@ async function executeActionGenerate(type) {
         return;
     }
 
-    // Tự động chuẩn hóa tiêu đề bài học (loại bỏ lặp từ "BÀI")
-    let cleanTitle = rawLessonTitle.trim().replace(/^(bài|bài học|chủ đề)\s*[:\-\s]*/gi, '');
-    const formattedLessonHeading = `BÀI ${cleanTitle.toUpperCase()}`;
-
     docContainer.innerHTML = `
         <div style="text-align: center; padding: 60px 20px; font-family: sans-serif;">
             <div style="font-size: 36px; color: #0284c7; margin-bottom: 12px;"><i class="fa-solid fa-spinner fa-spin"></i></div>
-            <h3 style="font-size: 16pt; font-weight: bold; color: #0f172a;" id="chunk-status-text">Đang kích hoạt AI và tra cứu Drive...</h3>
-            <p style="color: #64748b; font-size: 11pt;" id="chunk-step-detail">Khởi tạo kế hoạch bài dạy: <strong>${formattedLessonHeading}</strong></p>
+            <h3 style="font-size: 16pt; font-weight: bold; color: #0f172a;" id="chunk-status-text">Đang soạn mới từ AI và Drive...</h3>
+            <p style="color: #64748b; font-size: 11pt;" id="chunk-step-detail">Khởi tạo và ghi nhớ bài học: <strong>${formattedLessonHeading}</strong></p>
             <div style="width: 100%; max-width: 460px; background: #e2e8f0; height: 10px; border-radius: 6px; margin: 15px auto; overflow: hidden;">
                 <div id="chunk-progress-bar" style="width: 15%; height: 100%; background: linear-gradient(90deg, #0284c7, #10b981); transition: width 0.4s;"></div>
             </div>
@@ -87,7 +115,7 @@ async function executeActionGenerate(type) {
         if (stTxt) stTxt.innerText = stepText;
     };
 
-    // Hàm gọi AI qua danh mục model thế hệ 3 khả dụng
+    // Hàm gọi AI qua các model thế hệ mới
     async function queryGemini(promptText) {
         const activeModels = [
             'gemini-3.1-pro-preview',
@@ -99,27 +127,20 @@ async function executeActionGenerate(type) {
         let lastErr = "";
         for (const m of activeModels) {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${savedKey}`;
-
             try {
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: promptText }] }],
-                        generationConfig: { 
-                            maxOutputTokens: 8192, 
-                            temperature: 0.35 
-                        }
+                        generationConfig: { maxOutputTokens: 8192, temperature: 0.35 }
                     })
                 });
-
                 const data = await response.json();
                 if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
                     return data.candidates[0].content.parts[0].text.replace(/```html/gi, '').replace(/```/gi, '');
                 }
-                if (data.error) {
-                    lastErr = data.error.message || JSON.stringify(data.error);
-                }
+                if (data.error) lastErr = data.error.message || JSON.stringify(data.error);
             } catch (err) {
                 lastErr = err.message;
             }
@@ -131,11 +152,11 @@ async function executeActionGenerate(type) {
         const tName = (typeof teacherName !== 'undefined') ? teacherName : "Trần Thị Mỹ Thanh";
         const sName = (typeof schoolName !== 'undefined') ? schoolName : "Trường THPT Nguyễn Văn Thiệt";
 
-        // BƯỚC 0: TẢI NGỮ LIỆU TỪ DRIVE (NẾU CÓ)
+        // Bước 0: Tìm dữ liệu từ Drive
         updateStatus(20, "Đang tra cứu ngữ liệu từ Drive...", "Đọc nội dung SGK từ Google Apps Script...");
         const driveContent = await fetchSgkContentFromDrive(rawLessonTitle);
 
-        // GIAI ĐOẠN 1: MỤC TIÊU & THIẾT BỊ
+        // Giai đoạn 1: Mục tiêu & Thiết bị
         updateStatus(40, "Giai đoạn 1/3: Soạn Mục tiêu & Thiết bị...", "Xác lập kiến thức cốt lõi, NLS 2.1 và Năng lực AI...");
         const prompt1 = `
 Hãy đóng vai trò Chuyên gia Sư phạm GDPT 2018 cao cấp môn ${subject}.
@@ -155,7 +176,7 @@ YÊU CẦU ĐỊNH DẠNG:
 CHỈ TRẢ VỀ CÁC THẺ HTML THUẦN (div, table, p, h2, h3...). Không dùng ký hiệu markdown.`;
         const htmlPart1 = await queryGemini(prompt1);
 
-        // GIAI ĐOẠN 2: HOẠT ĐỘNG 1 & HOẠT ĐỘNG 2 (BẢNG 2 CỘT CHI TIẾT ĐỂ GHI VỞ)
+        // Giai đoạn 2: Hoạt động 1 & 2 (Bảng 2 cột chi tiết)
         updateStatus(70, "Giai đoạn 2/3: Soạn Hoạt động 2 (Bảng 2 cột)...", "Sinh chi tiết nội dung từng đề mục, định nghĩa, sơ đồ/công thức...");
         const prompt2 = `
 Hãy đóng vai trò Chuyên gia Sư phạm môn ${subject} ${grade} bộ sách ${book}.
@@ -176,7 +197,7 @@ QUY CHUẨN BẮT BUỘC:
 CHỈ TRẢ VỀ MÃ HTML THUẦN.`;
         const htmlPart2 = await queryGemini(prompt2);
 
-        // GIAI ĐOẠN 3: HOẠT ĐỘNG 3, HOẠT ĐỘNG 4 & PHỤ LỤC
+        // Giai đoạn 3: Luyện tập, Vận dụng, Phụ lục
         updateStatus(90, "Giai đoạn 3/3: Soạn Luyện tập, Vận dụng & Phụ lục...", "Tạo 3 dạng bài tập đánh giá năng lực và 2 Rubric...");
         const prompt3 = `
 Hãy đóng vai trò Chuyên gia Sư phạm môn ${subject} ${grade}.
@@ -196,9 +217,17 @@ YÊU CẦU:
 CHỈ TRẢ VỀ MÃ HTML THUẦN.`;
         const htmlPart3 = await queryGemini(prompt3);
 
-        updateStatus(100, "Hoàn thành 100% nội dung giáo án!", "Đang trình bày lên khổ A4...");
+        const fullCompiledHtml = htmlPart1 + "<br>" + htmlPart2 + "<br>" + htmlPart3;
+
+        // =========================================================================
+        // LƯU TOÀN BỘ NỘI DUNG VÀO BỘ NHỚ TRÌNH DUYỆT ĐỂ LẦN SAU KHÔNG CẦN SOẠN LẠI
+        // =========================================================================
+        localStorage.setItem(storageKey, fullCompiledHtml);
+        console.log(`[Cache Save]: Đã lưu thành công bài "${formattedLessonHeading}" vào bộ nhớ máy!`);
+
+        updateStatus(100, "Hoàn thành và đã lưu vào bộ nhớ!", "Đang trình bày lên khổ A4...");
         setTimeout(() => {
-            docContainer.innerHTML = htmlPart1 + "<br>" + htmlPart2 + "<br>" + htmlPart3;
+            docContainer.innerHTML = fullCompiledHtml;
         }, 300);
 
     } catch (err) {
@@ -209,12 +238,10 @@ CHỈ TRẢ VỀ MÃ HTML THUẦN.`;
                 <p style="font-size: 11pt; margin: 5px 0;"><strong>Chi tiết:</strong> ${err.message}</p>
                 <hr style="border: 0; border-top: 1px solid #fca5a5; margin: 12px 0;">
                 <p style="font-size: 10pt; line-height: 1.6; color: #7f1d1d;">
-                    👉 <strong>Cách xử lý:</strong><br>
-                    1. Kiểm tra lại mã API Key trên Google AI Studio.<br>
-                    2. Bấm vào nút <strong>Cài API AI</strong> trên web để lưu lại khóa API.
+                    👉 <strong>Cách xử lý:</strong> Kiểm tra lại mã API Key trên Google AI Studio rồi dán lại vào nút <strong>Cài API AI</strong>.
                 </p>
             </div>
         `;
     }
 }
-console.log("EduAI-Pro: RAG AI Generator Engine v6.0 Loaded Successfully!");
+console.log("EduAI-Pro: Auto Cache & Resume Engine v7.0 Loaded Successfully!");
