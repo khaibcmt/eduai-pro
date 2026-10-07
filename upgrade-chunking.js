@@ -1,10 +1,13 @@
 /**
- * EDUPHYSICS / EDUAI PRO - FULL INTEGRATED CACHE & PPT ENGINE v8.1
- * 1. Chống lỗi máy chủ quá tải (Ưu tiên gọi Flash).
- * 2. Lưu vĩnh viễn: Chọn bài là nạp ngay 0.05s nếu đã tạo.
- * 3. Ép toàn bộ kiến thức sang Slide PPT + Đủ 16 Slide Luyện tập.
+ * EDUPHYSICS / EDUAI PRO - ALL-IN-ONE MASTER ENGINE v9.0
+ * Gom chung toàn bộ:
+ * 1. Chống lỗi quá tải AI (Ưu tiên Flash).
+ * 2. Lưu bộ nhớ đệm: Đã tạo bài là nạp tức thì trong 0.05s.
+ * 3. Chuẩn hóa tên bài: Không bao giờ lặp chữ "BÀI".
+ * 4. Đồng bộ Slide PPT: Ép trọn kiến thức giáo án + Đủ 16 Slide Luyện tập.
  */
 
+// 1. CẤU HÌNH LIÊN KẾT GOOGLE APPS SCRIPT ĐỌC DRIVE
 const DRIVE_APP_URL = "https://script.google.com/macros/s/AKfycbyUAoctNBlViQVDcYxZr8h0DjAU2vaGk-QZfDWYl7LNlfgPj6JWRFsLZpBTAWvWuHtnzw/exec"; 
 
 window.alert = function(msg) { console.warn("[EduAI Notice]:", msg); };
@@ -35,14 +38,14 @@ async function fetchSgkContentFromDrive(lessonName) {
     return "";
 }
 
-// Xóa cache để soạn lại bài
+// Xóa cache để soạn lại bài mới
 window.clearLessonCacheAndRegenerate = function(storageKey) {
     localStorage.removeItem(storageKey);
     executeActionGenerate('5512');
 };
 
 // ============================================================================
-// 1. TỰ ĐỘNG BẮT SỰ KIỆN KHI CHỌN BÀI: NẠP NGAY TRONG 0.05s NẾU ĐÃ CÓ BẢN LƯU
+// 2. TỰ ĐỘNG BẮT SỰ KIỆN KHI CHỌN BÀI: NẠP NGAY 0.05s NẾU ĐÃ TẠO
 // ============================================================================
 function checkAndAutoLoadCachedLesson() {
     const subject = document.getElementById('sel-subject')?.value || "Sinh học";
@@ -72,7 +75,6 @@ function checkAndAutoLoadCachedLesson() {
     return false;
 }
 
-// Lắng nghe sự kiện thay đổi bài học trên giao diện
 function initAutoCacheListeners() {
     const lessonSelect = document.getElementById('sel-lesson');
     if (lessonSelect) {
@@ -88,124 +90,152 @@ if (document.readyState === "loading") {
 }
 
 // ============================================================================
-// 2. ÉP NỘI DUNG TỪ GIÁO ÁN SANG SLIDE POWERPOINT + 16 SLIDE LUYỆN TẬP
+// 3. ÉP NỘI DUNG TỪ GIÁO ÁN SANG SLIDE POWERPOINT + 16 SLIDE LUYỆN TẬP
 // ============================================================================
 window.renderPowerPointSlideDeck = function(subject, grade, book, lessonTitle) {
-    const docContainer = document.getElementById('container-a4-doc');
-    let cleanTitle = (lessonTitle || "").trim().replace(/^(bài|bài học|chủ đề)\s*[:\-\s]*/gi, '');
-    const formattedTitle = `BÀI ${cleanTitle.toUpperCase()}`;
-
-    // Lấy nội dung cột Dự kiến sản phẩm từ giáo án đang hiển thị hoặc từ cache
-    let rawKnowledgeText = "";
-    const storageKey = getLessonStorageKey(subject, grade, lessonTitle);
-    const savedDoc = localStorage.getItem(storageKey);
-
-    const tempDiv = document.createElement('div');
-    if (docContainer && docContainer.querySelector('table tbody td:nth-child(2)')) {
-        tempDiv.innerHTML = docContainer.querySelector('table tbody td:nth-child(2)').innerHTML;
-    } else if (savedDoc) {
-        tempDiv.innerHTML = savedDoc;
-        const col = tempDiv.querySelector('table tbody td:nth-child(2)');
-        if (col) tempDiv.innerHTML = col.innerHTML;
-    }
-
-    rawKnowledgeText = tempDiv.innerText || tempDiv.textContent || "";
-
-    // Phân tách nội dung thành các Slide kiến thức
-    const lines = rawKnowledgeText.split('\n')
-        .map(l => l.trim())
-        .filter(l => l.length > 0 && !l.includes("Ghi chú") && !l.includes("NỘI DUNG BÀI HỌC CỐT LÕI"));
-
-    let contentSlides = [];
-    let currentSlide = { title: "Nội dung trọng tâm bài học", points: [] };
-
-    lines.forEach(line => {
-        if (/^(I|II|III|IV|V|\d+\.)/i.test(line)) {
-            if (currentSlide.points.length > 0) contentSlides.push(currentSlide);
-            currentSlide = { title: line, points: [] };
-        } else {
-            currentSlide.points.push(line);
+    try {
+        const docContainer = document.getElementById('container-a4-doc');
+        if (!docContainer) {
+            console.error("Không tìm thấy container-a4-doc");
+            return;
         }
-    });
-    if (currentSlide.points.length > 0) contentSlides.push(currentSlide);
 
-    if (contentSlides.length === 0) {
-        contentSlides = [{
-            title: "Kiến thức bài học",
-            points: ["Nghiên cứu nội dung trọng tâm theo SGK " + book, "Làm chủ định nghĩa, tính chất và cấu tạo khoa học."]
-        }];
-    }
+        let cleanTitle = (lessonTitle || "Bài học").trim().replace(/^(bài|bài học|chủ đề)\s*[:\-\s]*/gi, '');
+        const formattedTitle = `BÀI ${cleanTitle.toUpperCase()}`;
 
-    // Tạo HTML bài giảng PowerPoint
-    let slidesHtml = `
-        <div class="ppt-slide" style="width: 100%; min-height: 460px; background: linear-gradient(135deg, #1e3a8a, #0284c7); color: white; border-radius: 12px; padding: 40px; margin-bottom: 25px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-            <h4 style="font-size: 15pt; text-transform: uppercase; letter-spacing: 2px; margin: 0; color: #93c5fd;">BÀI GIẢNG ĐIỆN TỬ</h4>
-            <h1 style="font-size: 26pt; font-weight: bold; margin: 15px 0;">${formattedTitle}</h1>
-            <p style="font-size: 14pt; margin: 5px 0;">Môn: ${subject} ${grade} — Bộ sách: ${book}</p>
-        </div>
-    `;
+        // Quét nội dung cột Dự kiến sản phẩm từ giao diện hoặc bộ nhớ cache
+        let rawKnowledgeText = "";
+        const storageKey = getLessonStorageKey(subject, grade, lessonTitle);
+        const savedDoc = localStorage.getItem(storageKey);
 
-    // Ép các Slide kiến thức từ giáo án
-    contentSlides.forEach((slide, idx) => {
-        slidesHtml += `
-            <div class="ppt-slide" style="width: 100%; min-height: 460px; background: #ffffff; border: 2px solid #cbd5e1; border-top: 8px solid #0284c7; border-radius: 12px; padding: 35px 40px; margin-bottom: 25px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 20px;">
-                    <h2 style="font-size: 17pt; color: #1e3a8a; margin: 0; font-weight: bold;">${slide.title}</h2>
-                    <span style="background: #e0f2fe; color: #0284c7; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 11pt;">Hình thành kiến thức • Phần ${idx + 1}</span>
-                </div>
-                <div style="font-size: 13.5pt; line-height: 1.6; color: #334155;">
-                    <ul style="margin: 0; padding-left: 25px;">
-                        ${slide.points.slice(0, 6).map(p => `<li style="margin-bottom: 10px;">${p}</li>`).join('')}
-                    </ul>
-                </div>
+        const productCol = docContainer.querySelector('table tbody td:nth-child(2)');
+        if (productCol && productCol.innerText.trim().length > 30) {
+            rawKnowledgeText = productCol.innerText;
+        } else if (savedDoc) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = savedDoc;
+            const col = tempDiv.querySelector('table tbody td:nth-child(2)');
+            rawKnowledgeText = col ? col.innerText : tempDiv.innerText;
+        }
+
+        // Bóc tách văn bản thành từng slide
+        let contentSlides = [];
+        if (rawKnowledgeText && rawKnowledgeText.trim().length > 30) {
+            const lines = rawKnowledgeText.split('\n')
+                .map(l => l.trim())
+                .filter(l => l.length > 0 && !l.includes("Ghi chú") && !l.includes("NỘI DUNG BÀI HỌC CỐT LÕI"));
+
+            let currentSlide = { title: "Nội dung trọng tâm bài học", points: [] };
+            lines.forEach(line => {
+                if (/^(I|II|III|IV|V|\d+\.)/i.test(line)) {
+                    if (currentSlide.points.length > 0) contentSlides.push(currentSlide);
+                    currentSlide = { title: line, points: [] };
+                } else {
+                    currentSlide.points.push(line);
+                }
+            });
+            if (currentSlide.points.length > 0) contentSlides.push(currentSlide);
+        }
+
+        // Dự phòng tự tạo slide cơ bản nếu chưa có giáo án
+        if (contentSlides.length === 0) {
+            contentSlides = [
+                {
+                    title: "I. Khám phá kiến thức cốt lõi",
+                    points: [
+                        `Tìm hiểu các khái niệm và bản chất của ${formattedTitle}.`,
+                        `Phân tích các đặc điểm, tính chất theo SGK ${book}.`,
+                        "Học sinh thảo luận nhóm và ghi chép vào vở bài học."
+                    ]
+                },
+                {
+                    title: "II. Quy tắc và ứng dụng khoa học",
+                    points: [
+                        "Hệ thống hóa các công thức và quy luật liên quan.",
+                        "Liên hệ các hiện tượng thực tiễn đời sống và kỹ thuật.",
+                        "Rút ra kết luận khoa học dưới sự định hướng của giáo viên."
+                    ]
+                }
+            ];
+        }
+
+        // Tạo khung Slide trình chiếu
+        let slidesHtml = `
+            <!-- SLIDE 1: TRANG BÌA -->
+            <div class="ppt-slide" style="width: 100%; min-height: 440px; background: linear-gradient(135deg, #1e3a8a, #0284c7); color: white; border-radius: 12px; padding: 40px; margin-bottom: 25px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                <h4 style="font-size: 15pt; text-transform: uppercase; letter-spacing: 2px; margin: 0; color: #93c5fd;">BÀI GIẢNG ĐIỆN TỬ</h4>
+                <h1 style="font-size: 26pt; font-weight: bold; margin: 15px 0;">${formattedTitle}</h1>
+                <p style="font-size: 14pt; margin: 5px 0;">Môn: ${subject} ${grade} — Bộ sách: ${book}</p>
             </div>
         `;
-    });
 
-    // PHÂN ĐOẠN LUYỆN TẬP
-    slidesHtml += `
-        <div class="ppt-slide" style="width: 100%; min-height: 230px; background: linear-gradient(135deg, #059669, #10b981); color: white; border-radius: 12px; padding: 30px; margin-bottom: 25px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-            <h2 style="font-size: 23pt; font-weight: bold; margin: 0;">HOẠT ĐỘNG: LUYỆN TẬP & CỦNG CỐ</h2>
-            <p style="font-size: 13pt; margin-top: 10px; color: #d1fae5;">Hệ thống 16 Slide câu hỏi trắc nghiệm tương tác chuẩn</p>
-        </div>
-    `;
+        // Ép các Slide kiến thức bài học
+        contentSlides.forEach((slide, idx) => {
+            slidesHtml += `
+                <div class="ppt-slide" style="width: 100%; min-height: 440px; background: #ffffff; border: 2px solid #cbd5e1; border-top: 8px solid #0284c7; border-radius: 12px; padding: 35px 40px; margin-bottom: 25px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 20px;">
+                        <h2 style="font-size: 17pt; color: #1e3a8a; margin: 0; font-weight: bold;">${slide.title}</h2>
+                        <span style="background: #e0f2fe; color: #0284c7; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 11pt;">Hình thành kiến thức • Phần ${idx + 1}</span>
+                    </div>
+                    <div style="font-size: 14pt; line-height: 1.7; color: #334155;">
+                        <ul style="margin: 0; padding-left: 25px;">
+                            ${slide.points.slice(0, 6).map(p => `<li style="margin-bottom: 10px;">${p}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        });
 
-    // GIỮ NGUYÊN VẸN ĐỦ 16 SLIDE LUYỆN TẬP
-    for (let i = 1; i <= 16; i++) {
+        // Phân đoạn Luyện tập
         slidesHtml += `
-            <div class="ppt-slide" style="width: 100%; min-height: 460px; background: #ffffff; border: 2px solid #cbd5e1; border-top: 8px solid #10b981; border-radius: 12px; padding: 35px 40px; margin-bottom: 25px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 20px;">
-                    <h3 style="font-size: 16pt; color: #065f46; margin: 0; font-weight: bold;">CÂU HỎI LUYỆN TẬP ${i}/16</h3>
-                    <span style="background: #ecfdf5; color: #059669; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 11pt;">Trắc nghiệm tương tác</span>
-                </div>
-                <div style="font-size: 14pt; line-height: 1.6; color: #1e293b; margin-bottom: 20px;">
-                    <p style="font-weight: bold;">Câu ${i}: Câu hỏi củng cố nội dung cốt lõi của ${formattedTitle}?</p>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-size: 13pt;">
-                    <div style="padding: 12px 18px; border: 1.5px solid #e2e8f0; border-radius: 8px; background: #f8fafc;"><strong>A.</strong> Phương án lựa chọn A</div>
-                    <div style="padding: 12px 18px; border: 1.5px solid #e2e8f0; border-radius: 8px; background: #f8fafc;"><strong>B.</strong> Phương án lựa chọn B</div>
-                    <div style="padding: 12px 18px; border: 1.5px solid #e2e8f0; border-radius: 8px; background: #f8fafc;"><strong>C.</strong> Phương án lựa chọn C</div>
-                    <div style="padding: 12px 18px; border: 1.5px solid #e2e8f0; border-radius: 8px; background: #f8fafc;"><strong>D.</strong> Phương án lựa chọn D</div>
-                </div>
+            <div class="ppt-slide" style="width: 100%; min-height: 220px; background: linear-gradient(135deg, #059669, #10b981); color: white; border-radius: 12px; padding: 30px; margin-bottom: 25px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                <h2 style="font-size: 22pt; font-weight: bold; margin: 0;">HOẠT ĐỘNG: LUYỆN TẬP & CỦNG CỐ</h2>
+                <p style="font-size: 13pt; margin-top: 10px; color: #d1fae5;">Hệ thống 16 Slide câu hỏi trắc nghiệm tương tác chuẩn</p>
             </div>
         `;
-    }
 
-    if (docContainer) {
+        // 16 Slide Luyện tập cố định
+        for (let i = 1; i <= 16; i++) {
+            slidesHtml += `
+                <div class="ppt-slide" style="width: 100%; min-height: 440px; background: #ffffff; border: 2px solid #cbd5e1; border-top: 8px solid #10b981; border-radius: 12px; padding: 35px 40px; margin-bottom: 25px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 20px;">
+                        <h3 style="font-size: 16pt; color: #065f46; margin: 0; font-weight: bold;">CÂU HỎI LUYỆN TẬP ${i}/16</h3>
+                        <span style="background: #ecfdf5; color: #059669; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 11pt;">Trắc nghiệm tương tác</span>
+                    </div>
+                    <div style="font-size: 14pt; line-height: 1.6; color: #1e293b; margin-bottom: 20px;">
+                        <p style="font-weight: bold;">Câu ${i}: Nội dung câu hỏi củng cố kiến thức trọng tâm bài học?</p>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-size: 13pt;">
+                        <div style="padding: 12px 18px; border: 1.5px solid #e2e8f0; border-radius: 8px; background: #f8fafc;"><strong>A.</strong> Phương án lựa chọn A</div>
+                        <div style="padding: 12px 18px; border: 1.5px solid #e2e8f0; border-radius: 8px; background: #f8fafc;"><strong>B.</strong> Phương án lựa chọn B</div>
+                        <div style="padding: 12px 18px; border: 1.5px solid #e2e8f0; border-radius: 8px; background: #f8fafc;"><strong>C.</strong> Phương án lựa chọn C</div>
+                        <div style="padding: 12px 18px; border: 1.5px solid #e2e8f0; border-radius: 8px; background: #f8fafc;"><strong>D.</strong> Phương án lựa chọn D</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Đẩy ra màn hình hiển thị
         docContainer.innerHTML = `
             <div style="max-width: 900px; margin: 0 auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="margin: 0; color: #0f172a;">Trình chiếu Slide bài giảng (${contentSlides.length + 17} Slides)</h3>
-                    <button onclick="window.print()" style="background: #0284c7; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;"><i class="fa-solid fa-print"></i> In / Xuất Slide</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: #f8fafc; padding: 12px 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <h3 style="margin: 0; color: #0f172a; font-size: 14pt;">Bài giảng Slide (${contentSlides.length + 17} Slides)</h3>
+                    <button onclick="window.print()" style="background: #0284c7; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;"><i class="fa-solid fa-print"></i> In / Xuất PDF Slide</button>
                 </div>
                 ${slidesHtml}
             </div>
         `;
+    } catch (err) {
+        console.error("Lỗi tạo Slide PPT:", err);
+        const docContainer = document.getElementById('container-a4-doc');
+        if (docContainer) {
+            docContainer.innerHTML = `<div style="padding: 20px; color: red;">⚠️ Lỗi hiển thị PPT: ${err.message}</div>`;
+        }
     }
 };
 
 // ============================================================================
-// 3. BỘ ĐIỀU PHỐI TẠO GIÁO ÁN
+// 4. BỘ ĐIỀU PHỐI TẠO GIÁO ÁN
 // ============================================================================
 async function executeActionGenerate(type) {
     if (typeof switchViewMode === 'function') switchViewMode(type);
@@ -267,7 +297,7 @@ async function executeActionGenerate(type) {
         if (stTxt) stTxt.innerText = stepText;
     };
 
-    // ĐÃ SẮP XẾP LẠI: ƯU TIÊN GỌI FLASH ĐỂ TRÁNH LỖI QUÁ TẢI (HIGH DEMAND)
+    // ƯU TIÊN GỌI FLASH ĐỂ CHỐNG LỖI QUÁ TẢI (HIGH DEMAND)
     async function queryGemini(promptText) {
         const activeModels = [
             'gemini-3.5-flash',
@@ -353,4 +383,4 @@ Chỉ trả về HTML.`;
         docContainer.innerHTML = `<div style="padding: 20px; color: red;">⚠️ Lỗi: ${err.message}</div>`;
     }
 }
-console.log("EduAI-Pro: Full Integrated Cache & PPT Engine v8.1 Loaded!");
+console.log("EduAI-Pro: All-In-One Master Engine v9.0 Loaded Successfully!");
