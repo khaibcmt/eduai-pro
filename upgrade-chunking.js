@@ -1,48 +1,42 @@
 /**
- * BIOMASTER AI - FIX TRIỆT ĐỂ LỖI KẸT BÀI & PPT v12.0
+ * BIOMASTER AI - FIX TRIỆT ĐỂ 100% CHỌN BÀI & PPT v12.2
  * Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít
  */
 
-// Biến lưu trữ tên bài đang được chọn thực tế
-window.currentActiveLessonName = "Bài 2: Các phương pháp nghiên cứu và học tập môn Sinh học";
+// Biến lưu bài học đang chọn
+window.currentActiveLessonName = "Bài 1: Giới thiệu khái quát môn Sinh học";
 
-// Hàm bóc tách tên bài học chính xác từ chuỗi text
+// Hàm làm sạch tên bài học
 function extractCleanLessonTitle(text) {
     if (!text) return "";
     let clean = text.replace(/[\n\r\t]/g, ' ').replace(/\s+/g, ' ').trim();
-    // Bỏ các ký tự mũi tên hoặc checkbox thừa nếu có
     clean = clean.replace(/^[✔☑☒\s\-_>→]+/g, '').replace(/[>→\s]+$/g, '').trim();
     return clean;
 }
 
-// 1. TỰ ĐỘNG BẮT SỰ KIỆN CLICK HOẶC TICK CHỌN BÀI HỌC BÊN TRÁI
+// 1. LẮNG NGHE SỰ KIỆN CLICK BÀI HỌC TRÊN TOÀN GIAO DIỆN
 document.addEventListener('click', function(e) {
-    // Tìm phần tử bài học được click trúng
-    const target = e.target;
-    const lessonRow = target.closest('li, div, tr, [class*="lesson"]');
+    const lessonRow = e.target.closest('li, div, tr, [class*="lesson"]');
     
     if (lessonRow && (lessonRow.innerText.toLowerCase().includes("bài ") || lessonRow.querySelector('input[type="checkbox"]'))) {
-        let extractedText = "";
-        
-        // Ưu tiên lấy text không chứa checkbox
         const clone = lessonRow.cloneNode(true);
-        const inputs = clone.querySelectorAll('input, button, .arrow, i');
-        inputs.forEach(el => el.remove());
-        extractedText = clone.innerText.trim();
+        const removeEls = clone.querySelectorAll('input, button, .arrow, i');
+        removeEls.forEach(el => el.remove());
+        const extractedText = clone.innerText.trim();
 
         if (extractedText.toLowerCase().includes("bài")) {
             window.currentActiveLessonName = extractCleanLessonTitle(extractedText);
-            console.log("Đã chọn bài:", window.currentActiveLessonName);
+            console.log("Đã chọn thành công bài:", window.currentActiveLessonName);
             
-            // Tự động render bài được chọn ngay lập tức
+            // Tự động cập nhật nội dung giáo án ngay
             setTimeout(() => {
                 executeActionGenerate('5512');
-            }, 50);
+            }, 60);
         }
     }
 }, true);
 
-// 2. SINH NỘI DUNG CÔ ĐỌNG LINH HOẠT THEO TỪNG BÀI
+// 2. TỰ ĐỘNG TẠO NỘI DUNG THEO ĐÚNG TÊN BÀI ĐƯỢC CHỌN
 function generateSmartContentByTitle(lessonTitle) {
     let cleanName = extractCleanLessonTitle(lessonTitle);
     let titleUpper = cleanName.toUpperCase();
@@ -62,13 +56,12 @@ function generateSmartContentByTitle(lessonTitle) {
     };
 }
 
-// 3. HÀM TẠO SLIDE POWERPOINT (CHẠY 100% CẢ HAI NƠI HIỂN THỊ)
+// 3. TẠO SLIDE POWERPOINT (XUẤT RA TẤT CẢ CONTAINER TRÁNH LỖI)
 window.renderPowerPointSlideDeck = function(subject, grade, book, lessonTitle) {
-    const activeTitle = lessonTitle || window.currentActiveLessonName || "Bài học đang chọn";
+    const activeTitle = lessonTitle || window.currentActiveLessonName || "Bài 1: Giới thiệu khái quát môn Sinh học";
     const data = generateSmartContentByTitle(activeTitle);
     
     let slidesHtml = `
-        <!-- SLIDE 1: TRANG TIÊU ĐỀ BÀI GIẢNG -->
         <div class="ppt-slide" style="width: 100%; min-height: 480px; background: linear-gradient(135deg, #0284c7, #1e3a8a); color: white; border-radius: 12px; padding: 40px; margin-bottom: 25px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
             <h4 style="font-size: 18pt; text-transform: uppercase; letter-spacing: 2px; margin: 0; color: #bae6fd;">BÀI GIẢNG ĐIỆN TỬ GDPT 2018</h4>
             <h1 style="font-size: 30pt; font-weight: bold; margin: 15px 0; line-height: 1.25;">${data.heading}</h1>
@@ -76,38 +69,28 @@ window.renderPowerPointSlideDeck = function(subject, grade, book, lessonTitle) {
             <p style="font-size: 13pt; margin-top: 15px; color: #e2e8f0; font-style: italic;">Giáo viên: Hồ Tấn Khải — Trường THPT Mang Thít</p>
         </div>
 
-        <!-- SLIDE 2: NỘI DUNG 1 -->
-        <div class="ppt-slide" style="width: 100%; min-height: 480px; background: #ffffff; border: 2px solid #cbd5e1; border-top: 10px solid #0284c7; border-radius: 12px; padding: 40px; margin-bottom: 25px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+        <div class="ppt-slide" style="width: 100%; min-height: 480px; background: #ffffff; border: 2px solid #cbd5e1; border-top: 10px solid #0284c7; border-radius: 12px; padding: 40px; margin-bottom: 25px; box-sizing: border-box;">
             <h2 style="font-size: 23pt; color: #0369a1; margin: 0 0 20px 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">${data.muc1_title}</h2>
-            <div style="font-size: 17pt; line-height: 1.8; color: #1e293b;">
-                ${data.muc1_desc}
-            </div>
+            <div style="font-size: 17pt; line-height: 1.8; color: #1e293b;">${data.muc1_desc}</div>
         </div>
 
-        <!-- SLIDE 3: NỘI DUNG 2 -->
-        <div class="ppt-slide" style="width: 100%; min-height: 480px; background: #ffffff; border: 2px solid #cbd5e1; border-top: 10px solid #0284c7; border-radius: 12px; padding: 40px; margin-bottom: 25px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+        <div class="ppt-slide" style="width: 100%; min-height: 480px; background: #ffffff; border: 2px solid #cbd5e1; border-top: 10px solid #0284c7; border-radius: 12px; padding: 40px; margin-bottom: 25px; box-sizing: border-box;">
             <h2 style="font-size: 23pt; color: #0369a1; margin: 0 0 20px 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">${data.muc2_title}</h2>
-            <div style="font-size: 17pt; line-height: 1.8; color: #1e293b;">
-                ${data.muc2_desc}
-            </div>
+            <div style="font-size: 17pt; line-height: 1.8; color: #1e293b;">${data.muc2_desc}</div>
         </div>
 
-        <!-- SLIDE 4: NỘI DUNG 3 -->
-        <div class="ppt-slide" style="width: 100%; min-height: 480px; background: #ffffff; border: 2px solid #cbd5e1; border-top: 10px solid #0284c7; border-radius: 12px; padding: 40px; margin-bottom: 25px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+        <div class="ppt-slide" style="width: 100%; min-height: 480px; background: #ffffff; border: 2px solid #cbd5e1; border-top: 10px solid #0284c7; border-radius: 12px; padding: 40px; margin-bottom: 25px; box-sizing: border-box;">
             <h2 style="font-size: 23pt; color: #0369a1; margin: 0 0 20px 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">${data.muc3_title}</h2>
-            <div style="font-size: 17pt; line-height: 1.8; color: #1e293b;">
-                ${data.muc3_desc}
-            </div>
+            <div style="font-size: 17pt; line-height: 1.8; color: #1e293b;">${data.muc3_desc}</div>
         </div>
 
-        <!-- SLIDE PHÂN ĐOẠN LUYỆN TẬP -->
         <div class="ppt-slide" style="width: 100%; min-height: 250px; background: linear-gradient(135deg, #059669, #10b981); color: white; border-radius: 12px; padding: 30px; margin-bottom: 25px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
             <h2 style="font-size: 27pt; font-weight: bold; margin: 0;">HOẠT ĐỘNG: LUYỆN TẬP & CỦNG CỐ</h2>
             <p style="font-size: 15pt; margin-top: 10px; color: #d1fae5;">Hệ thống 16 Slide câu hỏi trắc nghiệm tương tác chuẩn</p>
         </div>
     `;
 
-    // 16 SLIDE LUYỆN TẬP TRẮC NGHIỆM
+    // 16 slide trắc nghiệm
     for (let i = 1; i <= 16; i++) {
         slidesHtml += `
             <div class="ppt-slide" style="width: 100%; min-height: 480px; background: #ffffff; border: 2px solid #cbd5e1; border-top: 10px solid #10b981; border-radius: 12px; padding: 40px; margin-bottom: 25px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
@@ -138,19 +121,18 @@ window.renderPowerPointSlideDeck = function(subject, grade, book, lessonTitle) {
         </div>
     `;
 
-    // Xuất ra đồng thời cả 2 container để đảm bảo nút PPT bấm là hiện
-    const docA4 = document.getElementById('container-a4-doc');
-    const pptContainer = document.getElementById('container-slide-deck') || document.getElementById('slide-container');
-    
-    if (docA4) docA4.innerHTML = wrapperHtml;
-    if (pptContainer) pptContainer.innerHTML = wrapperHtml;
+    // Nạp đồng loạt vào mọi vùng hiển thị có thể có
+    const targets = ['container-a4-doc', 'container-slide-deck', 'slide-container'];
+    targets.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = wrapperHtml;
+    });
 };
 
 // 4. HÀM TẠO GIÁO ÁN CV 5512 CÔ ĐỌNG
 function renderFullLessonDoc(data) {
     return `
         <div style="font-family: 'Times New Roman', serif; font-size: 13pt; line-height: 1.35; color: #000; text-align: justify;">
-            <!-- BẢNG HÀNH CHÍNH -->
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; border: none;">
                 <tr>
                     <td style="width: 45%; text-align: center; vertical-align: top; border: none; padding: 0;">
@@ -281,7 +263,7 @@ function renderFullLessonDoc(data) {
             </table>
 
             <p><strong>Phụ lục 2: RUBRIC ĐÁNH GIÁ NĂNG LỰC SỐ (NLS 2.1)</strong></p>
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;" border="1">
+            <table style="width: 100%; border-collapse: collapse;" border="1">
                 <tr style="background-color: #f8fafc;">
                     <th style="padding: 6px; border: 1px solid #000; width: 25%;">Tiêu chí</th>
                     <th style="padding: 6px; border: 1px solid #000; width: 25%;">Mức 1 (Chưa đạt)</th>
@@ -299,13 +281,13 @@ function renderFullLessonDoc(data) {
     `;
 }
 
-// 5. BỘ ĐIỀU PHỐI CHÍNH KHI BẤM NÚT TRÊN HEADER
+// 5. ĐIỀU PHỐI KHI BẤM NÚT TRÊN HEADER
 function executeActionGenerate(type) {
     if (typeof switchViewMode === 'function') {
         try { switchViewMode(type); } catch(e){}
     }
 
-    const currentTitle = window.currentActiveLessonName || "Bài 2: Các phương pháp nghiên cứu và học tập môn Sinh học";
+    const currentTitle = window.currentActiveLessonName || "Bài 1: Giới thiệu khái quát môn Sinh học";
     const data = generateSmartContentByTitle(currentTitle);
     const docContainer = document.getElementById('container-a4-doc');
 
@@ -319,4 +301,4 @@ function executeActionGenerate(type) {
     }
 }
 
-console.log("BioMaster AI v12.0: Đã sửa triệt để lỗi kẹt bài và PPT!");
+console.log("BioMaster AI v12.2: Đã sẵn sàng phục vụ hội thi!");
