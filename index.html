@@ -41,7 +41,6 @@
         ::-webkit-scrollbar-thumb { background: #24324f; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
 
-        /* Nút 3D Skeuomorphic nổi khối bắt mắt */
         .btn-3d {
             position: relative;
             transition: all 0.15s ease;
@@ -73,7 +72,6 @@
         }
         .btn-3d-amber:active { box-shadow: 0 1px 0 #78350f; }
 
-        /* Trang soạn thảo văn bản mô phỏng A4 chuẩn Bộ GD&ĐT */
         .page-a4 {
             width: 210mm;
             min-height: 297mm;
@@ -118,7 +116,7 @@
     <header class="bg-brand-surface border-b border-brand-border px-4 py-2.5 sticky top-0 z-50 shadow-lg no-print">
         <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-3">
             
-            <!-- Logo & Thông tin nhận diện duy nhất của Thầy -->
+            <!-- Logo & Nhận diện duy nhất của Thầy -->
             <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white text-xl shadow-lg shadow-blue-500/30 border border-white/20">
                     <i class="fa-solid fa-dna"></i>
@@ -155,7 +153,7 @@
                 </button>
             </div>
 
-            <!-- Chuyển Tab Xem & Cài API Key / Drive -->
+            <!-- Chuyển Tab Xem & Cài API Key / Google Drive -->
             <div class="flex items-center gap-2">
                 <button onclick="openDriveSyncModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-xs font-bold border border-blue-500/30 transition flex items-center gap-1.5" title="Đồng bộ Google Drive Apps Script">
                     <i class="fa-brands fa-google-drive"></i> <span>Google Drive</span>
@@ -393,7 +391,7 @@
                 <p>Thầy dán mã <strong>Gemini API Key</strong> vào đây để AI tự động kết nối và viết bài trực tiếp theo thời gian thực:</p>
                 <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
                 <p class="text-[11px] text-slate-500 leading-relaxed">
-                    * Hệ thống tích hợp sẵn toàn bộ kho học liệu SGK 2018; khi có Key, AI sẽ gọi API trực tiếp với 100% chỉ dẫn của Thầy.
+                    * Khi có Key, AI sẽ trực tiếp biên soạn bài mới và TỰ ĐỘNG LƯU vào máy tính để những lần sau xem lại không cần mạng.
                 </p>
             </div>
             <div class="mt-5 flex justify-end gap-2 text-xs">
@@ -403,7 +401,7 @@
         </div>
     </div>
 
-    <!-- ==================== LOGIC JAVASCRIPT GỐC ĐẦY ĐỦ 100% ==================== -->
+    <!-- ==================== LOGIC JAVASCRIPT GỐC + CACHING & FAIL-SAFE ==================== -->
     <script>
         const teacherName = "Hồ Tấn Khải";
         const schoolName = "Trường THPT Mang Thít";
@@ -418,7 +416,6 @@
         let timerSeconds = 0;
         let timerInterval = null;
 
-        // Lưu cấu hình số lượng câu hỏi trên ma trận để người dùng sửa trực tiếp
         let examMatrixCustomCounts = {};
 
         // DANH SÁCH TOÀN BỘ BÀI HỌC NGUYÊN BẢN CỦA THẦY
@@ -630,13 +627,85 @@
             if (currentActiveMode === '7991') renderMaTranDeKiemTra(subject, grade, document.getElementById('sel-book').value);
         }
 
-        function executeActionGenerate(type) {
+        // ==================== HÀM THỰC THI THÔNG MINH (CACHE -> AI -> BẢN GỐC NỘI HÀM) ====================
+        async function executeActionGenerate(type) {
             switchViewMode(type);
+
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
             const book = document.getElementById('sel-book').value;
             const lessonTitle = currentSelectedLesson;
+            const customGuide = document.getElementById('ai-custom-instructions') ? document.getElementById('ai-custom-instructions').value : "";
+            const docContainer = document.getElementById('container-a4-doc');
 
+            // 1. KIỂM TRA BỘ NHỚ ĐỆM (CACHE) XEM BÀI NÀY ĐÃ TỪNG ĐƯỢC SOẠN VÀ LƯU CHƯA
+            const cacheKey = `cached_${type}_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
+            const cachedContent = localStorage.getItem(cacheKey);
+
+            if (cachedContent && type !== 'slide') {
+                docContainer.innerHTML = cachedContent;
+                return;
+            }
+
+            const savedKey = localStorage.getItem('gemini_api_key');
+
+            // 2. NẾU CHƯA CÓ TRONG BỘ NHỚ VÀ CÓ API KEY -> GỌI AI SOẠN VÀ TỰ ĐỘNG LƯU LẠI
+            if (savedKey && savedKey.trim() !== "" && type !== 'slide') {
+                docContainer.innerHTML = `
+                    <div style="text-align: center; padding: 70px 20px; font-family: sans-serif;">
+                        <div style="font-size: 36px; color: #0284c7; margin-bottom: 16px;"><i class="fa-solid fa-brain fa-bounce"></i></div>
+                        <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;">AI đang trực tiếp biên soạn theo phân phối chương trình...</h3>
+                        <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
+                            Đang xử lý nội dung chuyên sâu cho: <strong>${lessonTitle}</strong>
+                        </p>
+                    </div>
+                `;
+
+                try {
+                    let promptText = "";
+                    if (type === '5512') {
+                        promptText = `Bạn là chuyên gia sư phạm THPT. Hãy soạn Kế hoạch bài dạy theo chuẩn Công văn 5512/BGDĐT-GDTrH cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
+                        Yêu cầu:
+                        - Tiêu đề: SỞ GD&ĐT VĨNH LONG - TRƯỜNG THPT MANG THÍT - Họ và tên giáo viên: Hồ Tấn Khải.
+                        - Mục tiêu: Kiến thức; Năng lực chung; Năng lực đặc thù; Năng lực số [NLS 2.1]; Năng lực AI (mã chuẩn ${grade}.A1.2); Phẩm chất.
+                        - Tiến trình 4 hoạt động: Hoạt động 2 trình bày dạng BẢNG 2 CỘT VIỀN ĐEN chi tiết nội dung ghi vở của học sinh; Hoạt động 3 Luyện tập đủ 3 dạng thức trắc nghiệm; Hoạt động 4 Vận dụng gắn liền nông nghiệp Vĩnh Long / ĐBSCL.
+                        - Đủ 3 phụ lục: Phiếu học tập số 1, Rubric NLS 2.1 (5 cột), Rubric Năng lực AI (5 cột).
+                        - Ghi chú thêm từ giáo viên: ${customGuide}
+                        - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html) để chèn thẳng vào trang A4.`;
+                    } else if (type === '7991') {
+                        promptText = `Bạn là chuyên gia khảo thí Bộ GD&ĐT. Hãy soạn Ma trận, Bản đặc tả và Đề kiểm tra định kì (CV 7991) cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
+                        Yêu cầu:
+                        - Mục 1: Khung ma trận (Bảng tính tỉ lệ % nhận thức Biết, Hiểu, Vận dụng).
+                        - Mục 2: Bản đặc tả ma trận.
+                        - Mục 3: Đề kiểm tra chính thức (Bản giáo viên: gạch chân các phương án đúng <u>A</u>, <u>a)</u>, Đáp án là: <u>...</u>). Đủ 3 phần: Phần I nhiều lựa chọn, Phần II đúng/sai, Phần III trả lời ngắn.
+                        - Mục 4: Hướng dẫn chấm và biểu điểm chi tiết.
+                        - Ghi chú thêm: ${customGuide}
+                        - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html).`;
+                    }
+
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${savedKey.trim()}`;
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+                    });
+
+                    if (!response.ok) throw new Error("Lỗi kết nối API");
+
+                    const data = await response.json();
+                    let resultHtml = data.candidates[0].content.parts[0].text;
+                    resultHtml = resultHtml.replace(/^```html/i, '').replace(/```$/i, '').trim();
+
+                    // TỰ ĐỘNG LƯU BÀI VÀO BỘ NHỚ ĐỆM CHO CÁC LẦN SAU
+                    localStorage.setItem(cacheKey, resultHtml);
+                    docContainer.innerHTML = resultHtml;
+                    return;
+                } catch (error) {
+                    console.warn("Lỗi gọi AI, tự động kích hoạt bộ dữ liệu cứu cánh nội hàm:", error);
+                }
+            }
+
+            // 3. CỨU CÁNH AN TOÀN: NẠP BẢN GỐC CHUẨN MỰC NỘI HÀM NGAY TRONG 0.05S
             if (type === '5512') {
                 renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle);
             } else if (type === '7991') {
@@ -871,7 +940,6 @@
             const docContainer = document.getElementById('container-a4-doc');
             const lessons = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [currentSelectedLesson];
 
-            // Tự động khởi tạo cấu hình số câu nếu chưa có
             lessons.forEach((les, idx) => {
                 if (!examMatrixCustomCounts[les]) {
                     examMatrixCustomCounts[les] = {
@@ -886,7 +954,6 @@
                 }
             });
 
-            // Tính tổng câu
             let total_p1_b = 0, total_p1_h = 0, total_p1_vd = 0;
             let total_p2_h = 0, total_p2_vd = 0;
             let total_p3_h = 0, total_p3_vd = 0;
@@ -1183,7 +1250,7 @@
                 `
             });
 
-            // HỆ THỐNG 16 SLIDE LUYỆN TẬP RIÊNG BIỆT CÓ ẨN ĐÁP ÁN
+            // 16 SLIDE LUYỆN TẬP RIÊNG BIỆT CÓ ẨN ĐÁP ÁN
             for (let i = 1; i <= 6; i++) {
                 slideDeckData.push({
                     title: `LUYỆN TẬP: CÂU HỎI TRẮC NGHIỆM ${i}`,
@@ -1532,7 +1599,7 @@
             localStorage.setItem('gemini_api_key', key);
             checkStoredApiKey();
             closeAIKeyModal();
-            alert("Đã lưu API Key thành công! Hệ thống sẵn sàng cho hội thi.");
+            alert("Đã lưu API Key thành công! AI sẵn sàng biên soạn và tự lưu bài vào máy.");
         }
         function checkStoredApiKey() {
             const key = localStorage.getItem('gemini_api_key');
