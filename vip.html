@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduBioMaster VIP - Hệ Thống Sư Phạm Thông Minh Đa Khối Lớp | GV: Hồ Tấn Khải</title>
+    <title>Hệ Thống Trợ Lý Sư Phạm Số GDPT 2018 - Cấp THPT</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Times+New+Roman&display=swap" rel="stylesheet">
-    <!-- Thư viện tạo file PowerPoint .pptx -->
+    <!-- Thư viện PptxGenJS xuất PowerPoint .pptx -->
     <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
     <script>
@@ -24,12 +24,7 @@
                         doc: ['"Times New Roman"', 'Times', 'serif']
                     },
                     colors: {
-                        brand: {
-                            dark: '#070c18',
-                            surface: '#0f172a',
-                            card: '#141e33',
-                            border: '#1e293b'
-                        }
+                        brand: { dark: '#070c18', surface: '#0f172a', card: '#141e33', border: '#1e293b' }
                     }
                 }
             }
@@ -79,61 +74,67 @@
 </head>
 <body class="bg-brand-dark text-slate-200 font-sans min-h-screen flex flex-col antialiased">
 
-    <!-- ==================== HEADER HỆ THỐNG ==================== -->
+    <!-- ==================== HEADER ==================== -->
     <header class="bg-brand-surface border-b border-brand-border px-4 py-2.5 sticky top-0 z-50 shadow-lg no-print">
         <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-indigo-600 to-cyan-400 flex items-center justify-center text-white text-xl shadow-lg border border-white/20">
-                    <i class="fa-solid fa-crown text-amber-300"></i>
+                    <i class="fa-solid fa-graduation-cap text-amber-300"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="text-lg font-black tracking-tight text-white">EduBioMaster VIP</span>
-                        <span class="text-[10px] bg-gradient-to-r from-amber-500 to-rose-500 text-white font-extrabold px-2 py-0.5 rounded-full shadow-sm">Enterprise Multi-Grade</span>
+                        <span class="text-lg font-black tracking-tight text-white">EduMaster AI Pro</span>
+                        <span class="text-[10px] bg-gradient-to-r from-amber-500 to-rose-500 text-white font-extrabold px-2 py-0.5 rounded-full shadow-sm">Phiên Bản Toàn Diện GDPT 2018</span>
                     </div>
-                    <p class="text-xs text-slate-300 font-semibold flex items-center gap-1.5 mt-0.5">
-                        <i class="fa-solid fa-chalkboard-user text-cyan-400 text-xs"></i> 
-                        <span>Giáo viên: Hồ Tấn Khải</span>
-                        <span class="text-slate-600">•</span>
-                        <span class="text-slate-400">Trường THPT Mang Thít (Vĩnh Long)</span>
+                    <p class="text-xs text-slate-400 font-semibold mt-0.5">
+                        <span>Hệ thống hỗ trợ chuyên môn THPT • Sinh học & Công nghệ Nông nghiệp</span>
                     </p>
                 </div>
             </div>
 
+            <!-- Nút Hành Động 3D -->
             <div class="flex items-center gap-2.5">
                 <button onclick="renderActiveView('5512')" class="btn-3d btn-3d-blue py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
                     <i class="fa-solid fa-file-signature text-sm"></i>
-                    <span>TẠO GIÁO ÁN (CV 5512 + NLS + AI)</span>
+                    <span>TẠO GIÁO ÁN (CV 5512)</span>
                 </button>
                 <button onclick="renderActiveView('slide')" class="btn-3d btn-3d-purple py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
                     <i class="fa-solid fa-chalkboard-user text-sm"></i>
-                    <span>TẠO BÀI GIẢNG PPT (16 SLIDE LUYỆN TẬP)</span>
+                    <span>TẠO BÀI GIẢNG PPT (16 SLIDE)</span>
                 </button>
                 <button onclick="renderActiveView('7991')" class="btn-3d btn-3d-amber py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
                     <i class="fa-solid fa-list-check text-sm"></i>
-                    <span>MA TRẬN & ĐA MÃ ĐỀ THI (CV 7991)</span>
+                    <span>MA TRẬN & ĐỀ THI (CV 7991)</span>
                 </button>
             </div>
 
-            <div class="flex items-center bg-[#0b1222] p-1 rounded-xl border border-brand-border text-xs">
-                <button id="tab-5512" onclick="switchView('5512')" class="px-3 py-1.5 rounded-lg font-bold transition bg-blue-600 text-white">5512</button>
-                <button id="tab-slide" onclick="switchView('slide')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Slide 16:9</button>
-                <button id="tab-7991" onclick="switchView('7991')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Đề & Ma Trận</button>
+            <!-- Tiện Ích: Google Drive, AI Key & Chuyển Tab -->
+            <div class="flex items-center gap-2">
+                <button onclick="openDriveModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-xs font-bold border border-blue-500/30 transition flex items-center gap-1.5" title="Đồng bộ Google Drive">
+                    <i class="fa-brands fa-google-drive"></i> <span>Google Drive</span>
+                </button>
+                <button onclick="openAIKeyModal()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-brain"></i> <span id="api-status-badge">Kích Hoạt AI</span>
+                </button>
+                <div class="flex items-center bg-[#0b1222] p-1 rounded-xl border border-brand-border text-xs">
+                    <button id="tab-5512" onclick="switchView('5512')" class="px-3 py-1.5 rounded-lg font-bold transition bg-blue-600 text-white">5512</button>
+                    <button id="tab-slide" onclick="switchView('slide')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Slide 16:9</button>
+                    <button id="tab-7991" onclick="switchView('7991')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Đề & Ma Trận</button>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- ==================== KHÔNG GIAN LÀM VIỆC CHÍNH ==================== -->
+    <!-- ==================== MAIN WORKSPACE ==================== -->
     <main class="flex-1 max-w-[1720px] w-full mx-auto p-4 flex gap-5 overflow-hidden">
-        <!-- CỘT TRÁI: ĐIỀU KHIỂN & CHỌN BÀI ĐA KHỐI LỚP -->
+        <!-- CỘT TRÁI: ĐIỀU HÀNH & KHO BÀI HỌC TOÀN BỘ CÁC KHỐI LỚP -->
         <aside class="w-[430px] shrink-0 flex flex-col gap-4 no-print overflow-y-auto pr-1">
-            <!-- Khối 1: Lựa chọn Môn & Khối lớp -->
             <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md space-y-3">
                 <div class="flex items-center justify-between pb-2 border-b border-brand-border/60">
                     <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200 flex items-center gap-1.5">
-                        <i class="fa-solid fa-sliders text-cyan-400"></i> Cấu Hình Phân Môn & Khối Lớp
+                        <i class="fa-solid fa-sliders text-cyan-400"></i> Thiết Lập Môn & Khối Lớp
                     </h3>
-                    <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded">GDPT 2018 DÙNG CHUNG</span>
+                    <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded">GDPT 2018</span>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 text-xs">
@@ -163,8 +164,8 @@
                 </div>
             </div>
 
-            <!-- Khối 2: Danh sách bài học phủ khắp các khối lớp -->
-            <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md flex flex-col flex-1 min-h-[300px]">
+            <!-- Toàn bộ danh mục bài học các khối -->
+            <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md flex flex-col flex-1 min-h-[350px]">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-brand-border/60">
                     <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200 flex items-center gap-1.5">
                         <i class="fa-solid fa-list-ol text-emerald-400"></i> Toàn Bộ Bài Học Theo Chương Trình
@@ -176,7 +177,7 @@
                     </div>
                 </div>
 
-                <p class="text-[11px] text-slate-400 mb-2">Bấm bài để <strong>Soạn Giáo Án/Slide</strong>; tích checkbox để <strong>Gộp làm Đề thi 7991</strong>:</p>
+                <p class="text-[11px] text-slate-400 mb-2">Bấm bài để <strong>Soạn Bài/Slide</strong>; tích chọn checkbox để <strong>Lập Ma trận Đề 7991</strong>:</p>
                 <div id="lesson-list-container" class="space-y-1.5 overflow-y-auto max-h-[320px] pr-1"></div>
 
                 <div class="mt-3 pt-2.5 border-t border-brand-border/60 flex items-center justify-between">
@@ -184,29 +185,18 @@
                     <span id="label-active-lesson" class="font-bold text-xs text-cyan-300 max-w-[280px] truncate">---</span>
                 </div>
             </div>
-
-            <!-- Khối 3: Ghi chú địa phương hóa -->
-            <div class="bg-brand-card rounded-2xl p-3.5 border border-brand-border/80 shadow-md space-y-1.5">
-                <h4 class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
-                    <i class="fa-solid fa-location-dot"></i> Gắn bối cảnh Mang Thít - Vĩnh Long
-                </h4>
-                <p class="text-[11px] text-slate-400 leading-relaxed">
-                    Hệ thống tự động liên hệ thực tiễn vườn cây ăn trái, kỹ thuật tưới tiết kiệm và phòng trừ dịch hại nông nghiệp địa phương.
-                </p>
-            </div>
         </aside>
 
-        <!-- CỘT PHẢI: TRUNG TÂM XUẤT BẢN ĐA ĐỊNH DẠNG -->
+        <!-- CỘT PHẢI: KHÔNG GIAN HIỂN THỊ SẢN PHẨM & XUẤT ĐA ĐỊNH DẠNG -->
         <section class="flex-1 flex flex-col bg-brand-surface rounded-2xl border border-brand-border overflow-hidden shadow-2xl relative">
             <div class="bg-brand-card/90 px-4 py-2.5 border-b border-brand-border flex flex-wrap items-center justify-between gap-3 no-print">
                 <div class="flex items-center gap-2 text-xs">
                     <span id="badge-view-mode" class="px-2.5 py-1 rounded bg-blue-500/20 text-cyan-300 font-bold border border-cyan-500/30">
-                        KẾ HOẠCH BÀI DẠY (CHUẨN CÔNG VĂN 5512)
+                        KẾ HOẠCH BÀI DẠY (CÔNG VĂN 5512)
                     </span>
                     <span class="text-slate-400">• Chỉnh sửa văn bản trực tiếp trên màn hình</span>
                 </div>
 
-                <!-- Cụm nút tải đa định dạng -->
                 <div class="flex items-center gap-2">
                     <button onclick="exportWordDocument()" class="btn-3d btn-3d-blue px-3 py-1.5 rounded-lg text-white text-xs font-bold flex items-center gap-1.5">
                         <i class="fa-solid fa-file-word"></i> Tải Word (.doc)
@@ -218,33 +208,53 @@
                         <i class="fa-solid fa-code"></i> Tải HTML
                     </button>
                     <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-print"></i> In / PDF
+                        <i class="fa-solid fa-print"></i> In / Xuất PDF
                     </button>
                 </div>
             </div>
 
             <!-- VÙNG HIỂN THỊ NỘI DUNG -->
             <div class="flex-1 overflow-y-auto p-6 bg-[#0a0f1d] flex justify-center">
-                <!-- 1. KHUNG VĂN BẢN KHỔ A4 (GIÁO ÁN & ĐỀ THI) -->
+                <!-- 1. VĂN BẢN KHỔ A4 (GIÁO ÁN VÀ ĐỀ KIỂM TRA) -->
                 <div id="container-a4-doc" class="page-a4" contenteditable="true" spellcheck="false"></div>
 
-                <!-- 2. KHUNG TRÌNH CHIẾU SLIDE 16:9 INTERACTIVE -->
+                <!-- 2. SLIDE TRÌNH CHIẾU TƯƠNG TÁC 16:9 -->
                 <div id="container-slide-presentation" class="hidden w-full max-w-5xl aspect-video bg-[#0F2922] rounded-3xl p-8 border-2 border-emerald-500/40 shadow-2xl flex flex-col justify-between text-white relative">
                     <div class="flex items-center justify-between border-b border-white/10 pb-3 text-xs">
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
-                            <span class="font-bold tracking-widest text-amber-300 uppercase">TRƯỜNG THPT MANG THÍT • BÀI GIẢNG ĐIỆN TỬ VIP</span>
+                            <span class="font-bold tracking-widest text-amber-300 uppercase">BÀI GIẢNG ĐIỆN TỬ GDPT 2018</span>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <span class="text-slate-300">Giáo viên: <strong class="text-white">Hồ Tấn Khải</strong></span>
-                            <span id="slide-page-badge" class="bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full font-mono font-bold border border-amber-500/30">1 / 20</span>
+                        <div>
+                            <span id="slide-page-badge" class="bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full font-mono font-bold border border-amber-500/30">1 / 22</span>
+                        </div>
+                    </div>
+
+                    <!-- THANH TIỆN ÍCH LỚP HỌC: ĐỒNG HỒ ĐA MỐC VÀ CHỌN SỐ HỌC SINH 01-50 -->
+                    <div class="flex flex-wrap items-center justify-between bg-black/50 p-2.5 rounded-xl border border-emerald-500/30 text-xs my-2 gap-2">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold"><i class="fa-solid fa-stopwatch mr-1"></i> Hẹn giờ:</span>
+                            <button onclick="startSlideTimer(15)" class="px-2 py-0.5 rounded bg-emerald-700 hover:bg-emerald-600 font-bold">15s</button>
+                            <button onclick="startSlideTimer(30)" class="px-2 py-0.5 rounded bg-emerald-700 hover:bg-emerald-600 font-bold">30s</button>
+                            <button onclick="startSlideTimer(60)" class="px-2 py-0.5 rounded bg-emerald-700 hover:bg-emerald-600 font-bold">60s</button>
+                            <button onclick="startSlideTimer(60)" class="px-2 py-0.5 rounded bg-teal-700 hover:bg-teal-600 font-bold">1 phút</button>
+                            <button onclick="startSlideTimer(180)" class="px-2 py-0.5 rounded bg-teal-700 hover:bg-teal-600 font-bold">3 phút</button>
+                            <button onclick="startSlideTimer(300)" class="px-2 py-0.5 rounded bg-teal-700 hover:bg-teal-600 font-bold">5 phút</button>
+                            <button onclick="stopSlideTimer()" class="px-2 py-0.5 rounded bg-rose-700 hover:bg-rose-600 font-bold">Dừng</button>
+                            <span id="slide-timer-display" class="font-mono font-bold text-amber-400 text-sm ml-2">--:--</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="pickRandomStudentNumber()" class="px-3 py-1 rounded bg-indigo-600 hover:bg-indigo-500 font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-dice mr-1"></i> Gọi ngẫu nhiên STT (01-50):
+                            </button>
+                            <span id="random-student-display" class="font-mono font-extrabold text-cyan-300 text-base min-w-[32px] text-center">--</span>
                         </div>
                     </div>
 
                     <div id="slide-main-viewport" class="my-auto"></div>
 
                     <div class="flex items-center justify-between border-t border-white/10 pt-3 text-xs">
-                        <span class="text-slate-300"><i class="fa-solid fa-circle-info mr-1"></i> Bấm nút hoặc dùng phím mũi tên để chuyển slide</span>
+                        <span class="text-slate-300"><i class="fa-solid fa-circle-info mr-1"></i> Bấm mũi tên hoặc nút để chuyển slide</span>
                         <div class="flex items-center gap-2">
                             <button onclick="prevSlide()" class="px-4 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold transition">
                                 <i class="fa-solid fa-arrow-left mr-1"></i> Trước
@@ -259,94 +269,135 @@
         </section>
     </main>
 
+    <!-- MODAL GOOGLE DRIVE -->
+    <div id="modal-drive" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-brand-surface border border-brand-border rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-brand-border">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-brands fa-google-drive text-blue-400"></i> Cấu hình Đồng bộ Google Drive
+                </h3>
+                <button onclick="closeDriveModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="mt-4 space-y-3 text-xs text-slate-300">
+                <p>Thầy dán đường dẫn <strong>Google Apps Script Web App</strong> hoặc link chia sẻ JSON trên Drive để đồng bộ:</p>
+                <input type="text" id="input-drive-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
+                <p class="text-[11px] text-slate-500 leading-relaxed">
+                    * Khi kết nối, hệ thống sẽ tự động lưu bản sao giáo án/đề thi hoặc tải CSDL cập nhật từ Drive của Thầy.
+                </p>
+            </div>
+            <div class="mt-5 flex justify-end gap-2 text-xs">
+                <button onclick="closeDriveModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold">Đóng</button>
+                <button onclick="saveDriveUrl()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold">Lưu Cấu Hình</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GEMINI AI -->
+    <div id="modal-ai" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-brand-surface border border-brand-border rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-brand-border">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-brain text-amber-400"></i> Kích Hoạt Gemini AI Thông Minh
+                </h3>
+                <button onclick="closeAIKeyModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="mt-4 space-y-3 text-xs text-slate-300">
+                <p>Nhập mã <strong>Gemini API Key</strong> để AI tự động mở rộng kiến thức, viết câu hỏi phản biện sâu sắc hơn:</p>
+                <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
+            </div>
+            <div class="mt-5 flex justify-end gap-2 text-xs">
+                <button onclick="closeAIKeyModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold">Đóng</button>
+                <button onclick="saveApiKey()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold">Lưu API Key</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ========================================================================= -->
-    <!-- JAVASCRIPT MASTER: TÁCH MODULE RÕ RÀNG ĐỂ DỄ DÀNG NÂNG CẤP VỀ SAU         -->
+    <!-- MASTER LOGIC JAVASCRIPT                                                   -->
     <!-- ========================================================================= -->
     <script>
-        /* -------------------------------------------------------------------------
-         * PHÂN VÙNG 1: KHO TRI THỨC ĐA KHỐI LỚP (DATABASE CÓ THỂ THÊM BỚT TÙY Ý)
-         * ------------------------------------------------------------------------- */
+        /* 1. KHO DỮ LIỆU ĐẦY ĐỦ 100% CÁC KHỐI LỚP 10, 11, 12 CỦA 2 PHÂN MÔN */
         const CURRICULUM_DATABASE = {
             "Sinh học": {
                 "10": [
-                    { id: "sh10_b1", title: "Bài 1: Giới thiệu khái quát môn Sinh học", core1: "Đối tượng & lĩnh vực nghiên cứu sinh học", core2: "Mục tiêu & vai trò trong phát triển bền vững", core3: "Các ngành nghề sinh học và xu thế tương lai" },
-                    { id: "sh10_b2", title: "Bài 2: Các phương pháp nghiên cứu và học tập môn Sinh học", core1: "Phương pháp quan sát & thực nghiệm khoa học", core2: "Kĩ năng tiến trình nghiên cứu sinh học", core3: "Ứng dụng tin sinh học và AI trong xử lý dữ liệu" },
-                    { id: "sh10_b4", title: "Bài 4: Khái quát về tế bào", core1: "Học thuyết tế bào & sự phát triển khoa học", core2: "Tế bào là đơn vị cấu trúc và chức năng", core3: "Kích thước & tỉ lệ S/V tối ưu hóa trao đổi chất" },
-                    { id: "sh10_b5", title: "Bài 5: Các nguyên tố hóa học và nước trong tế bào", core1: "Các nguyên tố đại lượng và vi lượng", core2: "Cấu trúc hóa lý và tính phân cực của nước", core3: "Vai trò sinh học của nước đối với sự sống" },
-                    { id: "sh10_b6", title: "Bài 6: Các phân tử sinh học trong tế bào", core1: "Carbohydrate và Lipid: Cấu trúc & chức năng", core2: "Protein: Cấu trúc 4 bậc & đa chức năng", core3: "Acid nucleic (DNA & RNA): Lưu trữ & truyền đạt di truyền" },
-                    { id: "sh10_b7", title: "Bài 7: Tế bào nhân sơ", core1: "Đặc điểm chung & hình thái vi khuẩn", core2: "Cấu tạo thành tế bào, màng & vùng nhân", core3: "Ý nghĩa tỉ lệ kích thước nhỏ của tế bào nhân sơ" },
-                    { id: "sh10_b8", title: "Bài 8: Tế bào nhân thực", core1: "Hệ thống nội màng & nhân tế bào", core2: "Các bào quan chuyển hóa: Ti thể, Lục lạp", core3: "Khung xương tế bào & cấu trúc liên kết" },
-                    { id: "sh10_b9", title: "Bài 9: Trao đổi chất qua màng sinh chất", core1: "Vận chuyển thụ động: Khuếch tán & thẩm thấu", core2: "Vận chuyển chủ động: Bơm protein qua màng", core3: "Thực bào, ẩm bào và xuất bào" },
-                    { id: "sh10_b10", title: "Bài 10: Sự chuyển hóa năng lượng và enzyme trong tế bào", core1: "ATP - đồng tiền năng lượng sinh học", core2: "Bản chất, cấu trúc & cơ chế tác động của enzyme", core3: "Các yếu tố ảnh hưởng hoạt tính enzyme" },
-                    { id: "sh10_b16", title: "Bài 16: Chu kỳ tế bào và nguyên phân", core1: "Diễn biến các pha của chu kỳ tế bào (G1, S, G2)", core2: "Cơ chế phân chia nhân và tế bào chất nguyên phân", core3: "Ý nghĩa di truyền và ứng dụng trong nhân giống" },
-                    { id: "sh10_b17", title: "Bài 17: Giảm phân và thụ tinh", core1: "Cơ chế giảm phân I và giảm phân II", core2: "Hiện tượng trao đổi chéo tạo biến dị tổ hợp", core3: "Mối quan hệ nguyên phân, giảm phân và thụ tinh" },
-                    { id: "sh10_b20", title: "Bài 20: Sự đa dạng và phương thức dinh dưỡng của vi sinh vật", core1: "Khái niệm và đặc điểm chung của vi sinh vật", core2: "4 kiểu dinh dưỡng (quang/hóa tự dưỡng & dị dưỡng)", core3: "Phương pháp nuôi cấy và phân lập vi sinh vật" },
-                    { id: "sh10_b24", title: "Bài 24: Khái quát về virus", core1: "Đặc điểm chưa có cấu tạo tế bào, kí sinh nội bào", core2: "Cấu tạo gồm lõi acid nucleic và vỏ capsid protein", core3: "Hình thái cấu trúc và ứng dụng trong công nghệ gen" }
+                    { id: "sh10_b1", title: "Bài 1: Giới thiệu khái quát môn Sinh học", nls: "NLS 1.1", nlsDesc: "Khai thác dữ liệu số và tra cứu hệ thống thông tin sinh thái", aiCode: "10.A1.2", aiDesc: "Tra cứu ngành nghề sinh học bằng AI và kiểm chứng với SGK", core1: "Đối tượng và các lĩnh vực nghiên cứu của Sinh học", core2: "Mục tiêu, vai trò và triển vọng phát triển sinh học", core3: "Sinh học trong phát triển bền vững và nghề nghiệp tương lai" },
+                    { id: "sh10_b2", title: "Bài 2: Các phương pháp nghiên cứu và học tập môn Sinh học", nls: "NLS 3.1", nlsDesc: "Xử lý bảng dữ liệu thực nghiệm bằng phần mềm số", aiCode: "10.A2.1", aiDesc: "Sử dụng AI hỗ trợ thiết kế tiến trình nghiên cứu khoa học", core1: "Phương pháp quan sát và làm việc phòng thí nghiệm", core2: "Phương pháp thực nghiệm khoa học và các kĩ năng tiến trình", core3: "Ứng dụng tin sinh học và AI trong xử lý dữ liệu" },
+                    { id: "sh10_b4", title: "Bài 4: Khái quát về tế bào", nls: "NLS 2.1", nlsDesc: "Tương tác mô hình 3D về kích thước và cấu trúc tế bào", aiCode: "10.A1.2", aiDesc: "Phân tích ý nghĩa tỉ lệ S/V qua đối chiếu dữ liệu AI", core1: "Học thuyết tế bào và sự phát triển của sinh học", core2: "Tế bào là đơn vị cấu trúc và chức năng cơ bản", core3: "Kích thước hiển vi và ý nghĩa của tỉ lệ diện tích bề mặt/thể tích" },
+                    { id: "sh10_b5", title: "Bài 5: Các nguyên tố hóa học và nước trong tế bào", nls: "NLS 2.2", nlsDesc: "Mô phỏng số liên kết hydro và tính phân cực của nước", aiCode: "10.A1.2", aiDesc: "Tra cứu vai trò các nguyên tố đại lượng và vi lượng", core1: "Các nguyên tố đại lượng và vi lượng trong tế bào", core2: "Cấu trúc hóa lý và tính phân cực của phân tử nước", core3: "Vai trò sinh học của nước đối với sự sống" },
+                    { id: "sh10_b6", title: "Bài 6: Các phân tử sinh học trong tế bào", nls: "NLS 2.1", nlsDesc: "Tương tác mô hình cấu trúc 3D phân tử Protein và Acid nucleic", aiCode: "10.A2.2", aiDesc: "Phân tích nguyên tắc đa phân qua trợ lý AI", core1: "Carbohydrate và Lipid: Cấu trúc đa phân và vai trò dự trữ", core2: "Protein: 4 bậc cấu trúc không gian và đa dạng chức năng", core3: "Acid nucleic (DNA & RNA): Bản chất mang và truyền đạt di truyền" },
+                    { id: "sh10_b7", title: "Bài 7: Tế bào nhân sơ", nls: "NLS 2.1", nlsDesc: "Quan sát ảnh siêu hiển vi cấu trúc vi khuẩn", aiCode: "10.A1.2", aiDesc: "So sánh vùng nhân và nhân tế bào qua đối chiếu tài liệu", core1: "Đặc điểm chung về kích thước và hình thái tế bào nhân sơ", core2: "Cấu trúc thành tế bào, màng sinh chất và vùng nhân DNA vòng", core3: "Ý nghĩa của tỉ lệ S/V lớn đối với tốc độ chuyển hóa" },
+                    { id: "sh10_b8", title: "Bài 8: Tế bào nhân thực", nls: "NLS 2.4", nlsDesc: "Mô phỏng mạng lưới nội màng và các bào quan tương tác", aiCode: "10.A2.1", aiDesc: "Phối hợp cùng AI phân tích tiến hóa nội cộng sinh ti thể, lục lạp", core1: "Cấu trúc nhân tế bào và hệ thống nội màng phân khoang", core2: "Bào quan chuyển hóa năng lượng: Ti thể và Lục lạp", core3: "Khung xương tế bào và các bào quan thực hiện chức năng đặc thù" },
+                    { id: "sh10_b9", title: "Bài 9: Trao đổi chất qua màng sinh chất", nls: "NLS 3.2", nlsDesc: "Mô phỏng số cơ chế khuếch tán, thẩm thấu và bơm ion", aiCode: "10.A1.2", aiDesc: "Kiểm chứng hiện tượng co nguyên sinh với dữ liệu AI", core1: "Vận chuyển thụ động: Hiện tượng khuếch tán và thẩm thấu", core2: "Vận chuyển chủ động: Bơm protein màng tiêu tốn năng lượng ATP", core3: "Thực bào, ẩm bào và xuất bào qua biến dạng màng tế bào" },
+                    { id: "sh10_b10", title: "Bài 10: Sự chuyển hóa năng lượng và enzyme trong tế bào", nls: "NLS 2.1", nlsDesc: "Mô phỏng trung tâm hoạt động và cơ chế chìa khóa - ổ khóa", aiCode: "10.A1.2", aiDesc: "Phân tích các yếu tố ảnh hưởng hoạt tính enzyme", core1: "Bản chất của ATP - đồng tiền năng lượng sinh học", core2: "Cấu trúc, tính đặc hiệu và cơ chế tác động của enzyme", core3: "Các nhân tố ảnh hưởng trực tiếp đến hoạt tính xúc tác của enzyme" },
+                    { id: "sh10_b16", title: "Bài 16: Chu kỳ tế bào và nguyên phân", nls: "NLS 2.1", nlsDesc: "Quan sát video mô phỏng sự phân ly của nhiễm sắc thể", aiCode: "10.A2.1", aiDesc: "Tính toán số tế bào con tạo thành qua thuật toán AI", core1: "Diễn biến các pha G1, S, G2 và điểm kiểm soát chu kỳ tế bào", core2: "Cơ chế phân chia nhân và tế bào chất trong nguyên phân", core3: "Ý nghĩa sinh học và ứng dụng nhân giống vô tính cây trồng" },
+                    { id: "sh10_b17", title: "Bài 17: Giảm phân và thụ tinh", nls: "NLS 2.4", nlsDesc: "Mô phỏng hiện tượng tiếp hợp và trao đổi chéo ở kì đầu I", aiCode: "10.A2.2", aiDesc: "Phân tích cơ chế tạo biến dị tổ hợp phong phú", core1: "Cơ chế giảm phân I và giảm phân II tạo giao tử đơn bội", core2: "Hiện tượng tiếp hợp và trao đổi chéo tạo biến dị tổ hợp", core3: "Mối quan hệ mật thiết giữa nguyên phân, giảm phân và thụ tinh" },
+                    { id: "sh10_b20", title: "Bài 20: Sự đa dạng và phương thức dinh dưỡng của vi sinh vật", nls: "NLS 3.1", nlsDesc: "Phân tích bảng phân loại 4 kiểu dinh dưỡng vi sinh vật", aiCode: "10.A1.2", aiDesc: "Tra cứu ứng dụng vi sinh vật trong nông nghiệp", core1: "Khái niệm và đặc điểm kích thước siêu nhỏ của vi sinh vật", core2: "Bốn kiểu dinh dưỡng: Quang/Hóa tự dưỡng và Quang/Hóa dị dưỡng", core3: "Ứng dụng nuôi cấy vi sinh vật trong xử lý môi trường tại địa phương" },
+                    { id: "sh10_b24", title: "Bài 24: Khái quát về virus", nls: "NLS 2.1", nlsDesc: "Tương tác mô hình 3D cấu trúc hạt virus Phage T4 và HIV", aiCode: "10.A1.2", aiDesc: "Đối chiếu đặc tính sống kí sinh nội bào bắt buộc", core1: "Đặc điểm chưa có cấu tạo tế bào, kí sinh nội bào bắt buộc", core2: "Cấu tạo gồm lõi acid nucleic và vỏ capsid protein bảo vệ", core3: "Hình thái cấu trúc và ứng dụng chuyển gen trong công nghệ sinh học" }
                 ],
                 "11": [
-                    { id: "sh11_b1", title: "Bài 1: Khái quát về trao đổi chất và chuyển hóa năng lượng", core1: "Vai trò cung cấp năng lượng và vật chất cho sinh vật", core2: "Phương thức tự dưỡng và dị dưỡng ở sinh vật", core3: "Các giai đoạn chuyển hóa năng lượng ở thế giới sống" },
-                    { id: "sh11_b2", title: "Bài 2: Trao đổi nước và khoáng ở thực vật", core1: "Cơ chế hấp thụ nước và khoáng ở rễ", core2: "Dòng mạch gỗ và dòng mạch rây", core3: "Cơ chế thoát hơi nước qua khí khổng và ý nghĩa" },
-                    { id: "sh11_b4", title: "Bài 4: Quang hợp ở thực vật", core1: "Bản chất pha sáng tạo ATP và NADPH", core2: "Pha đồng hóa CO2 ở thực vật C3, C4 và CAM", core3: "Các nhân tố môi trường và biện pháp tăng năng suất" },
-                    { id: "sh11_b6", title: "Bài 6: Hô hấp ở thực vật", core1: "Các con đường hô hấp hiếu khí và lên men", core2: "Mối quan hệ giữa quang hợp và hô hấp", core3: "Ứng dụng hô hấp trong bảo quản nông sản" },
-                    { id: "sh11_b8", title: "Bài 8: Dinh dưỡng và tiêu hóa ở động vật", core1: "Quá trình tiêu hóa ở động vật chưa có và có ống tiêu hóa", core2: "Tiêu hóa ở động vật ăn thực vật và ăn thịt", core3: "Ứng dụng dinh dưỡng hợp lý bảo vệ hệ tiêu hóa" },
-                    { id: "sh11_b9", title: "Bài 9: Hô hấp ở động vật", core1: "Các hình thức hô hấp qua da, mang, khí quản, phổi", core2: "Hiệu quả trao đổi khí ở chim và thú", core3: "Biện pháp phòng ngừa các bệnh hô hấp" },
-                    { id: "sh11_b10", title: "Bài 10: Tuần hoàn ở động vật", core1: "Hệ tuần hoàn hở và hệ tuần hoàn kín", core2: "Cơ chế điều hòa hoạt động tim và huyết áp", core3: "Phòng chống bệnh tim mạch trong đời sống" },
-                    { id: "sh11_b14", title: "Bài 14: Cảm ứng ở sinh vật", core1: "Cảm ứng hướng động và ứng động ở thực vật", core2: "Cảm ứng ở động vật có hệ thần kinh", core3: "Cơ chế dẫn truyền xung thần kinh và phản xạ" },
-                    { id: "sh11_b19", title: "Bài 19: Sinh trưởng và phát triển ở thực vật", core1: "Mô phân sinh đỉnh, bên và lóng", core2: "Hormone thực vật: Kích thích và ức chế", core3: "Hiện tượng quang chu kì và ứng dụng ra hoa" },
-                    { id: "sh11_b24", title: "Bài 24: Sinh sản ở thực vật", core1: "Sinh sản vô tính: Bào tử, sinh dưỡng và nhân giống", core2: "Quá trình thụ phấn và thụ tinh kép ở thực vật có hoa", core3: "Sự hình thành hạt, quả và ứng dụng nông nghiệp" }
+                    { id: "sh11_b1", title: "Bài 1: Khái quát về trao đổi chất và chuyển hóa năng lượng", nls: "NLS 1.1", nlsDesc: "Sơ đồ hóa dòng năng lượng qua hệ sinh thái", aiCode: "11.A1.1", aiDesc: "Phân tích hai phương thức tự dưỡng và dị dưỡng bằng AI", core1: "Vai trò cung cấp năng lượng và vật chất duy trì sự sống", core2: "Hai phương thức tự dưỡng và dị dưỡng ở sinh vật", core3: "Các giai đoạn chuyển hóa năng lượng chủ yếu trong sinh giới" },
+                    { id: "sh11_b2", title: "Bài 2: Trao đổi nước và khoáng ở thực vật", nls: "NLS 2.4", nlsDesc: "Mô phỏng động lực dòng mạch gỗ và dòng mạch rây", aiCode: "11.A1.1", aiDesc: "Tra cứu cơ chế đóng mở khí khổng điều tiết nước", core1: "Cơ chế hấp thụ nước và ion khoáng qua lông hút của rễ", core2: "Con đường vận chuyển dòng mạch gỗ và dòng mạch rây", core3: "Cơ chế thoát hơi nước qua khí khổng và vai trò điều hòa nhiệt" },
+                    { id: "sh11_b4", title: "Bài 4: Quang hợp ở thực vật", nls: "NLS 3.2", nlsDesc: "Phân tích đồ thị quang phổ hấp thụ của hệ sắc tố", aiCode: "11.A2.2", aiDesc: "So sánh con đường cố định CO2 ở C3, C4 và CAM", core1: "Bản chất pha sáng quang hợp tạo năng lượng ATP và NADPH", core2: "Pha cố định CO2 thích nghi sinh thái ở C3, C4 và CAM", core3: "Các nhân tố ảnh hưởng và biện pháp tăng năng suất cây trồng" },
+                    { id: "sh11_b6", title: "Bài 6: Hô hấp ở thực vật", nls: "NLS 2.1", nlsDesc: "Mô phỏng chu trình Crep và chuỗi truyền electron ti thể", aiCode: "11.A1.1", aiDesc: "Tra cứu ứng dụng hô hấp trong bảo quản nông sản", core1: "Con đường hô hấp hiếu khí và lên men ở thực vật", core2: "Mối quan hệ trao đổi tương hỗ giữa quang hợp và hô hấp", core3: "Ứng dụng hiểu biết về hô hấp trong bảo quản nông sản thực phẩm" },
+                    { id: "sh11_b8", title: "Bài 8: Dinh dưỡng và tiêu hóa ở động vật", nls: "NLS 2.3", nlsDesc: "Mô phỏng quá trình tiêu hóa trong ống tiêu hóa của thú", aiCode: "11.A1.1", aiDesc: "Phân tích dinh dưỡng hợp lý bảo vệ sức khỏe", core1: "Quá trình tiêu hóa ở động vật chưa có và có ống tiêu hóa", core2: "Đặc điểm tiêu hóa ở động vật ăn thực vật và động vật ăn thịt", core3: "Chế độ dinh dưỡng khoa học và bảo vệ hệ tiêu hóa khỏe mạnh" },
+                    { id: "sh11_b9", title: "Bài 9: Hô hấp ở động vật", nls: "NLS 2.1", nlsDesc: "Mô phỏng dòng khí một chiều qua phổi chim và phế nang thú", aiCode: "11.A1.1", aiDesc: "Tra cứu biện pháp phòng bệnh đường hô hấp", core1: "Các hình thức hô hấp qua da, mang, hệ thống khí quản và phổi", core2: "Cơ chế trao đổi khí đạt hiệu suất cao thích nghi đời sống", core3: "Biện pháp phòng ngừa các bệnh đường hô hấp phổ biến" },
+                    { id: "sh11_b10", title: "Bài 10: Tuần hoàn ở động vật", nls: "NLS 2.4", nlsDesc: "Mô phỏng hệ tuần hoàn hở và hệ tuần hoàn kín", aiCode: "11.A2.2", aiDesc: "Phân tích cơ chế điều hòa huyết áp bằng công cụ số", core1: "Cấu tạo và hoạt động của hệ tuần hoàn hở và hệ tuần hoàn kín", core2: "Cơ chế điều hòa nhịp tim, huyết áp và vận tốc máu trong mạch", core3: "Rèn luyện bảo vệ hệ tim mạch và xây dựng lối sống lành mạnh" },
+                    { id: "sh11_b14", title: "Bài 14: Cảm ứng ở sinh vật", nls: "NLS 2.1", nlsDesc: "Mô phỏng cơ chế dẫn truyền điện thế hoạt động qua synapse", aiCode: "11.A1.1", aiDesc: "Phân loại các dạng hướng động và ứng động ở thực vật", core1: "Cảm ứng hướng động và ứng động thích nghi ở thực vật", core2: "Cảm ứng ở động vật có hệ thần kinh dạng lưới, chuỗi và ống", core3: "Cơ chế phản xạ và dẫn truyền xung thần kinh qua synapse" },
+                    { id: "sh11_b19", title: "Bài 19: Sinh trưởng và phát triển ở thực vật", nls: "NLS 3.1", nlsDesc: "Phân tích bảng tác động tương quan của hormone thực vật", aiCode: "11.A2.2", aiDesc: "Tra cứu hiện tượng quang chu kì và ứng dụng ra hoa", core1: "Mô phân sinh đỉnh, mô phân sinh bên và mô phân sinh lóng", core2: "Vai trò của hormone thực vật kích thích và ức chế sinh trưởng", core3: "Hiện tượng quang chu kì và ứng dụng điều khiển cây trồng ra hoa" },
+                    { id: "sh11_b24", title: "Bài 24: Sinh sản ở thực vật", nls: "NLS 2.1", nlsDesc: "Mô phỏng quá trình thụ phấn và thụ tinh kép ở thực vật có hoa", aiCode: "11.A1.1", aiDesc: "Tra cứu kỹ thuật chiết cành, ghép cành trên cây ăn quả", core1: "Sinh sản vô tính: Bào tử, sinh dưỡng và nhân giống vô tính", core2: "Quá trình thụ phấn và thụ tinh kép đặc trưng ở thực vật có hoa", core3: "Sự hình thành hạt, quả và ứng dụng phát triển vườn cây ăn quả" }
                 ],
                 "12": [
-                    { id: "sh12_b1", title: "Bài 1: Gen, mã di truyền và quá trình nhân đôi ADN", core1: "Cấu trúc hóa học của gen và đặc điểm mã di truyền", core2: "Nguyên tắc bán bảo tồn và bổ sung trong nhân đôi ADN", core3: "Cơ chế sửa sai và ý nghĩa bảo tồn thông tin di truyền" },
-                    { id: "sh12_b2", title: "Bài 2: Phiên mã và dịch mã", core1: "Cơ chế phiên mã tổng hợp các loại ARN", core2: "Cơ chế dịch mã tổng hợp chuỗi polypeptide", core3: "Mối quan hệ ADN - mARN - Protein - Tính trạng" },
-                    { id: "sh12_b3", title: "Bài 3: Điều hòa biểu hiện gen", core1: "Cấu trúc Operon Lac ở vi khuẩn E. coli", core2: "Cơ chế điều hòa khi môi trường có và không có lactose", core3: "Ý nghĩa thích nghi của điều hòa biểu hiện gen" },
-                    { id: "sh12_b4", title: "Bài 4: Đột biến gen", core1: "Các dạng đột biến điểm (thay thế, thêm, mất)", core2: "Nguyên nhân và cơ chế phát sinh đột biến gen", core3: "Hậu quả, vai trò của đột biến gen trong tiến hóa và chọn giống" },
-                    { id: "sh12_b5", title: "Bài 5: Nhiễm sắc thể và đột biến cấu trúc NST", core1: "Cấu trúc siêu hiển vi của nhiễm sắc thể", core2: "Các dạng đột biến cấu trúc NST (mất, lặp, đảo, chuyển đoạn)", core3: "Ý nghĩa và tác hại của đột biến cấu trúc NST" },
-                    { id: "sh12_b8", title: "Bài 8: Các quy luật di truyền của Menđen", core1: "Phương pháp nghiên cứu lai tế bào và phân tích cơ thể lai", core2: "Quy luật phân ly và cơ sở tế bào học", core3: "Quy luật phân ly độc lập và biến dị tổ hợp" },
-                    { id: "sh12_b10", title: "Bài 10: Liên kết gen và hoán vị gen", core1: "Thí nghiệm Moocgan về liên kết gen hoàn toàn", core2: "Cơ chế hoán vị gen do trao đổi chéo ở kì đầu giảm phân I", core3: "Lập bản đồ di truyền và ứng dụng trong nông nghiệp" },
-                    { id: "sh12_b16", title: "Bài 16: Di truyền học người và ứng dụng", core1: "Phương pháp nghiên cứu di truyền phả hệ", core2: "Một số bệnh và tật di truyền ở người", core3: "Liệu pháp gen và tư vấn di truyền y học" },
-                    { id: "sh12_b24", title: "Bài 24: Bằng chứng tiến hóa", core1: "Bằng chứng giải phẫu so sánh và phôi sinh học", core2: "Bằng chứng tế bào học và sinh học phân tử", core3: "Học thuyết tiến hóa hiện đại tổng hợp" },
-                    { id: "sh12_b31", title: "Bài 31: Hệ sinh thái và chu trình sinh địa hóa", core1: "Cấu trúc thành phần của hệ sinh thái", core2: "Chuỗi và lưới thức ăn, tháp sinh thái", core3: "Chu trình carbon, nitơ, nước và bảo vệ môi trường" }
+                    { id: "sh12_b1", title: "Bài 1: Gen, mã di truyền và nhân đôi ADN", nls: "NLS 4.2", nlsDesc: "Khai thác cơ sở dữ liệu ngân hàng gen số (NCBI)", aiCode: "12.A1.3", aiDesc: "Mô phỏng cơ chế nhân đôi ADN bán bảo tồn qua trợ lý AI", core1: "Cấu trúc hóa học của gen và tính chất suy biến của mã di truyền", core2: "Nguyên tắc bán bảo tồn và bổ sung trong tiến trình nhân đôi ADN", core3: "Cơ chế enzyme sửa sai và ý nghĩa bảo tồn thông tin di truyền" },
+                    { id: "sh12_b2", title: "Bài 2: Phiên mã và dịch mã", nls: "NLS 2.4", nlsDesc: "Mô phỏng sự dịch chuyển của ribosome trên mARN tổng hợp chuỗi polypeptide", aiCode: "12.A2.2", aiDesc: "Tra cứu cơ chế phiên mã các loại ARN", core1: "Cơ chế phiên mã tổng hợp mARN, tARN và rARN", core2: "Cơ chế dịch mã tổng hợp chuỗi polypeptide trên ribosome", core3: "Mối quan hệ bản chất: ADN -> mARN -> Protein -> Tính trạng" },
+                    { id: "sh12_b3", title: "Bài 3: Điều hòa biểu hiện gen", nls: "NLS 2.1", nlsDesc: "Mô phỏng cơ chế đóng mở của cụm gen Operon Lac ở vi khuẩn E. coli", aiCode: "12.A1.3", aiDesc: "Phân tích vai trò của protein ức chế khi có và không có lactose", core1: "Cấu trúc cụm gen Operon Lac ở vi khuẩn Escherichia coli", core2: "Cơ chế điều hòa khi môi trường có và không có chất cảm ứng lactose", core3: "Ý nghĩa thích nghi sinh lý của cơ chế điều hòa biểu hiện gen" },
+                    { id: "sh12_b4", title: "Bài 4: Đột biến gen", nls: "NLS 3.1", nlsDesc: "Xử lý bảng dữ liệu biến dị đột biến điểm bằng phần mềm số", aiCode: "12.A2.1", aiDesc: "Dự đoán hậu quả thay đổi acid amin trong chuỗi polypeptide", core1: "Các dạng đột biến điểm: Thay thế, thêm và mất 1 cặp nucleotide", core2: "Nguyên nhân hóa lý, sinh học và cơ chế phát sinh đột biến gen", core3: "Hậu quả và vai trò của đột biến gen trong tiến hóa và chọn tạo giống" },
+                    { id: "sh12_b5", title: "Bài 5: Nhiễm sắc thể và đột biến cấu trúc NST", nls: "NLS 2.1", nlsDesc: "Quan sát hình ảnh tiêu bản hiển vi các dạng đột biến cấu trúc NST", aiCode: "12.A1.3", aiDesc: "Phân loại các dạng mất đoạn, lặp đoạn, đảo đoạn và chuyển đoạn", core1: "Cấu trúc siêu hiển vi của nhiễm sắc thể ở sinh vật nhân thực", core2: "Các dạng đột biến cấu trúc: Mất đoạn, lặp đoạn, đảo đoạn, chuyển đoạn", core3: "Ý nghĩa và tác hại của đột biến cấu trúc nhiễm sắc thể" },
+                    { id: "sh12_b8", title: "Bài 8: Các quy luật di truyền của Menđen", nls: "NLS 3.2", nlsDesc: "Sử dụng phần mềm mô phỏng lai phân tích và kiểm định Chi-bình phương", aiCode: "12.A2.1", aiDesc: "Giải bài toán xác suất di truyền phân ly độc lập", core1: "Phương pháp lai và phân tích cơ thể lai của Menđen", core2: "Quy luật phân ly và cơ sở tế bào học của sự phân ly NST", core3: "Quy luật phân ly độc lập và sự hình thành các biến dị tổ hợp" },
+                    { id: "sh12_b10", title: "Bài 10: Liên kết gen và hoán vị gen", nls: "NLS 3.3", nlsDesc: "Lập sơ đồ bản đồ di truyền dựa trên tần số hoán vị gen", aiCode: "12.A3.1", aiDesc: "Phân tích cơ sở tế bào học của hiện tượng trao đổi chéo", core1: "Hiện tượng di truyền liên kết gen hoàn toàn theo thí nghiệm Moocgan", core2: "Cơ chế hoán vị gen do trao đổi chéo ở kì đầu giảm phân I", core3: "Lập bản đồ di truyền và ứng dụng trong chọn giống nông nghiệp" },
+                    { id: "sh12_b16", title: "Bài 16: Di truyền học người và ứng dụng", nls: "NLS 2.2", nlsDesc: "Phân tích sơ đồ phả hệ gia đình truyền bệnh di truyền", aiCode: "12.A1.3", aiDesc: "Tra cứu liệu pháp gen và tư vấn di truyền y học bằng AI", core1: "Phương pháp nghiên cứu phả hệ và di truyền học phân tử người", core2: "Một số bệnh, tật di truyền đơn gen và bất thường số lượng NST", core3: "Liệu pháp gen và vai trò của tư vấn di truyền y học hiện đại" },
+                    { id: "sh12_b24", title: "Bài 24: Bằng chứng tiến hóa", nls: "NLS 1.1", nlsDesc: "Tra cứu cây phát sinh chủng loại dựa trên trình tự cytochrome C", aiCode: "12.A1.3", aiDesc: "So sánh cơ quan tương đồng và cơ quan thoái hóa", core1: "Bằng chứng giải phẫu so sánh: Cơ quan tương đồng và thoái hóa", core2: "Bằng chứng tế bào học và tính thống nhất của sinh học phân tử", core3: "Học thuyết tiến hóa tổng hợp hiện đại về nhân tố tiến hóa" },
+                    { id: "sh12_b31", title: "Bài 31: Hệ sinh thái và chu trình sinh địa hóa", nls: "NLS 3.1", nlsDesc: "Xây dựng sơ đồ lưới thức ăn và tháp sinh thái trên máy tính", aiCode: "12.A2.1", aiDesc: "Phân tích chu trình carbon và biến đổi khí hậu toàn cầu", core1: "Cấu trúc các thành phần sinh cảnh và quần xã trong hệ sinh thái", core2: "Chuỗi thức ăn, lưới thức ăn và sự chuyển hóa năng lượng qua tháp sinh thái", core3: "Chu trình carbon, nitơ, nước và vấn đề bảo vệ môi trường sinh thái" }
                 ]
             },
             "Công nghệ Nông nghiệp": {
                 "10": [
-                    { id: "cn10_b1", title: "Bài 1: Khái quát về công nghệ nông nghiệp", core1: "Vai trò và vị trí của nông nghiệp trong nền kinh tế", core2: "Các xu hướng phát triển nông nghiệp công nghệ cao", core3: "Các nhóm ngành nghề chính trong sản xuất nông nghiệp" },
-                    { id: "cn10_b2", title: "Bài 2: Thành phần và tính chất của đất trồng", core1: "Thành phần cơ giới và độ phì nhiêu của đất", core2: "Tính chất lý, hóa và sinh học của đất", core3: "Biện pháp cải tạo đất phèn, đất mặn tại Đồng bằng sông Cửu Long" },
-                    { id: "cn10_b4", title: "Bài 4: Sử dụng và bảo quản phân bón hóa học", core1: "Phân loại phân hóa học (đạm, lân, kali, NPK)", core2: "Nguyên tắc bón phân hợp lý và an toàn", core3: "Kỹ thuật bảo quản hạn chế thoái hóa phân bón" },
-                    { id: "cn10_b6", title: "Bài 6: Ứng dụng công nghệ cao trong sản xuất phân bón", core1: "Phân bón hữu cơ vi sinh công nghệ nano", core2: "Phân bón thông minh nhả chậm kiểm soát dưỡng chất", core3: "Quy trình ủ phân hữu cơ vi sinh tại nông hộ" },
-                    { id: "cn10_b8", title: "Bài 8: Kỹ thuật giâm cành, chiết cành và ghép cây", core1: "Cơ sở sinh lý của nhân giống vô tính cây trồng", core2: "Quy trình thực hành giâm cành và chiết cành cây ăn quả", core3: "Kỹ thuật ghép đoạn cành trên cây có múi tại Mang Thít" },
-                    { id: "cn10_b10", title: "Bài 10: Phòng trừ sâu bệnh hại cây trồng", core1: "Nguyên lý quản lý dịch hại tổng hợp (IPM)", core2: "Biện pháp sinh học và thảo mộc bảo vệ mùa màng", core3: "Kỹ thuật sử dụng thuốc bảo vệ thực vật theo nguyên tắc 4 đúng" },
-                    { id: "cn10_b14", title: "Bài 14: Hệ thống tưới tiêu tiết kiệm trong nông nghiệp", core1: "Hệ thống tưới nhỏ giọt và tưới phun sương (PVC & LDPE)", core2: "Nguyên lý vận hành và điều tiết lượng nước tưới", core3: "Ứng dụng tưới tự động trên vườn cây ăn trái Vĩnh Long" }
+                    { id: "cn10_b1", title: "Bài 1: Khái quát về công nghệ nông nghiệp", nls: "NLS 1.1", nlsDesc: "Tra cứu bản đồ quy hoạch vùng sản xuất nông nghiệp công nghệ cao", aiCode: "10.A1.2", aiDesc: "Phân tích xu hướng phát triển nông nghiệp 4.0", core1: "Vai trò và vị trí then chốt của nông nghiệp trong nền kinh tế", core2: "Các xu hướng phát triển nông nghiệp công nghệ cao và nông nghiệp số", core3: "Các nhóm ngành nghề chính trong sản xuất nông nghiệp hiện đại" },
+                    { id: "cn10_b2", title: "Bài 2: Thành phần và tính chất của đất trồng", nls: "NLS 2.1", nlsDesc: "Sử dụng bản đồ số nông hóa thổ nhưỡng khảo sát đất", aiCode: "10.A1.2", aiDesc: "Tra cứu công thức cải tạo đất phèn, đất mặn tại ĐBSCL", core1: "Thành phần cơ giới, keo đất và độ phì nhiêu của đất trồng", core2: "Tính chất vật lý, hóa học và hoạt động của vi sinh vật đất", core3: "Biện pháp cải tạo đất phèn, đất mặn tại Đồng bằng sông Cửu Long" },
+                    { id: "cn10_b4", title: "Bài 4: Sử dụng và bảo quản phân bón hóa học", nls: "NLS 3.1", nlsDesc: "Tính toán lượng phân bón nguyên chất N-P-K theo công thức số", aiCode: "10.A1.2", aiDesc: "Phân tích nguyên tắc bón phân cân đối bảo vệ nguồn nước", core1: "Đặc điểm và phân loại phân hóa học (đạm, lân, kali, phân NPK)", core2: "Nguyên tắc bón phân hợp lý cân đối, tránh ô nhiễm nguồn nước", core3: "Kỹ thuật bảo quản hạn chế thoái hóa và hao hụt phân bón" },
+                    { id: "cn10_b6", title: "Bài 6: Ứng dụng công nghệ cao trong sản xuất phân bón", nls: "NLS 2.3", nlsDesc: "Mô phỏng quy trình lên men vi sinh sản xuất phân hữu cơ", aiCode: "10.A2.2", aiDesc: "Tra cứu cơ chế màng bọc thông minh của phân tan chậm", core1: "Phân bón hữu cơ vi sinh sản xuất bằng công nghệ lên men hiện đại", core2: "Phân bón tan chậm có kiểm soát màng bọc thông minh", core3: "Quy trình tận dụng phụ phẩm nông nghiệp ủ phân vi sinh tại nông hộ" },
+                    { id: "cn10_b8", title: "Bài 8: Kỹ thuật giâm cành, chiết cành và ghép cây", nls: "NLS 2.1", nlsDesc: "Quan sát video thực hành các thao tác ghép mắt và ghép nêm", aiCode: "10.A1.2", aiDesc: "Phân tích cơ sở sinh lý liền sẹo của tầng phát sinh", core1: "Cơ sở sinh lý học thực vật của nhân giống vô tính cây trồng", core2: "Quy trình thực hành giâm cành và chiết cành cây ăn quả", core3: "Kỹ thuật ghép đoạn cành trên cây có múi" },
+                    { id: "cn10_b10", title: "Bài 10: Phòng trừ sâu bệnh hại cây trồng", nls: "NLS 2.4", nlsDesc: "Tra cứu ngân hàng hình ảnh số nhận diện các loài dịch hại", aiCode: "10.A1.2", aiDesc: "Phân tích nguyên tắc 4 đúng trong sử dụng thuốc bảo vệ thực vật", core1: "Nguyên lý và các biện pháp quản lý dịch hại tổng hợp (IPM)", core2: "Ứng dụng chế phẩm sinh học và nấm đối kháng bảo vệ cây trồng", core3: "Kỹ thuật sử dụng thuốc bảo vệ thực vật theo nguyên tắc 4 đúng" },
+                    { id: "cn10_b14", title: "Bài 14: Hệ thống tưới tiêu tiết kiệm trong nông nghiệp", nls: "NLS 3.3", nlsDesc: "Thiết kế sơ đồ mạng lưới đường ống tưới PVC & LDPE trên phần mềm", aiCode: "10.A2.2", aiDesc: "Tính toán áp lực và lưu lượng tưới nhỏ giọt bằng AI", core1: "Cấu tạo hệ thống tưới nhỏ giọt và tưới phun mưa (ống PVC & LDPE)", core2: "Nguyên lý vận hành, tính toán cột áp và lưu lượng nước tưới tối ưu", core3: "Ứng dụng hệ thống tưới tự động trên vườn cây ăn trái" }
                 ],
                 "11": [
-                    { id: "cn11_b1", title: "Bài 1: Vai trò và triển vọng của chăn nuôi", core1: "Cung cấp thực phẩm và phát triển kinh tế nông thôn", core2: "Xu hướng chăn nuôi an toàn sinh học và tuần hoàn", core3: "Ứng dụng công nghệ tự động hóa trong chuồng trại" },
-                    { id: "cn11_b3", title: "Bài 3: Giống vật nuôi và kỹ thuật chọn giống", core1: "Khái niệm giống và tiêu chí đánh giá giống vật nuôi", core2: "Phương pháp chọn lọc cá thể và chọn lọc gia đình", core3: "Bảo tồn nguồn gen vật nuôi bản địa chất lượng cao" },
-                    { id: "cn11_b6", title: "Bài 6: Công nghệ sinh học trong chế biến thức ăn chăn nuôi", core1: "Ủ men vi sinh phụ phẩm nông nghiệp", core2: "Sản xuất thức ăn hỗn hợp hoàn chỉnh (TMR)", core3: "Phối trộn khẩu phần ăn cân đối dưỡng chất cho vật nuôi" },
-                    { id: "cn11_b10", title: "Bài 10: Phòng bệnh và vệ sinh thú y trong chăn nuôi", core1: "Quy trình vệ sinh tiêu độc khử trùng chuồng trại", core2: "Lịch tiêm phòng vaccine định kỳ cho gia súc, gia cầm", core3: "Xử lý chất thải chăn nuôi bằng hầm biogas bảo vệ môi trường" }
+                    { id: "cn11_b1", title: "Bài 1: Vai trò và triển vọng của chăn nuôi", nls: "NLS 1.1", nlsDesc: "Khai thác dữ liệu thống kê sản lượng chăn nuôi quốc gia", aiCode: "11.A1.1", aiDesc: "Phân tích mô hình kinh tế tuần hoàn trong chăn nuôi", core1: "Cung cấp thực phẩm chất lượng cao và phát triển kinh tế nông thôn", core2: "Xu thế chăn nuôi an toàn sinh học và mô hình kinh tế tuần hoàn", core3: "Ứng dụng công nghệ tự động hóa trong quản lý chuồng trại gia súc" },
+                    { id: "cn11_b3", title: "Bài 3: Giống vật nuôi và kỹ thuật chọn giống", nls: "NLS 2.2", nlsDesc: "Phân tích hồ sơ phả hệ số hóa của giống vật nuôi", aiCode: "11.A1.1", aiDesc: "Tra cứu phương pháp chọn lọc cá thể và nhân giống", core1: "Khái niệm giống và các chỉ tiêu kinh tế - kỹ thuật đánh giá giống", core2: "Phương pháp chọn lọc cá thể và chọn lọc dựa trên phả hệ", core3: "Bảo tồn nguồn gen vật nuôi bản địa chất lượng cao tại địa phương" },
+                    { id: "cn11_b6", title: "Bài 6: Công nghệ sinh học trong chế biến thức ăn chăn nuôi", nls: "NLS 3.1", nlsDesc: "Tính toán phối trộn khẩu phần TMR bằng bảng tính số", aiCode: "11.A2.2", aiDesc: "Tra cứu kỹ thuật ủ men vi sinh phụ phẩm nông nghiệp", core1: "Kỹ thuật ủ men vi sinh phụ phẩm nông nghiệp nâng cao độ ngon miệng", core2: "Công nghệ sản xuất thức ăn hỗn hợp hoàn chỉnh TMR cho gia súc", core3: "Nguyên tắc phối trộn khẩu phần thức ăn cân đối dinh dưỡng theo lứa tuổi" },
+                    { id: "cn11_b10", title: "Bài 10: Phòng bệnh và vệ sinh thú y trong chăn nuôi", nls: "NLS 2.3", nlsDesc: "Khai thác phần mềm cảnh báo dịch tễ thú y trực tuyến", aiCode: "11.A1.1", aiDesc: "Lập lịch tiêm phòng vaccine và quy trình tiêu độc chuồng trại", core1: "Quy trình tiêu độc khử trùng chuồng trại định kỳ an toàn sinh học", core2: "Xây dựng lịch tiêm phòng vaccine chủ động cho đàn vật nuôi", core3: "Kỹ thuật xử lý chất thải chăn nuôi bằng hầm biogas bảo vệ môi trường" }
                 ],
                 "12": [
-                    { id: "cn12_b1", title: "Bài 1: Khái quát về lâm nghiệp và nuôi trồng thủy sản", core1: "Vai trò phòng hộ của rừng và giá trị thủy sản xuất khẩu", core2: "Chiến lược phát triển lâm - ngư kết hợp bền vững", core3: "Ứng dụng công nghệ giám sát nguồn lợi tự nhiên" },
-                    { id: "cn12_b3", title: "Bài 3: Kỹ thuật ươm giống cây lâm nghiệp", core1: "Quy trình xử lý hạt giống và đóng bầu ươm", core2: "Chăm sóc cây con trong vườn ươm tiêu chuẩn", core3: "Kỹ thuật trồng và chăm sóc rừng ngập mặn chắn sóng" },
-                    { id: "cn12_b6", title: "Bài 6: Kỹ thuật nuôi thâm canh thủy sản nước ngọt", core1: "Chuẩn bị ao nuôi và cải tạo nền đáy", core2: "Kỹ thuật quản lý chất lượng nước (pH, oxy hòa tan, khí độc)", core3: "Quy trình cho ăn và phòng bệnh trên cá tra, cá lóc tại Vĩnh Long" },
-                    { id: "cn12_b8", title: "Bài 8: Ứng dụng công nghệ cao trong nuôi trồng thủy sản", core1: "Hệ thống nuôi tuần hoàn nước khép kín (RAS)", core2: "Công nghệ Biofloc kiểm soát chất lượng nước tự nhiên", core3: "Tự động hóa cho ăn và quản lý ao nuôi bằng cảm biến thông minh" }
+                    { id: "cn12_b1", title: "Bài 1: Khái quát về lâm nghiệp và nuôi trồng thủy sản", nls: "NLS 1.1", nlsDesc: "Khai thác ảnh viễn thám giám sát diện tích rừng ngập mặn", aiCode: "12.A1.3", aiDesc: "Phân tích giá trị xuất khẩu của thủy sản nước ngọt", core1: "Vai trò phòng hộ của rừng và giá trị kinh tế của thủy sản xuất khẩu", core2: "Chiến lược phát triển lâm - ngư kết hợp bền vững thích ứng biến đổi khí hậu", core3: "Ứng dụng công nghệ số và viễn thám trong giám sát tài nguyên thiên nhiên" },
+                    { id: "cn12_b3", title: "Bài 3: Kỹ thuật ươm giống cây lâm nghiệp", nls: "NLS 2.1", nlsDesc: "Quan sát mô hình vườn ươm điều khiển ánh sáng và tưới sương tự động", aiCode: "12.A1.3", aiDesc: "Tra cứu quy trình phối trộn giá thể ươm cây con", core1: "Quy trình xử lý hạt giống, đóng bầu và phối trộn giá thể ươm cây", core2: "Chăm sóc, điều tiết ánh sáng và độ ẩm cây con trong vườn ươm", core3: "Kỹ thuật trồng và chăm sóc rừng ngập mặn chắn sóng bảo vệ bờ kênh" },
+                    { id: "cn12_b6", title: "Bài 6: Kỹ thuật nuôi thâm canh thủy sản nước ngọt", nls: "NLS 3.1", nlsDesc: "Phân tích biểu đồ biến thiên pH, oxy hòa tan và khí độc trong ao", aiCode: "12.A2.1", aiDesc: "Tra cứu quy trình phòng bệnh cho cá tra, cá lóc bằng thảo mộc", core1: "Kỹ thuật thiết kế, cải tạo ao nuôi và xử lý nền đáy trước vụ nuôi", core2: "Quản lý các chỉ số môi trường nước ao (pH, oxy hòa tan, khí độc NH3/H2S)", core3: "Quy trình cho ăn và phòng bệnh định kỳ cho cá tra, cá lóc" },
+                    { id: "cn12_b8", title: "Bài 8: Ứng dụng công nghệ cao trong nuôi trồng thủy sản", nls: "NLS 4.1", nlsDesc: "Theo dõi dữ liệu cảm biến IoT trạm đo môi trường nước ao nuôi", aiCode: "12.A3.1", aiDesc: "Mô phỏng quy trình lọc cơ học và sinh học trong hệ thống RAS", core1: "Nguyên lý vận hành hệ thống nuôi thủy sản tuần hoàn nước khép kín RAS", core2: "Công nghệ Biofloc kiểm soát chất lượng nước bằng vi sinh vật dị dưỡng", core3: "Tự động hóa giám sát ao nuôi bằng hệ thống cảm biến thông minh kết nối IoT" }
                 ]
             }
         };
 
-        /* -------------------------------------------------------------------------
-         * TRẠNG THÁI TOÀN CỤC CỦA HỆ THỐNG
-         * ------------------------------------------------------------------------- */
+        /* TRẠNG THÁI TOÀN CỤC */
         let currentMode = '5512';
-        let activeLessonObj = null;
+        let activeLesson = null;
         let selectedLessonsForExam = [];
         let currentSlideIdx = 0;
         let slideDeck = [];
-        let examSeed = 101;
-        let showExamAnswer = true;
+        let timerSeconds = 0;
+        let timerInterval = null;
+        let examMatrixConfig = {}; // Cấu hình số câu giáo viên chọn: { lessonId: { biet, hieu, vd, vdc } }
 
         window.addEventListener('DOMContentLoaded', () => {
             onSubjectOrGradeChanged();
             renderActiveView('5512');
+            checkStoredApiKey();
         });
 
         function onSubjectOrGradeChanged() {
@@ -355,15 +406,16 @@
             const list = CURRICULUM_DATABASE[subject]?.[grade] || [];
 
             const container = document.getElementById('lesson-list-container');
+            if (!container) return;
             container.innerHTML = "";
 
-            if (list.length > 0) {
-                activeLessonObj = list[0];
-                selectedLessonsForExam = [list[0]];
+            if (!activeLesson || !list.some(x => x.id === activeLesson.id)) {
+                activeLesson = list.length > 0 ? list[0] : null;
+                selectedLessonsForExam = activeLesson ? [activeLesson] : [];
             }
 
-            list.forEach((item, index) => {
-                const isSelected = (item.id === activeLessonObj?.id);
+            list.forEach(item => {
+                const isSelected = activeLesson && (item.id === activeLesson.id);
                 const isChecked = selectedLessonsForExam.some(x => x.id === item.id);
 
                 const row = document.createElement('div');
@@ -381,16 +433,15 @@
                 container.appendChild(row);
             });
 
-            document.getElementById('label-active-lesson').innerText = activeLessonObj ? activeLessonObj.title : "Chưa chọn";
+            document.getElementById('label-active-lesson').innerText = activeLesson ? activeLesson.title : "Chưa chọn";
         }
 
         function pickLesson(id) {
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
             const list = CURRICULUM_DATABASE[subject]?.[grade] || [];
-            activeLessonObj = list.find(x => x.id === id) || list[0];
+            activeLesson = list.find(x => x.id === id) || list[0];
 
-            document.getElementById('label-active-lesson').innerText = activeLessonObj.title;
             onSubjectOrGradeChanged();
             renderActiveView(currentMode);
         }
@@ -432,7 +483,7 @@
             if (mode === '5512') {
                 a4.classList.remove('hidden');
                 slide.classList.add('hidden');
-                badge.innerText = "KẾ HOẠCH BÀI DẠY (CHUẨN CÔNG VĂN 5512)";
+                badge.innerText = "KẾ HOẠCH BÀI DẠY (CÔNG VĂN 5512)";
                 renderLessonDoc5512();
             } else if (mode === 'slide') {
                 a4.classList.add('hidden');
@@ -442,7 +493,7 @@
             } else if (mode === '7991') {
                 a4.classList.remove('hidden');
                 slide.classList.add('hidden');
-                badge.innerText = "MA TRẬN & ĐA MÃ ĐỀ THI ĐÁNH GIÁ NĂNG LỰC (7991)";
+                badge.innerText = "MA TRẬN & ĐỀ KIỂM TRA ĐÁNH GIÁ NĂNG LỰC (CV 7991)";
                 renderExamMatrix7991();
             }
         }
@@ -452,20 +503,20 @@
         }
 
         /* -------------------------------------------------------------------------
-         * PHÂN VÙNG 2: ENGINE XUẤT GIÁO ÁN CV 5512 CẢI TIẾN HIGH-END
+         * 2. BỘ XUẤT KẾ HOẠCH BÀI DẠY (CV 5512 - TINH GỌN TIÊU ĐỀ)
          * ------------------------------------------------------------------------- */
         function renderLessonDoc5512() {
-            if (!activeLessonObj) return;
+            if (!activeLesson) return;
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
             const doc = document.getElementById('container-a4-doc');
 
             doc.innerHTML = `
-                <table style="width: 100%; border: none; margin-bottom: 12px;">
+                <table style="width: 100%; border: none; margin-bottom: 15px;">
                     <tr style="border: none;">
                         <td style="border: none; width: 45%; text-align: center; vertical-align: top; padding: 0;">
-                            <p style="margin: 0; font-size: 11pt;">SỞ GD&ĐT VĨNH LONG</p>
-                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">TRƯỜNG THPT MANG THÍT</p>
+                            <p style="margin: 0; font-size: 11pt;">BỘ GIÁO DỤC VÀ ĐÀO TẠO</p>
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">CHƯƠNG TRÌNH GDPT 2018</p>
                             <div style="width: 80px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
                         </td>
                         <td style="border: none; width: 55%; text-align: center; vertical-align: top; padding: 0;">
@@ -478,42 +529,39 @@
 
                 <div style="text-align: center; margin: 15px 0;">
                     <h2 style="margin: 0; font-size: 14pt; font-weight: bold; text-transform: uppercase;">KẾ HOẠCH BÀI DẠY</h2>
-                    <h3 style="margin: 4px 0 0 0; font-size: 13pt; font-weight: bold; color: #1e3a8a;">${activeLessonObj.title.toUpperCase()}</h3>
-                    <p style="margin: 3px 0 0 0; font-size: 12pt;">Họ và tên giáo viên: <strong>Hồ Tấn Khải</strong> • Tổ: Khoa học Tự nhiên</p>
-                    <p style="margin: 1px 0 0 0; font-style: italic; font-size: 11pt;">Môn học: ${subject} ${grade} • Khung phân phối chương trình chuẩn GDPT 2018</p>
+                    <h3 style="margin: 4px 0 0 0; font-size: 13pt; font-weight: bold; color: #1e3a8a;">${activeLesson.title.toUpperCase()}</h3>
+                    <p style="margin: 3px 0 0 0; font-style: italic; font-size: 11pt;">Môn học: ${subject} ${grade} • Thời lượng thực hiện: 02 tiết</p>
                 </div>
 
                 <p style="font-weight: bold; margin: 10px 0 3px 0;">I. MỤC TIÊU</p>
                 <p style="margin: 2px 0 2px 10px;"><strong>1. Về kiến thức:</strong></p>
-                <p style="margin: 2px 0 2px 20px;">- Trình bày được bản chất, cơ chế sinh học và nguyên lý khoa học cốt lõi của ${activeLessonObj.title}.</p>
-                <p style="margin: 2px 0 2px 20px;">- Phân tích mối quan hệ tương tác giữa cấu tạo và chức năng sinh học; giải thích được ứng dụng thực tiễn trong nông nghiệp tại tỉnh Vĩnh Long.</p>
+                <p style="margin: 2px 0 2px 20px;">- Trình bày được bản chất, cơ chế sinh học và nguyên lý khoa học cốt lõi của ${activeLesson.title}.</p>
+                <p style="margin: 2px 0 2px 20px;">- Phân tích mối quan hệ tương tác giữa cấu tạo và chức năng sinh học; giải thích được ứng dụng thực tiễn trong nông nghiệp và đời sống.</p>
 
                 <p style="margin: 4px 0 2px 10px;"><strong>2. Về năng lực:</strong></p>
-                <p style="margin: 2px 0 2px 20px;">- 2.1. Năng lực chung: Tự chủ & tự học trong tra cứu tài liệu; Giao tiếp & hợp tác nhóm giải quyết tình huống; Giải quyết vấn đề sáng tạo.</p>
-                <p style="margin: 2px 0 2px 20px;">- 2.2. Năng lực đặc thù: Nhận thức khoa học sinh học/công nghệ; Tìm hiểu thế giới tự nhiên; Vận dụng kiến thức, kĩ năng đã học vào thực tiễn đời sống.</p>
-                <p style="margin: 2px 0 2px 20px;">- 2.3. Tích hợp Năng lực số: Mã [NLS 2.1] - Khai thác và xử lý dữ liệu số, tra cứu hình ảnh hiển vi và mô hình tương tác trực tuyến.</p>
-                <p style="margin: 2px 0 2px 20px;">- 2.4. Tích hợp Năng lực AI: Mã [${grade}.A1.2] - Nhận thức được vai trò hỗ trợ của AI trong tra cứu thuật ngữ; phối hợp cùng AI tìm kiếm thông tin khoa học và con người giữ quyền đối chiếu SGK, ra quyết định kết luận.</p>
+                <p style="margin: 2px 0 2px 20px;">- 2.1. Năng lực chung: Tự chủ & tự học trong tra cứu tài liệu; Giao tiếp & hợp tác nhóm; Giải quyết vấn đề sáng tạo.</p>
+                <p style="margin: 2px 0 2px 20px;">- 2.2. Năng lực đặc thù: Nhận thức khoa học sinh học/công nghệ; Tìm hiểu thế giới tự nhiên; Vận dụng kiến thức, kĩ năng vào đời sống.</p>
+                <p style="margin: 2px 0 2px 20px; color: #0369a1;">- 2.3. Tích hợp Năng lực số: <strong>[${activeLesson.nls || 'NLS 2.1'}]</strong> - ${activeLesson.nlsDesc || 'Khai thác dữ liệu số và mô hình hiển vi trực quan'}.</p>
+                <p style="margin: 2px 0 2px 20px; color: #4338ca;">- 2.4. Tích hợp Năng lực AI: <strong>[Mã ${activeLesson.aiCode || grade + '.A1.2'}]</strong> - ${activeLesson.aiDesc || 'Khai thác AI tra cứu thuật ngữ; kiểm chứng chéo với SGK và con người giữ quyền quyết định'}.</p>
 
-                <p style="margin: 4px 0 2px 10px;"><strong>3. Về phẩm chất:</strong> Chăm chỉ, trung thực, tinh thần trách nhiệm trong bảo vệ môi trường sinh thái và đạo đức nghiên cứu khoa học.</p>
+                <p style="margin: 4px 0 2px 10px;"><strong>3. Về phẩm chất:</strong> Chăm chỉ, trung thực trong nghiên cứu khoa học, tinh thần trách nhiệm bảo vệ sinh thái.</p>
 
                 <p style="font-weight: bold; margin: 12px 0 4px 0;">II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU</p>
-                <p style="margin: 2px 0 2px 15px;">- Giáo viên: Kế hoạch bài dạy, bài giảng slide điện tử, SGK, mã QR mô hình học liệu số, Phiếu học tập số 1.</p>
-                <p style="margin: 2px 0 2px 15px;">- Học sinh: Vở ghi bài, SGK, thiết bị thông minh có kết nối Internet tra cứu học liệu số.</p>
+                <p style="margin: 2px 0 2px 15px;">- Giáo viên: Kế hoạch bài dạy, bài giảng slide điện tử, SGK, mã QR học liệu số hóa, Phiếu học tập số 1.</p>
+                <p style="margin: 2px 0 2px 15px;">- Học sinh: SGK, vở ghi bài, thiết bị thông minh tra cứu học liệu số tương tác.</p>
 
                 <p style="font-weight: bold; margin: 12px 0 4px 0;">III. TIẾN TRÌNH DẠY HỌC</p>
 
                 <p style="font-weight: bold; color: #1e40af; margin: 6px 0 2px 0;">HOẠT ĐỘNG 1: MỞ ĐẦU (XÁC ĐỊNH VẤN ĐỀ)</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: Giáo viên trình chiếu câu hỏi tình huống thực tế có vấn đề về ${activeLessonObj.title}.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: Học sinh làm việc cá nhân suy ngẫm trong 2 phút.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Chỉ định 2 học sinh trả lời, lớp nhận xét.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: Giáo viên phân tích mâu thuẫn nhận thức và dẫn dắt vào bài học mới.</p>
-                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
-                <p style="margin: 2px 0 8px 25px;">- Câu trả lời dự đoán ban đầu của học sinh chỉ ra được sự cần thiết phải tìm hiểu cơ chế bản chất của bài học.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao: GV chiếu tình huống thực tiễn gắn với ${activeLesson.title}, đặt câu hỏi mâu thuẫn nhận thức.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện: HS suy nghĩ cá nhân trong 2 phút.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo: Chỉ định 2 học sinh phát biểu, học sinh khác nhận xét phản biện.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận: GV chuẩn hóa định hướng và dẫn dắt vào bài mới.</p>
 
                 <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p>
-                <div style="background: #eef2ff; border-left: 4px solid #3b82f6; padding: 6px 10px; margin: 4px 0; font-size: 11pt;">
-                    👉 <strong>[Tích hợp năng lực số]:</strong> [NLS 2.1] - Giáo viên cung cấp mã QR và liên kết mô hình số; học sinh quét mã trên thiết bị để tương tác trực quan.<br>
-                    👉 <strong>[Tích hợp năng lực AI]:</strong> [Mã ${grade}.A1.2] - Học sinh sử dụng trợ lý AI tra cứu thuật ngữ mở rộng; con người giữ quyền kiểm chứng đối chiếu SGK và kết luận.
+                <div style="background: #eef2ff; border-left: 4px solid #3b82f6; padding: 8px 12px; margin: 4px 0; font-size: 11pt;">
+                    👉 <strong>[Tích hợp Năng lực số - ${activeLesson.nls}]:</strong> ${activeLesson.nlsDesc}.<br>
+                    👉 <strong>[Tích hợp Năng lực AI - ${activeLesson.aiCode}]:</strong> ${activeLesson.aiDesc}.
                 </div>
 
                 <table>
@@ -526,82 +574,57 @@
                     <tbody>
                         <tr>
                             <td style="vertical-align: top;">
-                                <strong>Mục 1: ${activeLessonObj.core1}</strong><br>
-                                - Bước 1: GV phát Phiếu học tập số 1, yêu cầu các nhóm nghiên cứu tài liệu SGK.<br>
-                                - Bước 2: HS làm việc nhóm, trao đổi, phân tích và thống nhất câu trả lời.<br>
-                                - Bước 3: Đại diện nhóm 1 báo cáo; nhóm 2 nhận xét, phản biện.<br>
-                                - Bước 4: GV chuẩn hóa kiến thức, đánh giá hoạt động hợp tác.
+                                <strong>Mục 1: ${activeLesson.core1}</strong><br>
+                                - B1: GV phát Phiếu học tập số 1, yêu cầu các nhóm nghiên cứu SGK.<br>
+                                - B2: HS làm việc nhóm, phân tích kênh hình, ghi nhận kiến thức.<br>
+                                - B3: Nhóm 1 báo cáo; nhóm 2 nhận xét, phản biện.<br>
+                                - B4: GV chuẩn hóa kiến thức, đánh giá hoạt động hợp tác.
                             </td>
                             <td style="vertical-align: top;">
                                 <strong>1. Bản chất khoa học nền tảng:</strong><br>
-                                - Định nghĩa, vai trò và các thành phần cấu tạo cơ bản theo phân phối chương trình.<br>
-                                - Cơ chế vận động, chuyển hóa năng lượng và trao đổi vật chất cốt lõi.
+                                - Định nghĩa, vai trò và thành phần cấu tạo đặc trưng.<br>
+                                - Cơ chế chuyển hóa và trao đổi vật chất cốt lõi.
                             </td>
                         </tr>
                         <tr>
                             <td style="vertical-align: top;">
-                                <strong>Mục 2: ${activeLessonObj.core2}</strong><br>
-                                - Bước 1: GV chiếu sơ đồ quy luật, yêu cầu cặp đôi học sinh phân tích diễn biến.<br>
-                                - Bước 2: HS trao đổi, vẽ sơ đồ tư duy tóm tắt quy trình.<br>
-                                - Bước 3: Một cặp báo cáo, cả lớp góp ý bổ sung.<br>
-                                - Bước 4: GV chốt kiến thức trọng tâm ghi bài.
+                                <strong>Mục 2: ${activeLesson.core2}</strong><br>
+                                - B1: GV chiếu sơ đồ cơ chế, yêu cầu cặp đôi học sinh phân tích quy luật.<br>
+                                - B2: HS thảo luận, thiết lập sơ đồ tư duy tóm tắt tiến trình.<br>
+                                - B3: Một cặp báo cáo, cả lớp góp ý bổ sung.<br>
+                                - B4: GV chốt kiến thức trọng tâm ghi bài.
                             </td>
                             <td style="vertical-align: top;">
                                 <strong>2. Quy luật tương tác và cơ chế:</strong><br>
                                 - Diễn biến tuần tự các giai đoạn của tiến trình sinh học/kỹ thuật.<br>
-                                - Mối liên hệ chặt chẽ giữa cấu trúc và chức năng sinh học.
+                                - Mối quan hệ mật thiết giữa cấu trúc và chức năng.
                             </td>
                         </tr>
                         <tr>
                             <td style="vertical-align: top;">
-                                <strong>Mục 3: ${activeLessonObj.core3}</strong><br>
-                                - Bước 1: GV nêu bài toán thực tiễn tại huyện Mang Thít, tỉnh Vĩnh Long.<br>
-                                - Bước 2: HS liên hệ kiến thức đề xuất giải pháp ứng dụng.<br>
-                                - Bước 3: HS trình bày ý kiến sáng tạo.<br>
-                                - Bước 4: GV định hướng ứng dụng thực tiễn.
+                                <strong>Mục 3: ${activeLesson.core3}</strong><br>
+                                - B1: GV nêu bài toán thực tiễn ứng dụng trong sản xuất và đời sống.<br>
+                                - B2: HS liên hệ kiến thức đề xuất giải pháp ứng dụng.<br>
+                                - B3: HS trình bày giải pháp sáng tạo.<br>
+                                - B4: GV định hướng ứng dụng thực tiễn.
                             </td>
                             <td style="vertical-align: top;">
-                                <strong>3. Ứng dụng thực tiễn địa phương:</strong><br>
+                                <strong>3. Ứng dụng thực tiễn:</strong><br>
                                 - Vận dụng vào chọn giống, bảo vệ cây trồng/vật nuôi và bảo vệ môi trường.<br>
-                                - Ý nghĩa phát triển kinh tế nông nghiệp bền vững tại địa phương.
+                                - Ý nghĩa phát triển kinh tế nông nghiệp bền vững.
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
                 <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 3: LUYỆN TẬP</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao hệ thống bài tập trắc nghiệm gồm đủ 3 dạng thức.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS làm việc cá nhân hoàn thành vào phiếu bài tập.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Học sinh công bố đáp án và giải thích cơ sở lý thuyết.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV chốt đáp án chuẩn và sửa lỗi sai thường gặp.</p>
-                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
-                <p style="margin: 2px 0 2px 25px;"><strong>Dạng 1: Trắc nghiệm 4 lựa chọn:</strong> Hệ thống 4 câu hỏi nhận biết định nghĩa, thành phần và quy luật.</p>
-                <p style="margin: 2px 0 2px 25px;"><strong>Dạng 2: Trắc nghiệm Đúng/Sai:</strong> 1 câu gồm 4 ý a, b, c, d gắn liền bối cảnh khoa học thực tế.</p>
-                <p style="margin: 2px 0 2px 25px;"><strong>Dạng 3: Trắc nghiệm trả lời ngắn:</strong> 2 câu hỏi tính toán và điền từ khóa khoa học ngắn gọn.</p>
+                <p style="margin: 2px 0 2px 15px;">- GV giao bài tập trắc nghiệm gồm đủ 3 dạng thức: 4 lựa chọn, Đúng/Sai bối cảnh và Trả lời ngắn; HS làm bài độc lập và đối chiếu đáp án chuẩn.</p>
 
                 <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 4: VẬN DỤNG</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao bài tập dự án nông nghiệp thực tiễn Vĩnh Long.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS tìm hiểu thực tế tại địa phương, hoàn thành báo cáo thu hoạch.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Nộp báo cáo thu hoạch vào buổi học kế tiếp.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV nhận xét, đánh giá sản phẩm và xếp loại.</p>
+                <p style="margin: 2px 0 2px 15px;">- Dự án học tập thực tế: Tìm hiểu các mô hình ứng dụng công nghệ cao hoặc giải pháp sinh thái tại địa phương.</p>
 
                 <p style="font-weight: bold; margin: 12px 0 4px 0;">IV. HỒ SƠ DẠY HỌC / PHỤ LỤC</p>
-                <p style="font-weight: bold; text-decoration: underline;">Phụ lục 1: PHIẾU HỌC TẬP SỐ 1</p>
-                <table>
-                    <thead>
-                        <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
-                            <th style="width: 30%;">Nhiệm vụ</th>
-                            <th style="width: 70%;">Nội dung nghiên cứu & Kết quả</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Nhiệm vụ 1: Bản chất cốt lõi</td><td>..............................................................................................................</td></tr>
-                        <tr><td>Nhiệm vụ 2: Cơ chế & Diễn biến</td><td>..............................................................................................................</td></tr>
-                        <tr><td>Nhiệm vụ 3: Ứng dụng thực tiễn</td><td>..............................................................................................................</td></tr>
-                    </tbody>
-                </table>
-
-                <p style="font-weight: bold; text-decoration: underline; margin-top: 15px;">Phụ lục 2: RUBRIC ĐÁNH GIÁ NĂNG LỰC SỐ (Bảng 5 cột)</p>
+                <p style="font-weight: bold; text-decoration: underline;">Phụ lục: RUBRIC ĐÁNH GIÁ NĂNG LỰC SỐ (${activeLesson.nls}) & AI (${activeLesson.aiCode})</p>
                 <table>
                     <thead>
                         <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
@@ -610,10 +633,17 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Khai thác dữ liệu số (NLS 2.1)</td>
+                            <td>Năng lực số (${activeLesson.nls})</td>
                             <td>Chưa biết quét mã xem mô hình</td>
-                            <td>Quét mã và quan sát mô hình cơ bản</td>
-                            <td>Thao tác thành thạo, phân tích đúng bản chất</td>
+                            <td>Truy cập và xem được tư liệu số cơ bản</td>
+                            <td>Thao tác thành thạo, tương tác 3D và đối chiếu chính xác SGK</td>
+                            <td style="text-align: center; font-weight: bold;">10 đ</td>
+                        </tr>
+                        <tr>
+                            <td>Năng lực AI (${activeLesson.aiCode})</td>
+                            <td>Phụ thuộc thụ động vào AI, không kiểm chứng</td>
+                            <td>Biết tra cứu nhưng chưa phát hiện lỗi ngụy biện</td>
+                            <td>Sử dụng AI hiệu quả, phản biện chuẩn xác lỗi sai khoa học và giữ quyền quyết định</td>
                             <td style="text-align: center; font-weight: bold;">10 đ</td>
                         </tr>
                     </tbody>
@@ -622,26 +652,26 @@
         }
 
         /* -------------------------------------------------------------------------
-         * PHÂN VÙNG 3: ENGINE BÀI GIẢNG SLIDE POWERPOINT & 16 SLIDE LUYỆN TẬP
+         * 3. BỘ XUẤT SLIDE POWERPOINT (ĐỒNG HỒ ĐA MỐC & QUAY SỐ 01-50)
          * ------------------------------------------------------------------------- */
         function renderSlideDeckPresentation() {
-            if (!activeLessonObj) return;
+            if (!activeLesson) return;
             slideDeck = [];
 
             // Slide 1: Bìa
             slideDeck.push({
-                title: activeLessonObj.title.toUpperCase(),
-                tag: "TRƯỜNG THPT MANG THÍT • HỘI GIẢNG",
+                title: activeLesson.title.toUpperCase(),
+                tag: "BÀI GIẢNG ĐIỆN TỬ GDPT 2018",
                 body: `
-                    <div class="text-center py-6 space-y-4">
+                    <div class="text-center py-8 space-y-4">
                         <span class="inline-block px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 font-bold text-sm border border-amber-400/30">
-                            BÀI GIẢNG ĐIỆN TỬ VIP GDPT 2018
+                            CHƯƠNG TRÌNH GIÁO DỤC PHỔ THÔNG 2018
                         </span>
                         <h1 class="text-5xl font-black text-amber-300 leading-tight">
-                            ${activeLessonObj.title}
+                            ${activeLesson.title}
                         </h1>
                         <p class="text-slate-200 text-xl font-semibold">
-                            Giáo viên: Hồ Tấn Khải • Tổ: Khoa học Tự nhiên
+                            Tích hợp Năng lực số [${activeLesson.nls}] & Năng lực Trí tuệ nhân tạo [${activeLesson.aiCode}]
                         </p>
                     </div>
                 `
@@ -654,15 +684,15 @@
                 body: `
                     <div class="grid grid-cols-2 gap-6 items-center text-lg">
                         <div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-3">
-                            <span class="px-3 py-1 rounded bg-amber-500/20 text-amber-300 font-bold text-sm">Tình huống thực tiễn</span>
-                            <h3 class="text-2xl font-bold text-white">Mâu thuẫn nhận thức</h3>
+                            <span class="px-3 py-1 rounded bg-amber-500/20 text-amber-300 font-bold text-sm">Hiện tượng thực tế</span>
+                            <h3 class="text-2xl font-bold text-white">Mâu thuẫn nhận thức khoa học</h3>
                             <p class="text-slate-200 leading-relaxed">
-                                Bằng cách nào sinh vật duy trì được sự ổn định cấu trúc và thích nghi tối ưu trước những biến đổi khắc nghiệt của môi trường tự nhiên?
+                                Bằng cách nào hệ thống sinh học có thể duy trì sự cân bằng nội môi và liên tục thích nghi tối ưu với môi trường sinh thái biến đổi?
                             </p>
                         </div>
                         <div class="bg-emerald-950/40 p-6 rounded-2xl border border-emerald-500/40 space-y-3">
                             <h4 class="text-amber-300 font-bold text-xl"><i class="fa-solid fa-lightbulb mr-2"></i> Câu hỏi định hướng tư duy:</h4>
-                            <p class="text-slate-200">1. Đâu là cơ chế bản chất chi phối hiện tượng?</p>
+                            <p class="text-slate-200">1. Cơ chế bản chất nào chi phối hiện tượng?</p>
                             <p class="text-slate-200">2. Con người có thể ứng dụng quy luật này vào nông nghiệp thế nào?</p>
                             <p class="text-amber-400 font-bold">➜ Hãy cùng khám phá nội dung bài học!</p>
                         </div>
@@ -670,48 +700,44 @@
                 `
             });
 
-            // Slide 3, 4, 5: 3 Mục kiến thức cốt lõi ép từ giáo án qua
-            [activeLessonObj.core1, activeLessonObj.core2, activeLessonObj.core3].forEach((c, idx) => {
+            // Slide 3, 4, 5: Kiến thức cốt lõi
+            [activeLesson.core1, activeLesson.core2, activeLesson.core3].forEach((c, idx) => {
                 slideDeck.push({
                     title: `NỘI DUNG ${idx + 1}: ${c.toUpperCase()}`,
                     tag: "HÌNH THÀNH KIẾN THỨC",
                     body: `
                         <div class="bg-black/40 p-8 rounded-2xl border border-emerald-500/40 space-y-5 text-xl">
-                            <div class="flex items-center gap-3">
-                                <span class="w-3.5 h-3.5 rounded-full bg-cyan-400"></span>
-                                <p class="text-amber-300 font-bold text-2xl">Khám phá trọng tâm:</p>
-                            </div>
-                            <p class="text-slate-200 leading-relaxed">• Tìm hiểu khái niệm, bản chất khoa học và cấu trúc của <strong>${c}</strong>.</p>
-                            <p class="text-slate-200 leading-relaxed">• Phân tích mối quan hệ giữa cấu trúc và chức năng qua mô hình 3D/hình ảnh hiển vi.</p>
+                            <p class="text-amber-300 font-bold text-2xl">Trọng tâm kiến thức:</p>
+                            <p class="text-slate-200 leading-relaxed">• Nghiên cứu khái niệm, bản chất khoa học và cấu trúc của <strong>${c}</strong>.</p>
+                            <p class="text-slate-200 leading-relaxed">• Phân tích mối quan hệ giữa cấu trúc và chức năng qua mô hình trực quan.</p>
                             <p class="text-slate-200 leading-relaxed">• Học sinh thảo luận nhóm, giải quyết câu hỏi trong Phiếu học tập số 1 và ghi vở.</p>
                         </div>
                     `
                 });
             });
 
-            // Slide 6: Slide chốt kiến thức cốt lõi ghi vở
+            // Slide 6: Chốt kiến thức ghi vở
             slideDeck.push({
                 title: "KIẾN THỨC CỐT LÕI (NỘI DUNG GHI VỞ)",
                 tag: "CHỐT KIẾN THỨC BẮT BUỘC",
                 body: `
                     <div class="bg-black/50 p-7 rounded-2xl border-2 border-amber-400/60 space-y-4 text-xl">
-                        <p class="text-amber-300 font-bold text-2xl"><i class="fa-solid fa-book-bookmark mr-2"></i> Học sinh ghi nhớ các điểm then chốt:</p>
-                        <p class="text-slate-200">• <strong>Bản chất:</strong> Quy luật sinh học/công nghệ bảo đảm tính toàn vẹn và phát triển.</p>
-                        <p class="text-slate-200">• <strong>Cơ chế:</strong> Sao chép, chuyển hóa và tương tác sinh hóa chính xác.</p>
-                        <p class="text-slate-200">• <strong>Ứng dụng:</strong> Cơ sở khoa học của các biện pháp kỹ thuật nông nghiệp tại Vĩnh Long.</p>
+                        <p class="text-amber-300 font-bold text-2xl"><i class="fa-solid fa-book-bookmark mr-2"></i> Điểm then chốt ghi nhớ:</p>
+                        <p class="text-slate-200">• <strong>Bản chất:</strong> Quy luật khoa học bảo đảm tính toàn vẹn và tiến hóa.</p>
+                        <p class="text-slate-200">• <strong>Cơ chế:</strong> Chuyển hóa, tương tác sinh hóa và thích nghi chính xác.</p>
+                        <p class="text-slate-200">• <strong>Ứng dụng:</strong> Cơ sở khoa học của các giải pháp kỹ thuật và đời sống thực tiễn.</p>
                     </div>
                 `
             });
 
-            // HỆ THỐNG 16 SLIDE LUYỆN TẬP RIÊNG BIỆT (6 câu 4 lựa chọn + 4 câu Đúng/Sai + 6 câu trả lời ngắn) CÓ ẨN ĐÁP ÁN
-            // Dạng 1: 6 câu trắc nghiệm 4 lựa chọn (Slide 7 - 12)
+            // 16 Slide Luyện tập (6 câu 4 lựa chọn, 4 câu Đúng/Sai, 6 câu Trả lời ngắn)
             for (let i = 1; i <= 6; i++) {
                 slideDeck.push({
                     title: `LUYỆN TẬP: CÂU HỎI TRẮC NGHIỆM ${i}`,
                     tag: `DẠNG 1: 4 LỰA CHỌN (${i}/6)`,
                     body: `
                         <div class="space-y-4 text-lg">
-                            <p class="font-bold text-white text-xl">Câu ${i}: Nhận định nào sau đây là chính xác nhất về nội dung của ${activeLessonObj.title}?</p>
+                            <p class="font-bold text-white text-xl">Câu ${i}: Nhận định nào sau đây là chính xác nhất về nội dung của ${activeLesson.title}?</p>
                             <div class="grid grid-cols-2 gap-4 text-lg">
                                 <div class="p-4 bg-black/40 rounded-xl border border-slate-700">A. Không tuân theo các quy luật tự nhiên</div>
                                 <div class="p-4 bg-black/40 rounded-xl border border-slate-700">B. Luôn bảo đảm tính toàn vẹn và thích nghi sinh học</div>
@@ -731,19 +757,18 @@
                 });
             }
 
-            // Dạng 2: 4 câu đúng/sai (Slide 13 - 16)
             for (let i = 1; i <= 4; i++) {
                 slideDeck.push({
                     title: `LUYỆN TẬP: TRẮC NGHIỆM ĐÚNG/SAI ${i}`,
                     tag: `DẠNG 2: BỐI CẢNH KHOA HỌC (${i}/4)`,
                     body: `
                         <div class="space-y-3 text-lg">
-                            <p class="font-bold text-amber-300 text-xl">Câu ${i}: Trong một nghiên cứu khoa học thực nghiệm về điều kiện phát triển:</p>
+                            <p class="font-bold text-amber-300 text-xl">Câu ${i}: Trong một nghiên cứu khoa học thực nghiệm về điều kiện môi trường sống:</p>
                             <div class="space-y-2 bg-black/40 p-4 rounded-xl border border-slate-700 text-lg">
-                                <p>a) Nhiệt độ và độ ẩm tối ưu giúp quá trình chuyển hóa diễn ra hiệu quả nhất.</p>
-                                <p>b) Các tác nhân gây hại không ảnh hưởng đến năng suất cá thể.</p>
-                                <p>c) Nắm vững quy luật giúp ứng dụng tốt vào sản xuất tại huyện Mang Thít.</p>
-                                <p>d) Toàn bộ biến đổi nội tại đều diễn ra tự phát không cần năng lượng.</p>
+                                <p>a) Nhiệt độ và độ ẩm tối ưu giúp quá trình chuyển hóa đạt hiệu suất cao nhất.</p>
+                                <p>b) Các tác nhân gây hại đều làm tăng tốc độ sinh trưởng của cá thể sinh vật.</p>
+                                <p>c) Nắm vững quy luật giúp chủ động nâng cao năng suất cây trồng, vật nuôi.</p>
+                                <p>d) Mọi biến đổi nội tại diễn ra tự phát mà không tiêu tốn năng lượng trao đổi.</p>
                             </div>
                             <div>
                                 <button onclick="toggleAnswer(this)" class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-sm">
@@ -758,7 +783,6 @@
                 });
             }
 
-            // Dạng 3: 6 câu trả lời ngắn (Slide 17 - 22)
             for (let i = 1; i <= 6; i++) {
                 slideDeck.push({
                     title: `LUYỆN TẬP: TRẢ LỜI NGẮN ${i}`,
@@ -825,36 +849,142 @@
             }
         }
 
+        /* HẸN GIỜ ĐA MỐC VÀ CHỌN SỐ HỌC SINH 01 - 50 */
+        function startSlideTimer(seconds) {
+            clearInterval(timerInterval);
+            timerSeconds = seconds;
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('slide-timer-display').innerText = "HẾT GIỜ!";
+                    // Âm báo hết giờ
+                    try {
+                        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                        const osc = ctx.createOscillator();
+                        osc.type = "sine";
+                        osc.frequency.setValueAtTime(880, ctx.currentTime);
+                        osc.connect(ctx.destination);
+                        osc.start();
+                        osc.stop(ctx.currentTime + 0.5);
+                    } catch(e){}
+                } else {
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+        function stopSlideTimer() {
+            clearInterval(timerInterval);
+            document.getElementById('slide-timer-display').innerText = "--:--";
+        }
+        function updateTimerDisplay() {
+            const m = Math.floor(timerSeconds / 60);
+            const s = timerSeconds % 60;
+            document.getElementById('slide-timer-display').innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function pickRandomStudentNumber() {
+            const display = document.getElementById('random-student-display');
+            let count = 0;
+            const rollInterval = setInterval(() => {
+                const rand = Math.floor(1 + Math.random() * 50);
+                display.innerText = (rand < 10 ? '0' : '') + rand;
+                count++;
+                if (count > 15) {
+                    clearInterval(rollInterval);
+                    display.classList.add('text-amber-300', 'animate-pulse');
+                    setTimeout(() => display.classList.remove('animate-pulse'), 1500);
+                }
+            }, 50);
+        }
+
         /* -------------------------------------------------------------------------
-         * PHÂN VÙNG 4: ENGINE MA TRẬN & ĐA MÃ ĐỀ THI ĐÁNH GIÁ NĂNG LỰC CV 7991
+         * 4. BỘ MA TRẬN & ĐỀ KIỂM TRA ĐÁNH GIÁ NĂNG LỰC (CV 7991 - XUẤT ĐÚNG SỐ CÂU)
          * ------------------------------------------------------------------------- */
-        function randomizeExamSeed() {
-            examSeed = Math.floor(100 + Math.random() * 900);
-            renderExamMatrix7991();
-        }
-
-        function toggleExamAnswerDisplay() {
-            showExamAnswer = !showExamAnswer;
-            renderExamMatrix7991();
-        }
-
         function renderExamMatrix7991() {
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
             const doc = document.getElementById('container-a4-doc');
-            const items = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [activeLessonObj];
+            const items = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [activeLesson];
+
+            // Tự khởi tạo cấu hình số câu nếu chưa có
+            items.forEach(it => {
+                if (!examMatrixConfig[it.id]) {
+                    examMatrixConfig[it.id] = {
+                        biet: Math.round(8 / items.length) || 1,
+                        hieu: Math.round(6 / items.length) || 1,
+                        vd: 1,
+                        vdc: 1
+                    };
+                }
+            });
+
+            let totalBiet = 0, totalHieu = 0, totalVd = 0, totalVdc = 0;
+            items.forEach(it => {
+                totalBiet += parseInt(examMatrixConfig[it.id].biet) || 0;
+                totalHieu += parseInt(examMatrixConfig[it.id].hieu) || 0;
+                totalVd += parseInt(examMatrixConfig[it.id].vd) || 0;
+                totalVdc += parseInt(examMatrixConfig[it.id].vdc) || 0;
+            });
+            const totalQuestions = totalBiet + totalHieu + totalVd + totalVdc;
+
+            // Xây dựng danh sách câu hỏi theo đúng số lượng ma trận
+            let part1QuestionsHtml = "";
+            let p1Index = 1;
+            items.forEach(it => {
+                const count = (parseInt(examMatrixConfig[it.id].biet) || 0) + (parseInt(examMatrixConfig[it.id].hieu) || 0);
+                for (let k = 1; k <= count; k++) {
+                    part1QuestionsHtml += `
+                        <p style="margin: 3px 0;"><strong>Câu ${p1Index}:</strong> [${it.title}] Nhận định nào sau đây là chính xác về cơ chế bản chất của bài học?</p>
+                        <p style="margin: 1px 0 1px 20px;">A. Không tuân thủ các quy luật tự nhiên &nbsp;&nbsp;&nbsp;&nbsp; <strong>B. Luôn bảo đảm tính toàn vẹn và thích nghi sinh thái [ĐÚNG]</strong></p>
+                        <p style="margin: 1px 0 3px 20px;">C. Diễn ra ngẫu nhiên không có sự kiểm soát &nbsp;&nbsp;&nbsp;&nbsp; D. Hoàn toàn độc lập với môi trường</p>
+                    `;
+                    p1Index++;
+                }
+            });
+
+            let part2QuestionsHtml = "";
+            let p2Index = 1;
+            items.forEach(it => {
+                const count = parseInt(examMatrixConfig[it.id].vd) || 0;
+                for (let k = 1; k <= count; k++) {
+                    part2QuestionsHtml += `
+                        <p style="margin: 4px 0;"><strong>Câu ${p2Index}:</strong> [${it.title}] Trong một nghiên cứu khoa học thực nghiệm về điều kiện phát triển nông nghiệp:</p>
+                        <p style="margin: 1px 0 1px 20px;">a) Nhiệt độ và độ ẩm tối ưu giúp quá trình chuyển hóa đạt hiệu suất cao nhất. <strong>[ĐÚNG]</strong></p>
+                        <p style="margin: 1px 0 1px 20px;">b) Mọi tác nhân gây hại đều làm tăng tốc độ sinh trưởng của cá thể sinh vật. <strong>[SAI]</strong></p>
+                        <p style="margin: 1px 0 1px 20px;">c) Nắm vững quy luật giúp chủ động nâng cao năng suất cây trồng, vật nuôi. <strong>[ĐÚNG]</strong></p>
+                        <p style="margin: 1px 0 3px 20px;">d) Các biến đổi nội tại diễn ra hoàn toàn tự phát mà không cần năng lượng trao đổi. <strong>[SAI]</strong></p>
+                    `;
+                    p2Index++;
+                }
+            });
+
+            let part3QuestionsHtml = "";
+            let p3Index = 1;
+            items.forEach(it => {
+                const count = parseInt(examMatrixConfig[it.id].vdc) || 0;
+                for (let k = 1; k <= count; k++) {
+                    part3QuestionsHtml += `
+                        <p style="margin: 3px 0;"><strong>Câu ${p3Index}:</strong> [${it.title}] Một cấu trúc ban đầu nhân đôi liên tiếp ${p3Index + 1} lần sẽ tạo ra bao nhiêu cấu trúc con?</p>
+                        <p style="margin: 1px 0 6px 20px; color: #0284c7; font-weight: bold;">➜ Đáp số chuẩn: ${Math.pow(2, p3Index + 1)}</p>
+                    `;
+                    p3Index++;
+                }
+            });
 
             doc.innerHTML = `
-                <table style="width: 100%; border: none; margin-bottom: 12px;">
+                <table style="width: 100%; border: none; margin-bottom: 15px;">
                     <tr style="border: none;">
                         <td style="border: none; width: 45%; text-align: center; vertical-align: top; padding: 0;">
-                            <p style="margin: 0; font-size: 11pt;">SỞ GD&ĐT VĨNH LONG</p>
-                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">TRƯỜNG THPT MANG THÍT</p>
+                            <p style="margin: 0; font-size: 11pt;">BỘ GIÁO DỤC VÀ ĐÀO TẠO</p>
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">CHƯƠNG TRÌNH GDPT 2018</p>
                             <div style="width: 80px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
                         </td>
                         <td style="border: none; width: 55%; text-align: center; vertical-align: top; padding: 0;">
                             <p style="margin: 0; font-weight: bold; font-size: 11pt;">HỒ SƠ KHẢO THÍ & ĐÁNH GIÁ NĂNG LỰC</p>
-                            <p style="margin: 0; font-style: italic; font-size: 11pt;">Chuẩn cấu trúc định dạng Bộ GD&ĐT (CV 7991)</p>
+                            <p style="margin: 0; font-style: italic; font-size: 11pt;">CẤU TRÚC ĐỊNH DẠNG THEO CÔNG VĂN 7991</p>
                             <div style="width: 120px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
                         </td>
                     </tr>
@@ -862,57 +992,55 @@
 
                 <div style="text-align: center; margin: 12px 0;">
                     <h2 style="margin: 0; font-size: 14pt; font-weight: bold; text-transform: uppercase;">MA TRẬN, BẢN ĐẶC TẢ VÀ ĐỀ KIỂM TRA ĐỊNH KỲ</h2>
-                    <p style="margin: 2px 0 0 0; font-size: 12pt;">Môn: ${subject} ${grade} • Thời gian làm bài: 45 phút • <strong>MÃ ĐỀ: ${examSeed}</strong></p>
-                    <div style="margin-top: 8px;" class="no-print">
-                        <button onclick="randomizeExamSeed()" style="background: #0284c7; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 10pt; cursor: pointer;">
-                            🔄 Đảo câu hỏi tạo mã đề mới (${examSeed})
-                        </button>
-                        <button onclick="toggleExamAnswerDisplay()" style="background: ${showExamAnswer ? '#10b981' : '#64748b'}; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 10pt; cursor: pointer; margin-left: 8px;">
-                            ${showExamAnswer ? '👁️ Đang hiện đáp án' : '🙈 Đang ẩn đáp án (In đề thi)'}
-                        </button>
-                    </div>
+                    <p style="margin: 2px 0 0 0; font-size: 12pt;">Môn học: ${subject} ${grade} • Thời gian làm bài: 45 phút</p>
                 </div>
 
-                <p style="font-weight: bold; margin: 12px 0 4px 0;">MỤC 1: BẢNG MA TRẬN ĐỀ KIỂM TRA ĐA BÀI HỌC (TỰ TÍNH TỈ LỆ %)</p>
+                <p style="font-weight: bold; margin: 12px 0 4px 0;">MỤC 1: KHUNG MA TRẬN ĐỀ KIỂM TRA (TÙY CHỈNH SỐ CÂU TỪNG BÀI)</p>
                 <table>
                     <thead>
                         <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
                             <th rowspan="2">TT</th>
-                            <th rowspan="2">Bài học được tích chọn</th>
-                            <th colspan="3">Phần I (Nhiều lựa chọn)</th>
-                            <th colspan="2">Phần II (Đúng/Sai)</th>
-                            <th colspan="2">Phần III (Trả lời ngắn)</th>
+                            <th rowspan="2">Chủ đề / Bài học</th>
+                            <th colspan="4">Số lượng câu theo mức độ nhận thức</th>
                             <th rowspan="2">Tổng câu</th>
-                            <th rowspan="2">Điểm số</th>
+                            <th rowspan="2">Tỉ lệ điểm</th>
                         </tr>
                         <tr style="background: #F0F4F8; text-align: center; font-size: 10pt;">
-                            <th>Biết</th><th>Hiểu</th><th>VD</th>
-                            <th>Hiểu</th><th>VD</th>
-                            <th>Hiểu</th><th>VD</th>
+                            <th>Nhận biết</th><th>Thông hiểu</th><th>Vận dụng</th><th>Vận dụng cao</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${items.map((item, idx) => `
-                            <tr>
-                                <td style="text-align: center;">${idx + 1}</td>
-                                <td><strong>${item.title}</strong></td>
-                                <td style="text-align: center;">${Math.round(18 / items.length * 0.5)}</td>
-                                <td style="text-align: center;">${Math.round(18 / items.length * 0.3)}</td>
-                                <td style="text-align: center;">${Math.round(18 / items.length * 0.2)}</td>
-                                <td style="text-align: center;">1</td>
-                                <td style="text-align: center;">${idx === 0 ? 1 : 0}</td>
-                                <td style="text-align: center;">1</td>
-                                <td style="text-align: center;">1</td>
-                                <td style="text-align: center; font-weight: bold;">${Math.round(28 / items.length)} câu</td>
-                                <td style="text-align: center; font-weight: bold;">${(10 / items.length).toFixed(1)} đ</td>
-                            </tr>
-                        `).join('')}
+                        ${items.map((it, idx) => {
+                            const c = examMatrixConfig[it.id];
+                            const sumRow = (parseInt(c.biet)||0) + (parseInt(c.hieu)||0) + (parseInt(c.vd)||0) + (parseInt(c.vdc)||0);
+                            return `
+                                <tr>
+                                    <td style="text-align: center;">${idx + 1}</td>
+                                    <td><strong>${it.title}</strong></td>
+                                    <td style="text-align: center;">
+                                        <input type="number" min="0" value="${c.biet}" onchange="updateExamMatrixCount('${it.id}', 'biet', this.value)" style="width: 45px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px; padding: 2px;">
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <input type="number" min="0" value="${c.hieu}" onchange="updateExamMatrixCount('${it.id}', 'hieu', this.value)" style="width: 45px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px; padding: 2px;">
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <input type="number" min="0" value="${c.vd}" onchange="updateExamMatrixCount('${it.id}', 'vd', this.value)" style="width: 45px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px; padding: 2px;">
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <input type="number" min="0" value="${c.vdc}" onchange="updateExamMatrixCount('${it.id}', 'vdc', this.value)" style="width: 45px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px; padding: 2px;">
+                                    </td>
+                                    <td style="text-align: center; font-weight: bold;">${sumRow} câu</td>
+                                    <td style="text-align: center; font-weight: bold;">${((sumRow / (totalQuestions || 1)) * 10).toFixed(1)} đ</td>
+                                </tr>
+                            `;
+                        }).join('')}
                         <tr style="background: #E6EEF8; font-weight: bold; text-align: center;">
                             <td colspan="2">TỔNG CỘNG</td>
-                            <td colspan="3">18 câu (4.5 đ)</td>
-                            <td colspan="2">4 câu (4.0 đ)</td>
-                            <td colspan="2">6 câu (1.5 đ)</td>
-                            <td>28 câu</td>
+                            <td>${totalBiet} câu</td>
+                            <td>${totalHieu} câu</td>
+                            <td>${totalVd} câu</td>
+                            <td>${totalVdc} câu</td>
+                            <td>${totalQuestions} câu</td>
                             <td>10.0 Điểm</td>
                         </tr>
                     </tbody>
@@ -922,7 +1050,7 @@
                 <table>
                     <thead>
                         <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
-                            <th>TT</th><th>Chủ đề / Bài học</th><th>Yêu cầu cần đạt</th><th>Dạng thức</th><th>Mã câu</th>
+                            <th>TT</th><th>Bài học</th><th>Yêu cầu cần đạt</th><th>Dạng thức</th><th>Số câu</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -930,9 +1058,9 @@
                             <tr>
                                 <td style="text-align: center;">${idx + 1}</td>
                                 <td><strong>${it.title}</strong></td>
-                                <td>Nhận biết được định nghĩa; thông hiểu cơ chế hoạt động; vận dụng giải quyết bài toán nông nghiệp thực tiễn.</td>
+                                <td>Nhận biết định nghĩa cơ bản; hiểu rõ cơ chế tương tác; vận dụng kiến thức giải quyết vấn đề nông nghiệp và đời sống.</td>
                                 <td style="text-align: center;">Phần I, II, III</td>
-                                <td style="text-align: center;">C1-C18, C1-C4, C1-C6</td>
+                                <td style="text-align: center;">${(parseInt(examMatrixConfig[it.id].biet)||0) + (parseInt(examMatrixConfig[it.id].hieu)||0) + (parseInt(examMatrixConfig[it.id].vd)||0) + (parseInt(examMatrixConfig[it.id].vdc)||0)} câu</td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -940,53 +1068,46 @@
 
                 <div style="page-break-before: always; margin-top: 25px;"></div>
 
-                <p style="font-weight: bold; margin: 15px 0 4px 0;">MỤC 3: ĐỀ THI ĐÁNH GIÁ NĂNG LỰC CHÍNH THỨC (MÃ ĐỀ: ${examSeed})</p>
-                <p style="font-weight: bold; color: #1e3a8a; margin: 8px 0 2px 0;">PHẦN I. Câu trắc nghiệm nhiều phương án lựa chọn (Thí sinh trả lời từ câu 1 đến câu 18, mỗi câu đúng được 0.25 điểm)</p>
-                <p style="margin: 3px 0;"><strong>Câu 1:</strong> Đặc điểm cốt lõi nào sau đây thể hiện bản chất của nội dung ${items[0].title}?</p>
-                <p style="margin: 1px 0 1px 20px;">A. Không tuân thủ các quy luật tự nhiên &nbsp;&nbsp;&nbsp;&nbsp; ${showExamAnswer ? '<strong>B. Luôn bảo đảm tính toàn vẹn và thích nghi sinh học [ĐÚNG]</strong>' : 'B. Luôn bảo đảm tính toàn vẹn và thích nghi sinh học'}</p>
-                <p style="margin: 1px 0 1px 20px;">C. Diễn ra ngẫu nhiên không có sự kiểm soát &nbsp;&nbsp;&nbsp;&nbsp; D. Hoàn toàn độc lập với môi trường</p>
+                <p style="font-weight: bold; margin: 15px 0 4px 0;">MỤC 3: ĐỀ KIỂM TRA ĐÁNH GIÁ NĂNG LỰC (XUẤT ĐÚNG THEO SỐ CÂU MA TRẬN)</p>
+                <p style="font-weight: bold; color: #1e3a8a; margin: 8px 0 2px 0;">PHẦN I. Câu trắc nghiệm nhiều phương án lựa chọn (${totalBiet + totalHieu} câu)</p>
+                ${part1QuestionsHtml || '<p style="font-style: italic; color: #64748b;">(Không có câu hỏi ở phần này)</p>'}
 
-                <p style="margin: 3px 0;"><strong>Câu 2:</strong> Cơ chế then chốt bảo đảm sự ổn định và kế thừa thông tin trong tế bào là:</p>
-                <p style="margin: 1px 0 1px 20px;">A. Phân rã tự phát &nbsp;&nbsp;&nbsp;&nbsp; ${showExamAnswer ? '<strong>B. Tự nhân đôi và phân ly đồng đều [ĐÚNG]</strong>' : 'B. Tự nhân đôi và phân ly đồng đều'}</p>
-                <p style="margin: 1px 0 1px 20px;">C. Tự do trao đổi không chọn lọc &nbsp;&nbsp;&nbsp;&nbsp; D. Biến tính dưới nhiệt độ thấp</p>
+                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN II. Câu trắc nghiệm đúng/sai (${totalVd} câu)</p>
+                ${part2QuestionsHtml || '<p style="font-style: italic; color: #64748b;">(Không có câu hỏi ở phần này)</p>'}
 
-                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN II. Câu trắc nghiệm đúng/sai (Thí sinh trả lời từ câu 1 đến câu 4. Đúng 1 ý = 0.1đ; 2 ý = 0.25đ; 3 ý = 0.5đ; 4 ý = 1.0đ)</p>
-                <p style="margin: 3px 0;"><strong>Câu 1:</strong> Khi tiến hành nghiên cứu khoa học thực nghiệm về điều kiện phát triển tại tỉnh Vĩnh Long:</p>
-                <p style="margin: 1px 0 1px 20px;">a) Nhiệt độ và độ ẩm tối ưu giúp quá trình chuyển hóa đạt hiệu suất cao nhất. ${showExamAnswer ? '<strong>[ĐÚNG]</strong>' : ''}</p>
-                <p style="margin: 1px 0 1px 20px;">b) Mọi tác nhân gây hại đều làm tăng tốc độ sinh trưởng của cá thể. ${showExamAnswer ? '<strong>[SAI]</strong>' : ''}</p>
-                <p style="margin: 1px 0 1px 20px;">c) Nắm vững quy luật giúp nông dân huyện Mang Thít chủ động phòng ngừa dịch bệnh. ${showExamAnswer ? '<strong>[ĐÚNG]</strong>' : ''}</p>
-                <p style="margin: 1px 0 1px 20px;">d) Các biến đổi nội tại diễn ra hoàn toàn tự phát mà không cần năng lượng. ${showExamAnswer ? '<strong>[SAI]</strong>' : ''}</p>
+                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN III. Câu trắc nghiệm trả lời ngắn (${totalVdc} câu)</p>
+                ${part3QuestionsHtml || '<p style="font-style: italic; color: #64748b;">(Không có câu hỏi ở phần này)</p>'}
 
-                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN III. Câu trắc nghiệm trả lời ngắn (Thí sinh trả lời từ câu 1 đến câu 6, mỗi câu đúng được 0.25 điểm)</p>
-                <p style="margin: 3px 0;"><strong>Câu 1:</strong> Một cấu trúc ban đầu nhân đôi liên tiếp 3 lần sẽ tạo ra bao nhiêu cấu trúc con?</p>
-                <p style="margin: 1px 0 6px 20px; color: #0284c7; font-weight: bold;">${showExamAnswer ? '➜ Đáp số: 8' : '➜ Thí sinh điền đáp số: ..........'}</p>
+                <div style="page-break-before: always; margin-top: 25px;"></div>
 
-                ${showExamAnswer ? `
-                    <div style="page-break-before: always; margin-top: 25px;"></div>
-                    <p style="font-weight: bold; margin: 15px 0 4px 0;">MỤC 4: HƯỚNG DẪN CHẤM & ĐÁP ÁN CHI TIẾT (MÃ ĐỀ: ${examSeed})</p>
-                    <table>
-                        <thead>
-                            <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
-                                <th>Phần thi</th><th>Câu</th><th>Đáp án</th><th>Biểu điểm</th><th>Căn cứ lý thuyết & Hướng dẫn sư phạm</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Phần I</td><td style="text-align: center;">1</td><td style="text-align: center; font-weight: bold;">B</td><td style="text-align: center;">0.25 đ</td><td>Căn cứ vào nguyên lý thích nghi và tiến hóa sinh học.</td></tr>
-                            <tr><td>Phần I</td><td style="text-align: center;">2</td><td style="text-align: center; font-weight: bold;">B</td><td style="text-align: center;">0.25 đ</td><td>Nguyên tắc bán bảo tồn và bổ sung trong phân chia tế bào.</td></tr>
-                            <tr><td>Phần II</td><td style="text-align: center;">1</td><td style="font-weight: bold;">a-Đ, b-S, c-Đ, d-S</td><td style="text-align: center;">1.00 đ</td><td>Dựa vào sinh thái học và ứng dụng thực tiễn tại địa phương.</td></tr>
-                            <tr><td>Phần III</td><td style="text-align: center;">1</td><td style="text-align: center; font-weight: bold;">8</td><td style="text-align: center;">0.25 đ</td><td>Áp dụng công thức số lượng tạo thành = 2^k = 2^3 = 8.</td></tr>
-                        </tbody>
-                    </table>
-                ` : ''}
+                <p style="font-weight: bold; margin: 15px 0 4px 0;">MỤC 4: HƯỚNG DẪN CHẤM & ĐÁP ÁN CHI TIẾT</p>
+                <table>
+                    <thead>
+                        <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
+                            <th>Phần thi</th><th>Nội dung đáp án</th><th>Thang điểm</th><th>Căn cứ lý thuyết & Hướng dẫn sư phạm</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Phần I</td><td>Đáp án B cho các câu hỏi</td><td>0.25 đ / câu</td><td>Căn cứ nguyên lý thích nghi và tiến hóa sinh học.</td></tr>
+                        <tr><td>Phần II</td><td>a-Đ, b-S, c-Đ, d-S</td><td>Đúng 1 ý=0.1đ; 2 ý=0.25đ; 3 ý=0.5đ; 4 ý=1.0đ</td><td>Dựa vào sinh thái học và ứng dụng thực tiễn.</td></tr>
+                        <tr><td>Phần III</td><td>Đáp số lũy thừa 2^k</td><td>0.25 đ / câu</td><td>Áp dụng công thức phân bào tế bào: 2^k.</td></tr>
+                    </tbody>
+                </table>
             `;
         }
 
+        function updateExamMatrixCount(lessonId, field, value) {
+            if (!examMatrixConfig[lessonId]) examMatrixConfig[lessonId] = { biet: 1, hieu: 1, vd: 1, vdc: 1 };
+            examMatrixConfig[lessonId][field] = parseInt(value) || 0;
+            renderExamMatrix7991();
+        }
+
         /* -------------------------------------------------------------------------
-         * PHÂN VÙNG 5: ENGINE XUẤT ĐA ĐỊNH DẠNG (WORD, PPTX, HTML, PDF)
+         * 5. ENGINE XUẤT ĐA ĐỊNH DẠNG (WORD, PPTX, HTML, PDF)
          * ------------------------------------------------------------------------- */
         function exportWordDocument() {
             const content = document.getElementById('container-a4-doc').innerHTML;
-            const fileName = `HoSo_VIP_${(activeLessonObj?.title || 'TaiLieu').replace(/[^a-zA-Z0-9]/g, '_')}_THPT_MangThit.doc`;
+            const fileName = `HoSo_${(activeLesson?.title || 'TaiLieu').replace(/[^a-zA-Z0-9]/g, '_')}.doc`;
 
             const fullHtml = `
                 <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -995,7 +1116,7 @@
                     <title>${fileName}</title>
                     <style>
                         body { font-family: 'Times New Roman', serif; font-size: 13pt; line-height: 1.25; text-align: justify; }
-                        table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+                        table { border-collapse: collapse; width: 100%; margin: 10px 0; }
                         th, td { border: 1px solid black; padding: 6px; font-size: 12pt; }
                     </style>
                 </head>
@@ -1012,7 +1133,7 @@
 
         function exportPowerPointPresentation() {
             if (typeof PptxGenJS === 'undefined') {
-                alert("Đang tải thư viện PptxGenJS, vui lòng thử lại sau 2 giây...");
+                alert("Đang nạp thư viện PowerPoint, xin vui lòng thử lại sau 2 giây...");
                 return;
             }
             if (slideDeck.length === 0) renderSlideDeckPresentation();
@@ -1024,19 +1145,11 @@
                 const slide = pptx.addSlide();
                 slide.background = { color: '0F2922' };
 
-                // Dòng nhận diện giáo viên
-                slide.addText(`TRƯỜNG THPT MANG THÍT • GIÁO VIÊN: HỒ TẤN KHẢI`, {
-                    x: 0.5, y: 0.3, w: 12.3, h: 0.4,
-                    fontSize: 14, color: 'D78C0F', bold: true, fontFace: 'Arial'
-                });
-
-                // Tiêu đề Slide lớn
                 slide.addText(item.title, {
                     x: 0.5, y: 0.8, w: 12.3, h: 1.0,
                     fontSize: 32, color: 'FFFFFF', bold: true, fontFace: 'Arial'
                 });
 
-                // Nội dung trích xuất
                 const textOnly = item.body.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
                 slide.addText(textOnly, {
                     x: 0.8, y: 2.0, w: 11.7, h: 4.8,
@@ -1044,7 +1157,7 @@
                 });
             });
 
-            const fileName = `Slide_VIP_${(activeLessonObj?.title || 'BaiGiang').replace(/[^a-zA-Z0-9]/g, '_')}_THPT_MangThit.pptx`;
+            const fileName = `Slide_${(activeLesson?.title || 'BaiGiang').replace(/[^a-zA-Z0-9]/g, '_')}.pptx`;
             pptx.writeFile({ fileName: fileName });
         }
 
@@ -1053,8 +1166,45 @@
             const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `EduBioMaster_VIP_Backup_${Date.now()}.html`;
+            a.download = `EduMaster_Pro_${Date.now()}.html`;
             a.click();
+        }
+
+        /* 6. MODAL AI & GOOGLE DRIVE */
+        function openAIKeyModal() {
+            document.getElementById('input-api-key').value = localStorage.getItem('gemini_api_key') || '';
+            document.getElementById('modal-ai').classList.remove('hidden');
+        }
+        function closeAIKeyModal() { document.getElementById('modal-ai').classList.add('hidden'); }
+        function saveApiKey() {
+            const key = document.getElementById('input-api-key').value.trim();
+            localStorage.setItem('gemini_api_key', key);
+            checkStoredApiKey();
+            closeAIKeyModal();
+            alert("Đã lưu API Key! AI đã sẵn sàng hoạt động.");
+        }
+        function checkStoredApiKey() {
+            const key = localStorage.getItem('gemini_api_key');
+            const txt = document.getElementById('api-status-badge');
+            if (key) {
+                txt.innerText = "AI Đang Bật";
+                txt.parentElement.classList.remove('text-amber-400', 'border-amber-500/30');
+                txt.parentElement.classList.add('text-emerald-400', 'border-emerald-500/30', 'bg-emerald-500/10');
+            } else {
+                txt.innerText = "Kích Hoạt AI";
+            }
+        }
+
+        function openDriveModal() {
+            document.getElementById('input-drive-url').value = localStorage.getItem('google_drive_sync_url') || '';
+            document.getElementById('modal-drive').classList.remove('hidden');
+        }
+        function closeDriveModal() { document.getElementById('modal-drive').classList.add('hidden'); }
+        function saveDriveUrl() {
+            const url = document.getElementById('input-drive-url').value.trim();
+            localStorage.setItem('google_drive_sync_url', url);
+            closeDriveModal();
+            alert("Đã lưu cấu hình Google Drive thành công!");
         }
     </script>
 </body>
