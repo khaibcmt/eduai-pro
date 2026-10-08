@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Trợ Lý Sư Phạm Số GDPT 2018 - Cấp THPT</title>
+    <title>Hệ Thống Trợ Lý Sư Phạm GDPT 2018</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Times+New+Roman&display=swap" rel="stylesheet">
-    <!-- Thư viện PptxGenJS xuất PowerPoint .pptx -->
+    <!-- PptxGenJS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
     <script>
@@ -62,8 +62,8 @@
             line-height: 1.25;
             text-align: justify;
         }
-        .page-a4 table { border-collapse: collapse; width: 100%; margin: 10px 0; }
-        .page-a4 th, .page-a4 td { border: 1px solid #000000; padding: 6px 8px; font-size: 12pt; }
+        .page-a4 table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+        .page-a4 th, .page-a4 td { border: 1px solid #000000; padding: 5px 6px; font-size: 11pt; }
 
         @media print {
             body { background: white !important; color: black !important; padding: 0 !important; }
@@ -74,25 +74,21 @@
 </head>
 <body class="bg-brand-dark text-slate-200 font-sans min-h-screen flex flex-col antialiased">
 
-    <!-- ==================== HEADER ==================== -->
+    <!-- ==================== HEADER HỆ THỐNG ==================== -->
     <header class="bg-brand-surface border-b border-brand-border px-4 py-2.5 sticky top-0 z-50 shadow-lg no-print">
         <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-3">
+            <!-- Nhận diện thương hiệu: Chỉ logo và tên Giáo viên -->
             <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-indigo-600 to-cyan-400 flex items-center justify-center text-white text-xl shadow-lg border border-white/20">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-indigo-600 to-cyan-400 flex items-center justify-center text-white text-lg shadow-lg border border-white/20">
                     <i class="fa-solid fa-graduation-cap text-amber-300"></i>
                 </div>
                 <div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-lg font-black tracking-tight text-white">EduMaster AI Pro</span>
-                        <span class="text-[10px] bg-gradient-to-r from-amber-500 to-rose-500 text-white font-extrabold px-2 py-0.5 rounded-full shadow-sm">Phiên Bản Toàn Diện GDPT 2018</span>
-                    </div>
-                    <p class="text-xs text-slate-400 font-semibold mt-0.5">
-                        <span>Hệ thống hỗ trợ chuyên môn THPT • Sinh học & Công nghệ Nông nghiệp</span>
-                    </p>
+                    <span class="text-sm font-black tracking-tight text-white block">Giáo viên: Hồ Tấn Khải</span>
+                    <span class="text-[11px] text-cyan-400 font-medium">Hệ thống Trợ lý Sư phạm GDPT 2018</span>
                 </div>
             </div>
 
-            <!-- Nút Hành Động 3D -->
+            <!-- Cụm nút chuyển đổi tác vụ nhanh 3D -->
             <div class="flex items-center gap-2.5">
                 <button onclick="renderActiveView('5512')" class="btn-3d btn-3d-blue py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
                     <i class="fa-solid fa-file-signature text-sm"></i>
@@ -100,7 +96,7 @@
                 </button>
                 <button onclick="renderActiveView('slide')" class="btn-3d btn-3d-purple py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
                     <i class="fa-solid fa-chalkboard-user text-sm"></i>
-                    <span>TẠO BÀI GIẢNG PPT (16 SLIDE)</span>
+                    <span>BÀI GIẢNG PPT (16 SLIDE)</span>
                 </button>
                 <button onclick="renderActiveView('7991')" class="btn-3d btn-3d-amber py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
                     <i class="fa-solid fa-list-check text-sm"></i>
@@ -108,14 +104,8 @@
                 </button>
             </div>
 
-            <!-- Tiện Ích: Google Drive, AI Key & Chuyển Tab -->
+            <!-- Tab chế độ & Cài đặt bổ trợ -->
             <div class="flex items-center gap-2">
-                <button onclick="openDriveModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-xs font-bold border border-blue-500/30 transition flex items-center gap-1.5" title="Đồng bộ Google Drive">
-                    <i class="fa-brands fa-google-drive"></i> <span>Google Drive</span>
-                </button>
-                <button onclick="openAIKeyModal()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-brain"></i> <span id="api-status-badge">Kích Hoạt AI</span>
-                </button>
                 <div class="flex items-center bg-[#0b1222] p-1 rounded-xl border border-brand-border text-xs">
                     <button id="tab-5512" onclick="switchView('5512')" class="px-3 py-1.5 rounded-lg font-bold transition bg-blue-600 text-white">5512</button>
                     <button id="tab-slide" onclick="switchView('slide')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Slide 16:9</button>
@@ -125,14 +115,14 @@
         </div>
     </header>
 
-    <!-- ==================== MAIN WORKSPACE ==================== -->
+    <!-- ==================== KHÔNG GIAN LÀM VIỆC CHÍNH ==================== -->
     <main class="flex-1 max-w-[1720px] w-full mx-auto p-4 flex gap-5 overflow-hidden">
-        <!-- CỘT TRÁI: ĐIỀU HÀNH & KHO BÀI HỌC TOÀN BỘ CÁC KHỐI LỚP -->
+        <!-- CỘT TRÁI: ĐIỀU HÀNH & KHO BÀI HỌC TOÀN BỘ CÁC KHỐI -->
         <aside class="w-[430px] shrink-0 flex flex-col gap-4 no-print overflow-y-auto pr-1">
             <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md space-y-3">
                 <div class="flex items-center justify-between pb-2 border-b border-brand-border/60">
                     <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200 flex items-center gap-1.5">
-                        <i class="fa-solid fa-sliders text-cyan-400"></i> Thiết Lập Môn & Khối Lớp
+                        <i class="fa-solid fa-sliders text-cyan-400"></i> Phân Môn & Khối Lớp
                     </h3>
                     <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded">GDPT 2018</span>
                 </div>
@@ -164,11 +154,11 @@
                 </div>
             </div>
 
-            <!-- Toàn bộ danh mục bài học các khối -->
+            <!-- Danh mục bài học -->
             <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md flex flex-col flex-1 min-h-[350px]">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-brand-border/60">
                     <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200 flex items-center gap-1.5">
-                        <i class="fa-solid fa-list-ol text-emerald-400"></i> Toàn Bộ Bài Học Theo Chương Trình
+                        <i class="fa-solid fa-list-ol text-emerald-400"></i> Danh Sách Bài Học SGK
                     </h3>
                     <div class="flex items-center gap-1 text-[10px]">
                         <button onclick="selectAllExams(true)" class="text-cyan-400 hover:underline">Tất cả</button>
@@ -177,24 +167,24 @@
                     </div>
                 </div>
 
-                <p class="text-[11px] text-slate-400 mb-2">Bấm bài để <strong>Soạn Bài/Slide</strong>; tích chọn checkbox để <strong>Lập Ma trận Đề 7991</strong>:</p>
+                <p class="text-[11px] text-slate-400 mb-2">Bấm chọn bài để <strong>Soạn KHBD/Slide</strong>; tích checkbox để <strong>Tạo Ma trận Đề 7991</strong>:</p>
                 <div id="lesson-list-container" class="space-y-1.5 overflow-y-auto max-h-[320px] pr-1"></div>
 
                 <div class="mt-3 pt-2.5 border-t border-brand-border/60 flex items-center justify-between">
-                    <span class="text-[11px] text-slate-400">Đang chọn:</span>
+                    <span class="text-[11px] text-slate-400">Bài đang chọn:</span>
                     <span id="label-active-lesson" class="font-bold text-xs text-cyan-300 max-w-[280px] truncate">---</span>
                 </div>
             </div>
         </aside>
 
-        <!-- CỘT PHẢI: KHÔNG GIAN HIỂN THỊ SẢN PHẨM & XUẤT ĐA ĐỊNH DẠNG -->
+        <!-- CỘT PHẢI: TRUNG TÂM XUẤT BẢN ĐA ĐỊNH DẠNG -->
         <section class="flex-1 flex flex-col bg-brand-surface rounded-2xl border border-brand-border overflow-hidden shadow-2xl relative">
             <div class="bg-brand-card/90 px-4 py-2.5 border-b border-brand-border flex flex-wrap items-center justify-between gap-3 no-print">
                 <div class="flex items-center gap-2 text-xs">
                     <span id="badge-view-mode" class="px-2.5 py-1 rounded bg-blue-500/20 text-cyan-300 font-bold border border-cyan-500/30">
                         KẾ HOẠCH BÀI DẠY (CÔNG VĂN 5512)
                     </span>
-                    <span class="text-slate-400">• Chỉnh sửa văn bản trực tiếp trên màn hình</span>
+                    <span class="text-slate-400">• Bấm trực tiếp vào văn bản để chỉnh sửa trước khi xuất</span>
                 </div>
 
                 <div class="flex items-center gap-2">
@@ -230,7 +220,7 @@
                         </div>
                     </div>
 
-                    <!-- THANH TIỆN ÍCH LỚP HỌC: ĐỒNG HỒ ĐA MỐC VÀ CHỌN SỐ HỌC SINH 01-50 -->
+                    <!-- THANH TIỆN ÍCH LỚP HỌC: HẸN GIỜ ĐA MỐC VÀ GỌI SỐ 01 - 50 -->
                     <div class="flex flex-wrap items-center justify-between bg-black/50 p-2.5 rounded-xl border border-emerald-500/30 text-xs my-2 gap-2">
                         <div class="flex items-center gap-1.5">
                             <span class="text-amber-300 font-bold"><i class="fa-solid fa-stopwatch mr-1"></i> Hẹn giờ:</span>
@@ -254,7 +244,7 @@
                     <div id="slide-main-viewport" class="my-auto"></div>
 
                     <div class="flex items-center justify-between border-t border-white/10 pt-3 text-xs">
-                        <span class="text-slate-300"><i class="fa-solid fa-circle-info mr-1"></i> Bấm mũi tên hoặc nút để chuyển slide</span>
+                        <span class="text-slate-300"><i class="fa-solid fa-circle-info mr-1"></i> Bấm phím mũi tên hoặc nút bấm để chuyển slide</span>
                         <div class="flex items-center gap-2">
                             <button onclick="prevSlide()" class="px-4 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold transition">
                                 <i class="fa-solid fa-arrow-left mr-1"></i> Trước
@@ -269,122 +259,78 @@
         </section>
     </main>
 
-    <!-- MODAL GOOGLE DRIVE -->
-    <div id="modal-drive" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-brand-surface border border-brand-border rounded-2xl max-w-md w-full p-6 shadow-2xl">
-            <div class="flex items-center justify-between pb-3 border-b border-brand-border">
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                    <i class="fa-brands fa-google-drive text-blue-400"></i> Cấu hình Đồng bộ Google Drive
-                </h3>
-                <button onclick="closeDriveModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="mt-4 space-y-3 text-xs text-slate-300">
-                <p>Thầy dán đường dẫn <strong>Google Apps Script Web App</strong> hoặc link chia sẻ JSON trên Drive để đồng bộ:</p>
-                <input type="text" id="input-drive-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
-                <p class="text-[11px] text-slate-500 leading-relaxed">
-                    * Khi kết nối, hệ thống sẽ tự động lưu bản sao giáo án/đề thi hoặc tải CSDL cập nhật từ Drive của Thầy.
-                </p>
-            </div>
-            <div class="mt-5 flex justify-end gap-2 text-xs">
-                <button onclick="closeDriveModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold">Đóng</button>
-                <button onclick="saveDriveUrl()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold">Lưu Cấu Hình</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL GEMINI AI -->
-    <div id="modal-ai" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-brand-surface border border-brand-border rounded-2xl max-w-md w-full p-6 shadow-2xl">
-            <div class="flex items-center justify-between pb-3 border-b border-brand-border">
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-brain text-amber-400"></i> Kích Hoạt Gemini AI Thông Minh
-                </h3>
-                <button onclick="closeAIKeyModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="mt-4 space-y-3 text-xs text-slate-300">
-                <p>Nhập mã <strong>Gemini API Key</strong> để AI tự động mở rộng kiến thức, viết câu hỏi phản biện sâu sắc hơn:</p>
-                <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
-            </div>
-            <div class="mt-5 flex justify-end gap-2 text-xs">
-                <button onclick="closeAIKeyModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold">Đóng</button>
-                <button onclick="saveApiKey()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold">Lưu API Key</button>
-            </div>
-        </div>
-    </div>
-
     <!-- ========================================================================= -->
-    <!-- MASTER LOGIC JAVASCRIPT                                                   -->
+    <!-- MASTER JAVASCRIPT: LOGIC CÔNG VĂN 7991 VÀ GẠCH CHÂN ĐÁP ÁN ĐÚNG           -->
     <!-- ========================================================================= -->
     <script>
-        /* 1. KHO DỮ LIỆU ĐẦY ĐỦ 100% CÁC KHỐI LỚP 10, 11, 12 CỦA 2 PHÂN MÔN */
+        /* 1. KHO DỮ LIỆU ĐẦY ĐỦ CÁC KHỐI LỚP 10, 11, 12 CỦA 2 PHÂN MÔN */
         const CURRICULUM_DATABASE = {
             "Sinh học": {
                 "10": [
-                    { id: "sh10_b1", title: "Bài 1: Giới thiệu khái quát môn Sinh học", nls: "NLS 1.1", nlsDesc: "Khai thác dữ liệu số và tra cứu hệ thống thông tin sinh thái", aiCode: "10.A1.2", aiDesc: "Tra cứu ngành nghề sinh học bằng AI và kiểm chứng với SGK", core1: "Đối tượng và các lĩnh vực nghiên cứu của Sinh học", core2: "Mục tiêu, vai trò và triển vọng phát triển sinh học", core3: "Sinh học trong phát triển bền vững và nghề nghiệp tương lai" },
+                    { id: "sh10_b1", title: "Bài 1: Giới thiệu khái quát môn Sinh học", nls: "NLS 1.1", nlsDesc: "Khai thác dữ liệu số và tra cứu hệ thống thông tin sinh học", aiCode: "10.A1.2", aiDesc: "Tra cứu ngành nghề sinh học bằng AI và kiểm chứng với SGK", core1: "Đối tượng và các lĩnh vực nghiên cứu của Sinh học", core2: "Mục tiêu, vai trò và triển vọng phát triển sinh học", core3: "Sinh học trong phát triển bền vững và nghề nghiệp tương lai" },
                     { id: "sh10_b2", title: "Bài 2: Các phương pháp nghiên cứu và học tập môn Sinh học", nls: "NLS 3.1", nlsDesc: "Xử lý bảng dữ liệu thực nghiệm bằng phần mềm số", aiCode: "10.A2.1", aiDesc: "Sử dụng AI hỗ trợ thiết kế tiến trình nghiên cứu khoa học", core1: "Phương pháp quan sát và làm việc phòng thí nghiệm", core2: "Phương pháp thực nghiệm khoa học và các kĩ năng tiến trình", core3: "Ứng dụng tin sinh học và AI trong xử lý dữ liệu" },
-                    { id: "sh10_b4", title: "Bài 4: Khái quát về tế bào", nls: "NLS 2.1", nlsDesc: "Tương tác mô hình 3D về kích thước và cấu trúc tế bào", aiCode: "10.A1.2", aiDesc: "Phân tích ý nghĩa tỉ lệ S/V qua đối chiếu dữ liệu AI", core1: "Học thuyết tế bào và sự phát triển của sinh học", core2: "Tế bào là đơn vị cấu trúc và chức năng cơ bản", core3: "Kích thước hiển vi và ý nghĩa của tỉ lệ diện tích bề mặt/thể tích" },
+                    { id: "sh10_b4", title: "Bài 4: Khái quát về tế bào", nls: "NLS 2.1", nlsDesc: "Tương tác mô hình 3D về kích thước và cấu trúc tế bào", aiCode: "10.A1.2", aiDesc: "Phân tích ý nghĩa tỉ lệ S/V qua đối chiếu dữ liệu AI", core1: "Học thuyết tế bào và sự phát triển của sinh học", core2: "Tế bào là đơn vị cấu trúc và chức năng cơ bản của thế giới sống", core3: "Kích thước hiển vi và ý nghĩa của tỉ lệ diện tích bề mặt/thể tích" },
                     { id: "sh10_b5", title: "Bài 5: Các nguyên tố hóa học và nước trong tế bào", nls: "NLS 2.2", nlsDesc: "Mô phỏng số liên kết hydro và tính phân cực của nước", aiCode: "10.A1.2", aiDesc: "Tra cứu vai trò các nguyên tố đại lượng và vi lượng", core1: "Các nguyên tố đại lượng và vi lượng trong tế bào", core2: "Cấu trúc hóa lý và tính phân cực của phân tử nước", core3: "Vai trò sinh học của nước đối với sự sống" },
-                    { id: "sh10_b6", title: "Bài 6: Các phân tử sinh học trong tế bào", nls: "NLS 2.1", nlsDesc: "Tương tác mô hình cấu trúc 3D phân tử Protein và Acid nucleic", aiCode: "10.A2.2", aiDesc: "Phân tích nguyên tắc đa phân qua trợ lý AI", core1: "Carbohydrate và Lipid: Cấu trúc đa phân và vai trò dự trữ", core2: "Protein: 4 bậc cấu trúc không gian và đa dạng chức năng", core3: "Acid nucleic (DNA & RNA): Bản chất mang và truyền đạt di truyền" },
-                    { id: "sh10_b7", title: "Bài 7: Tế bào nhân sơ", nls: "NLS 2.1", nlsDesc: "Quan sát ảnh siêu hiển vi cấu trúc vi khuẩn", aiCode: "10.A1.2", aiDesc: "So sánh vùng nhân và nhân tế bào qua đối chiếu tài liệu", core1: "Đặc điểm chung về kích thước và hình thái tế bào nhân sơ", core2: "Cấu trúc thành tế bào, màng sinh chất và vùng nhân DNA vòng", core3: "Ý nghĩa của tỉ lệ S/V lớn đối với tốc độ chuyển hóa" },
+                    { id: "sh10_b6", title: "Bài 6: Các phân tử sinh học trong tế bào", nls: "NLS 2.1", nlsDesc: "Tương tác mô hình 3D cấu trúc protein và acid nucleic", aiCode: "10.A2.2", aiDesc: "Phân tích nguyên tắc đa phân qua trợ lý AI", core1: "Carbohydrate và Lipid: Cấu trúc đa phân và vai trò dự trữ", core2: "Protein: 4 bậc cấu trúc không gian và đa dạng chức năng", core3: "Acid nucleic (DNA & RNA): Bản chất lưu trữ và truyền đạt thông tin di truyền" },
+                    { id: "sh10_b7", title: "Bài 7: Tế bào nhân sơ", nls: "NLS 2.1", nlsDesc: "Quan sát ảnh hiển vi cấu trúc vi khuẩn", aiCode: "10.A1.2", aiDesc: "So sánh vùng nhân và nhân tế bào qua đối chiếu tài liệu", core1: "Đặc điểm chung về kích thước và hình thái tế bào nhân sơ", core2: "Cấu trúc thành tế bào, màng sinh chất và vùng nhân DNA vòng", core3: "Ý nghĩa của tỉ lệ S/V lớn đối với tốc độ chuyển hóa" },
                     { id: "sh10_b8", title: "Bài 8: Tế bào nhân thực", nls: "NLS 2.4", nlsDesc: "Mô phỏng mạng lưới nội màng và các bào quan tương tác", aiCode: "10.A2.1", aiDesc: "Phối hợp cùng AI phân tích tiến hóa nội cộng sinh ti thể, lục lạp", core1: "Cấu trúc nhân tế bào và hệ thống nội màng phân khoang", core2: "Bào quan chuyển hóa năng lượng: Ti thể và Lục lạp", core3: "Khung xương tế bào và các bào quan thực hiện chức năng đặc thù" },
                     { id: "sh10_b9", title: "Bài 9: Trao đổi chất qua màng sinh chất", nls: "NLS 3.2", nlsDesc: "Mô phỏng số cơ chế khuếch tán, thẩm thấu và bơm ion", aiCode: "10.A1.2", aiDesc: "Kiểm chứng hiện tượng co nguyên sinh với dữ liệu AI", core1: "Vận chuyển thụ động: Hiện tượng khuếch tán và thẩm thấu", core2: "Vận chuyển chủ động: Bơm protein màng tiêu tốn năng lượng ATP", core3: "Thực bào, ẩm bào và xuất bào qua biến dạng màng tế bào" },
-                    { id: "sh10_b10", title: "Bài 10: Sự chuyển hóa năng lượng và enzyme trong tế bào", nls: "NLS 2.1", nlsDesc: "Mô phỏng trung tâm hoạt động và cơ chế chìa khóa - ổ khóa", aiCode: "10.A1.2", aiDesc: "Phân tích các yếu tố ảnh hưởng hoạt tính enzyme", core1: "Bản chất của ATP - đồng tiền năng lượng sinh học", core2: "Cấu trúc, tính đặc hiệu và cơ chế tác động của enzyme", core3: "Các nhân tố ảnh hưởng trực tiếp đến hoạt tính xúc tác của enzyme" },
-                    { id: "sh10_b16", title: "Bài 16: Chu kỳ tế bào và nguyên phân", nls: "NLS 2.1", nlsDesc: "Quan sát video mô phỏng sự phân ly của nhiễm sắc thể", aiCode: "10.A2.1", aiDesc: "Tính toán số tế bào con tạo thành qua thuật toán AI", core1: "Diễn biến các pha G1, S, G2 và điểm kiểm soát chu kỳ tế bào", core2: "Cơ chế phân chia nhân và tế bào chất trong nguyên phân", core3: "Ý nghĩa sinh học và ứng dụng nhân giống vô tính cây trồng" },
-                    { id: "sh10_b17", title: "Bài 17: Giảm phân và thụ tinh", nls: "NLS 2.4", nlsDesc: "Mô phỏng hiện tượng tiếp hợp và trao đổi chéo ở kì đầu I", aiCode: "10.A2.2", aiDesc: "Phân tích cơ chế tạo biến dị tổ hợp phong phú", core1: "Cơ chế giảm phân I và giảm phân II tạo giao tử đơn bội", core2: "Hiện tượng tiếp hợp và trao đổi chéo tạo biến dị tổ hợp", core3: "Mối quan hệ mật thiết giữa nguyên phân, giảm phân và thụ tinh" },
-                    { id: "sh10_b20", title: "Bài 20: Sự đa dạng và phương thức dinh dưỡng của vi sinh vật", nls: "NLS 3.1", nlsDesc: "Phân tích bảng phân loại 4 kiểu dinh dưỡng vi sinh vật", aiCode: "10.A1.2", aiDesc: "Tra cứu ứng dụng vi sinh vật trong nông nghiệp", core1: "Khái niệm và đặc điểm kích thước siêu nhỏ của vi sinh vật", core2: "Bốn kiểu dinh dưỡng: Quang/Hóa tự dưỡng và Quang/Hóa dị dưỡng", core3: "Ứng dụng nuôi cấy vi sinh vật trong xử lý môi trường tại địa phương" },
-                    { id: "sh10_b24", title: "Bài 24: Khái quát về virus", nls: "NLS 2.1", nlsDesc: "Tương tác mô hình 3D cấu trúc hạt virus Phage T4 và HIV", aiCode: "10.A1.2", aiDesc: "Đối chiếu đặc tính sống kí sinh nội bào bắt buộc", core1: "Đặc điểm chưa có cấu tạo tế bào, kí sinh nội bào bắt buộc", core2: "Cấu tạo gồm lõi acid nucleic và vỏ capsid protein bảo vệ", core3: "Hình thái cấu trúc và ứng dụng chuyển gen trong công nghệ sinh học" }
+                    { id: "sh10_b10", title: "Bài 10: Sự chuyển hóa năng lượng và enzyme trong tế bào", nls: "NLS 2.1", nlsDesc: "Mô phỏng cơ chế chìa khóa - ổ khóa của enzyme", aiCode: "10.A1.2", aiDesc: "Phân tích các yếu tố ảnh hưởng hoạt tính enzyme", core1: "Bản chất của ATP - đồng tiền năng lượng sinh học", core2: "Cấu trúc, tính đặc hiệu và cơ chế tác động của enzyme", core3: "Các nhân tố ảnh hưởng trực tiếp đến hoạt tính xúc tác của enzyme" },
+                    { id: "sh10_b16", title: "Bài 16: Chu kỳ tế bào và nguyên phân", nls: "NLS 2.1", nlsDesc: "Quan sát mô phỏng sự phân ly của nhiễm sắc thể", aiCode: "10.A2.1", aiDesc: "Tính toán số tế bào con tạo thành qua thuật toán AI", core1: "Diễn biến các pha G1, S, G2 và điểm kiểm soát chu kỳ tế bào", core2: "Cơ chế phân chia nhân và tế bào chất trong nguyên phân", core3: "Ý nghĩa sinh học và ứng dụng nhân giống vô tính cây trồng" },
+                    { id: "sh10_b17", title: "Bài 17: Giảm phân và thụ tinh", nls: "NLS 2.4", nlsDesc: "Mô phỏng tiếp hợp và trao đổi chéo ở kì đầu I", aiCode: "10.A2.2", aiDesc: "Phân tích cơ chế tạo biến dị tổ hợp phong phú", core1: "Cơ chế giảm phân I và giảm phân II tạo giao tử đơn bội", core2: "Hiện tượng tiếp hợp và trao đổi chéo tạo biến dị tổ hợp", core3: "Mối quan hệ mật thiết giữa nguyên phân, giảm phân và thụ tinh" },
+                    { id: "sh10_b20", title: "Bài 20: Sự đa dạng và phương thức dinh dưỡng của vi sinh vật", nls: "NLS 3.1", nlsDesc: "Phân tích bảng 4 kiểu dinh dưỡng của vi sinh vật", aiCode: "10.A1.2", aiDesc: "Tra cứu ứng dụng vi sinh vật trong nông nghiệp", core1: "Khái niệm và đặc điểm kích thước siêu nhỏ của vi sinh vật", core2: "Bốn kiểu dinh dưỡng: Quang/Hóa tự dưỡng và Quang/Hóa dị dưỡng", core3: "Ứng dụng nuôi cấy vi sinh vật trong xử lý môi trường tại địa phương" },
+                    { id: "sh10_b24", title: "Bài 24: Khái quát về virus", nls: "NLS 2.1", nlsDesc: "Tương tác mô hình 3D cấu trúc hạt virus Phage T4", aiCode: "10.A1.2", aiDesc: "Đối chiếu đặc tính sống kí sinh nội bào bắt buộc", core1: "Đặc điểm chưa có cấu tạo tế bào, kí sinh nội bào bắt buộc", core2: "Cấu tạo gồm lõi acid nucleic và vỏ capsid protein bảo vệ", core3: "Hình thái cấu trúc và ứng dụng chuyển gen trong công nghệ sinh học" }
                 ],
                 "11": [
                     { id: "sh11_b1", title: "Bài 1: Khái quát về trao đổi chất và chuyển hóa năng lượng", nls: "NLS 1.1", nlsDesc: "Sơ đồ hóa dòng năng lượng qua hệ sinh thái", aiCode: "11.A1.1", aiDesc: "Phân tích hai phương thức tự dưỡng và dị dưỡng bằng AI", core1: "Vai trò cung cấp năng lượng và vật chất duy trì sự sống", core2: "Hai phương thức tự dưỡng và dị dưỡng ở sinh vật", core3: "Các giai đoạn chuyển hóa năng lượng chủ yếu trong sinh giới" },
                     { id: "sh11_b2", title: "Bài 2: Trao đổi nước và khoáng ở thực vật", nls: "NLS 2.4", nlsDesc: "Mô phỏng động lực dòng mạch gỗ và dòng mạch rây", aiCode: "11.A1.1", aiDesc: "Tra cứu cơ chế đóng mở khí khổng điều tiết nước", core1: "Cơ chế hấp thụ nước và ion khoáng qua lông hút của rễ", core2: "Con đường vận chuyển dòng mạch gỗ và dòng mạch rây", core3: "Cơ chế thoát hơi nước qua khí khổng và vai trò điều hòa nhiệt" },
                     { id: "sh11_b4", title: "Bài 4: Quang hợp ở thực vật", nls: "NLS 3.2", nlsDesc: "Phân tích đồ thị quang phổ hấp thụ của hệ sắc tố", aiCode: "11.A2.2", aiDesc: "So sánh con đường cố định CO2 ở C3, C4 và CAM", core1: "Bản chất pha sáng quang hợp tạo năng lượng ATP và NADPH", core2: "Pha cố định CO2 thích nghi sinh thái ở C3, C4 và CAM", core3: "Các nhân tố ảnh hưởng và biện pháp tăng năng suất cây trồng" },
-                    { id: "sh11_b6", title: "Bài 6: Hô hấp ở thực vật", nls: "NLS 2.1", nlsDesc: "Mô phỏng chu trình Crep và chuỗi truyền electron ti thể", aiCode: "11.A1.1", aiDesc: "Tra cứu ứng dụng hô hấp trong bảo quản nông sản", core1: "Con đường hô hấp hiếu khí và lên men ở thực vật", core2: "Mối quan hệ trao đổi tương hỗ giữa quang hợp và hô hấp", core3: "Ứng dụng hiểu biết về hô hấp trong bảo quản nông sản thực phẩm" },
+                    { id: "sh11_b6", title: "Bài 6: Hô hấp ở thực vật", nls: "NLS 2.1", nlsDesc: "Mô phỏng chu trình Crep và chuỗi truyền electron", aiCode: "11.A1.1", aiDesc: "Tra cứu ứng dụng hô hấp trong bảo quản nông sản", core1: "Con đường hô hấp hiếu khí và lên men ở thực vật", core2: "Mối quan hệ trao đổi tương hỗ giữa quang hợp và hô hấp", core3: "Ứng dụng hiểu biết về hô hấp trong bảo quản nông sản thực phẩm" },
                     { id: "sh11_b8", title: "Bài 8: Dinh dưỡng và tiêu hóa ở động vật", nls: "NLS 2.3", nlsDesc: "Mô phỏng quá trình tiêu hóa trong ống tiêu hóa của thú", aiCode: "11.A1.1", aiDesc: "Phân tích dinh dưỡng hợp lý bảo vệ sức khỏe", core1: "Quá trình tiêu hóa ở động vật chưa có và có ống tiêu hóa", core2: "Đặc điểm tiêu hóa ở động vật ăn thực vật và động vật ăn thịt", core3: "Chế độ dinh dưỡng khoa học và bảo vệ hệ tiêu hóa khỏe mạnh" },
                     { id: "sh11_b9", title: "Bài 9: Hô hấp ở động vật", nls: "NLS 2.1", nlsDesc: "Mô phỏng dòng khí một chiều qua phổi chim và phế nang thú", aiCode: "11.A1.1", aiDesc: "Tra cứu biện pháp phòng bệnh đường hô hấp", core1: "Các hình thức hô hấp qua da, mang, hệ thống khí quản và phổi", core2: "Cơ chế trao đổi khí đạt hiệu suất cao thích nghi đời sống", core3: "Biện pháp phòng ngừa các bệnh đường hô hấp phổ biến" },
                     { id: "sh11_b10", title: "Bài 10: Tuần hoàn ở động vật", nls: "NLS 2.4", nlsDesc: "Mô phỏng hệ tuần hoàn hở và hệ tuần hoàn kín", aiCode: "11.A2.2", aiDesc: "Phân tích cơ chế điều hòa huyết áp bằng công cụ số", core1: "Cấu tạo và hoạt động của hệ tuần hoàn hở và hệ tuần hoàn kín", core2: "Cơ chế điều hòa nhịp tim, huyết áp và vận tốc máu trong mạch", core3: "Rèn luyện bảo vệ hệ tim mạch và xây dựng lối sống lành mạnh" },
-                    { id: "sh11_b14", title: "Bài 14: Cảm ứng ở sinh vật", nls: "NLS 2.1", nlsDesc: "Mô phỏng cơ chế dẫn truyền điện thế hoạt động qua synapse", aiCode: "11.A1.1", aiDesc: "Phân loại các dạng hướng động và ứng động ở thực vật", core1: "Cảm ứng hướng động và ứng động thích nghi ở thực vật", core2: "Cảm ứng ở động vật có hệ thần kinh dạng lưới, chuỗi và ống", core3: "Cơ chế phản xạ và dẫn truyền xung thần kinh qua synapse" },
-                    { id: "sh11_b19", title: "Bài 19: Sinh trưởng và phát triển ở thực vật", nls: "NLS 3.1", nlsDesc: "Phân tích bảng tác động tương quan của hormone thực vật", aiCode: "11.A2.2", aiDesc: "Tra cứu hiện tượng quang chu kì và ứng dụng ra hoa", core1: "Mô phân sinh đỉnh, mô phân sinh bên và mô phân sinh lóng", core2: "Vai trò của hormone thực vật kích thích và ức chế sinh trưởng", core3: "Hiện tượng quang chu kì và ứng dụng điều khiển cây trồng ra hoa" },
-                    { id: "sh11_b24", title: "Bài 24: Sinh sản ở thực vật", nls: "NLS 2.1", nlsDesc: "Mô phỏng quá trình thụ phấn và thụ tinh kép ở thực vật có hoa", aiCode: "11.A1.1", aiDesc: "Tra cứu kỹ thuật chiết cành, ghép cành trên cây ăn quả", core1: "Sinh sản vô tính: Bào tử, sinh dưỡng và nhân giống vô tính", core2: "Quá trình thụ phấn và thụ tinh kép đặc trưng ở thực vật có hoa", core3: "Sự hình thành hạt, quả và ứng dụng phát triển vườn cây ăn quả" }
+                    { id: "sh11_b14", title: "Bài 14: Cảm ứng ở sinh vật", nls: "NLS 2.1", nlsDesc: "Mô phỏng dẫn truyền điện thế hoạt động qua synapse", aiCode: "11.A1.1", aiDesc: "Phân loại các dạng hướng động và ứng động ở thực vật", core1: "Cảm ứng hướng động và ứng động thích nghi ở thực vật", core2: "Cảm ứng ở động vật có hệ thần kinh dạng lưới, chuỗi và ống", core3: "Cơ chế phản xạ và dẫn truyền xung thần kinh qua synapse" },
+                    { id: "sh11_b19", title: "Bài 19: Sinh trưởng và phát triển ở thực vật", nls: "NLS 3.1", nlsDesc: "Phân tích bảng tác động của hormone thực vật", aiCode: "11.A2.2", aiDesc: "Tra cứu hiện tượng quang chu kì và ứng dụng ra hoa", core1: "Mô phân sinh đỉnh, mô phân sinh bên và mô phân sinh lóng", core2: "Vai trò của hormone thực vật kích thích và ức chế sinh trưởng", core3: "Hiện tượng quang chu kì và ứng dụng điều khiển cây trồng ra hoa" },
+                    { id: "sh11_b24", title: "Bài 24: Sinh sản ở thực vật", nls: "NLS 2.1", nlsDesc: "Mô phỏng thụ tinh kép ở thực vật có hoa", aiCode: "11.A1.1", aiDesc: "Tra cứu kỹ thuật nhân giống vô tính cây trồng", core1: "Sinh sản vô tính: Bào tử, sinh dưỡng và nhân giống vô tính", core2: "Quá trình thụ phấn và thụ tinh kép đặc trưng ở thực vật có hoa", core3: "Sự hình thành hạt, quả và ứng dụng phát triển vườn cây ăn quả" }
                 ],
                 "12": [
                     { id: "sh12_b1", title: "Bài 1: Gen, mã di truyền và nhân đôi ADN", nls: "NLS 4.2", nlsDesc: "Khai thác cơ sở dữ liệu ngân hàng gen số (NCBI)", aiCode: "12.A1.3", aiDesc: "Mô phỏng cơ chế nhân đôi ADN bán bảo tồn qua trợ lý AI", core1: "Cấu trúc hóa học của gen và tính chất suy biến của mã di truyền", core2: "Nguyên tắc bán bảo tồn và bổ sung trong tiến trình nhân đôi ADN", core3: "Cơ chế enzyme sửa sai và ý nghĩa bảo tồn thông tin di truyền" },
-                    { id: "sh12_b2", title: "Bài 2: Phiên mã và dịch mã", nls: "NLS 2.4", nlsDesc: "Mô phỏng sự dịch chuyển của ribosome trên mARN tổng hợp chuỗi polypeptide", aiCode: "12.A2.2", aiDesc: "Tra cứu cơ chế phiên mã các loại ARN", core1: "Cơ chế phiên mã tổng hợp mARN, tARN và rARN", core2: "Cơ chế dịch mã tổng hợp chuỗi polypeptide trên ribosome", core3: "Mối quan hệ bản chất: ADN -> mARN -> Protein -> Tính trạng" },
-                    { id: "sh12_b3", title: "Bài 3: Điều hòa biểu hiện gen", nls: "NLS 2.1", nlsDesc: "Mô phỏng cơ chế đóng mở của cụm gen Operon Lac ở vi khuẩn E. coli", aiCode: "12.A1.3", aiDesc: "Phân tích vai trò của protein ức chế khi có và không có lactose", core1: "Cấu trúc cụm gen Operon Lac ở vi khuẩn Escherichia coli", core2: "Cơ chế điều hòa khi môi trường có và không có chất cảm ứng lactose", core3: "Ý nghĩa thích nghi sinh lý của cơ chế điều hòa biểu hiện gen" },
+                    { id: "sh12_b2", title: "Bài 2: Phiên mã và dịch mã", nls: "NLS 2.4", nlsDesc: "Mô phỏng sự dịch mã tổng hợp chuỗi polypeptide", aiCode: "12.A2.2", aiDesc: "Tra cứu cơ chế phiên mã các loại ARN", core1: "Cơ chế phiên mã tổng hợp mARN, tARN và rARN", core2: "Cơ chế dịch mã tổng hợp chuỗi polypeptide trên ribosome", core3: "Mối quan hệ bản chất: ADN -> mARN -> Protein -> Tính trạng" },
+                    { id: "sh12_b3", title: "Bài 3: Điều hòa biểu hiện gen", nls: "NLS 2.1", nlsDesc: "Mô phỏng cơ chế Operon Lac ở vi khuẩn E. coli", aiCode: "12.A1.3", aiDesc: "Phân tích vai trò của chất cảm ứng lactose", core1: "Cấu trúc cụm gen Operon Lac ở vi khuẩn Escherichia coli", core2: "Cơ chế điều hòa khi môi trường có và không có lactose", core3: "Ý nghĩa thích nghi sinh lý của cơ chế điều hòa biểu hiện gen" },
                     { id: "sh12_b4", title: "Bài 4: Đột biến gen", nls: "NLS 3.1", nlsDesc: "Xử lý bảng dữ liệu biến dị đột biến điểm bằng phần mềm số", aiCode: "12.A2.1", aiDesc: "Dự đoán hậu quả thay đổi acid amin trong chuỗi polypeptide", core1: "Các dạng đột biến điểm: Thay thế, thêm và mất 1 cặp nucleotide", core2: "Nguyên nhân hóa lý, sinh học và cơ chế phát sinh đột biến gen", core3: "Hậu quả và vai trò của đột biến gen trong tiến hóa và chọn tạo giống" },
-                    { id: "sh12_b5", title: "Bài 5: Nhiễm sắc thể và đột biến cấu trúc NST", nls: "NLS 2.1", nlsDesc: "Quan sát hình ảnh tiêu bản hiển vi các dạng đột biến cấu trúc NST", aiCode: "12.A1.3", aiDesc: "Phân loại các dạng mất đoạn, lặp đoạn, đảo đoạn và chuyển đoạn", core1: "Cấu trúc siêu hiển vi của nhiễm sắc thể ở sinh vật nhân thực", core2: "Các dạng đột biến cấu trúc: Mất đoạn, lặp đoạn, đảo đoạn, chuyển đoạn", core3: "Ý nghĩa và tác hại của đột biến cấu trúc nhiễm sắc thể" },
-                    { id: "sh12_b8", title: "Bài 8: Các quy luật di truyền của Menđen", nls: "NLS 3.2", nlsDesc: "Sử dụng phần mềm mô phỏng lai phân tích và kiểm định Chi-bình phương", aiCode: "12.A2.1", aiDesc: "Giải bài toán xác suất di truyền phân ly độc lập", core1: "Phương pháp lai và phân tích cơ thể lai của Menđen", core2: "Quy luật phân ly và cơ sở tế bào học của sự phân ly NST", core3: "Quy luật phân ly độc lập và sự hình thành các biến dị tổ hợp" },
+                    { id: "sh12_b5", title: "Bài 5: Nhiễm sắc thể và đột biến cấu trúc NST", nls: "NLS 2.1", nlsDesc: "Quan sát tiêu bản hiển vi đột biến cấu trúc NST", aiCode: "12.A1.3", aiDesc: "Phân loại các dạng mất đoạn, lặp đoạn, đảo đoạn và chuyển đoạn", core1: "Cấu trúc siêu hiển vi của nhiễm sắc thể ở sinh vật nhân thực", core2: "Các dạng đột biến cấu trúc: Mất đoạn, lặp đoạn, đảo đoạn, chuyển đoạn", core3: "Ý nghĩa và tác hại của đột biến cấu trúc nhiễm sắc thể" },
+                    { id: "sh12_b8", title: "Bài 8: Các quy luật di truyền của Menđen", nls: "NLS 3.2", nlsDesc: "Sử dụng phần mềm mô phỏng lai phân tích", aiCode: "12.A2.1", aiDesc: "Giải bài toán xác suất di truyền phân ly độc lập", core1: "Phương pháp lai và phân tích cơ thể lai của Menđen", core2: "Quy luật phân ly và cơ sở tế bào học của sự phân ly NST", core3: "Quy luật phân ly độc lập và sự hình thành các biến dị tổ hợp" },
                     { id: "sh12_b10", title: "Bài 10: Liên kết gen và hoán vị gen", nls: "NLS 3.3", nlsDesc: "Lập sơ đồ bản đồ di truyền dựa trên tần số hoán vị gen", aiCode: "12.A3.1", aiDesc: "Phân tích cơ sở tế bào học của hiện tượng trao đổi chéo", core1: "Hiện tượng di truyền liên kết gen hoàn toàn theo thí nghiệm Moocgan", core2: "Cơ chế hoán vị gen do trao đổi chéo ở kì đầu giảm phân I", core3: "Lập bản đồ di truyền và ứng dụng trong chọn giống nông nghiệp" },
                     { id: "sh12_b16", title: "Bài 16: Di truyền học người và ứng dụng", nls: "NLS 2.2", nlsDesc: "Phân tích sơ đồ phả hệ gia đình truyền bệnh di truyền", aiCode: "12.A1.3", aiDesc: "Tra cứu liệu pháp gen và tư vấn di truyền y học bằng AI", core1: "Phương pháp nghiên cứu phả hệ và di truyền học phân tử người", core2: "Một số bệnh, tật di truyền đơn gen và bất thường số lượng NST", core3: "Liệu pháp gen và vai trò của tư vấn di truyền y học hiện đại" },
-                    { id: "sh12_b24", title: "Bài 24: Bằng chứng tiến hóa", nls: "NLS 1.1", nlsDesc: "Tra cứu cây phát sinh chủng loại dựa trên trình tự cytochrome C", aiCode: "12.A1.3", aiDesc: "So sánh cơ quan tương đồng và cơ quan thoái hóa", core1: "Bằng chứng giải phẫu so sánh: Cơ quan tương đồng và thoái hóa", core2: "Bằng chứng tế bào học và tính thống nhất của sinh học phân tử", core3: "Học thuyết tiến hóa tổng hợp hiện đại về nhân tố tiến hóa" },
+                    { id: "sh12_b24", title: "Bài 24: Bằng chứng tiến hóa", nls: "NLS 1.1", nlsDesc: "Tra cứu cây phát sinh chủng loại phân tử", aiCode: "12.A1.3", aiDesc: "So sánh cơ quan tương đồng và cơ quan thoái hóa", core1: "Bằng chứng giải phẫu so sánh: Cơ quan tương đồng và thoái hóa", core2: "Bằng chứng tế bào học và tính thống nhất của sinh học phân tử", core3: "Học thuyết tiến hóa tổng hợp hiện đại về nhân tố tiến hóa" },
                     { id: "sh12_b31", title: "Bài 31: Hệ sinh thái và chu trình sinh địa hóa", nls: "NLS 3.1", nlsDesc: "Xây dựng sơ đồ lưới thức ăn và tháp sinh thái trên máy tính", aiCode: "12.A2.1", aiDesc: "Phân tích chu trình carbon và biến đổi khí hậu toàn cầu", core1: "Cấu trúc các thành phần sinh cảnh và quần xã trong hệ sinh thái", core2: "Chuỗi thức ăn, lưới thức ăn và sự chuyển hóa năng lượng qua tháp sinh thái", core3: "Chu trình carbon, nitơ, nước và vấn đề bảo vệ môi trường sinh thái" }
                 ]
             },
             "Công nghệ Nông nghiệp": {
                 "10": [
-                    { id: "cn10_b1", title: "Bài 1: Khái quát về công nghệ nông nghiệp", nls: "NLS 1.1", nlsDesc: "Tra cứu bản đồ quy hoạch vùng sản xuất nông nghiệp công nghệ cao", aiCode: "10.A1.2", aiDesc: "Phân tích xu hướng phát triển nông nghiệp 4.0", core1: "Vai trò và vị trí then chốt của nông nghiệp trong nền kinh tế", core2: "Các xu hướng phát triển nông nghiệp công nghệ cao và nông nghiệp số", core3: "Các nhóm ngành nghề chính trong sản xuất nông nghiệp hiện đại" },
-                    { id: "cn10_b2", title: "Bài 2: Thành phần và tính chất của đất trồng", nls: "NLS 2.1", nlsDesc: "Sử dụng bản đồ số nông hóa thổ nhưỡng khảo sát đất", aiCode: "10.A1.2", aiDesc: "Tra cứu công thức cải tạo đất phèn, đất mặn tại ĐBSCL", core1: "Thành phần cơ giới, keo đất và độ phì nhiêu của đất trồng", core2: "Tính chất vật lý, hóa học và hoạt động của vi sinh vật đất", core3: "Biện pháp cải tạo đất phèn, đất mặn tại Đồng bằng sông Cửu Long" },
-                    { id: "cn10_b4", title: "Bài 4: Sử dụng và bảo quản phân bón hóa học", nls: "NLS 3.1", nlsDesc: "Tính toán lượng phân bón nguyên chất N-P-K theo công thức số", aiCode: "10.A1.2", aiDesc: "Phân tích nguyên tắc bón phân cân đối bảo vệ nguồn nước", core1: "Đặc điểm và phân loại phân hóa học (đạm, lân, kali, phân NPK)", core2: "Nguyên tắc bón phân hợp lý cân đối, tránh ô nhiễm nguồn nước", core3: "Kỹ thuật bảo quản hạn chế thoái hóa và hao hụt phân bón" },
-                    { id: "cn10_b6", title: "Bài 6: Ứng dụng công nghệ cao trong sản xuất phân bón", nls: "NLS 2.3", nlsDesc: "Mô phỏng quy trình lên men vi sinh sản xuất phân hữu cơ", aiCode: "10.A2.2", aiDesc: "Tra cứu cơ chế màng bọc thông minh của phân tan chậm", core1: "Phân bón hữu cơ vi sinh sản xuất bằng công nghệ lên men hiện đại", core2: "Phân bón tan chậm có kiểm soát màng bọc thông minh", core3: "Quy trình tận dụng phụ phẩm nông nghiệp ủ phân vi sinh tại nông hộ" },
-                    { id: "cn10_b8", title: "Bài 8: Kỹ thuật giâm cành, chiết cành và ghép cây", nls: "NLS 2.1", nlsDesc: "Quan sát video thực hành các thao tác ghép mắt và ghép nêm", aiCode: "10.A1.2", aiDesc: "Phân tích cơ sở sinh lý liền sẹo của tầng phát sinh", core1: "Cơ sở sinh lý học thực vật của nhân giống vô tính cây trồng", core2: "Quy trình thực hành giâm cành và chiết cành cây ăn quả", core3: "Kỹ thuật ghép đoạn cành trên cây có múi" },
-                    { id: "cn10_b10", title: "Bài 10: Phòng trừ sâu bệnh hại cây trồng", nls: "NLS 2.4", nlsDesc: "Tra cứu ngân hàng hình ảnh số nhận diện các loài dịch hại", aiCode: "10.A1.2", aiDesc: "Phân tích nguyên tắc 4 đúng trong sử dụng thuốc bảo vệ thực vật", core1: "Nguyên lý và các biện pháp quản lý dịch hại tổng hợp (IPM)", core2: "Ứng dụng chế phẩm sinh học và nấm đối kháng bảo vệ cây trồng", core3: "Kỹ thuật sử dụng thuốc bảo vệ thực vật theo nguyên tắc 4 đúng" },
+                    { id: "cn10_b1", title: "Bài 1: Khái quát về công nghệ nông nghiệp", nls: "NLS 1.1", nlsDesc: "Tra cứu quy hoạch nông nghiệp công nghệ cao", aiCode: "10.A1.2", aiDesc: "Phân tích xu hướng phát triển nông nghiệp 4.0", core1: "Vai trò và vị trí then chốt của nông nghiệp trong nền kinh tế", core2: "Các xu hướng phát triển nông nghiệp công nghệ cao và nông nghiệp số", core3: "Các nhóm ngành nghề chính trong sản xuất nông nghiệp hiện đại" },
+                    { id: "cn10_b2", title: "Bài 2: Thành phần và tính chất của đất trồng", nls: "NLS 2.1", nlsDesc: "Sử dụng bản đồ số thổ nhưỡng khảo sát đất", aiCode: "10.A1.2", aiDesc: "Tra cứu công thức cải tạo đất phèn, đất mặn tại ĐBSCL", core1: "Thành phần cơ giới, keo đất và độ phì nhiêu của đất trồng", core2: "Tính chất vật lý, hóa học và hoạt động của vi sinh vật đất", core3: "Biện pháp cải tạo đất phèn, đất mặn tại Đồng bằng sông Cửu Long" },
+                    { id: "cn10_b4", title: "Bài 4: Sử dụng và bảo quản phân bón hóa học", nls: "NLS 3.1", nlsDesc: "Tính toán lượng phân bón N-P-K theo công thức số", aiCode: "10.A1.2", aiDesc: "Phân tích nguyên tắc bón phân cân đối bảo vệ nguồn nước", core1: "Đặc điểm và phân loại phân hóa học (đạm, lân, kali, phân NPK)", core2: "Nguyên tắc bón phân hợp lý cân đối, tránh ô nhiễm nguồn nước", core3: "Kỹ thuật bảo quản hạn chế thoái hóa và hao hụt phân bón" },
+                    { id: "cn10_b6", title: "Bài 6: Ứng dụng công nghệ cao trong sản xuất phân bón", nls: "NLS 2.3", nlsDesc: "Mô phỏng quy trình lên men vi sinh phân hữu cơ", aiCode: "10.A2.2", aiDesc: "Tra cứu cơ chế màng bọc thông minh của phân tan chậm", core1: "Phân bón hữu cơ vi sinh sản xuất bằng công nghệ lên men hiện đại", core2: "Phân bón tan chậm có kiểm soát màng bọc thông minh", core3: "Quy trình tận dụng phụ phẩm nông nghiệp ủ phân vi sinh tại nông hộ" },
+                    { id: "cn10_b8", title: "Bài 8: Kỹ thuật giâm cành, chiết cành và ghép cây", nls: "NLS 2.1", nlsDesc: "Quan sát video thực hành các thao tác ghép cành", aiCode: "10.A1.2", aiDesc: "Phân tích cơ sở sinh lý liền sẹo của tầng sinh mô", core1: "Cơ sở sinh lý học thực vật của nhân giống vô tính cây trồng", core2: "Quy trình thực hành giâm cành và chiết cành cây ăn quả", core3: "Kỹ thuật ghép đoạn cành trên cây có múi" },
+                    { id: "cn10_b10", title: "Bài 10: Phòng trừ sâu bệnh hại cây trồng", nls: "NLS 2.4", nlsDesc: "Tra cứu ngân hàng hình ảnh số nhận diện dịch hại", aiCode: "10.A1.2", aiDesc: "Phân tích nguyên tắc 4 đúng trong sử dụng thuốc bảo vệ thực vật", core1: "Nguyên lý và các biện pháp quản lý dịch hại tổng hợp (IPM)", core2: "Ứng dụng chế phẩm sinh học và nấm đối kháng bảo vệ cây trồng", core3: "Kỹ thuật sử dụng thuốc bảo vệ thực vật theo nguyên tắc 4 đúng" },
                     { id: "cn10_b14", title: "Bài 14: Hệ thống tưới tiêu tiết kiệm trong nông nghiệp", nls: "NLS 3.3", nlsDesc: "Thiết kế sơ đồ mạng lưới đường ống tưới PVC & LDPE trên phần mềm", aiCode: "10.A2.2", aiDesc: "Tính toán áp lực và lưu lượng tưới nhỏ giọt bằng AI", core1: "Cấu tạo hệ thống tưới nhỏ giọt và tưới phun mưa (ống PVC & LDPE)", core2: "Nguyên lý vận hành, tính toán cột áp và lưu lượng nước tưới tối ưu", core3: "Ứng dụng hệ thống tưới tự động trên vườn cây ăn trái" }
                 ],
                 "11": [
-                    { id: "cn11_b1", title: "Bài 1: Vai trò và triển vọng của chăn nuôi", nls: "NLS 1.1", nlsDesc: "Khai thác dữ liệu thống kê sản lượng chăn nuôi quốc gia", aiCode: "11.A1.1", aiDesc: "Phân tích mô hình kinh tế tuần hoàn trong chăn nuôi", core1: "Cung cấp thực phẩm chất lượng cao và phát triển kinh tế nông thôn", core2: "Xu thế chăn nuôi an toàn sinh học và mô hình kinh tế tuần hoàn", core3: "Ứng dụng công nghệ tự động hóa trong quản lý chuồng trại gia súc" },
+                    { id: "cn11_b1", title: "Bài 1: Vai trò và triển vọng của chăn nuôi", nls: "NLS 1.1", nlsDesc: "Khai thác dữ liệu thống kê sản lượng chăn nuôi", aiCode: "11.A1.1", aiDesc: "Phân tích mô hình kinh tế tuần hoàn trong chăn nuôi", core1: "Cung cấp thực phẩm chất lượng cao và phát triển kinh tế nông thôn", core2: "Xu thế chăn nuôi an toàn sinh học và mô hình kinh tế tuần hoàn", core3: "Ứng dụng công nghệ tự động hóa trong quản lý chuồng trại gia súc" },
                     { id: "cn11_b3", title: "Bài 3: Giống vật nuôi và kỹ thuật chọn giống", nls: "NLS 2.2", nlsDesc: "Phân tích hồ sơ phả hệ số hóa của giống vật nuôi", aiCode: "11.A1.1", aiDesc: "Tra cứu phương pháp chọn lọc cá thể và nhân giống", core1: "Khái niệm giống và các chỉ tiêu kinh tế - kỹ thuật đánh giá giống", core2: "Phương pháp chọn lọc cá thể và chọn lọc dựa trên phả hệ", core3: "Bảo tồn nguồn gen vật nuôi bản địa chất lượng cao tại địa phương" },
                     { id: "cn11_b6", title: "Bài 6: Công nghệ sinh học trong chế biến thức ăn chăn nuôi", nls: "NLS 3.1", nlsDesc: "Tính toán phối trộn khẩu phần TMR bằng bảng tính số", aiCode: "11.A2.2", aiDesc: "Tra cứu kỹ thuật ủ men vi sinh phụ phẩm nông nghiệp", core1: "Kỹ thuật ủ men vi sinh phụ phẩm nông nghiệp nâng cao độ ngon miệng", core2: "Công nghệ sản xuất thức ăn hỗn hợp hoàn chỉnh TMR cho gia súc", core3: "Nguyên tắc phối trộn khẩu phần thức ăn cân đối dinh dưỡng theo lứa tuổi" },
-                    { id: "cn11_b10", title: "Bài 10: Phòng bệnh và vệ sinh thú y trong chăn nuôi", nls: "NLS 2.3", nlsDesc: "Khai thác phần mềm cảnh báo dịch tễ thú y trực tuyến", aiCode: "11.A1.1", aiDesc: "Lập lịch tiêm phòng vaccine và quy trình tiêu độc chuồng trại", core1: "Quy trình tiêu độc khử trùng chuồng trại định kỳ an toàn sinh học", core2: "Xây dựng lịch tiêm phòng vaccine chủ động cho đàn vật nuôi", core3: "Kỹ thuật xử lý chất thải chăn nuôi bằng hầm biogas bảo vệ môi trường" }
+                    { id: "cn11_b10", title: "Bài 10: Phòng bệnh và vệ sinh thú y trong chăn nuôi", nls: "NLS 2.3", nlsDesc: "Khai thác phần mềm cảnh báo dịch tễ thú y", aiCode: "11.A1.1", aiDesc: "Lập lịch tiêm phòng vaccine và quy trình tiêu độc chuồng trại", core1: "Quy trình tiêu độc khử trùng chuồng trại định kỳ an toàn sinh học", core2: "Xây dựng lịch tiêm phòng vaccine chủ động cho đàn vật nuôi", core3: "Kỹ thuật xử lý chất thải chăn nuôi bằng hầm biogas bảo vệ môi trường" }
                 ],
                 "12": [
                     { id: "cn12_b1", title: "Bài 1: Khái quát về lâm nghiệp và nuôi trồng thủy sản", nls: "NLS 1.1", nlsDesc: "Khai thác ảnh viễn thám giám sát diện tích rừng ngập mặn", aiCode: "12.A1.3", aiDesc: "Phân tích giá trị xuất khẩu của thủy sản nước ngọt", core1: "Vai trò phòng hộ của rừng và giá trị kinh tế của thủy sản xuất khẩu", core2: "Chiến lược phát triển lâm - ngư kết hợp bền vững thích ứng biến đổi khí hậu", core3: "Ứng dụng công nghệ số và viễn thám trong giám sát tài nguyên thiên nhiên" },
-                    { id: "cn12_b3", title: "Bài 3: Kỹ thuật ươm giống cây lâm nghiệp", nls: "NLS 2.1", nlsDesc: "Quan sát mô hình vườn ươm điều khiển ánh sáng và tưới sương tự động", aiCode: "12.A1.3", aiDesc: "Tra cứu quy trình phối trộn giá thể ươm cây con", core1: "Quy trình xử lý hạt giống, đóng bầu và phối trộn giá thể ươm cây", core2: "Chăm sóc, điều tiết ánh sáng và độ ẩm cây con trong vườn ươm", core3: "Kỹ thuật trồng và chăm sóc rừng ngập mặn chắn sóng bảo vệ bờ kênh" },
+                    { id: "cn12_b3", title: "Bài 3: Kỹ thuật ươm giống cây lâm nghiệp", nls: "NLS 2.1", nlsDesc: "Quan sát mô hình vườn ươm tưới sương tự động", aiCode: "12.A1.3", aiDesc: "Tra cứu quy trình phối trộn giá thể ươm cây con", core1: "Quy trình xử lý hạt giống, đóng bầu và phối trộn giá thể ươm cây", core2: "Chăm sóc, điều tiết ánh sáng và độ ẩm cây con trong vườn ươm", core3: "Kỹ thuật trồng và chăm sóc rừng ngập mặn chắn sóng bảo vệ bờ kênh" },
                     { id: "cn12_b6", title: "Bài 6: Kỹ thuật nuôi thâm canh thủy sản nước ngọt", nls: "NLS 3.1", nlsDesc: "Phân tích biểu đồ biến thiên pH, oxy hòa tan và khí độc trong ao", aiCode: "12.A2.1", aiDesc: "Tra cứu quy trình phòng bệnh cho cá tra, cá lóc bằng thảo mộc", core1: "Kỹ thuật thiết kế, cải tạo ao nuôi và xử lý nền đáy trước vụ nuôi", core2: "Quản lý các chỉ số môi trường nước ao (pH, oxy hòa tan, khí độc NH3/H2S)", core3: "Quy trình cho ăn và phòng bệnh định kỳ cho cá tra, cá lóc" },
                     { id: "cn12_b8", title: "Bài 8: Ứng dụng công nghệ cao trong nuôi trồng thủy sản", nls: "NLS 4.1", nlsDesc: "Theo dõi dữ liệu cảm biến IoT trạm đo môi trường nước ao nuôi", aiCode: "12.A3.1", aiDesc: "Mô phỏng quy trình lọc cơ học và sinh học trong hệ thống RAS", core1: "Nguyên lý vận hành hệ thống nuôi thủy sản tuần hoàn nước khép kín RAS", core2: "Công nghệ Biofloc kiểm soát chất lượng nước bằng vi sinh vật dị dưỡng", core3: "Tự động hóa giám sát ao nuôi bằng hệ thống cảm biến thông minh kết nối IoT" }
                 ]
             }
         };
 
-        /* TRẠNG THÁI TOÀN CỤC */
         let currentMode = '5512';
         let activeLesson = null;
         let selectedLessonsForExam = [];
@@ -392,12 +338,14 @@
         let slideDeck = [];
         let timerSeconds = 0;
         let timerInterval = null;
-        let examMatrixConfig = {}; // Cấu hình số câu giáo viên chọn: { lessonId: { biet, hieu, vd, vdc } }
+
+        // Ma trận câu hỏi theo chuẩn CV 7991: Lưu số câu Biết, Hiểu, Vận dụng cho từng dạng thức
+        // Cấu trúc: { lessonId: { p1_biet, p1_hieu, p1_vd, p2_biet, p2_hieu, p2_vd, p3_biet, p3_hieu, p3_vd, tl_biet, tl_hieu, tl_vd } }
+        let examMatrix7991Config = {};
 
         window.addEventListener('DOMContentLoaded', () => {
             onSubjectOrGradeChanged();
             renderActiveView('5512');
-            checkStoredApiKey();
         });
 
         function onSubjectOrGradeChanged() {
@@ -503,7 +451,7 @@
         }
 
         /* -------------------------------------------------------------------------
-         * 2. BỘ XUẤT KẾ HOẠCH BÀI DẠY (CV 5512 - TINH GỌN TIÊU ĐỀ)
+         * 2. GIÁO ÁN CV 5512 (BỎ HẾT QUỐC HIỆU VÀ THÔNG TIN GIÁO VIÊN/TỔ/TRƯỜNG)
          * ------------------------------------------------------------------------- */
         function renderLessonDoc5512() {
             if (!activeLesson) return;
@@ -512,25 +460,10 @@
             const doc = document.getElementById('container-a4-doc');
 
             doc.innerHTML = `
-                <table style="width: 100%; border: none; margin-bottom: 15px;">
-                    <tr style="border: none;">
-                        <td style="border: none; width: 45%; text-align: center; vertical-align: top; padding: 0;">
-                            <p style="margin: 0; font-size: 11pt;">BỘ GIÁO DỤC VÀ ĐÀO TẠO</p>
-                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">CHƯƠNG TRÌNH GDPT 2018</p>
-                            <div style="width: 80px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
-                        </td>
-                        <td style="border: none; width: 55%; text-align: center; vertical-align: top; padding: 0;">
-                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
-                            <p style="margin: 0; font-style: italic; font-size: 11pt;">Độc lập - Tự do - Hạnh phúc</p>
-                            <div style="width: 120px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
-                        </td>
-                    </tr>
-                </table>
-
-                <div style="text-align: center; margin: 15px 0;">
-                    <h2 style="margin: 0; font-size: 14pt; font-weight: bold; text-transform: uppercase;">KẾ HOẠCH BÀI DẠY</h2>
-                    <h3 style="margin: 4px 0 0 0; font-size: 13pt; font-weight: bold; color: #1e3a8a;">${activeLesson.title.toUpperCase()}</h3>
-                    <p style="margin: 3px 0 0 0; font-style: italic; font-size: 11pt;">Môn học: ${subject} ${grade} • Thời lượng thực hiện: 02 tiết</p>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0; font-size: 15pt; font-weight: bold; text-transform: uppercase;">KẾ HOẠCH BÀI DẠY</h2>
+                    <h3 style="margin: 4px 0 0 0; font-size: 14pt; font-weight: bold; color: #1e3a8a;">${activeLesson.title.toUpperCase()}</h3>
+                    <p style="margin: 3px 0 0 0; font-style: italic; font-size: 11pt;">Môn học: ${subject} ${grade} • Thời lượng: 02 tiết • Chương trình GDPT 2018</p>
                 </div>
 
                 <p style="font-weight: bold; margin: 10px 0 3px 0;">I. MỤC TIÊU</p>
@@ -544,11 +477,11 @@
                 <p style="margin: 2px 0 2px 20px; color: #0369a1;">- 2.3. Tích hợp Năng lực số: <strong>[${activeLesson.nls || 'NLS 2.1'}]</strong> - ${activeLesson.nlsDesc || 'Khai thác dữ liệu số và mô hình hiển vi trực quan'}.</p>
                 <p style="margin: 2px 0 2px 20px; color: #4338ca;">- 2.4. Tích hợp Năng lực AI: <strong>[Mã ${activeLesson.aiCode || grade + '.A1.2'}]</strong> - ${activeLesson.aiDesc || 'Khai thác AI tra cứu thuật ngữ; kiểm chứng chéo với SGK và con người giữ quyền quyết định'}.</p>
 
-                <p style="margin: 4px 0 2px 10px;"><strong>3. Về phẩm chất:</strong> Chăm chỉ, trung thực trong nghiên cứu khoa học, tinh thần trách nhiệm bảo vệ sinh thái.</p>
+                <p style="margin: 4px 0 2px 10px;"><strong>3. Về phẩm chất:</strong> Chăm chỉ, trung thực trong nghiên cứu khoa học, tinh thần trách nhiệm bảo vệ môi trường sinh thái.</p>
 
                 <p style="font-weight: bold; margin: 12px 0 4px 0;">II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU</p>
-                <p style="margin: 2px 0 2px 15px;">- Giáo viên: Kế hoạch bài dạy, bài giảng slide điện tử, SGK, mã QR học liệu số hóa, Phiếu học tập số 1.</p>
-                <p style="margin: 2px 0 2px 15px;">- Học sinh: SGK, vở ghi bài, thiết bị thông minh tra cứu học liệu số tương tác.</p>
+                <p style="margin: 2px 0 2px 15px;">- Giáo viên: Kế hoạch bài dạy, bài giảng điện tử, SGK, mã QR học liệu số hóa, Phiếu học tập số 1.</p>
+                <p style="margin: 2px 0 2px 15px;">- Học sinh: SGK, vở ghi, thiết bị thông minh tra cứu học liệu số tương tác.</p>
 
                 <p style="font-weight: bold; margin: 12px 0 4px 0;">III. TIẾN TRÌNH DẠY HỌC</p>
 
@@ -582,8 +515,8 @@
                             </td>
                             <td style="vertical-align: top;">
                                 <strong>1. Bản chất khoa học nền tảng:</strong><br>
-                                - Định nghĩa, vai trò và thành phần cấu tạo đặc trưng.<br>
-                                - Cơ chế chuyển hóa và trao đổi vật chất cốt lõi.
+                                - Định nghĩa, vai trò và thành phần cấu tạo đặc trưng theo chuẩn SGK GDPT 2018.<br>
+                                - Cơ chế chuyển hóa và trao đổi vật chất cốt lõi duy trì sự sống.
                             </td>
                         </tr>
                         <tr>
@@ -597,7 +530,7 @@
                             <td style="vertical-align: top;">
                                 <strong>2. Quy luật tương tác và cơ chế:</strong><br>
                                 - Diễn biến tuần tự các giai đoạn của tiến trình sinh học/kỹ thuật.<br>
-                                - Mối quan hệ mật thiết giữa cấu trúc và chức năng.
+                                - Mối quan hệ mật thiết giữa cấu trúc hình thái và chức năng sinh học.
                             </td>
                         </tr>
                         <tr>
@@ -618,10 +551,10 @@
                 </table>
 
                 <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 3: LUYỆN TẬP</p>
-                <p style="margin: 2px 0 2px 15px;">- GV giao bài tập trắc nghiệm gồm đủ 3 dạng thức: 4 lựa chọn, Đúng/Sai bối cảnh và Trả lời ngắn; HS làm bài độc lập và đối chiếu đáp án chuẩn.</p>
+                <p style="margin: 2px 0 2px 15px;">- GV giao bài tập trắc nghiệm gồm đủ 3 dạng thức: 4 lựa chọn, Đúng/Sai bối cảnh và Trả lời ngắn; HS làm bài độc lập và đối chiếu kết quả.</p>
 
                 <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 4: VẬN DỤNG</p>
-                <p style="margin: 2px 0 2px 15px;">- Dự án học tập thực tế: Tìm hiểu các mô hình ứng dụng công nghệ cao hoặc giải pháp sinh thái tại địa phương.</p>
+                <p style="margin: 2px 0 2px 15px;">- Dự án học tập thực tế: Tìm hiểu mô hình ứng dụng công nghệ cao hoặc giải pháp sinh thái tại địa phương.</p>
 
                 <p style="font-weight: bold; margin: 12px 0 4px 0;">IV. HỒ SƠ DẠY HỌC / PHỤ LỤC</p>
                 <p style="font-weight: bold; text-decoration: underline;">Phụ lục: RUBRIC ĐÁNH GIÁ NĂNG LỰC SỐ (${activeLesson.nls}) & AI (${activeLesson.aiCode})</p>
@@ -652,7 +585,7 @@
         }
 
         /* -------------------------------------------------------------------------
-         * 3. BỘ XUẤT SLIDE POWERPOINT (ĐỒNG HỒ ĐA MỐC & QUAY SỐ 01-50)
+         * 3. BÀI GIẢNG SLIDE POWERPOINT (BỎ HẾT QUỐC HIỆU VÀ THÔNG TIN GIÁO VIÊN/TRƯỜNG)
          * ------------------------------------------------------------------------- */
         function renderSlideDeckPresentation() {
             if (!activeLesson) return;
@@ -661,11 +594,11 @@
             // Slide 1: Bìa
             slideDeck.push({
                 title: activeLesson.title.toUpperCase(),
-                tag: "BÀI GIẢNG ĐIỆN TỬ GDPT 2018",
+                tag: "CHƯƠNG TRÌNH GDPT 2018",
                 body: `
                     <div class="text-center py-8 space-y-4">
                         <span class="inline-block px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 font-bold text-sm border border-amber-400/30">
-                            CHƯƠNG TRÌNH GIÁO DỤC PHỔ THÔNG 2018
+                            BÀI GIẢNG ĐIỆN TỬ CHUẨN MỰC
                         </span>
                         <h1 class="text-5xl font-black text-amber-300 leading-tight">
                             ${activeLesson.title}
@@ -700,7 +633,7 @@
                 `
             });
 
-            // Slide 3, 4, 5: Kiến thức cốt lõi
+            // Slide 3, 4, 5: 3 Mục kiến thức
             [activeLesson.core1, activeLesson.core2, activeLesson.core3].forEach((c, idx) => {
                 slideDeck.push({
                     title: `NỘI DUNG ${idx + 1}: ${c.toUpperCase()}`,
@@ -749,7 +682,7 @@
                                     <i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng
                                 </button>
                                 <div class="hidden mt-2 p-3 bg-emerald-950/80 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-lg">
-                                    ➜ Đáp án chính xác: B (Luôn bảo đảm tính toàn vẹn và thích nghi sinh học)
+                                    ➜ Phương án đúng: <u>B</u> (Luôn bảo đảm tính toàn vẹn và thích nghi sinh học)
                                 </div>
                             </div>
                         </div>
@@ -775,7 +708,7 @@
                                     <i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng
                                 </button>
                                 <div class="hidden mt-2 p-3 bg-emerald-950/80 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-lg">
-                                    ➜ Đáp án: a) ĐÚNG | b) SAI | c) ĐÚNG | d) SAI
+                                    ➜ Ý đúng: <u>a)</u>, <u>c)</u> | Ý sai: b), d)
                                 </div>
                             </div>
                         </div>
@@ -790,13 +723,12 @@
                     body: `
                         <div class="space-y-4 text-lg">
                             <p class="font-bold text-white text-xl">Câu ${i}: Một mẫu vật ban đầu qua ${i} chu kỳ biến đổi liên tiếp sẽ tạo ra bao nhiêu đơn vị cấu trúc tương ứng?</p>
-                            <p class="text-slate-300 italic text-base">(Đáp án là con số cụ thể không quá 4 ký tự)</p>
                             <div>
                                 <button onclick="toggleAnswer(this)" class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-sm">
                                     <i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng
                                 </button>
                                 <div class="hidden mt-2 p-3 bg-emerald-950/80 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-2xl">
-                                    ➜ Đáp số: ${Math.pow(2, i)}
+                                    ➜ Đáp án là: <u>${Math.pow(2, i)}</u>
                                 </div>
                             </div>
                         </div>
@@ -849,7 +781,7 @@
             }
         }
 
-        /* HẸN GIỜ ĐA MỐC VÀ CHỌN SỐ HỌC SINH 01 - 50 */
+        /* HẸN GIỜ VÀ QUAY SỐ HỌC SINH 01-50 */
         function startSlideTimer(seconds) {
             clearInterval(timerInterval);
             timerSeconds = seconds;
@@ -860,7 +792,6 @@
                 if (timerSeconds <= 0) {
                     clearInterval(timerInterval);
                     document.getElementById('slide-timer-display').innerText = "HẾT GIỜ!";
-                    // Âm báo hết giờ
                     try {
                         const ctx = new (window.AudioContext || window.webkitAudioContext)();
                         const osc = ctx.createOscillator();
@@ -901,7 +832,7 @@
         }
 
         /* -------------------------------------------------------------------------
-         * 4. BỘ MA TRẬN & ĐỀ KIỂM TRA ĐÁNH GIÁ NĂNG LỰC (CV 7991 - XUẤT ĐÚNG SỐ CÂU)
+         * 4. MA TRẬN & ĐỀ KIỂM TRA CHUẨN CÔNG VĂN 7991 (CHỈ GẠCH CHÂN ĐÁP ÁN ĐÚNG)
          * ------------------------------------------------------------------------- */
         function renderExamMatrix7991() {
             const subject = document.getElementById('sel-subject').value;
@@ -909,37 +840,60 @@
             const doc = document.getElementById('container-a4-doc');
             const items = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [activeLesson];
 
-            // Tự khởi tạo cấu hình số câu nếu chưa có
+            // Khởi tạo cấu hình số câu theo các mức độ của CV 7991 nếu chưa có
             items.forEach(it => {
-                if (!examMatrixConfig[it.id]) {
-                    examMatrixConfig[it.id] = {
-                        biet: Math.round(8 / items.length) || 1,
-                        hieu: Math.round(6 / items.length) || 1,
-                        vd: 1,
-                        vdc: 1
+                if (!examMatrix7991Config[it.id]) {
+                    examMatrix7991Config[it.id] = {
+                        p1_b: Math.round(6 / items.length) || 1, p1_h: Math.round(4 / items.length) || 1, p1_vd: 1,
+                        p2_b: 0, p2_h: 1, p2_vd: 1,
+                        p3_b: 0, p3_h: 1, p3_vd: 1,
+                        tl_b: 0, tl_h: 0, tl_vd: 0
                     };
                 }
             });
 
-            let totalBiet = 0, totalHieu = 0, totalVd = 0, totalVdc = 0;
-            items.forEach(it => {
-                totalBiet += parseInt(examMatrixConfig[it.id].biet) || 0;
-                totalHieu += parseInt(examMatrixConfig[it.id].hieu) || 0;
-                totalVd += parseInt(examMatrixConfig[it.id].vd) || 0;
-                totalVdc += parseInt(examMatrixConfig[it.id].vdc) || 0;
-            });
-            const totalQuestions = totalBiet + totalHieu + totalVd + totalVdc;
+            // Tính tổng từng cột theo chuẩn CV 7991
+            let sum_p1_b = 0, sum_p1_h = 0, sum_p1_vd = 0;
+            let sum_p2_b = 0, sum_p2_h = 0, sum_p2_vd = 0;
+            let sum_p3_b = 0, sum_p3_h = 0, sum_p3_vd = 0;
+            let sum_tl_b = 0, sum_tl_h = 0, sum_tl_vd = 0;
 
-            // Xây dựng danh sách câu hỏi theo đúng số lượng ma trận
+            items.forEach(it => {
+                const c = examMatrix7991Config[it.id];
+                sum_p1_b += parseInt(c.p1_b) || 0;
+                sum_p1_h += parseInt(c.p1_h) || 0;
+                sum_p1_vd += parseInt(c.p1_vd) || 0;
+                sum_p2_b += parseInt(c.p2_b) || 0;
+                sum_p2_h += parseInt(c.p2_h) || 0;
+                sum_p2_vd += parseInt(c.p2_vd) || 0;
+                sum_p3_b += parseInt(c.p3_b) || 0;
+                sum_p3_h += parseInt(c.p3_h) || 0;
+                sum_p3_vd += parseInt(c.p3_vd) || 0;
+                sum_tl_b += parseInt(c.tl_b) || 0;
+                sum_tl_h += parseInt(c.tl_h) || 0;
+                sum_tl_vd += parseInt(c.tl_vd) || 0;
+            });
+
+            const total_p1 = sum_p1_b + sum_p1_h + sum_p1_vd;
+            const total_p2 = sum_p2_b + sum_p2_h + sum_p2_vd;
+            const total_p3 = sum_p3_b + sum_p3_h + sum_p3_vd;
+            const total_tl = sum_tl_b + sum_tl_h + sum_tl_vd;
+
+            const total_biet = sum_p1_b + sum_p2_b + sum_p3_b + sum_tl_b;
+            const total_hieu = sum_p1_h + sum_p2_h + sum_p3_h + sum_tl_h;
+            const total_vd = sum_p1_vd + sum_p2_vd + sum_p3_vd + sum_tl_vd;
+            const total_all_questions = total_p1 + total_p2 + total_p3 + total_tl;
+
+            // Xây dựng đề thi xuất đúng số câu theo ma trận
             let part1QuestionsHtml = "";
             let p1Index = 1;
             items.forEach(it => {
-                const count = (parseInt(examMatrixConfig[it.id].biet) || 0) + (parseInt(examMatrixConfig[it.id].hieu) || 0);
+                const count = (parseInt(examMatrix7991Config[it.id].p1_b) || 0) + (parseInt(examMatrix7991Config[it.id].p1_h) || 0) + (parseInt(examMatrix7991Config[it.id].p1_vd) || 0);
                 for (let k = 1; k <= count; k++) {
                     part1QuestionsHtml += `
-                        <p style="margin: 3px 0;"><strong>Câu ${p1Index}:</strong> [${it.title}] Nhận định nào sau đây là chính xác về cơ chế bản chất của bài học?</p>
-                        <p style="margin: 1px 0 1px 20px;">A. Không tuân thủ các quy luật tự nhiên &nbsp;&nbsp;&nbsp;&nbsp; <strong>B. Luôn bảo đảm tính toàn vẹn và thích nghi sinh thái [ĐÚNG]</strong></p>
-                        <p style="margin: 1px 0 3px 20px;">C. Diễn ra ngẫu nhiên không có sự kiểm soát &nbsp;&nbsp;&nbsp;&nbsp; D. Hoàn toàn độc lập với môi trường</p>
+                        <p style="margin: 3px 0;"><strong>Câu ${p1Index}:</strong> [${it.title}] Đặc điểm cốt lõi nào sau đây phản ánh chính xác nhất bản chất của bài học?</p>
+                        <p style="margin: 1px 0 1px 20px;"><u><strong>A</strong></u>. Luôn bảo đảm tính toàn vẹn và thích nghi sinh học &nbsp;&nbsp;&nbsp;&nbsp; <strong>B</strong>. Không tuân thủ các quy luật tự nhiên</p>
+                        <p style="margin: 1px 0 3px 20px;"><strong>C</strong>. Diễn ra hoàn toàn ngẫu nhiên &nbsp;&nbsp;&nbsp;&nbsp; <strong>D</strong>. Độc lập tuyệt đối với môi trường ngoài</p>
                     `;
                     p1Index++;
                 }
@@ -948,14 +902,14 @@
             let part2QuestionsHtml = "";
             let p2Index = 1;
             items.forEach(it => {
-                const count = parseInt(examMatrixConfig[it.id].vd) || 0;
+                const count = (parseInt(examMatrix7991Config[it.id].p2_b) || 0) + (parseInt(examMatrix7991Config[it.id].p2_h) || 0) + (parseInt(examMatrix7991Config[it.id].p2_vd) || 0);
                 for (let k = 1; k <= count; k++) {
                     part2QuestionsHtml += `
                         <p style="margin: 4px 0;"><strong>Câu ${p2Index}:</strong> [${it.title}] Trong một nghiên cứu khoa học thực nghiệm về điều kiện phát triển nông nghiệp:</p>
-                        <p style="margin: 1px 0 1px 20px;">a) Nhiệt độ và độ ẩm tối ưu giúp quá trình chuyển hóa đạt hiệu suất cao nhất. <strong>[ĐÚNG]</strong></p>
-                        <p style="margin: 1px 0 1px 20px;">b) Mọi tác nhân gây hại đều làm tăng tốc độ sinh trưởng của cá thể sinh vật. <strong>[SAI]</strong></p>
-                        <p style="margin: 1px 0 1px 20px;">c) Nắm vững quy luật giúp chủ động nâng cao năng suất cây trồng, vật nuôi. <strong>[ĐÚNG]</strong></p>
-                        <p style="margin: 1px 0 3px 20px;">d) Các biến đổi nội tại diễn ra hoàn toàn tự phát mà không cần năng lượng trao đổi. <strong>[SAI]</strong></p>
+                        <p style="margin: 1px 0 1px 20px;"><u><strong>a)</strong></u> Nhiệt độ và độ ẩm tối ưu giúp quá trình chuyển hóa đạt hiệu suất cao nhất.</p>
+                        <p style="margin: 1px 0 1px 20px;"><strong>b)</strong> Mọi tác nhân gây hại đều làm tăng tốc độ sinh trưởng của cá thể sinh vật.</p>
+                        <p style="margin: 1px 0 1px 20px;"><u><strong>c)</strong></u> Nắm vững quy luật giúp chủ động nâng cao năng suất cây trồng, vật nuôi.</p>
+                        <p style="margin: 1px 0 3px 20px;"><strong>d)</strong> Các biến đổi nội tại diễn ra hoàn toàn tự phát mà không cần năng lượng trao đổi.</p>
                     `;
                     p2Index++;
                 }
@@ -964,141 +918,203 @@
             let part3QuestionsHtml = "";
             let p3Index = 1;
             items.forEach(it => {
-                const count = parseInt(examMatrixConfig[it.id].vdc) || 0;
+                const count = (parseInt(examMatrix7991Config[it.id].p3_b) || 0) + (parseInt(examMatrix7991Config[it.id].p3_h) || 0) + (parseInt(examMatrix7991Config[it.id].p3_vd) || 0);
                 for (let k = 1; k <= count; k++) {
                     part3QuestionsHtml += `
                         <p style="margin: 3px 0;"><strong>Câu ${p3Index}:</strong> [${it.title}] Một cấu trúc ban đầu nhân đôi liên tiếp ${p3Index + 1} lần sẽ tạo ra bao nhiêu cấu trúc con?</p>
-                        <p style="margin: 1px 0 6px 20px; color: #0284c7; font-weight: bold;">➜ Đáp số chuẩn: ${Math.pow(2, p3Index + 1)}</p>
+                        <p style="margin: 1px 0 6px 20px; font-weight: bold;">Đáp án là: <u>${Math.pow(2, p3Index + 1)}</u></p>
                     `;
                     p3Index++;
                 }
             });
 
             doc.innerHTML = `
-                <table style="width: 100%; border: none; margin-bottom: 15px;">
+                <!-- GIỮ NGUYÊN SỞ GD&ĐT VÀ TRƯỜNG THPT MANG THÍT -->
+                <table style="width: 100%; border: none; margin-bottom: 12px;">
                     <tr style="border: none;">
                         <td style="border: none; width: 45%; text-align: center; vertical-align: top; padding: 0;">
-                            <p style="margin: 0; font-size: 11pt;">BỘ GIÁO DỤC VÀ ĐÀO TẠO</p>
-                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">CHƯƠNG TRÌNH GDPT 2018</p>
+                            <p style="margin: 0; font-size: 11pt;">SỞ GD&ĐT VĨNH LONG</p>
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">TRƯỜNG THPT MANG THÍT</p>
                             <div style="width: 80px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
                         </td>
                         <td style="border: none; width: 55%; text-align: center; vertical-align: top; padding: 0;">
-                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">HỒ SƠ KHẢO THÍ & ĐÁNH GIÁ NĂNG LỰC</p>
-                            <p style="margin: 0; font-style: italic; font-size: 11pt;">CẤU TRÚC ĐỊNH DẠNG THEO CÔNG VĂN 7991</p>
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">HỒ SƠ KHẢO THÍ & ĐÁNH GIÁ ĐỊNH KÌ</p>
+                            <p style="margin: 0; font-style: italic; font-size: 11pt;">(Kèm theo Công văn số 7991/BGDĐT-GDTrH)</p>
                             <div style="width: 120px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
                         </td>
                     </tr>
                 </table>
 
-                <div style="text-align: center; margin: 12px 0;">
-                    <h2 style="margin: 0; font-size: 14pt; font-weight: bold; text-transform: uppercase;">MA TRẬN, BẢN ĐẶC TẢ VÀ ĐỀ KIỂM TRA ĐỊNH KỲ</h2>
+                <div style="text-align: center; margin: 10px 0 15px 0;">
+                    <h2 style="margin: 0; font-size: 14pt; font-weight: bold; text-transform: uppercase;">MA TRẬN, BẢN ĐẶC TẢ VÀ ĐỀ KIỂM TRA ĐỊNH KÌ</h2>
                     <p style="margin: 2px 0 0 0; font-size: 12pt;">Môn học: ${subject} ${grade} • Thời gian làm bài: 45 phút</p>
                 </div>
 
-                <p style="font-weight: bold; margin: 12px 0 4px 0;">MỤC 1: KHUNG MA TRẬN ĐỀ KIỂM TRA (TÙY CHỈNH SỐ CÂU TỪNG BÀI)</p>
+                <!-- PHẦN 1: MA TRẬN ĐỀ KIỂM TRA ĐỊNH KÌ THEO ĐÚNG MẪU PHỤ LỤC 1 CV 7991 -->
+                <p style="font-weight: bold; margin: 8px 0 4px 0;">1. MA TRẬN ĐỀ KIỂM TRA ĐỊNH KÌ</p>
                 <table>
                     <thead>
                         <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
-                            <th rowspan="2">TT</th>
-                            <th rowspan="2">Chủ đề / Bài học</th>
-                            <th colspan="4">Số lượng câu theo mức độ nhận thức</th>
-                            <th rowspan="2">Tổng câu</th>
-                            <th rowspan="2">Tỉ lệ điểm</th>
+                            <th rowspan="3" style="width: 4%;">TT</th>
+                            <th rowspan="3" style="width: 12%;">Chủ đề / Chương</th>
+                            <th rowspan="3" style="width: 16%;">Nội dung / đơn vị kiến thức</th>
+                            <th colspan="12">Mức độ đánh giá</th>
+                            <th colspan="3" rowspan="2">Tổng</th>
+                            <th rowspan="3" style="width: 6%;">Tỉ lệ % điểm</th>
                         </tr>
                         <tr style="background: #F0F4F8; text-align: center; font-size: 10pt;">
-                            <th>Nhận biết</th><th>Thông hiểu</th><th>Vận dụng</th><th>Vận dụng cao</th>
+                            <th colspan="3">Nhiều lựa chọn</th>
+                            <th colspan="3">TNKQ "Đúng - Sai"</th>
+                            <th colspan="3">Trả lời ngắn</th>
+                            <th colspan="3">Tự luận</th>
+                        </tr>
+                        <tr style="background: #F0F4F8; text-align: center; font-size: 9pt;">
+                            <th>Biết</th><th>Hiểu</th><th>VD</th>
+                            <th>Biết</th><th>Hiểu</th><th>VD</th>
+                            <th>Biết</th><th>Hiểu</th><th>VD</th>
+                            <th>Biết</th><th>Hiểu</th><th>VD</th>
+                            <th>Biết</th><th>Hiểu</th><th>VD</th>
                         </tr>
                     </thead>
                     <tbody>
                         ${items.map((it, idx) => {
-                            const c = examMatrixConfig[it.id];
-                            const sumRow = (parseInt(c.biet)||0) + (parseInt(c.hieu)||0) + (parseInt(c.vd)||0) + (parseInt(c.vdc)||0);
+                            const c = examMatrix7991Config[it.id];
+                            const sumB = (parseInt(c.p1_b)||0) + (parseInt(c.p2_b)||0) + (parseInt(c.p3_b)||0) + (parseInt(c.tl_b)||0);
+                            const sumH = (parseInt(c.p1_h)||0) + (parseInt(c.p2_h)||0) + (parseInt(c.p3_h)||0) + (parseInt(c.tl_h)||0);
+                            const sumVd = (parseInt(c.p1_vd)||0) + (parseInt(c.p2_vd)||0) + (parseInt(c.p3_vd)||0) + (parseInt(c.tl_vd)||0);
+                            const sumRow = sumB + sumH + sumVd;
+                            const pct = ((sumRow / (total_all_questions || 1)) * 100).toFixed(0);
+
                             return `
                                 <tr>
                                     <td style="text-align: center;">${idx + 1}</td>
+                                    <td>Chủ đề ${idx + 1}</td>
                                     <td><strong>${it.title}</strong></td>
-                                    <td style="text-align: center;">
-                                        <input type="number" min="0" value="${c.biet}" onchange="updateExamMatrixCount('${it.id}', 'biet', this.value)" style="width: 45px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px; padding: 2px;">
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <input type="number" min="0" value="${c.hieu}" onchange="updateExamMatrixCount('${it.id}', 'hieu', this.value)" style="width: 45px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px; padding: 2px;">
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <input type="number" min="0" value="${c.vd}" onchange="updateExamMatrixCount('${it.id}', 'vd', this.value)" style="width: 45px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px; padding: 2px;">
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <input type="number" min="0" value="${c.vdc}" onchange="updateExamMatrixCount('${it.id}', 'vdc', this.value)" style="width: 45px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px; padding: 2px;">
-                                    </td>
-                                    <td style="text-align: center; font-weight: bold;">${sumRow} câu</td>
-                                    <td style="text-align: center; font-weight: bold;">${((sumRow / (totalQuestions || 1)) * 10).toFixed(1)} đ</td>
+                                    
+                                    <!-- Nhiều lựa chọn -->
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p1_b}" onchange="updateMatrix7991('${it.id}', 'p1_b', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p1_h}" onchange="updateMatrix7991('${it.id}', 'p1_h', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p1_vd}" onchange="updateMatrix7991('${it.id}', 'p1_vd', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+
+                                    <!-- Đúng Sai -->
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p2_b}" onchange="updateMatrix7991('${it.id}', 'p2_b', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p2_h}" onchange="updateMatrix7991('${it.id}', 'p2_h', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p2_vd}" onchange="updateMatrix7991('${it.id}', 'p2_vd', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+
+                                    <!-- Trả lời ngắn -->
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p3_b}" onchange="updateMatrix7991('${it.id}', 'p3_b', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p3_h}" onchange="updateMatrix7991('${it.id}', 'p3_h', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p3_vd}" onchange="updateMatrix7991('${it.id}', 'p3_vd', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+
+                                    <!-- Tự luận -->
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.tl_b}" onchange="updateMatrix7991('${it.id}', 'tl_b', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.tl_h}" onchange="updateMatrix7991('${it.id}', 'tl_h', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+                                    <td style="text-align: center;"><input type="number" min="0" value="${c.tl_vd}" onchange="updateMatrix7991('${it.id}', 'tl_vd', this.value)" style="width: 28px; text-align: center; border: 1px solid #cbd5e1;"></td>
+
+                                    <!-- Tổng Biết Hiểu VD -->
+                                    <td style="text-align: center; font-weight: bold;">${sumB}</td>
+                                    <td style="text-align: center; font-weight: bold;">${sumH}</td>
+                                    <td style="text-align: center; font-weight: bold;">${sumVd}</td>
+                                    <td style="text-align: center; font-weight: bold;">${pct}%</td>
                                 </tr>
                             `;
                         }).join('')}
                         <tr style="background: #E6EEF8; font-weight: bold; text-align: center;">
-                            <td colspan="2">TỔNG CỘNG</td>
-                            <td>${totalBiet} câu</td>
-                            <td>${totalHieu} câu</td>
-                            <td>${totalVd} câu</td>
-                            <td>${totalVdc} câu</td>
-                            <td>${totalQuestions} câu</td>
-                            <td>10.0 Điểm</td>
+                            <td colspan="3">Tổng số câu</td>
+                            <td colspan="3">${total_p1}</td>
+                            <td colspan="3">${total_p2}</td>
+                            <td colspan="3">${total_p3}</td>
+                            <td colspan="3">${total_tl}</td>
+                            <td>${total_biet}</td><td>${total_hieu}</td><td>${total_vd}</td>
+                            <td>${total_all_questions} câu</td>
+                        </tr>
+                        <tr style="background: #F0F4F8; font-weight: bold; text-align: center;">
+                            <td colspan="3">Tổng số điểm</td>
+                            <td colspan="3">3,0</td>
+                            <td colspan="3">2,0</td>
+                            <td colspan="3">2,0</td>
+                            <td colspan="3">3,0</td>
+                            <td>4,0</td><td>3,0</td><td>3,0</td>
+                            <td>10,0 điểm</td>
+                        </tr>
+                        <tr style="background: #E6EEF8; font-weight: bold; text-align: center;">
+                            <td colspan="3">Tỉ lệ %</td>
+                            <td colspan="3">30%</td>
+                            <td colspan="3">20%</td>
+                            <td colspan="3">20%</td>
+                            <td colspan="3">30%</td>
+                            <td>40%</td><td>30%</td><td>30%</td>
+                            <td>100%</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <p style="font-weight: bold; margin: 15px 0 4px 0;">MỤC 2: BẢN ĐẶC TẢ MA TRẬN ĐỀ KIỂM TRA</p>
+                <div style="page-break-before: always; margin-top: 20px;"></div>
+
+                <!-- PHẦN 2: BẢN ĐẶC TẢ ĐỀ KIỂM TRA ĐỊNH KÌ THEO PHỤ LỤC 2 CV 7991 -->
+                <p style="font-weight: bold; margin: 12px 0 4px 0;">2. BẢN ĐẶC TẢ ĐỀ KIỂM TRA ĐỊNH KÌ</p>
                 <table>
                     <thead>
                         <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
-                            <th>TT</th><th>Bài học</th><th>Yêu cầu cần đạt</th><th>Dạng thức</th><th>Số câu</th>
+                            <th rowspan="2" style="width: 4%;">TT</th>
+                            <th rowspan="2" style="width: 12%;">Chủ đề / Chương</th>
+                            <th rowspan="2" style="width: 16%;">Nội dung / đơn vị kiến thức</th>
+                            <th rowspan="2" style="width: 32%;">Yêu cầu cần đạt</th>
+                            <th colspan="12">Số câu hỏi ở các mức độ đánh giá</th>
+                        </tr>
+                        <tr style="background: #F0F4F8; text-align: center; font-size: 9pt;">
+                            <th>P1.B</th><th>P1.H</th><th>P1.V</th>
+                            <th>P2.B</th><th>P2.H</th><th>P2.V</th>
+                            <th>P3.B</th><th>P3.H</th><th>P3.V</th>
+                            <th>TL.B</th><th>TL.H</th><th>TL.V</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${items.map((it, idx) => `
-                            <tr>
-                                <td style="text-align: center;">${idx + 1}</td>
-                                <td><strong>${it.title}</strong></td>
-                                <td>Nhận biết định nghĩa cơ bản; hiểu rõ cơ chế tương tác; vận dụng kiến thức giải quyết vấn đề nông nghiệp và đời sống.</td>
-                                <td style="text-align: center;">Phần I, II, III</td>
-                                <td style="text-align: center;">${(parseInt(examMatrixConfig[it.id].biet)||0) + (parseInt(examMatrixConfig[it.id].hieu)||0) + (parseInt(examMatrixConfig[it.id].vd)||0) + (parseInt(examMatrixConfig[it.id].vdc)||0)} câu</td>
-                            </tr>
-                        `).join('')}
+                        ${items.map((it, idx) => {
+                            const c = examMatrix7991Config[it.id];
+                            return `
+                                <tr>
+                                    <td style="text-align: center;">${idx + 1}</td>
+                                    <td>Chủ đề ${idx + 1}</td>
+                                    <td><strong>${it.title}</strong></td>
+                                    <td>
+                                        <p style="margin: 0;">- <strong>Biết:</strong> Nhận biết được khái niệm, thành phần cấu trúc và chức năng cơ bản.</p>
+                                        <p style="margin: 2px 0 0 0;">- <strong>Hiểu:</strong> Phân tích và giải thích được nguyên lý, cơ chế hoạt động tương tác.</p>
+                                        <p style="margin: 2px 0 0 0;">- <strong>Vận dụng:</strong> Vận dụng kiến thức giải quyết bài toán và tình huống sản xuất thực tế.</p>
+                                    </td>
+                                    <td style="text-align: center;">${c.p1_b}</td><td style="text-align: center;">${c.p1_h}</td><td style="text-align: center;">${c.p1_vd}</td>
+                                    <td style="text-align: center;">${c.p2_b}</td><td style="text-align: center;">${c.p2_h}</td><td style="text-align: center;">${c.p2_vd}</td>
+                                    <td style="text-align: center;">${c.p3_b}</td><td style="text-align: center;">${c.p3_h}</td><td style="text-align: center;">${c.p3_vd}</td>
+                                    <td style="text-align: center;">${c.tl_b}</td><td style="text-align: center;">${c.tl_h}</td><td style="text-align: center;">${c.tl_vd}</td>
+                                </tr>
+                            `;
+                        }).join('')}
                     </tbody>
                 </table>
 
                 <div style="page-break-before: always; margin-top: 25px;"></div>
 
-                <p style="font-weight: bold; margin: 15px 0 4px 0;">MỤC 3: ĐỀ KIỂM TRA ĐÁNH GIÁ NĂNG LỰC (XUẤT ĐÚNG THEO SỐ CÂU MA TRẬN)</p>
-                <p style="font-weight: bold; color: #1e3a8a; margin: 8px 0 2px 0;">PHẦN I. Câu trắc nghiệm nhiều phương án lựa chọn (${totalBiet + totalHieu} câu)</p>
+                <!-- PHẦN 3: ĐỀ KIỂM TRA ĐỊNH KÌ (CHỈ GẠCH CHÂN ĐÁP ÁN ĐÚNG) -->
+                <div style="text-align: center; margin-bottom: 12px;">
+                    <h2 style="margin: 0; font-size: 13pt; font-weight: bold; text-transform: uppercase;">ĐỀ KIỂM TRA ĐÁNH GIÁ ĐỊNH KÌ</h2>
+                    <p style="margin: 2px 0 0 0; font-style: italic; font-size: 11pt;">(Thời gian làm bài: 45 phút • Bản lưu giáo viên - Đã gạch chân phương án đúng)</p>
+                </div>
+
+                <p style="font-weight: bold; color: #1e3a8a; margin: 8px 0 2px 0;">PHẦN I. Câu trắc nghiệm nhiều phương án lựa chọn (${total_p1} câu)</p>
                 ${part1QuestionsHtml || '<p style="font-style: italic; color: #64748b;">(Không có câu hỏi ở phần này)</p>'}
 
-                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN II. Câu trắc nghiệm đúng/sai (${totalVd} câu)</p>
+                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN II. Câu trắc nghiệm đúng - sai (${total_p2} câu)</p>
+                <p style="font-style: italic; font-size: 10.5pt; margin-bottom: 4px;">* Phương án nào đúng được gạch chân chữ cái đầu câu:</p>
                 ${part2QuestionsHtml || '<p style="font-style: italic; color: #64748b;">(Không có câu hỏi ở phần này)</p>'}
 
-                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN III. Câu trắc nghiệm trả lời ngắn (${totalVdc} câu)</p>
+                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN III. Câu trắc nghiệm trả lời ngắn (${total_p3} câu)</p>
                 ${part3QuestionsHtml || '<p style="font-style: italic; color: #64748b;">(Không có câu hỏi ở phần này)</p>'}
-
-                <div style="page-break-before: always; margin-top: 25px;"></div>
-
-                <p style="font-weight: bold; margin: 15px 0 4px 0;">MỤC 4: HƯỚNG DẪN CHẤM & ĐÁP ÁN CHI TIẾT</p>
-                <table>
-                    <thead>
-                        <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
-                            <th>Phần thi</th><th>Nội dung đáp án</th><th>Thang điểm</th><th>Căn cứ lý thuyết & Hướng dẫn sư phạm</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Phần I</td><td>Đáp án B cho các câu hỏi</td><td>0.25 đ / câu</td><td>Căn cứ nguyên lý thích nghi và tiến hóa sinh học.</td></tr>
-                        <tr><td>Phần II</td><td>a-Đ, b-S, c-Đ, d-S</td><td>Đúng 1 ý=0.1đ; 2 ý=0.25đ; 3 ý=0.5đ; 4 ý=1.0đ</td><td>Dựa vào sinh thái học và ứng dụng thực tiễn.</td></tr>
-                        <tr><td>Phần III</td><td>Đáp số lũy thừa 2^k</td><td>0.25 đ / câu</td><td>Áp dụng công thức phân bào tế bào: 2^k.</td></tr>
-                    </tbody>
-                </table>
             `;
         }
 
-        function updateExamMatrixCount(lessonId, field, value) {
-            if (!examMatrixConfig[lessonId]) examMatrixConfig[lessonId] = { biet: 1, hieu: 1, vd: 1, vdc: 1 };
-            examMatrixConfig[lessonId][field] = parseInt(value) || 0;
+        function updateMatrix7991(lessonId, field, value) {
+            if (!examMatrix7991Config[lessonId]) return;
+            examMatrix7991Config[lessonId][field] = parseInt(value) || 0;
             renderExamMatrix7991();
         }
 
@@ -1116,8 +1132,9 @@
                     <title>${fileName}</title>
                     <style>
                         body { font-family: 'Times New Roman', serif; font-size: 13pt; line-height: 1.25; text-align: justify; }
-                        table { border-collapse: collapse; width: 100%; margin: 10px 0; }
-                        th, td { border: 1px solid black; padding: 6px; font-size: 12pt; }
+                        table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+                        th, td { border: 1px solid black; padding: 5px; font-size: 11pt; }
+                        u { text-decoration: underline; font-weight: bold; }
                     </style>
                 </head>
                 <body>${content}</body>
@@ -1168,43 +1185,6 @@
             a.href = URL.createObjectURL(blob);
             a.download = `EduMaster_Pro_${Date.now()}.html`;
             a.click();
-        }
-
-        /* 6. MODAL AI & GOOGLE DRIVE */
-        function openAIKeyModal() {
-            document.getElementById('input-api-key').value = localStorage.getItem('gemini_api_key') || '';
-            document.getElementById('modal-ai').classList.remove('hidden');
-        }
-        function closeAIKeyModal() { document.getElementById('modal-ai').classList.add('hidden'); }
-        function saveApiKey() {
-            const key = document.getElementById('input-api-key').value.trim();
-            localStorage.setItem('gemini_api_key', key);
-            checkStoredApiKey();
-            closeAIKeyModal();
-            alert("Đã lưu API Key! AI đã sẵn sàng hoạt động.");
-        }
-        function checkStoredApiKey() {
-            const key = localStorage.getItem('gemini_api_key');
-            const txt = document.getElementById('api-status-badge');
-            if (key) {
-                txt.innerText = "AI Đang Bật";
-                txt.parentElement.classList.remove('text-amber-400', 'border-amber-500/30');
-                txt.parentElement.classList.add('text-emerald-400', 'border-emerald-500/30', 'bg-emerald-500/10');
-            } else {
-                txt.innerText = "Kích Hoạt AI";
-            }
-        }
-
-        function openDriveModal() {
-            document.getElementById('input-drive-url').value = localStorage.getItem('google_drive_sync_url') || '';
-            document.getElementById('modal-drive').classList.remove('hidden');
-        }
-        function closeDriveModal() { document.getElementById('modal-drive').classList.add('hidden'); }
-        function saveDriveUrl() {
-            const url = document.getElementById('input-drive-url').value.trim();
-            localStorage.setItem('google_drive_sync_url', url);
-            closeDriveModal();
-            alert("Đã lưu cấu hình Google Drive thành công!");
         }
     </script>
 </body>
