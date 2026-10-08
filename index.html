@@ -1632,8 +1632,35 @@
             }
         }
     </script>
-   <!-- ==================== BẢN VÁ TỰ ĐỘNG CHẠY AI (CẬP NHẬT MODEL 2.5/2.0) ==================== -->
 <script>
+// Hàm tự động kiểm tra danh sách model khả dụng của Key
+async function getAvailableGeminiModel(apiKey) {
+    try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey.trim()}`;
+        const res = await fetch(url, { headers: { 'x-goog-api-key': apiKey.trim() } });
+        if (!res.ok) return null;
+        
+        const data = await res.json();
+        if (!data.models || !Array.isArray(data.models)) return null;
+
+        // Lọc các model hỗ trợ generateContent
+        const validModels = data.models
+            .filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes('generateContent'))
+            .map(m => m.name.replace('models/', ''));
+
+        console.log("Danh sách model khả dụng của Key:", validModels);
+
+        // Ưu tiên chọn model từ mới nhất đến ổn định nhất
+        const priorityList = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-pro'];
+        for (const p of priorityList) {
+            if (validModels.includes(p)) return p;
+        }
+        return validModels[0] || null;
+    } catch (e) {
+        return null;
+    }
+}
+
 window.executeActionGenerate = async function(type) {
     if (typeof switchViewMode === 'function') switchViewMode(type);
 
@@ -1644,7 +1671,7 @@ window.executeActionGenerate = async function(type) {
     const customGuide = document.getElementById('ai-custom-instructions') ? document.getElementById('ai-custom-instructions').value : "";
     const docContainer = document.getElementById('container-a4-doc');
 
-    // 1. KIỂM TRA CACHE
+    // 1. KIỂM TRA BỘ NHỚ CACHE
     const cacheKey = `cached_${type}_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
     const cachedContent = localStorage.getItem(cacheKey);
     if (cachedContent && type !== 'slide' && docContainer) {
@@ -1654,19 +1681,24 @@ window.executeActionGenerate = async function(type) {
 
     const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
 
-    // 2. GỌI GOOGLE GEMINI AI
+    // 2. TỰ ĐỘNG DÒ MODEL VÀ GỌI AI
     if (savedKey !== "" && type !== 'slide' && docContainer) {
         docContainer.innerHTML = `
             <div style="text-align: center; padding: 70px 20px; font-family: sans-serif;">
                 <div style="font-size: 36px; color: #0284c7; margin-bottom: 16px;"><i class="fa-solid fa-brain fa-bounce"></i></div>
-                <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;">AI đang trực tiếp biên soạn theo chuẩn GDPT 2018...</h3>
+                <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">Đang kết nối và nhận diện phiên bản Gemini...</h3>
                 <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
-                    Đang xử lý: <strong>${lessonTitle}</strong> (Tự động lưu sau khi hoàn tất)
+                    Đang xử lý: <strong>${lessonTitle}</strong>
                 </p>
             </div>
         `;
 
         try {
+            // Bước A: Dò phiên bản model chính xác theo Key
+            const activeModel = await getAvailableGeminiModel(savedKey) || 'gemini-2.0-flash';
+            const statusLabel = document.getElementById('ai-loading-status');
+            if (statusLabel) statusLabel.innerText = `Đang biên soạn với [${activeModel}]...`;
+
             let promptText = "";
             if (type === '5512') {
                 promptText = `Bạn là chuyên gia sư phạm THPT. Hãy soạn Kế hoạch bài dạy theo chuẩn Công văn 5512/BGDĐT-GDTrH cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
@@ -1686,40 +1718,24 @@ window.executeActionGenerate = async function(type) {
                 - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html).`;
             }
 
-            // Danh sách các model đang hoạt động hiện tại (2.5 & 2.0)
-            const targetModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.5-pro'];
-            let responseData = null;
+            // Bước B: Gọi API với đúng model vừa dò được
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${activeModel}:generateContent?key=${savedKey}`;
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': savedKey 
+                },
+                body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+            });
 
-            for (const model of targetModels) {
-                try {
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(savedKey)}`;
-                    const res = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-goog-api-key': savedKey
-                        },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: promptText }] }]
-                        })
-                    });
+            if (!res.ok) throw new Error(`Lỗi kết nối API (${res.status})`);
 
-                    if (res.ok) {
-                        responseData = await res.json();
-                        console.log(`Kết nối thành công với model: ${model}`);
-                        break;
-                    }
-                } catch (e) {}
-            }
-
-            if (!responseData || !responseData.candidates || !responseData.candidates[0].content) {
-                throw new Error("Không thể kết nối API Google, tự động chuyển về bản chuẩn mực nội hàm.");
-            }
-
-            let resultHtml = responseData.candidates[0].content.parts[0].text;
+            const data = await res.json();
+            let resultHtml = data.candidates[0].content.parts[0].text;
             resultHtml = resultHtml.replace(/^```html/i, '').replace(/```$/i, '').trim();
 
-            // Tự động lưu bài vào máy
+            // Tự động lưu cache
             localStorage.setItem(cacheKey, resultHtml);
             docContainer.innerHTML = resultHtml;
             return;
@@ -1729,7 +1745,7 @@ window.executeActionGenerate = async function(type) {
         }
     }
 
-    // 3. DỰ PHÒNG NỘI HÀM AN TOÀN (0.05 giây)
+    // 3. DỰ PHÒNG NỘI HÀM AN TOÀN
     if (type === '5512' && typeof renderGiaoAn5512HighEnd === 'function') {
         renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle);
     } else if (type === '7991' && typeof renderMaTranDeKiemTra === 'function') {
@@ -1738,8 +1754,6 @@ window.executeActionGenerate = async function(type) {
         renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
     }
 };
-console.log("EduBioMaster: Đã kích hoạt bản vá Auto-AI (v2.5) thành công!");
 </script>
-<!-- ==================== HẾT BẢN VÁ ==================== -->
 </body>
 </html>
