@@ -1632,9 +1632,8 @@
             }
         }
     </script>
-    <!-- ==================== BẢN VÁ TỰ ĐỘNG CHẠY AI (DÁN TRƯỚC </body>) ==================== -->
+   <!-- ==================== BẢN VÁ TỰ ĐỘNG CHẠY AI (CẬP NHẬT MODEL 2.5/2.0) ==================== -->
 <script>
-// Tự động kích hoạt cơ chế nhận diện API Key mới dạng AQ... hoặc AIzaSy...
 window.executeActionGenerate = async function(type) {
     if (typeof switchViewMode === 'function') switchViewMode(type);
 
@@ -1645,7 +1644,7 @@ window.executeActionGenerate = async function(type) {
     const customGuide = document.getElementById('ai-custom-instructions') ? document.getElementById('ai-custom-instructions').value : "";
     const docContainer = document.getElementById('container-a4-doc');
 
-    // 1. KIỂM TRA BỘ NHỚ CACHE: Nếu đã soạn rồi thì tải ngay (0.05s)
+    // 1. KIỂM TRA CACHE
     const cacheKey = `cached_${type}_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
     const cachedContent = localStorage.getItem(cacheKey);
     if (cachedContent && type !== 'slide' && docContainer) {
@@ -1655,12 +1654,12 @@ window.executeActionGenerate = async function(type) {
 
     const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
 
-    // 2. KÍCH HOẠT GỌI GOOGLE GEMINI AI
+    // 2. GỌI GOOGLE GEMINI AI
     if (savedKey !== "" && type !== 'slide' && docContainer) {
         docContainer.innerHTML = `
             <div style="text-align: center; padding: 70px 20px; font-family: sans-serif;">
                 <div style="font-size: 36px; color: #0284c7; margin-bottom: 16px;"><i class="fa-solid fa-brain fa-bounce"></i></div>
-                <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;">AI đang trực tiếp biên soạn theo phân phối chương trình...</h3>
+                <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;">AI đang trực tiếp biên soạn theo chuẩn GDPT 2018...</h3>
                 <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
                     Đang xử lý: <strong>${lessonTitle}</strong> (Tự động lưu sau khi hoàn tất)
                 </p>
@@ -1687,27 +1686,27 @@ window.executeActionGenerate = async function(type) {
                 - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html).`;
             }
 
-            // Tự động rà soát qua các gateway Google Generative Language API
-            const testUrls = [
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${savedKey}`,
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${savedKey}`,
-                `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${savedKey}`,
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${savedKey}`
-            ];
-
+            // Danh sách các model đang hoạt động hiện tại (2.5 & 2.0)
+            const targetModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.5-pro'];
             let responseData = null;
-            for (const url of testUrls) {
+
+            for (const model of targetModels) {
                 try {
-                    const res = await fetch(url, {
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(savedKey)}`;
+                    const res = await fetch(apiUrl, {
                         method: 'POST',
-                        headers: { 
+                        headers: {
                             'Content-Type': 'application/json',
-                            'x-goog-api-key': savedKey // Bổ sung Header cho mã key định dạng mới
+                            'x-goog-api-key': savedKey
                         },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: promptText }] }]
+                        })
                     });
+
                     if (res.ok) {
                         responseData = await res.json();
+                        console.log(`Kết nối thành công với model: ${model}`);
                         break;
                     }
                 } catch (e) {}
@@ -1739,7 +1738,7 @@ window.executeActionGenerate = async function(type) {
         renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
     }
 };
-console.log("EduBioMaster: Đã kích hoạt bản vá Auto-AI thành công!");
+console.log("EduBioMaster: Đã kích hoạt bản vá Auto-AI (v2.5) thành công!");
 </script>
 <!-- ==================== HẾT BẢN VÁ ==================== -->
 </body>
