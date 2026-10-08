@@ -1632,5 +1632,115 @@
             }
         }
     </script>
+    <!-- ==================== BẢN VÁ TỰ ĐỘNG CHẠY AI (DÁN TRƯỚC </body>) ==================== -->
+<script>
+// Tự động kích hoạt cơ chế nhận diện API Key mới dạng AQ... hoặc AIzaSy...
+window.executeActionGenerate = async function(type) {
+    if (typeof switchViewMode === 'function') switchViewMode(type);
+
+    const subject = document.getElementById('sel-subject') ? document.getElementById('sel-subject').value : "Sinh học";
+    const grade = document.getElementById('sel-grade') ? document.getElementById('sel-grade').value : "10";
+    const book = document.getElementById('sel-book') ? document.getElementById('sel-book').value : "Kết Nối Tri Thức";
+    const lessonTitle = window.currentSelectedLesson || "Bài 1: Giới thiệu khái quát môn Sinh học";
+    const customGuide = document.getElementById('ai-custom-instructions') ? document.getElementById('ai-custom-instructions').value : "";
+    const docContainer = document.getElementById('container-a4-doc');
+
+    // 1. KIỂM TRA BỘ NHỚ CACHE: Nếu đã soạn rồi thì tải ngay (0.05s)
+    const cacheKey = `cached_${type}_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
+    const cachedContent = localStorage.getItem(cacheKey);
+    if (cachedContent && type !== 'slide' && docContainer) {
+        docContainer.innerHTML = cachedContent;
+        return;
+    }
+
+    const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
+
+    // 2. KÍCH HOẠT GỌI GOOGLE GEMINI AI
+    if (savedKey !== "" && type !== 'slide' && docContainer) {
+        docContainer.innerHTML = `
+            <div style="text-align: center; padding: 70px 20px; font-family: sans-serif;">
+                <div style="font-size: 36px; color: #0284c7; margin-bottom: 16px;"><i class="fa-solid fa-brain fa-bounce"></i></div>
+                <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;">AI đang trực tiếp biên soạn theo phân phối chương trình...</h3>
+                <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
+                    Đang xử lý: <strong>${lessonTitle}</strong> (Tự động lưu sau khi hoàn tất)
+                </p>
+            </div>
+        `;
+
+        try {
+            let promptText = "";
+            if (type === '5512') {
+                promptText = `Bạn là chuyên gia sư phạm THPT. Hãy soạn Kế hoạch bài dạy theo chuẩn Công văn 5512/BGDĐT-GDTrH cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
+                Yêu cầu:
+                - Tiêu đề: SỞ GD&ĐT VĨNH LONG - TRƯỜNG THPT MANG THÍT - Họ và tên giáo viên: Hồ Tấn Khải.
+                - Mục tiêu: Kiến thức; Năng lực chung; Năng lực đặc thù; Năng lực số [NLS 2.1]; Năng lực AI (mã chuẩn ${grade}.A1.2); Phẩm chất.
+                - Tiến trình 4 hoạt động: Hoạt động 2 trình bày dạng BẢNG 2 CỘT VIỀN ĐEN chi tiết nội dung ghi vở của học sinh; Hoạt động 3 Luyện tập đủ 3 dạng thức trắc nghiệm; Hoạt động 4 Vận dụng gắn liền nông nghiệp Vĩnh Long / ĐBSCL.
+                - Đủ 3 phụ lục: Phiếu học tập số 1, Rubric NLS 2.1 (5 cột), Rubric Năng lực AI (5 cột).
+                - Ghi chú thêm: ${customGuide}
+                - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html) để chèn thẳng vào trang A4.`;
+            } else if (type === '7991') {
+                promptText = `Bạn là chuyên gia khảo thí Bộ GD&ĐT. Hãy soạn Ma trận, Bản đặc tả và Đề kiểm tra định kì (CV 7991) cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
+                Yêu cầu:
+                - Bản giáo viên gạch chân đáp án đúng: <u>A</u>, <u>a)</u>, Đáp án là: <u>...</u>
+                - Đủ 4 mục: Khung ma trận, Bản đặc tả, Đề thi 3 phần (I: 4 lựa chọn, II: Đúng/Sai, III: Trả lời ngắn), Hướng dẫn chấm.
+                - Ghi chú thêm: ${customGuide}
+                - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html).`;
+            }
+
+            // Tự động rà soát qua các gateway Google Generative Language API
+            const testUrls = [
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${savedKey}`,
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${savedKey}`,
+                `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${savedKey}`,
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${savedKey}`
+            ];
+
+            let responseData = null;
+            for (const url of testUrls) {
+                try {
+                    const res = await fetch(url, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'x-goog-api-key': savedKey // Bổ sung Header cho mã key định dạng mới
+                        },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+                    });
+                    if (res.ok) {
+                        responseData = await res.json();
+                        break;
+                    }
+                } catch (e) {}
+            }
+
+            if (!responseData || !responseData.candidates || !responseData.candidates[0].content) {
+                throw new Error("Không thể kết nối API Google, tự động chuyển về bản chuẩn mực nội hàm.");
+            }
+
+            let resultHtml = responseData.candidates[0].content.parts[0].text;
+            resultHtml = resultHtml.replace(/^```html/i, '').replace(/```$/i, '').trim();
+
+            // Tự động lưu bài vào máy
+            localStorage.setItem(cacheKey, resultHtml);
+            docContainer.innerHTML = resultHtml;
+            return;
+
+        } catch (err) {
+            console.warn("Kích hoạt bản dự phòng:", err.message);
+        }
+    }
+
+    // 3. DỰ PHÒNG NỘI HÀM AN TOÀN (0.05 giây)
+    if (type === '5512' && typeof renderGiaoAn5512HighEnd === 'function') {
+        renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle);
+    } else if (type === '7991' && typeof renderMaTranDeKiemTra === 'function') {
+        renderMaTranDeKiemTra(subject, grade, book);
+    } else if (type === 'slide' && typeof renderPowerPointSlideDeck === 'function') {
+        renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
+    }
+};
+console.log("EduBioMaster: Đã kích hoạt bản vá Auto-AI thành công!");
+</script>
+<!-- ==================== HẾT BẢN VÁ ==================== -->
 </body>
 </html>
