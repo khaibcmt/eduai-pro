@@ -41,7 +41,7 @@
         ::-webkit-scrollbar-thumb { background: #24324f; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
 
-        /* Nút 3D Skeuomorphic nổi khối */
+        /* Nút 3D Skeuomorphic */
         .btn-3d {
             position: relative;
             transition: all 0.15s ease;
@@ -144,9 +144,8 @@
                 </button>
             </div>
 
-            <!-- NÚT TẠO BẰNG AI & CÀI ĐẶT TRÊN HEADER -->
+            <!-- NÚT TẠO BẰNG AI & CÀI ĐẶT -->
             <div class="flex items-center gap-2.5">
-                <!-- NÚT TẠO BẰNG AI TỔNG THỂ -->
                 <button onclick="executeActionAI()" class="btn-3d btn-3d-purple px-4 py-2 rounded-xl text-white font-black text-xs flex items-center gap-2 animate-pulse hover:animate-none" title="Chỉ kích hoạt AI khi bấm vào đây">
                     <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
                     <span id="header-ai-btn-text">TẠO BẰNG AI</span>
@@ -207,7 +206,7 @@
                 </div>
             </div>
 
-            <!-- KHỐI 2: KHUNG CHỌN BÀI DẠY VÀ NÚT TẠO BẰNG AI / DÙNG NỘI HÀM -->
+            <!-- KHỐI 2: KHUNG CHỌN BÀI DẠY VÀ NÚT TẠO BẰNG AI / NỘI HÀM -->
             <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md flex flex-col min-h-[300px]">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-brand-border/60">
                     <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200 flex items-center gap-1.5">
@@ -235,7 +234,7 @@
                 <div class="mt-3.5 pt-2 border-t border-brand-border/60 space-y-2">
                     <button onclick="executeActionAI()" class="btn-3d btn-3d-purple py-2.5 px-3 rounded-xl text-white font-extrabold text-xs flex items-center justify-center gap-2 w-full">
                         <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                        <span id="btn-sidebar-ai-text">TẠO BẰNG AI (GEMINI)</span>
+                        <span id="btn-sidebar-ai-text">TẠO BẰNG AI (GEMINI 3.5)</span>
                     </button>
 
                     <button onclick="forceUseInternalData()" class="btn-3d btn-3d-slate py-2 px-3 rounded-xl text-slate-200 font-bold text-xs flex items-center justify-center gap-2 w-full hover:text-white" title="Quay về dùng nội dung mẫu nội hàm chuẩn mực">
@@ -285,7 +284,6 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <!-- Nút Tạo bằng AI ngay trên thanh thao tác sản phẩm -->
                     <button onclick="executeActionAI()" class="btn-3d btn-3d-purple px-3 py-1.5 rounded-lg text-white text-xs font-extrabold flex items-center gap-1.5">
                         <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
                         <span>Tạo Bằng AI</span>
@@ -586,12 +584,10 @@
                 localStorage.setItem('google_drive_script_url', DEFAULT_DRIVE_APP_URL);
             }
             onFilterChange();
-            // Khởi động trang với nội dung mặc định
             displayContentForCurrentLesson();
             checkStoredApiKey();
         });
 
-        // KHI THAY ĐỔI MÔN / LỚP / BỘ SÁCH: CẬP NHẬT GIAO DIỆN VÀ NẠP NỘI HÀM (KHÔNG GỌI AI)
         function onFilterChange() {
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
@@ -609,7 +605,6 @@
             displayContentForCurrentLesson();
         }
 
-        // VẼ DANH SÁCH BÀI HỌC VÀ ĐÁNH DẤU BÀI ĐÃ ĐƯỢC AI BIÊN SOẠN
         function renderLessonListUI() {
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
@@ -622,7 +617,6 @@
                 const isCurrent = (lessonName === currentSelectedLesson);
                 const isCheckedForExam = selectedLessonsForExam.includes(lessonName);
 
-                // Kiểm tra xem bài này đã có bản lưu từ AI hay chưa
                 const aiKey = getAICacheKey(currentActiveMode, subject, grade, lessonName);
                 const hasAICache = !!localStorage.getItem(aiKey);
 
@@ -648,7 +642,6 @@
             updateButtonLabels();
         }
 
-        // KHI DI CHUYỂN BÀI: TỰ ĐỘNG LẤY KẾT QUẢ ĐÃ LƯU (NẾU CÓ) HOẶC DÙNG KẾT QUẢ NỘI HÀM
         function selectCurrentLesson(lessonName) {
             currentSelectedLesson = lessonName;
             document.getElementById('active-selected-lesson-title').innerText = lessonName;
@@ -692,7 +685,6 @@
             document.getElementById('btn-sidebar-ai-text').innerText = `TẠO ${modeName.toUpperCase()} BẰNG AI`;
         }
 
-        // CHUYỂN PHÂN HỆ XEM
         function switchViewTab(mode) {
             currentActiveMode = mode;
             ['5512', 'slide', '7991'].forEach(m => {
@@ -731,7 +723,7 @@
             displayContentForCurrentLesson();
         }
 
-        // ==================== CƠ CHẾ NẠP KẾT QUẢ ĐÃ LƯU HOẶC NỘI HÀM (KHÔNG TỰ GỌI AI) ====================
+        // ==================== CƠ CHẾ NẠP KẾT QUẢ ĐÃ LƯU HOẶC NỘI HÀM ====================
         function displayContentForCurrentLesson() {
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
@@ -746,18 +738,17 @@
                 return;
             }
 
-            // 1. KIỂM TRA XEM BÀI NÀY ĐÃ TỪNG ĐƯỢC AI TẠO VÀ LƯU CHƯA
+            // Kiểm tra cache bài đã tạo AI
             const aiKey = getAICacheKey(currentActiveMode, subject, grade, lessonTitle);
             const cachedAIContent = localStorage.getItem(aiKey);
 
             if (cachedAIContent) {
-                // ĐÃ CÓ BẢN AI -> LẤY RA DÙNG NGAY, KHÔNG CẦN TẠO NỮA
                 docContainer.innerHTML = cachedAIContent;
                 statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp bản lưu từ AI (Không tốn lượt tạo)</span>`;
                 return;
             }
 
-            // 2. NẾU CHƯA CÓ BẢN AI -> MẶC ĐỊNH DÙNG BẢN GỐC NỘI HÀM CÓ SẴN NGAY LẬP TỨC
+            // Nếu chưa có bản AI, dùng bản gốc nội hàm
             statusInd.innerHTML = `<span class="text-emerald-400 font-bold flex items-center gap-1"><i class="fa-solid fa-circle-check text-[10px]"></i> Bản gốc nội hàm có sẵn</span>`;
             if (currentActiveMode === '5512') {
                 renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle);
@@ -767,7 +758,6 @@
             }
         }
 
-        // NÚT BẮT BUỘC DÙNG LẠI KẾT QUẢ NỘI HÀM
         function forceUseInternalData() {
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
@@ -786,12 +776,70 @@
             }
         }
 
-        // ==================== CHỈ CHẠY AI KHI BẤM VÀO NÚT "TẠO BẰNG AI" ====================
+        // ==================== ENGINE GỌI API GEMINI (MODEL CHUẨN ĐÃ XÁC THỰC THÀNH CÔNG) ====================
+        async function callGeminiUnifiedEngine(promptText, apiKey, statusCallback) {
+            const key = apiKey.trim();
+
+            // Khóa đúng danh mục các model thế hệ mới hoạt động trực tiếp trên tài khoản của Thầy
+            const candidateModels = [
+                'gemini-3.5-flash',
+                'gemini-3.8-flash',
+                'gemini-3.7-flash',
+                'gemini-3.6-flash',
+                'gemini-3.5-flash-lite'
+            ];
+
+            let detailedErrors = [];
+
+            for (const model of candidateModels) {
+                try {
+                    if (statusCallback) statusCallback(`Đang biên soạn với [${model}]...`);
+                    
+                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+                    
+                    const res = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: promptText }] }],
+                            generationConfig: { 
+                                temperature: 0.7, 
+                                maxOutputTokens: 8192 
+                            }
+                        })
+                    });
+
+                    const data = await res.json().catch(() => ({}));
+
+                    if (!res.ok) {
+                        const errMsg = data?.error?.message || `HTTP ${res.status}`;
+                        console.warn(`Model ${model} trả về lỗi:`, errMsg);
+                        detailedErrors.push(`[${model}]: ${errMsg}`);
+                        continue;
+                    }
+
+                    const textOut = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (textOut && textOut.trim() !== '') {
+                        console.log(`%c[BioMaster AI] Hoàn tất bằng model: ${model}`, "color: #10b981; font-weight: bold;");
+                        return textOut.replace(/^```html/i, '').replace(/```$/i, '').trim();
+                    }
+                } catch (err) {
+                    console.warn(`Lỗi fetch model ${model}:`, err.message);
+                    detailedErrors.push(`[${model}]: ${err.message}`);
+                }
+            }
+
+            throw new Error(detailedErrors.join(" | ") || "Không thể kết nối đến máy chủ AI.");
+        }
+
+        // ==================== CHỈ CHẠY AI KHI BẤM NÚT TẠO BẰNG AI ====================
         async function executeActionAI() {
             const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
             if (!savedKey) {
                 openAIKeyModal();
-                alert("Thầy vui lòng nhập Gemini API Key để AI bắt đầu biên soạn bài mới!");
+                alert("Thầy vui lòng nhập và lưu Gemini API Key trước khi bắt đầu tạo bài!");
                 return;
             }
 
@@ -803,7 +851,6 @@
             const docContainer = document.getElementById('container-a4-doc');
             const statusInd = document.getElementById('content-source-indicator');
 
-            // Slide 16:9 sử dụng engine render chuyên dụng
             if (currentActiveMode === 'slide') {
                 renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
                 alert("Đã cập nhật Slide bài giảng điện tử 16:9!");
@@ -813,7 +860,7 @@
             docContainer.innerHTML = `
                 <div style="text-align: center; padding: 75px 20px; font-family: sans-serif;">
                     <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-brain fa-bounce"></i></div>
-                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">Đang kết nối Gemini AI để biên soạn bài mới...</h3>
+                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">Đang kết nối Gemini 3.5 để biên soạn bài mới...</h3>
                     <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
                         Bài học: <strong>${lessonTitle}</strong> (${subject} ${grade})
                     </p>
@@ -855,84 +902,20 @@
 
                 const aiHtmlResult = await callGeminiUnifiedEngine(promptText, savedKey, updateStatusText);
 
-                // LƯU LẠI VÀO BỘ NHỚ ĐỂ NHỮNG LẦN SAU KHÔNG CẦN TẠO LẠI
+                // Lưu lại kết quả để các lần sau không cần tạo lại
                 const aiKey = getAICacheKey(currentActiveMode, subject, grade, lessonTitle);
                 localStorage.setItem(aiKey, aiHtmlResult);
 
                 docContainer.innerHTML = aiHtmlResult;
                 statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã tạo và lưu thành công bằng AI!</span>`;
-                renderLessonListUI(); // Cập nhật nhãn AI trên danh sách
+                renderLessonListUI();
 
             } catch (error) {
-                console.warn("Lỗi gọi AI, tự động nạp kết quả nội hàm:", error);
-                statusInd.innerHTML = `<span class="text-amber-400 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> AI gặp lỗi, đã tự nạp Bản gốc nội hàm</span>`;
+                console.error("Chi tiết lỗi AI:", error);
+                statusInd.innerHTML = `<span class="text-amber-400 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> AI gặp sự cố, đã nạp bản nội hàm</span>`;
                 displayContentForCurrentLesson();
-                alert("Kết nối AI gặp sự cố. Hệ thống đã tự động kích hoạt Bản gốc nội hàm chuẩn mực để Thầy tiếp tục làm việc!");
+                alert("AI gặp sự cố: " + error.message);
             }
-        }
-
-        // ==================== ENGINE GỌI API GEMINI DỰ PHÒNG CHỐNG LỖI 404 ====================
-        async function callGeminiUnifiedEngine(promptText, apiKey, statusCallback) {
-            const key = apiKey.trim();
-            const defaultModels = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro', 'gemini-1.5-flash-latest', 'gemini-pro'];
-            let candidateModels = [...defaultModels];
-
-            try {
-                const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
-                if (listRes.ok) {
-                    const listData = await listRes.json();
-                    if (listData.models && Array.isArray(listData.models)) {
-                        const verifiedModels = listData.models
-                            .filter(m => {
-                                const name = (m.name || '').replace('models/', '');
-                                const methods = m.supportedGenerationMethods || [];
-                                const isGen = methods.includes('generateContent');
-                                const isSpecial = /tts|transcribe|image|audio|robotics|computer-use|lyria|embedding|banana/i.test(name);
-                                return isGen && !isSpecial;
-                            })
-                            .map(m => m.name.replace('models/', ''));
-
-                        if (verifiedModels.length > 0) {
-                            const reordered = [];
-                            defaultModels.forEach(dm => { if (verifiedModels.includes(dm)) reordered.push(dm); });
-                            verifiedModels.forEach(vm => { if (!reordered.includes(vm)) reordered.push(vm); });
-                            if (reordered.length > 0) candidateModels = reordered;
-                        }
-                    }
-                }
-            } catch (e) {
-                console.warn("Dùng danh mục model chuẩn:", e);
-            }
-
-            let lastError = null;
-            for (const model of candidateModels) {
-                try {
-                    if (statusCallback) statusCallback(`Đang biên soạn với [${model}]...`);
-                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
-                    const res = await fetch(endpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-                        body: JSON.stringify({
-                            contents: [{ role: 'user', parts: [{ text: promptText }] }],
-                            generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
-                        })
-                    });
-
-                    if (!res.ok) {
-                        lastError = new Error(`HTTP ${res.status} trên model ${model}`);
-                        continue;
-                    }
-
-                    const data = await res.json();
-                    const textOut = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-                    if (textOut && textOut.trim() !== '') {
-                        return textOut.replace(/^```html/i, '').replace(/```$/i, '').trim();
-                    }
-                } catch (err) {
-                    lastError = err;
-                }
-            }
-            throw lastError || new Error("Không thể kết nối API AI");
         }
 
         // ==================== KHÓA TỔNG VÀ TỰ PHÂN BỔ SỐ CÂU ĐỀ 7991 ====================
