@@ -462,7 +462,6 @@
         let timerSeconds = 0;
         let timerInterval = null;
 
-        // Biến tạm lưu nội dung AI vừa sinh ra trước khi người dùng bấm Lưu hoặc Xóa
         let temporaryAIGeneratedDoc = null;
 
         let matrixGlobalTotals = {
@@ -767,7 +766,6 @@
             document.getElementById('ai-review-bar').classList.add('hidden');
         }
 
-        // ==================== CƠ CHẾ NẠP KẾT QUẢ ĐÃ LƯU HOẶC NỘI HÀM ====================
         function displayContentForCurrentLesson() {
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
@@ -787,7 +785,7 @@
 
             if (cachedAIContent) {
                 docContainer.innerHTML = cachedAIContent;
-                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp bản lưu từ AI (HĐ 2, 3, 4 hoàn chỉnh)</span>`;
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp bản lưu từ AI (HĐ 2, 3, 4 chuẩn mực)</span>`;
                 return;
             }
 
@@ -833,6 +831,37 @@
 
         function forceUseInternalData() {
             discardCurrentAIContent();
+        }
+
+        // ==================== BỘ LỌC TỰ ĐỘNG CHỐNG VỠ KHUNG / ĐÓNG THẺ HTML ====================
+        function sanitizeAndFixAIActivities(rawHtml) {
+            if (!rawHtml) return "";
+            
+            // Bước 1: Dùng DOM parser của trình duyệt để tự động đóng mọi thẻ còn dở dang
+            const sandbox = document.createElement('div');
+            sandbox.innerHTML = rawHtml.trim();
+
+            // Bước 2: Quét tất cả thẻ table, kiểm tra nếu Hoạt động 3 hoặc 4 bị nhét bên trong table thì kéo ra ngoài
+            const tables = sandbox.querySelectorAll('table');
+            tables.forEach(tbl => {
+                const cells = tbl.querySelectorAll('td, th');
+                cells.forEach(cell => {
+                    const html = cell.innerHTML;
+                    if (html.includes('HOẠT ĐỘNG 3') || html.includes('HOẠT ĐỘNG 4') || html.includes('HỒ SƠ DẠY HỌC')) {
+                        // Tách nội dung trước HOẠT ĐỘNG 3 để giữ lại trong bảng
+                        const parts = html.split(/(?=<p[^>]*>.*?HOẠT ĐỘNG 3|<p[^>]*>.*?HOẠT ĐỘNG 4|HOẠT ĐỘNG 3:|HOẠT ĐỘNG 4:)/i);
+                        if (parts.length > 1) {
+                            cell.innerHTML = parts[0];
+                            const spilloverDiv = document.createElement('div');
+                            spilloverDiv.innerHTML = parts.slice(1).join('');
+                            // Chèn phần bị lọt ra phía sau bảng table
+                            tbl.parentNode.insertBefore(spilloverDiv, tbl.nextSibling);
+                        }
+                    }
+                });
+            });
+
+            return sandbox.innerHTML;
         }
 
         // ==================== ENGINE GỌI API GEMINI (MODEL GEMINI-3.5-FLASH) ====================
@@ -885,14 +914,14 @@
                     }
                 } catch (err) {
                     console.warn(`Lỗi fetch model ${model}:`, err.message);
-                    detailedErrors.push(`[${model}]:${err.message}`);
+                    detailedErrors.push(`[${model}]: ${err.message}`);
                 }
             }
 
             throw new Error(detailedErrors.join(" | ") || "Không thể kết nối đến máy chủ AI.");
         }
 
-        // ==================== AI SOẠN HOẠT ĐỘNG 2 + 3 + 4 ĐỒNG BỘ ====================
+        // ==================== AI SOẠN HOẠT ĐỘNG 2 (CÓ KHUNG) VÀ 3, 4 (KHÔNG KHUNG) ====================
         async function executeActionAI() {
             const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
             if (!savedKey) {
@@ -918,14 +947,14 @@
             docContainer.innerHTML = `
                 <div style="text-align: center; padding: 75px 20px; font-family: sans-serif;">
                     <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-wand-magic-sparkles fa-bounce"></i></div>
-                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">AI đang tăng tốc biên soạn HĐ 2 (Kiến thức) + HĐ 3 (Luyện tập) + HĐ 4 (Vận dụng)...</h3>
+                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">AI đang biên soạn HĐ 2 (Bảng 2 cột) và HĐ 3, 4 (Không bảng, chuẩn 4 bước)...</h3>
                     <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
-                        Bài học: <strong>${lessonTitle}</strong> (${subject}${grade})
+                        Bài học: <strong>${lessonTitle}</strong> (${subject} ${grade})
                     </p>
                 </div>
             `;
 
-            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang xử lý HĐ 2, 3, 4...</span>`;
+            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang xử lý...</span>`;
 
             try {
                 let filePromptPart = "";
@@ -935,28 +964,61 @@
 
                 let promptText = "";
                 if (currentActiveMode === '5512') {
-                    // Prompt SOẠN LIÊN HOÀN HOẠT ĐỘNG 2, 3, 4 THEO CHUẨN CV 5512
-                    promptText = `Bạn là chuyên gia sư phạm THPT. Hãy biên soạn nội dung chuyên sâu cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book} gồm 3 hoạt động liên tiếp theo chuẩn Công văn 5512:
+                    const info = getDynamicNlsAiInfo(lessonTitle, grade);
+                    
+                    promptText = `Bạn là chuyên gia sư phạm THPT. Hãy biên soạn nội dung dạy học cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book} theo chuẩn Công văn 5512 gồm chính xác 3 hoạt động dưới đây.
 
-1. "HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI":
-   - Bắt đầu bằng 1 khung div tóm tắt Năng lực số [NLS 2.1] và Khung phản biện AI (mã chuẩn ${grade}.A1.2).
-   - Trình bày dạng BẢNG 2 CỘT VIỀN ĐEN:
-     + Cột trái (50%): "HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH" (chia rõ từng mục nhỏ 1, 2, 3; mỗi mục có đủ 4 bước: Bước 1 Chuyển giao nhiệm vụ, Bước 2 Thực hiện nhiệm vụ, Bước 3 Báo cáo thảo luận, Bước 4 Kết luận nhận định).
-     + Cột phải (50%): "DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ)" chi tiết, đầy đủ kiến thức khoa học cốt lõi học sinh cần ghi nhớ vào vở bám sát Yêu cầu cần đạt (YCCĐ) và SGK hiện hành.
+QUY TẮC ĐỊNH DẠNG HTML BẮT BUỘC:
 
-2. "HOẠT ĐỘNG 3: LUYỆN TẬP":
-   - Nêu đủ 4 bước tổ chức dạy học của giáo viên và học sinh.
-   - Mục "* DỰ KIẾN SẢN PHẨM:" phải có đủ 3 dạng thức trắc nghiệm mới chuẩn GDPT:
-     + Dạng 1: Trắc nghiệm 4 lựa chọn (chọn 1 đáp án đúng A, B, C, D - ít nhất 2 câu hỏi bám sát kiến thức bài học, in đậm đáp án đúng).
-     + Dạng 2: Trắc nghiệm Đúng / Sai (1 câu hỏi gồm 4 ý a, b, c, d gắn liền với bối cảnh thực nghiệm sinh học/nông nghiệp, ghi rõ [ĐÚNG] hoặc [SAI]).
-     + Dạng 3: Trắc nghiệm trả lời ngắn (2 câu hỏi điền số hoặc thuật ngữ ngắn gọn, có lời giải đáp án rõ ràng).
+1. HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI (RIÊNG HOẠT ĐỘNG NÀY BẮT BUỘC CÓ KHUNG BẢNG 2 CỘT):
+- Mở đầu bằng khung div NLS và AI:
+<div style="background: #eef2ff; border-left: 4px solid #3b82f6; padding: 6px 10px; margin: 4px 0; font-size: 11pt;">
+👉 <strong>[Tích hợp năng lực số - ${info.nls}]:</strong> ${info.nlsDesc}.<br>
+👉 <strong>[Khung phản biện AI - Mã ${info.aiCode}]:</strong><br>
+<span style="color: #b91c1c; font-style: italic;">"${info.factCheck}"</span>
+</div>
 
-3. "HOẠT ĐỘNG 4: VẬN DỤNG":
-   - Nêu đủ 4 bước tổ chức dạy học.
-   - Nội dung và sản phẩm bài tập vận dụng bắt buộc phải gắn liền với thực tiễn sản xuất nông nghiệp, sinh thái hoặc đời sống tại huyện Mang Thít, tỉnh Vĩnh Long (ví dụ: mô hình trồng bưởi Năm Roi, cam sành, cây ăn trái, xử lý dịch hại sinh học, canh tác ứng dụng công nghệ...).
+- Tiếp theo là DUY NHẤT 1 BẢNG 2 CỘT VIỀN ĐEN:
+<table>
+  <thead>
+    <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
+      <th style="width: 50%;">HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH</th>
+      <th style="width: 50%;">DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Chia từ 2 đến 3 hàng tr tương ứng với các mục kiến thức cốt lõi của bài học theo SGK -->
+    <!-- Cột trái mỗi hàng có đủ 4 bước: - Bước 1: Chuyển giao nhiệm vụ, - Bước 2: Thực hiện nhiệm vụ, - Bước 3: Báo cáo, thảo luận, - Bước 4: Kết luận, nhận định -->
+    <!-- Cột phải mỗi hàng là kiến thức trọng tâm chi tiết học sinh ghi vở bám sát Yêu cầu cần đạt (YCCĐ) -->
+  </tbody>
+</table>
+- BẮT BUỘC ĐÓNG THẺ </table> NGAY KHI KẾT THÚC HOẠT ĐỘNG 2.
 
-Ghi chú sư phạm bổ sung từ giáo viên: ${customGuide}${filePromptPart}
-Yêu cầu định dạng: Toàn bộ danh sách gạch đầu dòng dùng dấu gạch ngang (-), không dùng dấu chấm tròn. Trả về mã HTML thuần bắt đầu từ <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p> đến hết Hoạt động 4, tuyệt đối không bọc trong thẻ markdown \`\`\`html.`;
+2. HOẠT ĐỘNG 3: LUYỆN TẬP (TUYỆT ĐỐI KHÔNG DÙNG THẺ TABLE, KHÔNG BỎ TRONG KHUNG BẢNG):
+- Nằm hoàn toàn ở ngoài bảng, trình bày dạng thẻ <p> chuẩn:
+<p style="font-weight: bold; color: #1e40af; margin: 12px 0 2px 0;">HOẠT ĐỘNG 3: LUYỆN TẬP</p>
+<p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao hệ thống câu hỏi trắc nghiệm đánh giá năng lực gồm đủ 3 dạng thức.</p>
+<p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS làm việc cá nhân hoàn thành vào phiếu trắc nghiệm.</p>
+<p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Học sinh công bố đáp án, giải thích cơ sở lý thuyết lựa chọn.</p>
+<p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV nhận xét, chốt đáp án chuẩn và phân tích lỗi sai.</p>
+<p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
+(Bắt buộc có đủ 3 dạng thức trắc nghiệm mới:
+ + Dạng 1: Trắc nghiệm 4 lựa chọn (2 - 4 câu hỏi có 4 phương án A, B, C, D; in đậm đáp án đúng).
+ + Dạng 2: Trắc nghiệm Đúng / Sai (1 câu có 4 ý a, b, c, d bối cảnh thực nghiệm; ghi rõ [ĐÚNG] hoặc [SAI]).
+ + Dạng 3: Trắc nghiệm trả lời ngắn (2 câu điền số hoặc thuật ngữ; ghi rõ đáp án).)
+
+3. HOẠT ĐỘNG 4: VẬN DỤNG (TUYỆT ĐỐI KHÔNG DÙNG THẺ TABLE, KHÔNG BỎ TRONG KHUNG BẢNG):
+- Nằm hoàn toàn ở ngoài bảng, trình bày dạng thẻ <p> chuẩn:
+<p style="font-weight: bold; color: #1e40af; margin: 12px 0 2px 0;">HOẠT ĐỘNG 4: VẬN DỤNG</p>
+<p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao bài tập tình huống thực tế gắn liền sản xuất nông nghiệp, sinh thái tại Mang Thít, Vĩnh Long.</p>
+<p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS tìm hiểu thực tế tại địa phương, hoàn thành báo cáo thu hoạch.</p>
+<p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Nộp sản phẩm qua nhóm học tập trực tuyến trước buổi học sau.</p>
+<p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV nhận xét, đánh giá sản phẩm và trao giải sáng tạo.</p>
+<p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
+<p style="margin: 2px 0 8px 25px;">- Bản báo cáo đề xuất giải pháp kỹ thuật cụ thể ứng dụng vào trồng trọt, phòng chống dịch hại cây trồng tại Mang Thít.</p>
+
+Ghi chú sư phạm bổ sung: ${customGuide}${filePromptPart}
+Tuyệt đối không dùng markdown \`\`\`html. Chỉ trả về mã HTML từ <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p> đến hết Hoạt động 4.`;
                 } else if (currentActiveMode === '7991') {
                     promptText = `Bạn là chuyên gia khảo thí Bộ GD&ĐT. Hãy soạn Ma trận, Bản đặc tả và Đề kiểm tra định kì (CV 7991) cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
                     Yêu cầu: Bản giáo viên gạch chân đáp án đúng (<u>A</u>, <u>a)</u>, Đáp án là: <u>...</u>). Đủ 4 mục: Khung ma trận, Bản đặc tả, Đề thi 3 phần, Hướng dẫn chấm. Ghi chú: ${customGuide}${filePromptPart}. Trả về mã HTML thuần.`;
@@ -967,19 +1029,20 @@ Yêu cầu định dạng: Toàn bộ danh sách gạch đầu dòng dùng dấu
                     if (el) el.innerText = msg;
                 };
 
-                const aiOutputHtml = await callGeminiUnifiedEngine(promptText, savedKey, updateStatusText);
+                const rawAiOutputHtml = await callGeminiUnifiedEngine(promptText, savedKey, updateStatusText);
+
+                // Lọc và sửa lỗi thẻ đóng tự động
+                const fixedAiHtml = sanitizeAndFixAIActivities(rawAiOutputHtml);
 
                 if (currentActiveMode === '5512') {
-                    // Tự động ghép Hoạt động 2, 3, 4 do AI biên soạn vào khung Kế hoạch bài dạy CV 5512
-                    renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, aiOutputHtml);
+                    renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, fixedAiHtml);
                 } else {
-                    docContainer.innerHTML = aiOutputHtml;
+                    docContainer.innerHTML = fixedAiHtml;
                 }
 
-                // Lưu vào biến tạm và hiển thị thanh duyệt (Lưu hoặc Xóa)
                 temporaryAIGeneratedDoc = docContainer.innerHTML;
                 showAIReviewBar();
-                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> AI vừa biên soạn HĐ 2, 3, 4 (Chờ Thầy lưu hoặc xóa)</span>`;
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> AI vừa biên soạn HĐ 2, 3, 4 chuẩn chỉ (Chờ Thầy lưu hoặc xóa)</span>`;
 
             } catch (error) {
                 console.error("Chi tiết lỗi AI:", error);
@@ -1017,12 +1080,12 @@ Yêu cầu định dạng: Toàn bộ danh sách gạch đầu dòng dùng dấu
             renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
         }
 
-        // ==================== 1. KẾ HOẠCH BÀI DẠY CV 5512 (HỖ TRỢ THAY THẾ HOẠT ĐỘNG 2, 3, 4 CỦA AI) ====================
+        // ==================== 1. KẾ HOẠCH BÀI DẠY CV 5512 (CƠ CHẾ RÁP HĐ 2, 3, 4 HOÀN HẢO) ====================
         function renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, customAct234Html = null) {
             const docContainer = document.getElementById('container-a4-doc');
             const info = getDynamicNlsAiInfo(lessonTitle, grade);
 
-            // Cụm Hoạt động 2 + 3 + 4 mặc định nội hàm
+            // Cụm Hoạt động 2, 3, 4 mặc định nội hàm chuẩn chỉ
             const defaultAct234Html = `
                 <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p>
                 <div style="background: #eef2ff; border-left: 4px solid #3b82f6; padding: 6px 10px; margin: 4px 0; font-size: 11pt;">
@@ -1085,7 +1148,7 @@ Yêu cầu định dạng: Toàn bộ danh sách gạch đầu dòng dùng dấu
                     </tbody>
                 </table>
 
-                <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 3: LUYỆN TẬP</p>
+                <p style="font-weight: bold; color: #1e40af; margin: 12px 0 2px 0;">HOẠT ĐỘNG 3: LUYỆN TẬP</p>
                 <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao hệ thống câu hỏi trắc nghiệm đánh giá năng lực gồm đủ 3 dạng thức.</p>
                 <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS làm việc cá nhân hoàn thành vào phiếu trắc nghiệm.</p>
                 <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Học sinh công bố đáp án, giải thích cơ sở lý thuyết lựa chọn.</p>
@@ -1110,7 +1173,7 @@ Yêu cầu định dạng: Toàn bộ danh sách gạch đầu dòng dùng dấu
                 <p style="margin: 1px 0 1px 30px;">Câu 1: Một cấu trúc ban đầu trải qua 3 đợt biến đổi liên tiếp tạo ra bao nhiêu đơn vị con? ➜ <strong>Đáp án: 8</strong></p>
                 <p style="margin: 1px 0 1px 30px;">Câu 2: Số thành phần cấu tạo cơ bản nhất luôn có mặt ở đối tượng là bao nhiêu? ➜ <strong>Đáp án: 2</strong></p>
 
-                <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 4: VẬN DỤNG</p>
+                <p style="font-weight: bold; color: #1e40af; margin: 12px 0 2px 0;">HOẠT ĐỘNG 4: VẬN DỤNG</p>
                 <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao bài tập tình huống thực tế nông nghiệp Vĩnh Long.</p>
                 <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS tìm hiểu thực tế tại địa phương, hoàn thành báo cáo thu hoạch.</p>
                 <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Nộp sản phẩm qua nhóm học tập trực tuyến trước buổi học sau.</p>
@@ -1119,7 +1182,6 @@ Yêu cầu định dạng: Toàn bộ danh sách gạch đầu dòng dùng dấu
                 <p style="margin: 2px 0 8px 25px;">- Bản báo cáo đề xuất giải pháp kỹ thuật cụ thể ứng dụng vào trồng trọt, phòng chống dịch hại cây trồng tại Mang Thít.</p>
             `;
 
-            // Thay thế cụm HĐ 2, 3, 4 bằng nội dung do AI sinh ra (nếu có)
             const act234Content = customAct234Html || defaultAct234Html;
 
             docContainer.innerHTML = `
@@ -1173,10 +1235,12 @@ Yêu cầu định dạng: Toàn bộ danh sách gạch đầu dòng dùng dấu
                 <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
                 <p style="margin: 2px 0 8px 25px;">- Câu trả lời bước đầu của học sinh chỉ ra được sự cần thiết phải tìm hiểu cơ chế bản chất của ${lessonTitle}.</p>
 
-                <!-- Cụm HĐ 2 + 3 + 4 do AI tạo hoặc bản nội hàm mẫu -->
-                ${act234Content}
+                <!-- KHU VỰC HĐ 2, 3, 4 ĐƯỢC BẢO VỆ CHỐNG TRÀN -->
+                <div id="wrapper-act234-zone">
+                    ${act234Content}
+                </div>
 
-                <p style="font-weight: bold; margin: 12px 0 4px 0;">IV. HỒ SƠ DẠY HỌC / PHỤ LỤC</p>
+                <p style="font-weight: bold; margin: 16px 0 4px 0;">IV. HỒ SƠ DẠY HỌC / PHỤ LỤC</p>
                 <p style="font-weight: bold; text-decoration: underline;">Phụ lục 1: PHIẾU HỌC TẬP SỐ 1</p>
                 <table>
                     <thead>
@@ -1632,7 +1696,7 @@ Yêu cầu định dạng: Toàn bộ danh sách gạch đầu dòng dùng dấu
             renderCurrentSlide();
         }
 
-        // ==================== TIỆN ÍCH SLIDE & ĐỒNG HỒ ====================
+        // ==================== CÁC HÀM TIỆN ÍCH SLIDE & ĐỒNG HỒ ====================
         function toggleSlideAnswer(btn) {
             const answerBox = btn.nextElementSibling;
             if (answerBox.classList.contains('hidden')) {
