@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduBioMaster - Trợ Lý Sư Phạm Toàn Năng</title>
+    <title>BioMaster AI - Trợ Lý Sư Phạm Toàn Năng | GV: Hồ Tấn Khải - THPT Mang Thít</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -66,6 +66,20 @@
         }
         .btn-3d-blue:active { box-shadow: 0 1px 0 #1e3a8a; }
 
+        .btn-3d-emerald {
+            background: linear-gradient(180deg, #10b981 0%, #047857 100%);
+            border: 1px solid #6ee7b7;
+            box-shadow: 0 4px 0 #064e3b, 0 6px 15px rgba(16,185,129,0.4);
+        }
+        .btn-3d-emerald:active { box-shadow: 0 1px 0 #064e3b; }
+
+        .btn-3d-rose {
+            background: linear-gradient(180deg, #f43f5e 0%, #be123c 100%);
+            border: 1px solid #fda4af;
+            box-shadow: 0 4px 0 #881337, 0 6px 15px rgba(244,63,94,0.4);
+        }
+        .btn-3d-rose:active { box-shadow: 0 1px 0 #881337; }
+
         .btn-3d-slate {
             background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
             border: 1px solid #64748b;
@@ -113,13 +127,13 @@
 </head>
 <body class="bg-brand-dark text-slate-200 font-sans min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white">
 
-    <!-- ==================== HEADER HỆ THỐNG TINH GỌN ==================== -->
+    <!-- ==================== HEADER HỆ THỐNG: NHẬN DIỆN THƯƠNG HIỆU THẦY HỒ TẤN KHẢI ==================== -->
     <header class="bg-brand-surface border-b border-brand-border px-5 py-2.5 sticky top-0 z-50 shadow-lg no-print">
         <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-4">
             
-            <!-- Logo Nhận diện Ứng dụng -->
+            <!-- Logo Nhận diện dự thi chính thức -->
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white text-lg shadow-lg shadow-blue-500/30 border border-white/20">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white text-xl shadow-lg shadow-blue-500/30 border border-white/20">
                     <i class="fa-solid fa-dna"></i>
                 </div>
                 <div>
@@ -127,7 +141,13 @@
                         <span class="text-lg font-black tracking-tight text-white">BioMaster AI</span>
                         <span class="text-[10px] bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-extrabold px-2 py-0.5 rounded-full shadow-sm">High-End Edition</span>
                     </div>
-                    <p class="text-[11px] text-slate-400 font-medium">Hệ Thống Trợ Lý Sư Phạm GDPT 2018</p>
+                    <!-- Thông tin nhận diện dự thi của Thầy Khải -->
+                    <p class="text-xs text-slate-200 font-bold flex items-center gap-1.5 mt-0.5">
+                        <i class="fa-solid fa-user-check text-cyan-400 text-xs"></i> 
+                        <span class="text-cyan-300">Giáo viên: Hồ Tấn Khải</span>
+                        <span class="text-slate-500">•</span>
+                        <span class="text-amber-300">Trường THPT Mang Thít</span>
+                    </p>
                 </div>
             </div>
 
@@ -148,7 +168,7 @@
             <div class="flex items-center gap-2.5">
                 <button onclick="executeActionAI()" class="btn-3d btn-3d-purple px-4 py-2 rounded-xl text-white font-black text-xs flex items-center gap-2 animate-pulse hover:animate-none" title="Chỉ kích hoạt AI khi bấm vào đây">
                     <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                    <span id="header-ai-btn-text">TẠO BẰNG AI</span>
+                    <span id="header-ai-btn-text">SOẠN HOẠT ĐỘNG 2 BẰNG AI</span>
                 </button>
 
                 <button onclick="openDriveSyncModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-xs font-bold border border-blue-500/30 transition flex items-center gap-1.5" title="Đồng bộ Google Drive Apps Script">
@@ -219,7 +239,7 @@
                     </div>
                 </div>
 
-                <p class="text-[11px] text-slate-400 mb-2">Click chọn bài; nhãn <span class="text-purple-300 font-bold bg-purple-500/20 px-1 py-0.5 rounded">AI</span> là bài đã biên soạn và lưu sẵn trên máy:</p>
+                <p class="text-[11px] text-slate-400 mb-2">Click chọn bài; nhãn <span class="text-purple-300 font-bold bg-purple-500/20 px-1 py-0.5 rounded border border-purple-500/30">AI</span> là bài đã lưu kết quả:</p>
 
                 <div id="lesson-items-container" class="space-y-1.5 overflow-y-auto max-h-[175px] pr-1"></div>
 
@@ -230,11 +250,11 @@
                     </div>
                 </div>
 
-                <!-- BỘ 2 NÚT THAO TÁC RÕ RÀNG Ở CỘT TRÁI -->
+                <!-- BỘ NÚT ĐIỀU KHIỂN TẠI CỘT TRÁI -->
                 <div class="mt-3.5 pt-2 border-t border-brand-border/60 space-y-2">
                     <button onclick="executeActionAI()" class="btn-3d btn-3d-purple py-2.5 px-3 rounded-xl text-white font-extrabold text-xs flex items-center justify-center gap-2 w-full">
                         <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                        <span id="btn-sidebar-ai-text">TẠO BẰNG AI (GEMINI 3.5)</span>
+                        <span id="btn-sidebar-ai-text">SOẠN HOẠT ĐỘNG 2 BẰNG AI</span>
                     </button>
 
                     <button onclick="forceUseInternalData()" class="btn-3d btn-3d-slate py-2 px-3 rounded-xl text-slate-200 font-bold text-xs flex items-center justify-center gap-2 w-full hover:text-white" title="Quay về dùng nội dung mẫu nội hàm chuẩn mực">
@@ -265,7 +285,7 @@
                 <h3 class="text-xs uppercase font-extrabold tracking-wider text-cyan-300 flex items-center gap-1.5">
                     <i class="fa-solid fa-pen-fancy text-amber-400"></i> Ghi Chú Sư Phạm Bổ Sung (Khi gọi AI)
                 </h3>
-                <textarea id="ai-custom-instructions" rows="2" placeholder="Ví dụ: Lồng ghép thực tiễn nông nghiệp Vĩnh Long, chú trọng phát triển năng lực AI cho học sinh..." class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400"></textarea>
+                <textarea id="ai-custom-instructions" rows="2" placeholder="Ví dụ: Chú trọng kiến thức giảm tải, mở rộng liên hệ sản xuất nông nghiệp Mang Thít, Vĩnh Long..." class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400"></textarea>
             </div>
         </aside>
 
@@ -286,7 +306,7 @@
                 <div class="flex items-center gap-2">
                     <button onclick="executeActionAI()" class="btn-3d btn-3d-purple px-3 py-1.5 rounded-lg text-white text-xs font-extrabold flex items-center gap-1.5">
                         <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                        <span>Tạo Bằng AI</span>
+                        <span>Soạn Bằng AI</span>
                     </button>
 
                     <button id="btn-export-word" onclick="downloadWordDoc()" class="btn-3d btn-3d-blue px-3.5 py-1.5 rounded-lg text-white text-xs font-bold flex items-center gap-1.5">
@@ -299,6 +319,22 @@
 
                     <button onclick="window.print()" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition flex items-center gap-1.5">
                         <i class="fa-solid fa-print"></i> In / Xuất PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- THANH THAO TÁC DUYỆT BÀI AI (LƯU HOẶC XÓA) -->
+            <div id="ai-review-bar" class="hidden bg-purple-950/60 border-b border-purple-500/40 px-4 py-2 flex items-center justify-between text-xs no-print">
+                <div class="flex items-center gap-2 text-purple-200">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-ping"></span>
+                    <span>AI vừa hoàn tất biên soạn. Thầy hãy kiểm tra và chọn thao tác:</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="saveCurrentAIContent()" class="btn-3d btn-3d-emerald px-3 py-1 rounded-lg text-white font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-floppy-disk"></i> <span>Lưu Lại (Thành Công)</span>
+                    </button>
+                    <button onclick="discardCurrentAIContent()" class="btn-3d btn-3d-rose px-3 py-1 rounded-lg text-white font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-trash-can"></i> <span>Xóa Bản AI (Về Bản Gốc)</span>
                     </button>
                 </div>
             </div>
@@ -399,10 +435,10 @@
                 <button onclick="closeAIKeyModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="mt-4 space-y-3 text-xs text-slate-300">
-                <p>Thầy dán mã <strong>Gemini API Key</strong> vào đây để AI sẵn sàng hoạt động khi bấm nút Tạo Bằng AI:</p>
+                <p>Thầy dán mã <strong>Gemini API Key</strong> vào đây để kích hoạt AI biên soạn Hoạt động 2:</p>
                 <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
                 <p class="text-[11px] text-slate-500 leading-relaxed">
-                    * Khi chuyển bài hoặc mở web, hệ thống mặc định nạp kết quả nội hàm siêu tốc. Chỉ khi Thầy bấm nút "Tạo Bằng AI" thì AI mới thực thi và lưu lại.
+                    * Model sử dụng: <strong>gemini-3.5-flash</strong> siêu tốc.
                 </p>
             </div>
             <div class="mt-5 flex justify-end gap-2 text-xs">
@@ -427,7 +463,9 @@
         let timerSeconds = 0;
         let timerInterval = null;
 
-        // TỔNG SỐ CÂU HỎI KHÓA Ở DÒNG TỔNG 7991 (TỰ ĐỘNG PHÂN BỔ VỀ CÁC BÀI)
+        // Biến tạm lưu nội dung AI vừa sinh ra trước khi người dùng bấm Lưu hoặc Xóa
+        let temporaryAIGeneratedDoc = null;
+
         let matrixGlobalTotals = {
             p1_b: 9,
             p1_h: 6,
@@ -440,7 +478,6 @@
 
         let examMatrixCustomCounts = {};
 
-        // DANH MỤC BÀI HỌC SGK GDPT 2018
         const sgkCurriculumDatabase = {
             "Sinh học": {
                 "10": [
@@ -514,7 +551,6 @@
             }
         };
 
-        // BẢNG NLS & AI TỪNG BÀI
         function getDynamicNlsAiInfo(lessonName, grade) {
             if (lessonName.includes("Bài 1:")) {
                 return {
@@ -574,7 +610,6 @@
             }
         }
 
-        // TẠO KHÓA LƯU TRỮ AI DUY NHẤT CHO TỪNG BÀI
         function getAICacheKey(mode, subject, grade, lessonTitle) {
             return `cached_ai_${mode}_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
         }
@@ -645,6 +680,7 @@
         function selectCurrentLesson(lessonName) {
             currentSelectedLesson = lessonName;
             document.getElementById('active-selected-lesson-title').innerText = lessonName;
+            hideAIReviewBar();
             renderLessonListUI();
             displayContentForCurrentLesson();
         }
@@ -675,18 +711,19 @@
         }
 
         function updateButtonLabels() {
-            const modeName = {
-                '5512': 'Giáo Án 5512',
-                'slide': 'Slide Giảng Dạy',
-                '7991': 'Đề Thi 7991'
-            }[currentActiveMode] || 'Nội Dung';
-
-            document.getElementById('header-ai-btn-text').innerText = `TẠO ${modeName.toUpperCase()} BẰNG AI`;
-            document.getElementById('btn-sidebar-ai-text').innerText = `TẠO ${modeName.toUpperCase()} BẰNG AI`;
+            if (currentActiveMode === '5512') {
+                document.getElementById('header-ai-btn-text').innerText = "SOẠN HOẠT ĐỘNG 2 BẰNG AI";
+                document.getElementById('btn-sidebar-ai-text').innerText = "SOẠN HOẠT ĐỘNG 2 BẰNG AI";
+            } else {
+                const modeName = currentActiveMode === 'slide' ? 'Slide Giảng Dạy' : 'Đề Thi 7991';
+                document.getElementById('header-ai-btn-text').innerText = `TẠO ${modeName.toUpperCase()} BẰNG AI`;
+                document.getElementById('btn-sidebar-ai-text').innerText = `TẠO ${modeName.toUpperCase()} BẰNG AI`;
+            }
         }
 
         function switchViewTab(mode) {
             currentActiveMode = mode;
+            hideAIReviewBar();
             ['5512', 'slide', '7991'].forEach(m => {
                 const b = document.getElementById('btn-tab-' + m);
                 b.className = "px-4 py-2 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5";
@@ -723,6 +760,14 @@
             displayContentForCurrentLesson();
         }
 
+        function showAIReviewBar() {
+            document.getElementById('ai-review-bar').classList.remove('hidden');
+        }
+
+        function hideAIReviewBar() {
+            document.getElementById('ai-review-bar').classList.add('hidden');
+        }
+
         // ==================== CƠ CHẾ NẠP KẾT QUẢ ĐÃ LƯU HOẶC NỘI HÀM ====================
         function displayContentForCurrentLesson() {
             const subject = document.getElementById('sel-subject').value;
@@ -738,17 +783,15 @@
                 return;
             }
 
-            // Kiểm tra cache bài đã tạo AI
             const aiKey = getAICacheKey(currentActiveMode, subject, grade, lessonTitle);
             const cachedAIContent = localStorage.getItem(aiKey);
 
             if (cachedAIContent) {
                 docContainer.innerHTML = cachedAIContent;
-                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp bản lưu từ AI (Không tốn lượt tạo)</span>`;
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp bản lưu từ AI (Đã kiểm duyệt)</span>`;
                 return;
             }
 
-            // Nếu chưa có bản AI, dùng bản gốc nội hàm
             statusInd.innerHTML = `<span class="text-emerald-400 font-bold flex items-center gap-1"><i class="fa-solid fa-circle-check text-[10px]"></i> Bản gốc nội hàm có sẵn</span>`;
             if (currentActiveMode === '5512') {
                 renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle);
@@ -758,29 +801,47 @@
             }
         }
 
-        function forceUseInternalData() {
+        // NÚT XÓA BẢN AI VÀ QUAY VỀ BẢN GỐC NỘI HÀM
+        function discardCurrentAIContent() {
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
-            const book = document.getElementById('sel-book').value;
             const lessonTitle = currentSelectedLesson;
-            const statusInd = document.getElementById('content-source-indicator');
+            const aiKey = getAICacheKey(currentActiveMode, subject, grade, lessonTitle);
 
-            statusInd.innerHTML = `<span class="text-emerald-400 font-bold flex items-center gap-1"><i class="fa-solid fa-circle-check text-[10px]"></i> Đã chuyển sang Bản gốc nội hàm có sẵn</span>`;
-            if (currentActiveMode === '5512') {
-                renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle);
-            } else if (currentActiveMode === '7991') {
-                distributeMatrixFromTotals();
-                renderMaTranDeKiemTra(subject, grade, book);
-            } else if (currentActiveMode === 'slide') {
-                renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
-            }
+            localStorage.removeItem(aiKey);
+            temporaryAIGeneratedDoc = null;
+            hideAIReviewBar();
+            renderLessonListUI();
+            displayContentForCurrentLesson();
+            alert("Đã xóa bài soạn AI và trở về bản gốc nội hàm an toàn!");
         }
 
-        // ==================== ENGINE GỌI API GEMINI (MODEL CHUẨN ĐÃ XÁC THỰC THÀNH CÔNG) ====================
+        // NÚT LƯU BÀI AI THÀNH CÔNG
+        function saveCurrentAIContent() {
+            if (!temporaryAIGeneratedDoc) {
+                temporaryAIGeneratedDoc = document.getElementById('container-a4-doc').innerHTML;
+            }
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const lessonTitle = currentSelectedLesson;
+            const aiKey = getAICacheKey(currentActiveMode, subject, grade, lessonTitle);
+
+            localStorage.setItem(aiKey, temporaryAIGeneratedDoc);
+            hideAIReviewBar();
+            renderLessonListUI();
+            const statusInd = document.getElementById('content-source-indicator');
+            statusInd.innerHTML = `<span class="text-emerald-400 font-bold flex items-center gap-1"><i class="fa-solid fa-check-double text-[10px]"></i> Đã lưu bài AI vào máy thành công!</span>`;
+            alert("Đã lưu bài soạn AI thành công! Những lần sau chọn bài này sẽ tự động nạp ngay.");
+        }
+
+        function forceUseInternalData() {
+            discardCurrentAIContent();
+        }
+
+        // ==================== ENGINE GỌI API GEMINI (MODEL GEMINI-3.5-FLASH SIÊU TỐC) ====================
         async function callGeminiUnifiedEngine(promptText, apiKey, statusCallback) {
             const key = apiKey.trim();
 
-            // Khóa đúng danh mục các model thế hệ mới hoạt động trực tiếp trên tài khoản của Thầy
             const candidateModels = [
                 'gemini-3.5-flash',
                 'gemini-3.8-flash',
@@ -815,26 +876,26 @@
 
                     if (!res.ok) {
                         const errMsg = data?.error?.message || `HTTP ${res.status}`;
-                        console.warn(`Model ${model} trả về lỗi:`, errMsg);
+                        console.warn(`Model ${model} báo lỗi:`, errMsg);
                         detailedErrors.push(`[${model}]: ${errMsg}`);
                         continue;
                     }
 
                     const textOut = data?.candidates?.[0]?.content?.parts?.[0]?.text;
                     if (textOut && textOut.trim() !== '') {
-                        console.log(`%c[BioMaster AI] Hoàn tất bằng model: ${model}`, "color: #10b981; font-weight: bold;");
+                        console.log(`%c[BioMaster AI] Hoàn tất bằng: ${model}`, "color: #10b981; font-weight: bold;");
                         return textOut.replace(/^```html/i, '').replace(/```$/i, '').trim();
                     }
                 } catch (err) {
                     console.warn(`Lỗi fetch model ${model}:`, err.message);
-                    detailedErrors.push(`[${model}]: ${err.message}`);
+                    detailedErrors.push(`[${model}]:${err.message}`);
                 }
             }
 
             throw new Error(detailedErrors.join(" | ") || "Không thể kết nối đến máy chủ AI.");
         }
 
-        // ==================== CHỈ CHẠY AI KHI BẤM NÚT TẠO BẰNG AI ====================
+        // ==================== AI CHỈ SOẠN HOẠT ĐỘNG 2 CHO NHANH VÀ CHUẨN XÁC ====================
         async function executeActionAI() {
             const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
             if (!savedKey) {
@@ -859,15 +920,15 @@
 
             docContainer.innerHTML = `
                 <div style="text-align: center; padding: 75px 20px; font-family: sans-serif;">
-                    <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-brain fa-bounce"></i></div>
-                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">Đang kết nối Gemini 3.5 để biên soạn bài mới...</h3>
+                    <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-bolt fa-bounce"></i></div>
+                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">AI đang tăng tốc biên soạn Hoạt động 2 (Hình thành kiến thức)...</h3>
                     <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
-                        Bài học: <strong>${lessonTitle}</strong> (${subject} ${grade})
+                        Bài học: <strong>${lessonTitle}</strong> (${subject}${grade})
                     </p>
                 </div>
             `;
 
-            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang trực tiếp biên soạn...</span>`;
+            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang xử lý thần tốc...</span>`;
 
             try {
                 let filePromptPart = "";
@@ -877,22 +938,19 @@
 
                 let promptText = "";
                 if (currentActiveMode === '5512') {
-                    promptText = `Bạn là chuyên gia sư phạm THPT. Hãy soạn Kế hoạch bài dạy theo chuẩn Công văn 5512/BGDĐT-GDTrH cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
-                    Yêu cầu:
-                    - Tiêu đề: SỞ GD&ĐT VĨNH LONG - TRƯỜNG THPT MANG THÍT - Họ và tên giáo viên: Hồ Tấn Khải.
-                    - Mục tiêu: Kiến thức; Năng lực chung; Năng lực đặc thù; Năng lực số [NLS 2.1]; Năng lực AI (mã chuẩn ${grade}.A1.2); Phẩm chất.
-                    - Tiến trình 4 hoạt động: Hoạt động 2 trình bày dạng BẢNG 2 CỘT VIỀN ĐEN chi tiết nội dung ghi vở của học sinh; Hoạt động 3 Luyện tập đủ 3 dạng thức trắc nghiệm; Hoạt động 4 Vận dụng gắn liền thực tiễn nông nghiệp địa phương.
-                    - Đủ 3 phụ lục: Phiếu học tập số 1, Rubric NLS 2.1 (5 cột), Rubric Năng lực AI (5 cột).
-                    - Ghi chú thêm: ${customGuide}${filePromptPart}
-                    - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html) để chèn thẳng vào trang A4.`;
+                    // Prompt CHỈ SOẠN HOẠT ĐỘNG 2: Tốc độ siêu nhanh, đủ sâu, chuẩn YCCĐ và SGK hiện hành
+                    promptText = `Bạn là chuyên gia sư phạm THPT. Hãy soạn duy nhất mục "HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI" theo chuẩn Công văn 5512 cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
+                    YÊU CẦU BẮT BUỘC:
+                    1. Đầy đủ nội dung kiến thức trọng tâm theo Yêu cầu cần đạt (YCCĐ) của Chương trình GDPT 2018 và SGK hiện hành.
+                    2. Bắt đầu bằng 1 khung div tóm tắt Năng lực số [NLS 2.1] và Khung phản biện AI (mã chuẩn ${grade}.A1.2).
+                    3. Trình bày nội dung chính dạng BẢNG 2 CỘT VIỀN ĐEN:
+                       - Cột trái (50%): "HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH" (chia rõ từng nội dung/mục nhỏ 1, 2, 3; mỗi mục có đủ 4 bước: Bước 1 Chuyển giao nhiệm vụ, Bước 2 Thực hiện nhiệm vụ, Bước 3 Báo cáo thảo luận, Bước 4 Kết luận nhận định).
+                       - Cột phải (50%): "DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ)" chi tiết, đầy đủ kiến thức khoa học cốt lõi học sinh cần ghi nhớ vào vở.
+                    4. Ghi chú thêm: ${customGuide}${filePromptPart}
+                    5. Trả về mã HTML thuần của Hoạt động 2 (bắt đầu bằng thẻ <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p> cùng khung div và thẻ table 2 cột), tuyệt đối không bọc trong thẻ markdown \`\`\`html.`;
                 } else if (currentActiveMode === '7991') {
                     promptText = `Bạn là chuyên gia khảo thí Bộ GD&ĐT. Hãy soạn Ma trận, Bản đặc tả và Đề kiểm tra định kì (CV 7991) cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
-                    Yêu cầu:
-                    - Khung ma trận, Bản đặc tả ma trận.
-                    - Đề kiểm tra chính thức (Bản giáo viên: gạch chân các phương án đúng <u>A</u>, <u>a)</u>, Đáp án là: <u>...</u>). Đủ 3 phần: Phần I nhiều lựa chọn, Phần II đúng/sai, Phần III trả lời ngắn.
-                    - Hướng dẫn chấm và biểu điểm chi tiết.
-                    - Ghi chú thêm: ${customGuide}${filePromptPart}
-                    - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html).`;
+                    Yêu cầu: Bản giáo viên gạch chân đáp án đúng (<u>A</u>, <u>a)</u>, Đáp án là: <u>...</u>). Đủ 4 mục: Khung ma trận, Bản đặc tả, Đề thi 3 phần, Hướng dẫn chấm. Ghi chú: ${customGuide}${filePromptPart}. Trả về mã HTML thuần.`;
                 }
 
                 const updateStatusText = (msg) => {
@@ -900,15 +958,19 @@
                     if (el) el.innerText = msg;
                 };
 
-                const aiHtmlResult = await callGeminiUnifiedEngine(promptText, savedKey, updateStatusText);
+                const aiOutputHtml = await callGeminiUnifiedEngine(promptText, savedKey, updateStatusText);
 
-                // Lưu lại kết quả để các lần sau không cần tạo lại
-                const aiKey = getAICacheKey(currentActiveMode, subject, grade, lessonTitle);
-                localStorage.setItem(aiKey, aiHtmlResult);
+                if (currentActiveMode === '5512') {
+                    // Tự động ghép Hoạt động 2 do AI biên soạn vào cấu trúc Kế hoạch bài dạy CV 5512 hoàn chỉnh
+                    renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, aiOutputHtml);
+                } else {
+                    docContainer.innerHTML = aiOutputHtml;
+                }
 
-                docContainer.innerHTML = aiHtmlResult;
-                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã tạo và lưu thành công bằng AI!</span>`;
-                renderLessonListUI();
+                // Lưu vào biến tạm và hiển thị thanh duyệt (Lưu hoặc Xóa)
+                temporaryAIGeneratedDoc = docContainer.innerHTML;
+                showAIReviewBar();
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-bolt"></i> AI vừa biên soạn Hoạt động 2 (Chờ Thầy lưu hoặc xóa)</span>`;
 
             } catch (error) {
                 console.error("Chi tiết lỗi AI:", error);
@@ -918,7 +980,7 @@
             }
         }
 
-        // ==================== KHÓA TỔNG VÀ TỰ PHÂN BỔ SỐ CÂU ĐỀ 7991 ====================
+        // ==================== KHÓA TỔNG VÀ PHÂN BỔ SỐ CÂU ĐỀ 7991 ====================
         function distributeMatrixFromTotals() {
             const lessons = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [currentSelectedLesson];
             const numLessons = lessons.length;
@@ -946,62 +1008,13 @@
             renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
         }
 
-        // ==================== 1. BẢN GỐC NỘI HÀM: KẾ HOẠCH BÀI DẠY CV 5512 ====================
-        function renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle) {
+        // ==================== 1. KẾ HOẠCH BÀI DẠY CV 5512 (HỖ TRỢ THAY THẾ HOẠT ĐỘNG 2 CỦA AI) ====================
+        function renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, customAct2Html = null) {
             const docContainer = document.getElementById('container-a4-doc');
             const info = getDynamicNlsAiInfo(lessonTitle, grade);
 
-            docContainer.innerHTML = `
-                <table style="width: 100%; border: none; margin-bottom: 12px;">
-                    <tr style="border: none;">
-                        <td style="border: none; width: 45%; text-align: center; vertical-align: top; padding: 0;">
-                            <p style="margin: 0; font-size: 11pt;">SỞ GD&ĐT VĨNH LONG</p>
-                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">${schoolName.toUpperCase()}</p>
-                            <div style="width: 80px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
-                        </td>
-                        <td style="border: none; width: 55%; text-align: center; vertical-align: top; padding: 0;">
-                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
-                            <p style="margin: 0; font-style: italic; font-size: 11pt;">Độc lập - Tự do - Hạnh phúc</p>
-                            <div style="width: 120px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
-                        </td>
-                    </tr>
-                </table>
-
-                <div style="text-align: center; margin: 15px 0;">
-                    <h2 style="margin: 0; font-size: 14pt; font-weight: bold; text-transform: uppercase;">KẾ HOẠCH BÀI DẠY</h2>
-                    <h3 style="margin: 4px 0 0 0; font-size: 13pt; font-weight: bold; color: #1e3a8a;">${lessonTitle.toUpperCase()}</h3>
-                    <p style="margin: 2px 0 0 0; font-style: italic; font-size: 12pt;">Môn học: ${subject} ${grade} • Bộ sách: ${book} • Thời lượng: 02 tiết</p>
-                    <p style="margin: 2px 0 0 0; font-size: 11pt;">Họ và tên giáo viên: <strong>${teacherName}</strong> • Đơn vị: <strong>${schoolName}</strong></p>
-                </div>
-
-                <p style="font-weight: bold; margin: 10px 0 4px 0;">I. MỤC TIÊU</p>
-                <p style="margin: 2px 0 2px 10px;"><strong>1. Về kiến thức:</strong></p>
-                <p style="margin: 2px 0 2px 20px;">- Nêu được khái niệm, cấu trúc bản chất và cơ chế sinh học cốt lõi của ${lessonTitle} theo yêu cầu cần đạt của Chương trình GDPT 2018.</p>
-                <p style="margin: 2px 0 2px 20px;">- Phân tích được các quy luật biến đổi, tương tác sinh học và ý nghĩa đối với sự tồn tại của cơ thể sinh vật và ứng dụng thực tiễn trong nông nghiệp tại tỉnh Vĩnh Long.</p>
-
-                <p style="margin: 4px 0 2px 10px;"><strong>2. Về năng lực:</strong></p>
-                <p style="margin: 2px 0 2px 20px;">- 2.1. Năng lực chung: Tự chủ & tự học trong tra cứu tài liệu, Giao tiếp & hợp tác nhóm, Giải quyết vấn đề & sáng tạo.</p>
-                <p style="margin: 2px 0 2px 20px;">- 2.2. Năng lực đặc thù: Nhận thức sinh học/công nghệ; Tìm hiểu thế giới tự nhiên; Vận dụng kiến thức, kĩ năng đã học vào đời sống.</p>
-                <p style="margin: 2px 0 2px 20px; color: #0369a1;">- 2.3. Tích hợp Năng lực số: <strong>[${info.nls}]</strong> - ${info.nlsDesc}.</p>
-                <p style="margin: 2px 0 2px 20px; color: #4338ca;">- 2.4. Tích hợp Năng lực Trí tuệ nhân tạo (AI): <strong>[Mã ${info.aiCode}]</strong> - ${info.aiDesc}.</p>
-
-                <p style="margin: 4px 0 2px 10px;"><strong>3. Về phẩm chất:</strong> Yêu nước, Nhân ái, Chăm chỉ, Trung thực, Trách nhiệm trong học tập và nghiên cứu khoa học.</p>
-                <p style="margin: 4px 0 2px 10px;"><strong>4. Nội dung tích hợp:</strong> Bảo vệ môi trường, an toàn sinh học và phát triển bền vững nông nghiệp tại địa phương.</p>
-
-                <p style="font-weight: bold; margin: 12px 0 4px 0;">II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU</p>
-                <p style="margin: 2px 0 2px 15px;">- 1. Của giáo viên: Máy tính, máy chiếu/tivi, mã QR mô hình học liệu số, Phiếu học tập số 1, đề kiểm tra đánh giá.</p>
-                <p style="margin: 2px 0 2px 15px;">- 2. Của học sinh: SGK ${book}, vở ghi chép, thiết bị thông minh tra cứu học liệu số.</p>
-
-                <p style="font-weight: bold; margin: 12px 0 4px 0;">III. TIẾN TRÌNH DẠY HỌC</p>
-
-                <p style="font-weight: bold; color: #1e40af; margin: 6px 0 2px 0;">HOẠT ĐỘNG 1: MỞ ĐẦU (KHỞI ĐỘNG)</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: Giáo viên trình chiếu tình huống thực tiễn có vấn đề liên quan đến ${lessonTitle}, đặt câu hỏi mâu thuẫn nhận thức.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: Học sinh làm việc cá nhân, quan sát hiện tượng và suy ngẫm câu trả lời trong 2 phút.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Chỉ định 2 học sinh đại diện phát biểu ý kiến, học sinh khác nhận xét.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: Giáo viên ghi nhận các ý kiến, phân tích mâu thuẫn và dẫn dắt vào bài mới.</p>
-                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
-                <p style="margin: 2px 0 8px 25px;">- Câu trả lời bước đầu của học sinh chỉ ra được sự cần thiết phải tìm hiểu cơ chế bản chất của ${lessonTitle}.</p>
-
+            // Hoạt động 2 mặc định nội hàm
+            const defaultAct2Html = `
                 <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p>
                 <div style="background: #eef2ff; border-left: 4px solid #3b82f6; padding: 6px 10px; margin: 4px 0; font-size: 11pt;">
                     👉 <strong>[Tích hợp năng lực số - ${info.nls}]:</strong> ${info.nlsDesc}.<br>
@@ -1062,6 +1075,63 @@
                         </tr>
                     </tbody>
                 </table>
+            `;
+
+            // Nếu AI soạn Hoạt động 2, dùng nội dung AI; nếu không dùng bản nội hàm
+            const act2Content = customAct2Html || defaultAct2Html;
+
+            docContainer.innerHTML = `
+                <table style="width: 100%; border: none; margin-bottom: 12px;">
+                    <tr style="border: none;">
+                        <td style="border: none; width: 45%; text-align: center; vertical-align: top; padding: 0;">
+                            <p style="margin: 0; font-size: 11pt;">SỞ GD&ĐT VĨNH LONG</p>
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">${schoolName.toUpperCase()}</p>
+                            <div style="width: 80px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
+                        </td>
+                        <td style="border: none; width: 55%; text-align: center; vertical-align: top; padding: 0;">
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                            <p style="margin: 0; font-style: italic; font-size: 11pt;">Độc lập - Tự do - Hạnh phúc</p>
+                            <div style="width: 120px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="text-align: center; margin: 15px 0;">
+                    <h2 style="margin: 0; font-size: 14pt; font-weight: bold; text-transform: uppercase;">KẾ HOẠCH BÀI DẠY</h2>
+                    <h3 style="margin: 4px 0 0 0; font-size: 13pt; font-weight: bold; color: #1e3a8a;">${lessonTitle.toUpperCase()}</h3>
+                    <p style="margin: 2px 0 0 0; font-style: italic; font-size: 12pt;">Môn học: ${subject} ${grade} • Bộ sách: ${book} • Thời lượng: 02 tiết</p>
+                    <p style="margin: 2px 0 0 0; font-size: 11pt;">Họ và tên giáo viên: <strong>${teacherName}</strong> • Đơn vị: <strong>${schoolName}</strong></p>
+                </div>
+
+                <p style="font-weight: bold; margin: 10px 0 4px 0;">I. MỤC TIÊU</p>
+                <p style="margin: 2px 0 2px 10px;"><strong>1. Về kiến thức:</strong></p>
+                <p style="margin: 2px 0 2px 20px;">- Nêu được khái niệm, cấu trúc bản chất và cơ chế sinh học cốt lõi của ${lessonTitle} theo yêu cầu cần đạt của Chương trình GDPT 2018.</p>
+                <p style="margin: 2px 0 2px 20px;">- Phân tích được các quy luật biến đổi, tương tác sinh học và ý nghĩa đối với sự tồn tại của cơ thể sinh vật và ứng dụng thực tiễn trong nông nghiệp tại tỉnh Vĩnh Long.</p>
+
+                <p style="margin: 4px 0 2px 10px;"><strong>2. Về năng lực:</strong></p>
+                <p style="margin: 2px 0 2px 20px;">- 2.1. Năng lực chung: Tự chủ & tự học trong tra cứu tài liệu, Giao tiếp & hợp tác nhóm, Giải quyết vấn đề & sáng tạo.</p>
+                <p style="margin: 2px 0 2px 20px;">- 2.2. Năng lực đặc thù: Nhận thức sinh học/công nghệ; Tìm hiểu thế giới tự nhiên; Vận dụng kiến thức, kĩ năng đã học vào đời sống.</p>
+                <p style="margin: 2px 0 2px 20px; color: #0369a1;">- 2.3. Tích hợp Năng lực số: <strong>[${info.nls}]</strong> - ${info.nlsDesc}.</p>
+                <p style="margin: 2px 0 2px 20px; color: #4338ca;">- 2.4. Tích hợp Năng lực Trí tuệ nhân tạo (AI): <strong>[Mã ${info.aiCode}]</strong> - ${info.aiDesc}.</p>
+
+                <p style="margin: 4px 0 2px 10px;"><strong>3. Về phẩm chất:</strong> Yêu nước, Nhân ái, Chăm chỉ, Trung thực, Trách nhiệm trong học tập và nghiên cứu khoa học.</p>
+                <p style="margin: 4px 0 2px 10px;"><strong>4. Nội dung tích hợp:</strong> Bảo vệ môi trường, an toàn sinh học và phát triển bền vững nông nghiệp tại địa phương.</p>
+
+                <p style="font-weight: bold; margin: 12px 0 4px 0;">II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU</p>
+                <p style="margin: 2px 0 2px 15px;">- 1. Của giáo viên: Máy tính, máy chiếu/tivi, mã QR mô hình học liệu số, Phiếu học tập số 1, đề kiểm tra đánh giá.</p>
+                <p style="margin: 2px 0 2px 15px;">- 2. Của học sinh: SGK ${book}, vở ghi chép, thiết bị thông minh tra cứu học liệu số.</p>
+
+                <p style="font-weight: bold; margin: 12px 0 4px 0;">III. TIẾN TRÌNH DẠY HỌC</p>
+
+                <p style="font-weight: bold; color: #1e40af; margin: 6px 0 2px 0;">HOẠT ĐỘNG 1: MỞ ĐẦU (KHỞI ĐỘNG)</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: Giáo viên trình chiếu tình huống thực tiễn có vấn đề liên quan đến ${lessonTitle}, đặt câu hỏi mâu thuẫn nhận thức.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: Học sinh làm việc cá nhân, quan sát hiện tượng và suy ngẫm câu trả lời trong 2 phút.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Chỉ định 2 học sinh đại diện phát biểu ý kiến, học sinh khác nhận xét.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: Giáo viên ghi nhận các ý kiến, phân tích mâu thuẫn và dẫn dắt vào bài mới.</p>
+                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
+                <p style="margin: 2px 0 8px 25px;">- Câu trả lời bước đầu của học sinh chỉ ra được sự cần thiết phải tìm hiểu cơ chế bản chất của ${lessonTitle}.</p>
+
+                ${act2Content}
 
                 <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 3: LUYỆN TẬP</p>
                 <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao hệ thống câu hỏi trắc nghiệm đánh giá năng lực gồm đủ 3 dạng thức.</p>
@@ -1166,7 +1236,7 @@
             `;
         }
 
-        // ==================== 2. BẢN GỐC NỘI HÀM: MA TRẬN & ĐỀ THI 7991 ====================
+        // ==================== 2. MA TRẬN & ĐỀ THI 7991 ====================
         function renderMaTranDeKiemTra(subject, grade, book) {
             const docContainer = document.getElementById('container-a4-doc');
             const lessons = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [currentSelectedLesson];
@@ -1380,7 +1450,7 @@
             `;
         }
 
-        // ==================== 3. BÀI GIẢNG PPT NGUYÊN BẢN (16 SLIDE LUYỆN TẬP) ====================
+        // ==================== 3. BÀI GIẢNG PPT NGUYÊN BẢN (16 SLIDE) ====================
         function renderPowerPointSlideDeck(subject, grade, book, lessonTitle) {
             slideDeckData = [];
 
