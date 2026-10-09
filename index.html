@@ -87,6 +87,7 @@
         }
         .btn-3d-slate:active { box-shadow: 0 1px 0 #0f172a; }
 
+        /* Khung in A4 chuẩn công vụ 5512 */
         .page-a4 {
             width: 210mm;
             min-height: 297mm;
@@ -97,7 +98,7 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             font-family: "Times New Roman", Times, serif;
             font-size: 13pt;
-            line-height: 1.15;
+            line-height: 1.2;
             text-align: justify;
         }
 
@@ -163,11 +164,11 @@
                 </button>
             </div>
 
-            <!-- NÚT TẠO BẰNG AI & CÀI ĐẶT -->
+            <!-- NÚT SOẠN TOÀN BỘ BẰNG AI & CÀI ĐẶT -->
             <div class="flex items-center gap-2.5">
                 <button onclick="executeActionAI()" class="btn-3d btn-3d-purple px-4 py-2 rounded-xl text-white font-black text-xs flex items-center gap-2 animate-pulse hover:animate-none" title="Chỉ kích hoạt AI khi bấm vào đây">
                     <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                    <span id="header-ai-btn-text">SOẠN HĐ 2, 3, 4 BẰNG AI</span>
+                    <span id="header-ai-btn-text">SOẠN TOÀN BỘ GIÁO ÁN BẰNG AI</span>
                 </button>
 
                 <button onclick="openDriveSyncModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-xs font-bold border border-blue-500/30 transition flex items-center gap-1.5" title="Đồng bộ Google Drive Apps Script">
@@ -225,7 +226,7 @@
                 </div>
             </div>
 
-            <!-- KHỐI 2: KHUNG CHỌN BÀI DẠY VÀ NÚT TẠO BẰNG AI / NỘI HÀM -->
+            <!-- KHỐI 2: KHUNG CHỌN BÀI DẠY VÀ NÚT TẠO TOÀN BỘ BẰNG AI -->
             <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md flex flex-col min-h-[300px]">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-brand-border/60">
                     <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200 flex items-center gap-1.5">
@@ -238,7 +239,7 @@
                     </div>
                 </div>
 
-                <p class="text-[11px] text-slate-400 mb-2">Click chọn bài; nhãn <span class="text-purple-300 font-bold bg-purple-500/20 px-1 py-0.5 rounded border border-purple-500/30">AI</span> là bài đã lưu kết quả:</p>
+                <p class="text-[11px] text-slate-400 mb-2">Click chọn bài; nhãn <span class="text-purple-300 font-bold bg-purple-500/20 px-1 py-0.5 rounded border border-purple-500/30">AI</span> là bài đã lưu toàn bộ:</p>
 
                 <div id="lesson-items-container" class="space-y-1.5 overflow-y-auto max-h-[175px] pr-1"></div>
 
@@ -253,7 +254,7 @@
                 <div class="mt-3.5 pt-2 border-t border-brand-border/60 space-y-2">
                     <button onclick="executeActionAI()" class="btn-3d btn-3d-purple py-2.5 px-3 rounded-xl text-white font-extrabold text-xs flex items-center justify-center gap-2 w-full">
                         <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                        <span id="btn-sidebar-ai-text">SOẠN HĐ 2, 3, 4 BẰNG AI</span>
+                        <span id="btn-sidebar-ai-text">SOẠN TOÀN BỘ BẰNG AI</span>
                     </button>
 
                     <button onclick="forceUseInternalData()" class="btn-3d btn-3d-slate py-2 px-3 rounded-xl text-slate-200 font-bold text-xs flex items-center justify-center gap-2 w-full hover:text-white" title="Quay về dùng nội dung mẫu nội hàm chuẩn mực">
@@ -284,7 +285,7 @@
                 <h3 class="text-xs uppercase font-extrabold tracking-wider text-cyan-300 flex items-center gap-1.5">
                     <i class="fa-solid fa-pen-fancy text-amber-400"></i> Ghi Chú Sư Phạm Bổ Sung (Khi gọi AI)
                 </h3>
-                <textarea id="ai-custom-instructions" rows="2" placeholder="Ví dụ: Chú trọng kiến thức giảm tải, mở rộng liên hệ sản xuất nông nghiệp Mang Thít, Vĩnh Long..." class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400"></textarea>
+                <textarea id="ai-custom-instructions" rows="2" placeholder="Ví dụ: Tăng cường bài tập thực tiễn nông nghiệp Vĩnh Long, lồng ghép sâu năng lực chuyển đổi số..." class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400"></textarea>
             </div>
         </aside>
 
@@ -326,7 +327,7 @@
             <div id="ai-review-bar" class="hidden bg-purple-950/60 border-b border-purple-500/40 px-4 py-2 flex items-center justify-between text-xs no-print">
                 <div class="flex items-center gap-2 text-purple-200">
                     <span class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-ping"></span>
-                    <span>AI vừa hoàn tất biên soạn HĐ 2, 3, 4. Thầy kiểm tra nội dung và chọn thao tác:</span>
+                    <span>AI vừa hoàn tất biên soạn TOÀN BỘ giáo án. Thầy kiểm tra nội dung và chọn thao tác:</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="saveCurrentAIContent()" class="btn-3d btn-3d-emerald px-3 py-1 rounded-lg text-white font-bold flex items-center gap-1">
@@ -341,7 +342,7 @@
             <!-- VÙNG HIỂN THỊ NỘI DUNG VĂN BẢN KHỔ A4 HOẶC SLIDE TRÌNH CHIẾU -->
             <div class="flex-1 overflow-y-auto p-6 bg-[#0a0f1d] flex justify-center">
                 
-                <!-- 1. VĂN BẢN A4 CHO KHBD 5512 VÀ ĐỀ KIỂM TRA -->
+                <!-- 1. VĂN BẢN A4 CHO KHBD 5512 VÀ ĐỀ KIỂM TRA (FONTS TIMES NEW ROMAN 13PT) -->
                 <div id="container-a4-doc" class="page-a4" contenteditable="true" spellcheck="false"></div>
 
                 <!-- 2. SLIDE TRÌNH CHIẾU TƯƠNG TÁC 16:9 CÓ THANH TIỆN ÍCH -->
@@ -434,10 +435,10 @@
                 <button onclick="closeAIKeyModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="mt-4 space-y-3 text-xs text-slate-300">
-                <p>Thầy dán mã <strong>Gemini API Key</strong> vào đây để kích hoạt AI biên soạn Hoạt động 2, 3, 4:</p>
+                <p>Thầy dán mã <strong>Gemini API Key</strong> vào đây để kích hoạt AI biên soạn toàn bộ giáo án:</p>
                 <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
                 <p class="text-[11px] text-slate-500 leading-relaxed">
-                    * Model sử dụng: <strong>gemini-3.5-flash</strong> siêu tốc.
+                    * Model sử dụng: <strong>gemini-3.5-flash</strong> thế hệ mới siêu tốc.
                 </p>
             </div>
             <div class="mt-5 flex justify-end gap-2 text-xs">
@@ -710,8 +711,8 @@
 
         function updateButtonLabels() {
             if (currentActiveMode === '5512') {
-                document.getElementById('header-ai-btn-text').innerText = "SOẠN HĐ 2, 3, 4 BẰNG AI";
-                document.getElementById('btn-sidebar-ai-text').innerText = "SOẠN HĐ 2, 3, 4 BẰNG AI";
+                document.getElementById('header-ai-btn-text').innerText = "SOẠN TOÀN BỘ GIÁO ÁN BẰNG AI";
+                document.getElementById('btn-sidebar-ai-text').innerText = "SOẠN TOÀN BỘ GIÁO ÁN (AI)";
             } else {
                 const modeName = currentActiveMode === 'slide' ? 'Slide Giảng Dạy' : 'Đề Thi 7991';
                 document.getElementById('header-ai-btn-text').innerText = `TẠO ${modeName.toUpperCase()} BẰNG AI`;
@@ -785,7 +786,7 @@
 
             if (cachedAIContent) {
                 docContainer.innerHTML = cachedAIContent;
-                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp bản lưu từ AI (HĐ 2, 3, 4 chuẩn mực)</span>`;
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp toàn bộ giáo án AI (Đã kiểm duyệt)</span>`;
                 return;
             }
 
@@ -825,8 +826,8 @@
             hideAIReviewBar();
             renderLessonListUI();
             const statusInd = document.getElementById('content-source-indicator');
-            statusInd.innerHTML = `<span class="text-emerald-400 font-bold flex items-center gap-1"><i class="fa-solid fa-check-double text-[10px]"></i> Đã lưu trọn bộ HĐ 2, 3, 4 AI vào máy!</span>`;
-            alert("Đã lưu bài soạn AI thành công! Những lần sau chọn bài này sẽ tự động nạp ngay.");
+            statusInd.innerHTML = `<span class="text-emerald-400 font-bold flex items-center gap-1"><i class="fa-solid fa-check-double text-[10px]"></i> Đã lưu toàn bộ giáo án AI vào máy!</span>`;
+            alert("Đã lưu toàn bộ giáo án AI thành công! Những lần sau chọn bài này sẽ tự động nạp ngay.");
         }
 
         function forceUseInternalData() {
@@ -836,25 +837,21 @@
         // ==================== BỘ LỌC TỰ ĐỘNG CHỐNG VỠ KHUNG / ĐÓNG THẺ HTML ====================
         function sanitizeAndFixAIActivities(rawHtml) {
             if (!rawHtml) return "";
-            
-            // Bước 1: Dùng DOM parser của trình duyệt để tự động đóng mọi thẻ còn dở dang
             const sandbox = document.createElement('div');
             sandbox.innerHTML = rawHtml.trim();
 
-            // Bước 2: Quét tất cả thẻ table, kiểm tra nếu Hoạt động 3 hoặc 4 bị nhét bên trong table thì kéo ra ngoài
+            // Quét các bảng table, ngăn chặn việc Hoạt động 3, 4 hoặc Phụ lục bị nuốt nhầm vào ô bảng
             const tables = sandbox.querySelectorAll('table');
             tables.forEach(tbl => {
                 const cells = tbl.querySelectorAll('td, th');
                 cells.forEach(cell => {
                     const html = cell.innerHTML;
-                    if (html.includes('HOẠT ĐỘNG 3') || html.includes('HOẠT ĐỘNG 4') || html.includes('HỒ SƠ DẠY HỌC')) {
-                        // Tách nội dung trước HOẠT ĐỘNG 3 để giữ lại trong bảng
-                        const parts = html.split(/(?=<p[^>]*>.*?HOẠT ĐỘNG 3|<p[^>]*>.*?HOẠT ĐỘNG 4|HOẠT ĐỘNG 3:|HOẠT ĐỘNG 4:)/i);
+                    if (html.includes('HOẠT ĐỘNG 3') || html.includes('HOẠT ĐỘNG 4') || html.includes('HỒ SƠ DẠY HỌC') || html.includes('Phụ lục 1:')) {
+                        const parts = html.split(/(?=<p[^>]*>.*?HOẠT ĐỘNG 3|<p[^>]*>.*?HOẠT ĐỘNG 4|<p[^>]*>.*?HỒ SƠ DẠY HỌC|HOẠT ĐỘNG 3:|HOẠT ĐỘNG 4:|HỒ SƠ DẠY HỌC)/i);
                         if (parts.length > 1) {
                             cell.innerHTML = parts[0];
                             const spilloverDiv = document.createElement('div');
                             spilloverDiv.innerHTML = parts.slice(1).join('');
-                            // Chèn phần bị lọt ra phía sau bảng table
                             tbl.parentNode.insertBefore(spilloverDiv, tbl.nextSibling);
                         }
                     }
@@ -921,7 +918,7 @@
             throw new Error(detailedErrors.join(" | ") || "Không thể kết nối đến máy chủ AI.");
         }
 
-        // ==================== AI SOẠN HOẠT ĐỘNG 2 (CÓ KHUNG) VÀ 3, 4 (KHÔNG KHUNG) ====================
+        // ==================== HÀM SOẠN TOÀN BỘ GIÁO ÁN BẰNG AI ====================
         async function executeActionAI() {
             const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
             if (!savedKey) {
@@ -947,14 +944,14 @@
             docContainer.innerHTML = `
                 <div style="text-align: center; padding: 75px 20px; font-family: sans-serif;">
                     <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-wand-magic-sparkles fa-bounce"></i></div>
-                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">AI đang biên soạn HĐ 2 (Bảng 2 cột) và HĐ 3, 4 (Không bảng, chuẩn 4 bước)...</h3>
+                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">AI đang tăng tốc biên soạn TOÀN BỘ Kế hoạch bài dạy chuẩn 5512...</h3>
                     <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
-                        Bài học: <strong>${lessonTitle}</strong> (${subject} ${grade})
+                        Bài học: <strong>${lessonTitle}</strong> (${subject} ${grade} - ${book})
                     </p>
                 </div>
             `;
 
-            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang xử lý...</span>`;
+            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang trực tiếp soạn toàn bộ giáo án...</span>`;
 
             try {
                 let filePromptPart = "";
@@ -966,59 +963,45 @@
                 if (currentActiveMode === '5512') {
                     const info = getDynamicNlsAiInfo(lessonTitle, grade);
                     
-                    promptText = `Bạn là chuyên gia sư phạm THPT. Hãy biên soạn nội dung dạy học cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book} theo chuẩn Công văn 5512 gồm chính xác 3 hoạt động dưới đây.
+                    promptText = `Bạn là chuyên gia sư phạm THPT hàng đầu Việt Nam. Hãy soạn TOÀN BỘ Kế hoạch bài dạy chuẩn mực theo đúng quy định Công văn 5512/BGDĐT-GDTrH cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
 
-QUY TẮC ĐỊNH DẠNG HTML BẮT BUỘC:
+YÊU CẦU BẮT BUỘC VỀ BỐ CỤC VÀ ĐỊNH DẠNG:
+1. TIÊU ĐỀ HÀNH CHÍNH & THÔNG TIN BÀI HỌC:
+- Bảng hành chính gồm: SỞ GD&ĐT VĨNH LONG - TRƯỜNG THPT MANG THÍT đối xứng với CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM - Độc lập - Tự do - Hạnh phúc.
+- Tiêu đề: KẾ HOẠCH BÀI DẠY: ${lessonTitle.toUpperCase()}
+- Môn học: ${subject} ${grade} • Bộ sách: ${book} • Thời lượng: 02 tiết.
+- Họ và tên giáo viên: Hồ Tấn Khải • Đơn vị: Trường THPT Mang Thít.
 
-1. HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI (RIÊNG HOẠT ĐỘNG NÀY BẮT BUỘC CÓ KHUNG BẢNG 2 CỘT):
-- Mở đầu bằng khung div NLS và AI:
-<div style="background: #eef2ff; border-left: 4px solid #3b82f6; padding: 6px 10px; margin: 4px 0; font-size: 11pt;">
-👉 <strong>[Tích hợp năng lực số - ${info.nls}]:</strong> ${info.nlsDesc}.<br>
-👉 <strong>[Khung phản biện AI - Mã ${info.aiCode}]:</strong><br>
-<span style="color: #b91c1c; font-style: italic;">"${info.factCheck}"</span>
-</div>
+2. I. MỤC TIÊU:
+- 1. Về kiến thức: Nêu chi tiết Yêu cầu cần đạt (YCCĐ) theo Chương trình GDPT 2018 và SGK hiện hành.
+- 2. Về năng lực: 
+  + 2.1. Năng lực chung: Tự chủ & tự học, Giao tiếp & hợp tác, Giải quyết vấn đề & sáng tạo.
+  + 2.2. Năng lực đặc thù: Nhận thức sinh học, Tìm hiểu thế giới tự nhiên, Vận dụng kiến thức kĩ năng đã học.
+  + 2.3. Tích hợp Năng lực số: [${info.nls}] -${info.nlsDesc}.
+  + 2.4. Tích hợp Năng lực Trí tuệ nhân tạo (AI): [Mã ${info.aiCode}] -${info.aiDesc}.
+- 3. Về phẩm chất: Yêu nước, Nhân ái, Chăm chỉ, Trung thực, Trách nhiệm.
+- 4. Nội dung tích hợp: Bảo vệ môi trường, an toàn sinh học và phát triển bền vững nông nghiệp địa phương.
 
-- Tiếp theo là DUY NHẤT 1 BẢNG 2 CỘT VIỀN ĐEN:
-<table>
-  <thead>
-    <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
-      <th style="width: 50%;">HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH</th>
-      <th style="width: 50%;">DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- Chia từ 2 đến 3 hàng tr tương ứng với các mục kiến thức cốt lõi của bài học theo SGK -->
-    <!-- Cột trái mỗi hàng có đủ 4 bước: - Bước 1: Chuyển giao nhiệm vụ, - Bước 2: Thực hiện nhiệm vụ, - Bước 3: Báo cáo, thảo luận, - Bước 4: Kết luận, nhận định -->
-    <!-- Cột phải mỗi hàng là kiến thức trọng tâm chi tiết học sinh ghi vở bám sát Yêu cầu cần đạt (YCCĐ) -->
-  </tbody>
-</table>
-- BẮT BUỘC ĐÓNG THẺ </table> NGAY KHI KẾT THÚC HOẠT ĐỘNG 2.
+3. II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU: Của giáo viên và học sinh.
 
-2. HOẠT ĐỘNG 3: LUYỆN TẬP (TUYỆT ĐỐI KHÔNG DÙNG THẺ TABLE, KHÔNG BỎ TRONG KHUNG BẢNG):
-- Nằm hoàn toàn ở ngoài bảng, trình bày dạng thẻ <p> chuẩn:
-<p style="font-weight: bold; color: #1e40af; margin: 12px 0 2px 0;">HOẠT ĐỘNG 3: LUYỆN TẬP</p>
-<p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao hệ thống câu hỏi trắc nghiệm đánh giá năng lực gồm đủ 3 dạng thức.</p>
-<p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS làm việc cá nhân hoàn thành vào phiếu trắc nghiệm.</p>
-<p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Học sinh công bố đáp án, giải thích cơ sở lý thuyết lựa chọn.</p>
-<p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV nhận xét, chốt đáp án chuẩn và phân tích lỗi sai.</p>
-<p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
-(Bắt buộc có đủ 3 dạng thức trắc nghiệm mới:
- + Dạng 1: Trắc nghiệm 4 lựa chọn (2 - 4 câu hỏi có 4 phương án A, B, C, D; in đậm đáp án đúng).
- + Dạng 2: Trắc nghiệm Đúng / Sai (1 câu có 4 ý a, b, c, d bối cảnh thực nghiệm; ghi rõ [ĐÚNG] hoặc [SAI]).
- + Dạng 3: Trắc nghiệm trả lời ngắn (2 câu điền số hoặc thuật ngữ; ghi rõ đáp án).)
+4. III. TIẾN TRÌNH DẠY HỌC:
+- HOẠT ĐỘNG 1: MỞ ĐẦU (KHỞI ĐỘNG): Đủ 4 bước (Bước 1 Chuyển giao, Bước 2 Thực hiện, Bước 3 Báo cáo thảo luận, Bước 4 Kết luận nhận định) và * DỰ KIẾN SẢN PHẨM.
+- HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI:
+  + Mở đầu bằng khung div trang trí viền xanh nhạt: Tóm tắt NLS và Khung phản biện AI.
+  + DUY NHẤT 1 BẢNG 2 CỘT VIỀN ĐEN: Cột 1 (50%) là "HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH" (chia 2-3 mục kiến thức; mỗi mục đủ 4 bước); Cột 2 (50%) là "DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ)" chi tiết kiến thức học sinh ghi chép vào vở.
+  + ĐÓNG THẺ TABLE NGAY SAU KHI KẾT THÚC HOẠT ĐỘNG 2.
+- HOẠT ĐỘNG 3: LUYỆN TẬP: Tuyệt đối không dùng khung bảng. Nêu đủ 4 bước tổ chức dạy học. Mục * DỰ KIẾN SẢN PHẨM có đủ 3 dạng thức trắc nghiệm mới chuẩn GDPT: Dạng 1 (4 lựa chọn, in đậm đáp án), Dạng 2 (Đúng/Sai bối cảnh khoa học, ghi rõ [ĐÚNG]/[SAI]), Dạng 3 (Trả lời ngắn điền số/từ, ghi rõ đáp án).
+- HOẠT ĐỘNG 4: VẬN DỤNG: Tuyệt đối không dùng khung bảng. Nêu đủ 4 bước tổ chức dạy học. Bài tập tình huống gắn liền với thực tiễn nông nghiệp, trồng trọt cây ăn trái tại huyện Mang Thít, tỉnh Vĩnh Long.
 
-3. HOẠT ĐỘNG 4: VẬN DỤNG (TUYỆT ĐỐI KHÔNG DÙNG THẺ TABLE, KHÔNG BỎ TRONG KHUNG BẢNG):
-- Nằm hoàn toàn ở ngoài bảng, trình bày dạng thẻ <p> chuẩn:
-<p style="font-weight: bold; color: #1e40af; margin: 12px 0 2px 0;">HOẠT ĐỘNG 4: VẬN DỤNG</p>
-<p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao bài tập tình huống thực tế gắn liền sản xuất nông nghiệp, sinh thái tại Mang Thít, Vĩnh Long.</p>
-<p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS tìm hiểu thực tế tại địa phương, hoàn thành báo cáo thu hoạch.</p>
-<p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Nộp sản phẩm qua nhóm học tập trực tuyến trước buổi học sau.</p>
-<p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV nhận xét, đánh giá sản phẩm và trao giải sáng tạo.</p>
-<p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
-<p style="margin: 2px 0 8px 25px;">- Bản báo cáo đề xuất giải pháp kỹ thuật cụ thể ứng dụng vào trồng trọt, phòng chống dịch hại cây trồng tại Mang Thít.</p>
+5. IV. HỒ SƠ DẠY HỌC / PHỤ LỤC:
+- Phụ lục 1: PHIẾU HỌC TẬP SỐ 1 (Bảng kẻ viền đen).
+- Phụ lục 2: RUBRIC ĐÁNH GIÁ NĂNG LỰC SỐ (Bảng 5 cột viền đen).
+- Phụ lục 3: RUBRIC ĐÁNH GIÁ NĂNG LỰC AI (Bảng 5 cột viền đen).
 
-Ghi chú sư phạm bổ sung: ${customGuide}${filePromptPart}
-Tuyệt đối không dùng markdown \`\`\`html. Chỉ trả về mã HTML từ <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p> đến hết Hoạt động 4.`;
+QUY TẮC ĐỊNH DẠNG:
+- Toàn bộ danh sách gạch đầu dòng bắt buộc dùng dấu gạch ngang (-), KHÔNG dùng dấu chấm tròn.
+- Định dạng font Times New Roman, text-align: justify, line-height: 1.2.
+- Trả về mã HTML thuần hoàn chỉnh, tuyệt đối không bọc trong thẻ markdown \`\`\`html.`;
                 } else if (currentActiveMode === '7991') {
                     promptText = `Bạn là chuyên gia khảo thí Bộ GD&ĐT. Hãy soạn Ma trận, Bản đặc tả và Đề kiểm tra định kì (CV 7991) cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
                     Yêu cầu: Bản giáo viên gạch chân đáp án đúng (<u>A</u>, <u>a)</u>, Đáp án là: <u>...</u>). Đủ 4 mục: Khung ma trận, Bản đặc tả, Đề thi 3 phần, Hướng dẫn chấm. Ghi chú: ${customGuide}${filePromptPart}. Trả về mã HTML thuần.`;
@@ -1031,18 +1014,12 @@ Tuyệt đối không dùng markdown \`\`\`html. Chỉ trả về mã HTML từ 
 
                 const rawAiOutputHtml = await callGeminiUnifiedEngine(promptText, savedKey, updateStatusText);
 
-                // Lọc và sửa lỗi thẻ đóng tự động
                 const fixedAiHtml = sanitizeAndFixAIActivities(rawAiOutputHtml);
 
-                if (currentActiveMode === '5512') {
-                    renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, fixedAiHtml);
-                } else {
-                    docContainer.innerHTML = fixedAiHtml;
-                }
-
+                docContainer.innerHTML = fixedAiHtml;
                 temporaryAIGeneratedDoc = docContainer.innerHTML;
                 showAIReviewBar();
-                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> AI vừa biên soạn HĐ 2, 3, 4 chuẩn chỉ (Chờ Thầy lưu hoặc xóa)</span>`;
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> AI vừa biên soạn TOÀN BỘ giáo án chuẩn chỉ (Chờ Thầy lưu hoặc xóa)</span>`;
 
             } catch (error) {
                 console.error("Chi tiết lỗi AI:", error);
@@ -1080,13 +1057,62 @@ Tuyệt đối không dùng markdown \`\`\`html. Chỉ trả về mã HTML từ 
             renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
         }
 
-        // ==================== 1. KẾ HOẠCH BÀI DẠY CV 5512 (CƠ CHẾ RÁP HĐ 2, 3, 4 HOÀN HẢO) ====================
-        function renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, customAct234Html = null) {
+        // ==================== 1. BẢN GỐC NỘI HÀM: KẾ HOẠCH BÀI DẠY CV 5512 ====================
+        function renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle) {
             const docContainer = document.getElementById('container-a4-doc');
             const info = getDynamicNlsAiInfo(lessonTitle, grade);
 
-            // Cụm Hoạt động 2, 3, 4 mặc định nội hàm chuẩn chỉ
-            const defaultAct234Html = `
+            docContainer.innerHTML = `
+                <table style="width: 100%; border: none; margin-bottom: 12px;">
+                    <tr style="border: none;">
+                        <td style="border: none; width: 45%; text-align: center; vertical-align: top; padding: 0;">
+                            <p style="margin: 0; font-size: 11pt;">SỞ GD&ĐT VĨNH LONG</p>
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">${schoolName.toUpperCase()}</p>
+                            <div style="width: 80px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
+                        </td>
+                        <td style="border: none; width: 55%; text-align: center; vertical-align: top; padding: 0;">
+                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                            <p style="margin: 0; font-style: italic; font-size: 11pt;">Độc lập - Tự do - Hạnh phúc</p>
+                            <div style="width: 120px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="text-align: center; margin: 15px 0;">
+                    <h2 style="margin: 0; font-size: 14pt; font-weight: bold; text-transform: uppercase;">KẾ HOẠCH BÀI DẠY</h2>
+                    <h3 style="margin: 4px 0 0 0; font-size: 13pt; font-weight: bold; color: #1e3a8a;">${lessonTitle.toUpperCase()}</h3>
+                    <p style="margin: 2px 0 0 0; font-style: italic; font-size: 12pt;">Môn học: ${subject} ${grade} • Bộ sách: ${book} • Thời lượng: 02 tiết</p>
+                    <p style="margin: 2px 0 0 0; font-size: 11pt;">Họ và tên giáo viên: <strong>${teacherName}</strong> • Đơn vị: <strong>${schoolName}</strong></p>
+                </div>
+
+                <p style="font-weight: bold; margin: 10px 0 4px 0;">I. MỤC TIÊU</p>
+                <p style="margin: 2px 0 2px 10px;"><strong>1. Về kiến thức:</strong></p>
+                <p style="margin: 2px 0 2px 20px;">- Nêu được khái niệm, cấu trúc bản chất và cơ chế sinh học cốt lõi của ${lessonTitle} theo yêu cầu cần đạt của Chương trình GDPT 2018.</p>
+                <p style="margin: 2px 0 2px 20px;">- Phân tích được các quy luật biến đổi, tương tác sinh học và ý nghĩa đối với sự tồn tại của cơ thể sinh vật và ứng dụng thực tiễn trong nông nghiệp tại tỉnh Vĩnh Long.</p>
+
+                <p style="margin: 4px 0 2px 10px;"><strong>2. Về năng lực:</strong></p>
+                <p style="margin: 2px 0 2px 20px;">- 2.1. Năng lực chung: Tự chủ & tự học trong tra cứu tài liệu, Giao tiếp & hợp tác nhóm, Giải quyết vấn đề & sáng tạo.</p>
+                <p style="margin: 2px 0 2px 20px;">- 2.2. Năng lực đặc thù: Nhận thức sinh học/công nghệ; Tìm hiểu thế giới tự nhiên; Vận dụng kiến thức, kĩ năng đã học vào đời sống.</p>
+                <p style="margin: 2px 0 2px 20px; color: #0369a1;">- 2.3. Tích hợp Năng lực số: <strong>[${info.nls}]</strong> - ${info.nlsDesc}.</p>
+                <p style="margin: 2px 0 2px 20px; color: #4338ca;">- 2.4. Tích hợp Năng lực Trí tuệ nhân tạo (AI): <strong>[Mã ${info.aiCode}]</strong> - ${info.aiDesc}.</p>
+
+                <p style="margin: 4px 0 2px 10px;"><strong>3. Về phẩm chất:</strong> Yêu nước, Nhân ái, Chăm chỉ, Trung thực, Trách nhiệm trong học tập và nghiên cứu khoa học.</p>
+                <p style="margin: 4px 0 2px 10px;"><strong>4. Nội dung tích hợp:</strong> Bảo vệ môi trường, an toàn sinh học và phát triển bền vững nông nghiệp tại địa phương.</p>
+
+                <p style="font-weight: bold; margin: 12px 0 4px 0;">II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU</p>
+                <p style="margin: 2px 0 2px 15px;">- 1. Của giáo viên: Máy tính, máy chiếu/tivi, mã QR mô hình học liệu số, Phiếu học tập số 1, đề kiểm tra đánh giá.</p>
+                <p style="margin: 2px 0 2px 15px;">- 2. Của học sinh: SGK ${book}, vở ghi chép, thiết bị thông minh tra cứu học liệu số.</p>
+
+                <p style="font-weight: bold; margin: 12px 0 4px 0;">III. TIẾN TRÌNH DẠY HỌC</p>
+
+                <p style="font-weight: bold; color: #1e40af; margin: 6px 0 2px 0;">HOẠT ĐỘNG 1: MỞ ĐẦU (KHỞI ĐỘNG)</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: Giáo viên trình chiếu tình huống thực tiễn có vấn đề liên quan đến ${lessonTitle}, đặt câu hỏi mâu thuẫn nhận thức.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: Học sinh làm việc cá nhân, quan sát hiện tượng và suy ngẫm câu trả lời trong 2 phút.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Chỉ định 2 học sinh đại diện phát biểu ý kiến, học sinh khác nhận xét.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: Giáo viên ghi nhận các ý kiến, phân tích mâu thuẫn và dẫn dắt vào bài mới.</p>
+                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
+                <p style="margin: 2px 0 8px 25px;">- Câu trả lời bước đầu của học sinh chỉ ra được sự cần thiết phải tìm hiểu cơ chế bản chất của ${lessonTitle}.</p>
+
                 <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p>
                 <div style="background: #eef2ff; border-left: 4px solid #3b82f6; padding: 6px 10px; margin: 4px 0; font-size: 11pt;">
                     👉 <strong>[Tích hợp năng lực số - ${info.nls}]:</strong> ${info.nlsDesc}.<br>
@@ -1180,65 +1206,6 @@ Tuyệt đối không dùng markdown \`\`\`html. Chỉ trả về mã HTML từ 
                 <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV nhận xét, đánh giá sản phẩm và trao giải sáng tạo.</p>
                 <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
                 <p style="margin: 2px 0 8px 25px;">- Bản báo cáo đề xuất giải pháp kỹ thuật cụ thể ứng dụng vào trồng trọt, phòng chống dịch hại cây trồng tại Mang Thít.</p>
-            `;
-
-            const act234Content = customAct234Html || defaultAct234Html;
-
-            docContainer.innerHTML = `
-                <table style="width: 100%; border: none; margin-bottom: 12px;">
-                    <tr style="border: none;">
-                        <td style="border: none; width: 45%; text-align: center; vertical-align: top; padding: 0;">
-                            <p style="margin: 0; font-size: 11pt;">SỞ GD&ĐT VĨNH LONG</p>
-                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">${schoolName.toUpperCase()}</p>
-                            <div style="width: 80px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
-                        </td>
-                        <td style="border: none; width: 55%; text-align: center; vertical-align: top; padding: 0;">
-                            <p style="margin: 0; font-weight: bold; font-size: 11pt;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
-                            <p style="margin: 0; font-style: italic; font-size: 11pt;">Độc lập - Tự do - Hạnh phúc</p>
-                            <div style="width: 120px; height: 1px; background: #000; margin: 3px auto 0 auto;"></div>
-                        </td>
-                    </tr>
-                </table>
-
-                <div style="text-align: center; margin: 15px 0;">
-                    <h2 style="margin: 0; font-size: 14pt; font-weight: bold; text-transform: uppercase;">KẾ HOẠCH BÀI DẠY</h2>
-                    <h3 style="margin: 4px 0 0 0; font-size: 13pt; font-weight: bold; color: #1e3a8a;">${lessonTitle.toUpperCase()}</h3>
-                    <p style="margin: 2px 0 0 0; font-style: italic; font-size: 12pt;">Môn học: ${subject} ${grade} • Bộ sách: ${book} • Thời lượng: 02 tiết</p>
-                    <p style="margin: 2px 0 0 0; font-size: 11pt;">Họ và tên giáo viên: <strong>${teacherName}</strong> • Đơn vị: <strong>${schoolName}</strong></p>
-                </div>
-
-                <p style="font-weight: bold; margin: 10px 0 4px 0;">I. MỤC TIÊU</p>
-                <p style="margin: 2px 0 2px 10px;"><strong>1. Về kiến thức:</strong></p>
-                <p style="margin: 2px 0 2px 20px;">- Nêu được khái niệm, cấu trúc bản chất và cơ chế sinh học cốt lõi của ${lessonTitle} theo yêu cầu cần đạt của Chương trình GDPT 2018.</p>
-                <p style="margin: 2px 0 2px 20px;">- Phân tích được các quy luật biến đổi, tương tác sinh học và ý nghĩa đối với sự tồn tại của cơ thể sinh vật và ứng dụng thực tiễn trong nông nghiệp tại tỉnh Vĩnh Long.</p>
-
-                <p style="margin: 4px 0 2px 10px;"><strong>2. Về năng lực:</strong></p>
-                <p style="margin: 2px 0 2px 20px;">- 2.1. Năng lực chung: Tự chủ & tự học trong tra cứu tài liệu, Giao tiếp & hợp tác nhóm, Giải quyết vấn đề & sáng tạo.</p>
-                <p style="margin: 2px 0 2px 20px;">- 2.2. Năng lực đặc thù: Nhận thức sinh học/công nghệ; Tìm hiểu thế giới tự nhiên; Vận dụng kiến thức, kĩ năng đã học vào đời sống.</p>
-                <p style="margin: 2px 0 2px 20px; color: #0369a1;">- 2.3. Tích hợp Năng lực số: <strong>[${info.nls}]</strong> - ${info.nlsDesc}.</p>
-                <p style="margin: 2px 0 2px 20px; color: #4338ca;">- 2.4. Tích hợp Năng lực Trí tuệ nhân tạo (AI): <strong>[Mã ${info.aiCode}]</strong> - ${info.aiDesc}.</p>
-
-                <p style="margin: 4px 0 2px 10px;"><strong>3. Về phẩm chất:</strong> Yêu nước, Nhân ái, Chăm chỉ, Trung thực, Trách nhiệm trong học tập và nghiên cứu khoa học.</p>
-                <p style="margin: 4px 0 2px 10px;"><strong>4. Nội dung tích hợp:</strong> Bảo vệ môi trường, an toàn sinh học và phát triển bền vững nông nghiệp tại địa phương.</p>
-
-                <p style="font-weight: bold; margin: 12px 0 4px 0;">II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU</p>
-                <p style="margin: 2px 0 2px 15px;">- 1. Của giáo viên: Máy tính, máy chiếu/tivi, mã QR mô hình học liệu số, Phiếu học tập số 1, đề kiểm tra đánh giá.</p>
-                <p style="margin: 2px 0 2px 15px;">- 2. Của học sinh: SGK ${book}, vở ghi chép, thiết bị thông minh tra cứu học liệu số.</p>
-
-                <p style="font-weight: bold; margin: 12px 0 4px 0;">III. TIẾN TRÌNH DẠY HỌC</p>
-
-                <p style="font-weight: bold; color: #1e40af; margin: 6px 0 2px 0;">HOẠT ĐỘNG 1: MỞ ĐẦU (KHỞI ĐỘNG)</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: Giáo viên trình chiếu tình huống thực tiễn có vấn đề liên quan đến ${lessonTitle}, đặt câu hỏi mâu thuẫn nhận thức.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: Học sinh làm việc cá nhân, quan sát hiện tượng và suy ngẫm câu trả lời trong 2 phút.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Chỉ định 2 học sinh đại diện phát biểu ý kiến, học sinh khác nhận xét.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: Giáo viên ghi nhận các ý kiến, phân tích mâu thuẫn và dẫn dắt vào bài mới.</p>
-                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
-                <p style="margin: 2px 0 8px 25px;">- Câu trả lời bước đầu của học sinh chỉ ra được sự cần thiết phải tìm hiểu cơ chế bản chất của ${lessonTitle}.</p>
-
-                <!-- KHU VỰC HĐ 2, 3, 4 ĐƯỢC BẢO VỆ CHỐNG TRÀN -->
-                <div id="wrapper-act234-zone">
-                    ${act234Content}
-                </div>
 
                 <p style="font-weight: bold; margin: 16px 0 4px 0;">IV. HỒ SƠ DẠY HỌC / PHỤ LỤC</p>
                 <p style="font-weight: bold; text-decoration: underline;">Phụ lục 1: PHIẾU HỌC TẬP SỐ 1</p>
@@ -1837,7 +1804,7 @@ Tuyệt đối không dùng markdown \`\`\`html. Chỉ trả về mã HTML từ 
                     <meta charset='utf-8'>
                     <title>${fileName}</title>
                     <style>
-                        body { font-family: 'Times New Roman', serif; font-size: 13pt; line-height: 1.15; text-align: justify; }
+                        body { font-family: 'Times New Roman', serif; font-size: 13pt; line-height: 1.2; text-align: justify; }
                         table { border-collapse: collapse; width: 100%; margin: 12px 0; }
                         th, td { border: 1px solid black; padding: 6px; font-size: 11pt; }
                         u { text-decoration: underline; font-weight: bold; }
