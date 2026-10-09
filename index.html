@@ -87,7 +87,7 @@
         }
         .btn-3d-slate:active { box-shadow: 0 1px 0 #0f172a; }
 
-        /* Khung in A4 chuẩn công vụ 5512 */
+        /* Khung in A4 chuẩn công vụ CV 5512 */
         .page-a4 {
             width: 210mm;
             min-height: 297mm;
@@ -98,7 +98,7 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             font-family: "Times New Roman", Times, serif;
             font-size: 13pt;
-            line-height: 1.2;
+            line-height: 1.25;
             text-align: justify;
         }
 
@@ -254,7 +254,7 @@
                 <div class="mt-3.5 pt-2 border-t border-brand-border/60 space-y-2">
                     <button onclick="executeActionAI()" class="btn-3d btn-3d-purple py-2.5 px-3 rounded-xl text-white font-extrabold text-xs flex items-center justify-center gap-2 w-full">
                         <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                        <span id="btn-sidebar-ai-text">SOẠN TOÀN BỘ BẰNG AI</span>
+                        <span id="btn-sidebar-ai-text">SOẠN TOÀN BỘ GIÁO ÁN (AI)</span>
                     </button>
 
                     <button onclick="forceUseInternalData()" class="btn-3d btn-3d-slate py-2 px-3 rounded-xl text-slate-200 font-bold text-xs flex items-center justify-center gap-2 w-full hover:text-white" title="Quay về dùng nội dung mẫu nội hàm chuẩn mực">
@@ -285,7 +285,7 @@
                 <h3 class="text-xs uppercase font-extrabold tracking-wider text-cyan-300 flex items-center gap-1.5">
                     <i class="fa-solid fa-pen-fancy text-amber-400"></i> Ghi Chú Sư Phạm Bổ Sung (Khi gọi AI)
                 </h3>
-                <textarea id="ai-custom-instructions" rows="2" placeholder="Ví dụ: Tăng cường bài tập thực tiễn nông nghiệp Vĩnh Long, lồng ghép sâu năng lực chuyển đổi số..." class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400"></textarea>
+                <textarea id="ai-custom-instructions" rows="2" placeholder="Ví dụ: Tăng cường bài tập thực tiễn nông nghiệp Vĩnh Long, mở rộng liên hệ địa phương..." class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400"></textarea>
             </div>
         </aside>
 
@@ -664,8 +664,7 @@
                 itemRow.innerHTML = `
                     <input type="checkbox" ${isCheckedForExam ? 'checked' : ''} onchange="toggleLessonInExam('${lessonName}', this.checked)" class="rounded accent-amber-500 w-4 h-4 cursor-pointer" title="Tích chọn đưa vào Ma trận Đề thi 7991">
                     <span onclick="selectCurrentLesson('${lessonName}')" class="truncate flex-1 cursor-pointer font-semibold flex items-center gap-1.5" title="Click để xem bài này">
-                        ${lessonName}
-                        ${hasAICache ? '<span class="text-[9px] bg-purple-500/30 text-purple-300 border border-purple-500/40 px-1.5 py-0.2 rounded font-black">AI</span>' : ''}
+                        ${lessonName}${hasAICache ? '<span class="text-[9px] bg-purple-500/30 text-purple-300 border border-purple-500/40 px-1.5 py-0.2 rounded font-black">AI</span>' : ''}
                     </span>
                     <i onclick="selectCurrentLesson('${lessonName}')" class="fa-solid fa-arrow-right text-[10px] text-cyan-400 opacity-60 cursor-pointer"></i>
                 `;
@@ -840,7 +839,6 @@
             const sandbox = document.createElement('div');
             sandbox.innerHTML = rawHtml.trim();
 
-            // Quét các bảng table, ngăn chặn việc Hoạt động 3, 4 hoặc Phụ lục bị nuốt nhầm vào ô bảng
             const tables = sandbox.querySelectorAll('table');
             tables.forEach(tbl => {
                 const cells = tbl.querySelectorAll('td, th');
@@ -861,64 +859,7 @@
             return sandbox.innerHTML;
         }
 
-        // ==================== ENGINE GỌI API GEMINI (MODEL GEMINI-3.5-FLASH) ====================
-        async function callGeminiUnifiedEngine(promptText, apiKey, statusCallback) {
-            const key = apiKey.trim();
-
-            const candidateModels = [
-                'gemini-3.5-flash',
-                'gemini-3.8-flash',
-                'gemini-3.7-flash',
-                'gemini-3.6-flash',
-                'gemini-3.5-flash-lite'
-            ];
-
-            let detailedErrors = [];
-
-            for (const model of candidateModels) {
-                try {
-                    if (statusCallback) statusCallback(`Đang biên soạn với [${model}]...`);
-                    
-                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
-                    
-                    const res = await fetch(endpoint, {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: promptText }] }],
-                            generationConfig: { 
-                                temperature: 0.7, 
-                                maxOutputTokens: 8192 
-                            }
-                        })
-                    });
-
-                    const data = await res.json().catch(() => ({}));
-
-                    if (!res.ok) {
-                        const errMsg = data?.error?.message || `HTTP ${res.status}`;
-                        console.warn(`Model ${model} báo lỗi:`, errMsg);
-                        detailedErrors.push(`[${model}]: ${errMsg}`);
-                        continue;
-                    }
-
-                    const textOut = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-                    if (textOut && textOut.trim() !== '') {
-                        console.log(`%c[BioMaster AI] Hoàn tất bằng: ${model}`, "color: #10b981; font-weight: bold;");
-                        return textOut.replace(/^```html/i, '').replace(/```$/i, '').trim();
-                    }
-                } catch (err) {
-                    console.warn(`Lỗi fetch model ${model}:`, err.message);
-                    detailedErrors.push(`[${model}]: ${err.message}`);
-                }
-            }
-
-            throw new Error(detailedErrors.join(" | ") || "Không thể kết nối đến máy chủ AI.");
-        }
-
-        // ==================== HÀM SOẠN TOÀN BỘ GIÁO ÁN BẰNG AI ====================
+        // ==================== HÀM SOẠN TOÀN BỘ GIÁO ÁN BẰNG AI (CHUẨN 100% NHƯ LỆNH TEST) ====================
         async function executeActionAI() {
             const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
             if (!savedKey) {
@@ -944,82 +885,92 @@
             docContainer.innerHTML = `
                 <div style="text-align: center; padding: 75px 20px; font-family: sans-serif;">
                     <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-wand-magic-sparkles fa-bounce"></i></div>
-                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">AI đang tăng tốc biên soạn TOÀN BỘ Kế hoạch bài dạy chuẩn 5512...</h3>
+                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">Gemini 3.5 đang trực tiếp biên soạn TOÀN BỘ Kế hoạch bài dạy 5512...</h3>
                     <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
-                        Bài học: <strong>${lessonTitle}</strong> (${subject} ${grade} - ${book})
+                        Bài học: <strong>${lessonTitle}</strong> (${subject} ${grade} -${book})
                     </p>
                 </div>
             `;
 
-            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang trực tiếp soạn toàn bộ giáo án...</span>`;
+            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang xử lý...</span>`;
 
             try {
                 let filePromptPart = "";
                 if (uploadedFileContent && uploadedFileContent.trim() !== "") {
-                    filePromptPart = `\n- NGỮ LIỆU/TÀI LIỆU SGK BỔ SUNG:\n"""\n${uploadedFileContent.slice(0, 8000)}\n"""\n(Ưu tiên phân tích bám sát ngữ liệu trên).`;
+                    filePromptPart = `\n- NGỮ LIỆU SGK BỔ SUNG: """${uploadedFileContent.slice(0, 8000)}"""`;
                 }
 
-                let promptText = "";
-                if (currentActiveMode === '5512') {
-                    const info = getDynamicNlsAiInfo(lessonTitle, grade);
-                    
-                    promptText = `Bạn là chuyên gia sư phạm THPT hàng đầu Việt Nam. Hãy soạn TOÀN BỘ Kế hoạch bài dạy chuẩn mực theo đúng quy định Công văn 5512/BGDĐT-GDTrH cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
+                const info = getDynamicNlsAiInfo(lessonTitle, grade);
+                
+                // Prompt chuẩn xác, yêu cầu tạo mã HTML đầy đủ từ đầu đến cuối
+                const promptText = `Bạn là chuyên gia sư phạm THPT. Hãy soạn TOÀN BỘ Kế hoạch bài dạy chuẩn mực theo đúng quy định Công văn 5512/BGDĐT-GDTrH cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
 
-YÊU CẦU BẮT BUỘC VỀ BỐ CỤC VÀ ĐỊNH DẠNG:
-1. TIÊU ĐỀ HÀNH CHÍNH & THÔNG TIN BÀI HỌC:
-- Bảng hành chính gồm: SỞ GD&ĐT VĨNH LONG - TRƯỜNG THPT MANG THÍT đối xứng với CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM - Độc lập - Tự do - Hạnh phúc.
+YÊU CẦU NỘI DUNG VÀ TRÌNH BÀY HTML CHUẨN MỰC:
+1. BẢNG HÀNH CHÍNH & TIÊU ĐỀ:
+- SỞ GD&ĐT VĨNH LONG - TRƯỜNG THPT MANG THÍT đối xứng CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM.
 - Tiêu đề: KẾ HOẠCH BÀI DẠY: ${lessonTitle.toUpperCase()}
 - Môn học: ${subject} ${grade} • Bộ sách: ${book} • Thời lượng: 02 tiết.
 - Họ và tên giáo viên: Hồ Tấn Khải • Đơn vị: Trường THPT Mang Thít.
 
 2. I. MỤC TIÊU:
-- 1. Về kiến thức: Nêu chi tiết Yêu cầu cần đạt (YCCĐ) theo Chương trình GDPT 2018 và SGK hiện hành.
-- 2. Về năng lực: 
-  + 2.1. Năng lực chung: Tự chủ & tự học, Giao tiếp & hợp tác, Giải quyết vấn đề & sáng tạo.
-  + 2.2. Năng lực đặc thù: Nhận thức sinh học, Tìm hiểu thế giới tự nhiên, Vận dụng kiến thức kĩ năng đã học.
-  + 2.3. Tích hợp Năng lực số: [${info.nls}] -${info.nlsDesc}.
-  + 2.4. Tích hợp Năng lực Trí tuệ nhân tạo (AI): [Mã ${info.aiCode}] -${info.aiDesc}.
-- 3. Về phẩm chất: Yêu nước, Nhân ái, Chăm chỉ, Trung thực, Trách nhiệm.
-- 4. Nội dung tích hợp: Bảo vệ môi trường, an toàn sinh học và phát triển bền vững nông nghiệp địa phương.
+- 1. Kiến thức: Nêu rõ yêu cầu cần đạt (YCCĐ).
+- 2. Năng lực: Năng lực chung, Năng lực đặc thù sinh học, Năng lực số [${info.nls}] (${info.nlsDesc}), Năng lực AI [Mã ${info.aiCode}] (${info.aiDesc}).
+- 3. Phẩm chất và 4. Nội dung tích hợp (Môi trường, nông nghiệp bền vững Vĩnh Long).
 
-3. II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU: Của giáo viên và học sinh.
+3. II. THIẾT BỊ DẠY HỌC VÀ HỌC LIỆU.
 
 4. III. TIẾN TRÌNH DẠY HỌC:
-- HOẠT ĐỘNG 1: MỞ ĐẦU (KHỞI ĐỘNG): Đủ 4 bước (Bước 1 Chuyển giao, Bước 2 Thực hiện, Bước 3 Báo cáo thảo luận, Bước 4 Kết luận nhận định) và * DỰ KIẾN SẢN PHẨM.
+- HOẠT ĐỘNG 1: MỞ ĐẦU (4 bước: Chuyển giao, Thực hiện, Báo cáo thảo luận, Kết luận nhận định và * DỰ KIẾN SẢN PHẨM).
 - HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI:
-  + Mở đầu bằng khung div trang trí viền xanh nhạt: Tóm tắt NLS và Khung phản biện AI.
-  + DUY NHẤT 1 BẢNG 2 CỘT VIỀN ĐEN: Cột 1 (50%) là "HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH" (chia 2-3 mục kiến thức; mỗi mục đủ 4 bước); Cột 2 (50%) là "DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ)" chi tiết kiến thức học sinh ghi chép vào vở.
-  + ĐÓNG THẺ TABLE NGAY SAU KHI KẾT THÚC HOẠT ĐỘNG 2.
-- HOẠT ĐỘNG 3: LUYỆN TẬP: Tuyệt đối không dùng khung bảng. Nêu đủ 4 bước tổ chức dạy học. Mục * DỰ KIẾN SẢN PHẨM có đủ 3 dạng thức trắc nghiệm mới chuẩn GDPT: Dạng 1 (4 lựa chọn, in đậm đáp án), Dạng 2 (Đúng/Sai bối cảnh khoa học, ghi rõ [ĐÚNG]/[SAI]), Dạng 3 (Trả lời ngắn điền số/từ, ghi rõ đáp án).
-- HOẠT ĐỘNG 4: VẬN DỤNG: Tuyệt đối không dùng khung bảng. Nêu đủ 4 bước tổ chức dạy học. Bài tập tình huống gắn liền với thực tiễn nông nghiệp, trồng trọt cây ăn trái tại huyện Mang Thít, tỉnh Vĩnh Long.
+  + Mở đầu bằng khung div NLS và Khung phản biện AI.
+  + DUY NHẤT 1 BẢNG 2 CỘT VIỀN ĐEN: Cột 1 (50%) là HOẠT ĐỘNG CỦA GV VÀ HS (đủ 4 bước cho từng mục); Cột 2 (50%) là DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ) chi tiết.
+  + ĐÓNG KÍN THẺ TABLE NGAY KHI HẾT HOẠT ĐỘNG 2.
+- HOẠT ĐỘNG 3: LUYỆN TẬP: Tuyệt đối không dùng khung bảng. Nêu đủ 4 bước. Mục * DỰ KIẾN SẢN PHẨM có đủ 3 dạng thức trắc nghiệm mới: Dạng 1 (4 lựa chọn, in đậm đáp án đúng), Dạng 2 (Đúng/Sai bối cảnh khoa học, ghi rõ [ĐÚNG]/[SAI]), Dạng 3 (Trả lời ngắn điền số/từ, ghi rõ đáp án).
+- HOẠT ĐỘNG 4: VẬN DỤNG: Tuyệt đối không dùng khung bảng. Nêu đủ 4 bước. Tình huống thực tiễn gắn với nông nghiệp, trồng trọt huyện Mang Thít, tỉnh Vĩnh Long.
 
 5. IV. HỒ SƠ DẠY HỌC / PHỤ LỤC:
-- Phụ lục 1: PHIẾU HỌC TẬP SỐ 1 (Bảng kẻ viền đen).
-- Phụ lục 2: RUBRIC ĐÁNH GIÁ NĂNG LỰC SỐ (Bảng 5 cột viền đen).
-- Phụ lục 3: RUBRIC ĐÁNH GIÁ NĂNG LỰC AI (Bảng 5 cột viền đen).
+- Phụ lục 1: Phiếu học tập số 1 (Bảng viền đen).
+- Phụ lục 2: Rubric đánh giá Năng lực số (Bảng 5 cột viền đen).
+- Phụ lục 3: Rubric đánh giá Năng lực AI (Bảng 5 cột viền đen).
 
-QUY TẮC ĐỊNH DẠNG:
-- Toàn bộ danh sách gạch đầu dòng bắt buộc dùng dấu gạch ngang (-), KHÔNG dùng dấu chấm tròn.
-- Định dạng font Times New Roman, text-align: justify, line-height: 1.2.
-- Trả về mã HTML thuần hoàn chỉnh, tuyệt đối không bọc trong thẻ markdown \`\`\`html.`;
-                } else if (currentActiveMode === '7991') {
-                    promptText = `Bạn là chuyên gia khảo thí Bộ GD&ĐT. Hãy soạn Ma trận, Bản đặc tả và Đề kiểm tra định kì (CV 7991) cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
-                    Yêu cầu: Bản giáo viên gạch chân đáp án đúng (<u>A</u>, <u>a)</u>, Đáp án là: <u>...</u>). Đủ 4 mục: Khung ma trận, Bản đặc tả, Đề thi 3 phần, Hướng dẫn chấm. Ghi chú: ${customGuide}${filePromptPart}. Trả về mã HTML thuần.`;
+QUY CÁCH:
+- Font Times New Roman, text-align: justify, line-height: 1.25.
+- Toàn bộ danh sách gạch đầu dòng dùng dấu gạch ngang (-), không dùng chấm tròn.
+- Ghi chú thêm: ${customGuide}${filePromptPart}
+- Trả về mã HTML thuần, không bọc trong thẻ markdown \`\`\`html.`;
+
+                // Gọi trực tiếp model gemini-3.5-flash chuẩn 100% như script test trên Console
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${savedKey}`;
+                
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptText }] }],
+                        generationConfig: { 
+                            temperature: 0.7, 
+                            maxOutputTokens: 8192 
+                        }
+                    })
+                });
+
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data?.error?.message || `Lỗi HTTP ${res.status}`);
                 }
 
-                const updateStatusText = (msg) => {
-                    const el = document.getElementById('ai-loading-status');
-                    if (el) el.innerText = msg;
-                };
+                let textOut = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!textOut || textOut.trim() === '') {
+                    throw new Error("AI không phản hồi nội dung văn bản.");
+                }
 
-                const rawAiOutputHtml = await callGeminiUnifiedEngine(promptText, savedKey, updateStatusText);
-
-                const fixedAiHtml = sanitizeAndFixAIActivities(rawAiOutputHtml);
+                textOut = textOut.replace(/^```html/i, '').replace(/```$/i, '').trim();
+                const fixedAiHtml = sanitizeAndFixAIActivities(textOut);
 
                 docContainer.innerHTML = fixedAiHtml;
                 temporaryAIGeneratedDoc = docContainer.innerHTML;
                 showAIReviewBar();
-                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> AI vừa biên soạn TOÀN BỘ giáo án chuẩn chỉ (Chờ Thầy lưu hoặc xóa)</span>`;
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> AI vừa biên soạn TOÀN BỘ giáo án chuẩn mực!</span>`;
 
             } catch (error) {
                 console.error("Chi tiết lỗi AI:", error);
@@ -1445,14 +1396,14 @@ QUY TẮC ĐỊNH DẠNG:
 
                 <p style="font-weight: bold; margin: 15px 0 4px 0;">MỤC 3: ĐỀ KIỂM TRA CHÍNH THỨC (BẢN GIÁO VIÊN - GẠCH CHÂN ĐÁP ÁN ĐÚNG)</p>
 
-                <p style="font-weight: bold; color: #1e3a8a; margin: 8px 0 2px 0;">PHẦN I. Câu trắc nghiệm nhiều phương án lựa chọn (${countP1} câu, mỗi câu đúng được 0.25 điểm)</p>
+                <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">PHẦN I. Câu trắc nghiệm nhiều phương án lựa chọn (${countP1} câu, mỗi câu đúng được 0.25 điểm)</p>
                 ${p1Html || '<p style="font-style: italic;">(Không có câu hỏi ở phần này)</p>'}
 
-                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN II. Câu trắc nghiệm đúng/sai (${countP2} câu. Điểm lũy tiến: đúng 1 ý = 0.1đ; 2 ý = 0.25đ; 3 ý = 0.5đ; 4 ý = 1.0đ)</p>
+                <p style="font-weight: bold; color: #1e40af; margin: 12px 0 2px 0;">PHẦN II. Câu trắc nghiệm đúng/sai (${countP2} câu. Điểm lũy tiến: đúng 1 ý = 0.1đ; 2 ý = 0.25đ; 3 ý = 0.5đ; 4 ý = 1.0đ)</p>
                 <p style="font-style: italic; font-size: 10pt; margin-bottom: 4px;">* Phương án nào đúng được gạch chân chữ cái đầu câu:</p>
                 ${p2Html || '<p style="font-style: italic;">(Không có câu hỏi ở phần này)</p>'}
 
-                <p style="font-weight: bold; color: #1e3a8a; margin: 12px 0 2px 0;">PHẦN III. Câu trắc nghiệm trả lời ngắn (${countP3} câu, mỗi câu đúng được 0.25 điểm)</p>
+                <p style="font-weight: bold; color: #1e40af; margin: 12px 0 2px 0;">PHẦN III. Câu trắc nghiệm trả lời ngắn (${countP3} câu, mỗi câu đúng được 0.25 điểm)</p>
                 ${p3Html || '<p style="font-style: italic;">(Không có câu hỏi ở phần này)</p>'}
 
                 <div style="page-break-before: always; margin-top: 25px;"></div>
@@ -1804,7 +1755,7 @@ QUY TẮC ĐỊNH DẠNG:
                     <meta charset='utf-8'>
                     <title>${fileName}</title>
                     <style>
-                        body { font-family: 'Times New Roman', serif; font-size: 13pt; line-height: 1.2; text-align: justify; }
+                        body { font-family: 'Times New Roman', serif; font-size: 13pt; line-height: 1.25; text-align: justify; }
                         table { border-collapse: collapse; width: 100%; margin: 12px 0; }
                         th, td { border: 1px solid black; padding: 6px; font-size: 11pt; }
                         u { text-decoration: underline; font-weight: bold; }
