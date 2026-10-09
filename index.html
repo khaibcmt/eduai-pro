@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduBioMaster - Trợ Lý Sư Phạm Toàn Năng | GV: Hồ Tấn Khải</title>
+    <title>EduBioMaster - Trợ Lý Sư Phạm Toàn Năng</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -73,6 +73,13 @@
         }
         .btn-3d-amber:active { box-shadow: 0 1px 0 #78350f; }
 
+        .btn-3d-emerald {
+            background: linear-gradient(180deg, #10b981 0%, #047857 100%);
+            border: 1px solid #6ee7b7;
+            box-shadow: 0 4px 0 #064e3b, 0 6px 15px rgba(16,185,129,0.4);
+        }
+        .btn-3d-emerald:active { box-shadow: 0 1px 0 #064e3b; }
+
         .page-a4 {
             width: 210mm;
             min-height: 297mm;
@@ -113,55 +120,51 @@
 </head>
 <body class="bg-brand-dark text-slate-200 font-sans min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white">
 
-    <!-- ==================== HEADER HỆ THỐNG ==================== -->
-    <header class="bg-brand-surface border-b border-brand-border px-4 py-2.5 sticky top-0 z-50 shadow-lg no-print">
-        <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-3">
+    <!-- ==================== HEADER HỆ THỐNG TINH GỌN (ĐÃ BỎ CHI TIẾT SỞ/TRƯỜNG/GV TRÊN ĐẦU) ==================== -->
+    <header class="bg-brand-surface border-b border-brand-border px-5 py-2.5 sticky top-0 z-50 shadow-lg no-print">
+        <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-4">
             
+            <!-- Logo Nhận diện Ứng dụng -->
             <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white text-xl shadow-lg shadow-blue-500/30 border border-white/20">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white text-lg shadow-lg shadow-blue-500/30 border border-white/20">
                     <i class="fa-solid fa-dna"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
                         <span class="text-lg font-black tracking-tight text-white">BioMaster AI</span>
-                        <span class="text-[10px] bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-extrabold px-2 py-0.5 rounded-full shadow-sm">High-End Engine</span>
+                        <span class="text-[10px] bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-extrabold px-2 py-0.5 rounded-full shadow-sm">High-End Edition</span>
                     </div>
-                    <p class="text-xs text-slate-300 font-semibold flex items-center gap-1.5 mt-0.5">
-                        <i class="fa-solid fa-user-check text-cyan-400 text-xs"></i> 
-                        <span>Giáo viên: Hồ Tấn Khải</span>
-                        <span class="text-slate-600">•</span>
-                        <span class="text-slate-400">Trường THPT Mang Thít</span>
-                    </p>
+                    <p class="text-[11px] text-slate-400 font-medium">Hệ Thống Trợ Lý Sư Phạm GDPT 2018</p>
                 </div>
             </div>
 
-            <!-- BỘ 3 NÚT KHỐI 3D CHÍNH NẰM TRÊN ĐẦU TRANG -->
+            <!-- BỘ 3 NÚT TẠO 3D TRÊN THANH CÔNG CỤ -->
             <div class="flex items-center gap-2.5">
-                <button onclick="executeActionGenerate('5512')" class="btn-3d btn-3d-blue py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
+                <button onclick="triggerGenerateMode('5512')" class="btn-3d btn-3d-blue py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
                     <i class="fa-solid fa-file-signature text-sm"></i>
-                    <span>TẠO GIÁO ÁN (CV 5512 + NLS + AI)</span>
+                    <span>TẠO GIÁO ÁN (CV 5512)</span>
                 </button>
 
-                <button onclick="executeActionGenerate('slide')" class="btn-3d btn-3d-purple py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
+                <button onclick="triggerGenerateMode('slide')" class="btn-3d btn-3d-purple py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
                     <i class="fa-solid fa-chalkboard-user text-sm"></i>
-                    <span>TẠO BÀI GIẢNG PPT (16 SLIDE LUYỆN TẬP)</span>
+                    <span>TẠO BÀI GIẢNG PPT (16 SLIDE)</span>
                 </button>
 
-                <button onclick="executeActionGenerate('7991')" class="btn-3d btn-3d-amber py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
+                <button onclick="triggerGenerateMode('7991')" class="btn-3d btn-3d-amber py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
                     <i class="fa-solid fa-list-check text-sm"></i>
-                    <span>TẠO ĐỀ THI & MA TRẬN ĐẶC TẢ</span>
+                    <span>TẠO ĐỀ THI & MA TRẬN 7991</span>
                 </button>
             </div>
 
-            <!-- Chuyển Tab Xem & Cài API Key / Google Drive -->
+            <!-- Chuyển Tab Xem & Cài Đặt API AI / Drive -->
             <div class="flex items-center gap-2">
                 <button onclick="openDriveSyncModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-xs font-bold border border-blue-500/30 transition flex items-center gap-1.5" title="Đồng bộ Google Drive Apps Script">
                     <i class="fa-brands fa-google-drive"></i> <span>Google Drive</span>
                 </button>
                 <div class="flex items-center bg-[#0b1222] p-1 rounded-xl border border-brand-border shadow-inner text-xs">
-                    <button id="btn-tab-5512" onclick="switchViewMode('5512')" class="px-3 py-1.5 rounded-lg font-bold transition bg-blue-600 text-white">5512</button>
-                    <button id="btn-tab-slide" onclick="switchViewMode('slide')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Slide 16:9</button>
-                    <button id="btn-tab-7991" onclick="switchViewMode('7991')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Đề & Ma Trận</button>
+                    <button id="btn-tab-5512" onclick="switchViewTab('5512')" class="px-3 py-1.5 rounded-lg font-bold transition bg-blue-600 text-white">5512</button>
+                    <button id="btn-tab-slide" onclick="switchViewTab('slide')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Slide 16:9</button>
+                    <button id="btn-tab-7991" onclick="switchViewTab('7991')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Đề & Ma Trận</button>
                 </div>
                 <button onclick="openAIKeyModal()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-key"></i> <span id="api-status-text">Cài API AI</span>
@@ -214,11 +217,11 @@
                 </div>
             </div>
 
-            <!-- KHỐI 2: KHUNG CHỌN BÀI DẠY VÀ TÍCH CHỌN CHO ĐỀ KIỂM TRA -->
-            <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md flex flex-col min-h-[250px]">
+            <!-- KHỐI 2: KHUNG CHỌN BÀI DẠY VÀ TÍCH CHỌN NHIỀU BÀI CHO ĐỀ KIỂM TRA -->
+            <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md flex flex-col min-h-[260px]">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-brand-border/60">
                     <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200 flex items-center gap-1.5">
-                        <i class="fa-solid fa-list-check text-emerald-400"></i> Danh Sách Bài Học SGK (Chọn & Tích Ra Đề)
+                        <i class="fa-solid fa-list-check text-emerald-400"></i> Danh Sách Bài Học SGK
                     </h3>
                     <div class="flex items-center gap-1.5 text-[10px]">
                         <button onclick="toggleSelectAllExams(true)" class="text-cyan-400 hover:underline">Chọn hết</button>
@@ -227,9 +230,9 @@
                     </div>
                 </div>
 
-                <p class="text-[11px] text-slate-400 mb-2">Click vào bài để <strong>Soạn bài/Slide</strong>; tích chọn checkbox để <strong>đưa vào Đề 7991</strong>:</p>
+                <p class="text-[11px] text-slate-400 mb-2">Click vào bài để <strong>chọn Soạn bài/Slide</strong>; tích chọn checkbox để <strong>đưa vào Đề 7991</strong>:</p>
 
-                <div id="lesson-items-container" class="space-y-1.5 overflow-y-auto max-h-[180px] pr-1"></div>
+                <div id="lesson-items-container" class="space-y-1.5 overflow-y-auto max-h-[175px] pr-1"></div>
 
                 <div class="mt-2.5 pt-2 border-t border-brand-border/60 flex items-center justify-between">
                     <div class="text-[11px] text-slate-400">Bài đang chọn:</div>
@@ -237,6 +240,12 @@
                         Bài 1: Giới thiệu khái quát môn Sinh học
                     </div>
                 </div>
+
+                <!-- Nút Tạo ngay bên dưới để giáo viên thuận tay bấm sau khi chọn bài -->
+                <button onclick="executeActionGenerate(currentActiveMode)" class="mt-3 btn-3d btn-3d-emerald py-2.5 px-3 rounded-xl text-white font-extrabold text-xs flex items-center justify-center gap-2 w-full">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span id="btn-left-create-text">BẮT ĐẦU TẠO (CV 5512)</span>
+                </button>
             </div>
 
             <!-- KHỐI 3: KÉO THẢ TÀI LIỆU SGK TỰ NẠP -->
@@ -255,28 +264,32 @@
                 </div>
             </div>
 
-            <!-- KHỐI 4: GHI CHÚ BỔ SUNG CHO AI -->
+            <!-- KHỐI 4: CHỈ DẪN BỔ SUNG TÙY BIẾN -->
             <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md space-y-2">
                 <h3 class="text-xs uppercase font-extrabold tracking-wider text-cyan-300 flex items-center gap-1.5">
                     <i class="fa-solid fa-pen-fancy text-amber-400"></i> Ghi Chú Sư Phạm Bổ Sung Cho AI (Nếu có)
                 </h3>
-                <textarea id="ai-custom-instructions" rows="2" placeholder="Ví dụ: Lồng ghép nông nghiệp Vĩnh Long, dịch bệnh ở cây trồng, tạo thêm câu hỏi gắn với đời sống thực tế..." class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400"></textarea>
+                <textarea id="ai-custom-instructions" rows="2" placeholder="Ví dụ: Lồng ghép nông nghiệp địa phương, nhấn mạnh liên hệ thực tiễn, câu hỏi trắc nghiệm đặc thù..." class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400"></textarea>
             </div>
         </aside>
 
         <!-- CỘT PHẢI: KHÔNG GIAN HIỂN THỊ SẢN PHẨM -->
         <section class="flex-1 flex flex-col bg-brand-surface rounded-2xl border border-brand-border overflow-hidden shadow-2xl relative">
             
-            <!-- THANH THAO TÁC XUẤT BẢN THẬT -->
+            <!-- THANH THAO TÁC XUẤT BẢN THẬT VÀ NÚT TẠO CHÍNH -->
             <div class="bg-brand-card/90 px-4 py-2.5 border-b border-brand-border flex flex-wrap items-center justify-between gap-3 no-print">
                 <div class="flex items-center gap-2 text-xs">
                     <span id="current-badge-view" class="px-2.5 py-1 rounded bg-blue-500/20 text-cyan-300 font-bold border border-cyan-500/30">
                         KẾ HOẠCH BÀI DẠY (CÔNG VĂN 5512 CẢI TIẾN HIGH-END)
                     </span>
-                    <span class="text-slate-400">• Bấm trực tiếp vào văn bản để chỉnh sửa trước khi tải về</span>
+                    <span class="text-slate-400">• Bấm trực tiếp vào văn bản để chỉnh sửa</span>
                 </div>
 
                 <div class="flex items-center gap-2">
+                    <button onclick="executeActionGenerate(currentActiveMode)" class="btn-3d btn-3d-emerald px-3.5 py-1.5 rounded-lg text-white text-xs font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-play"></i> <span id="btn-top-create-text">Tạo Ngay</span>
+                    </button>
+
                     <button id="btn-export-word" onclick="downloadWordDoc()" class="btn-3d btn-3d-blue px-3.5 py-1.5 rounded-lg text-white text-xs font-bold flex items-center gap-1.5">
                         <i class="fa-solid fa-file-word"></i> Tải File Word (.doc)
                     </button>
@@ -390,7 +403,7 @@
                 <p>Thầy dán mã <strong>Gemini API Key</strong> vào đây để AI tự động kết nối và viết bài trực tiếp theo thời gian thực:</p>
                 <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
                 <p class="text-[11px] text-slate-500 leading-relaxed">
-                    * Khi có Key, AI sẽ trực tiếp biên soạn bài mới và TỰ ĐỘNG LƯU vào máy tính để những lần sau xem lại không cần mạng.
+                    * Nếu AI gặp sự cố hoặc chưa có Key, hệ thống sẽ tự động dùng dữ liệu chuẩn mực dự phòng nội hàm ngay lập tức.
                 </p>
             </div>
             <div class="mt-5 flex justify-end gap-2 text-xs">
@@ -400,7 +413,7 @@
         </div>
     </div>
 
-    <!-- ==================== TOÀN BỘ SCRIPT ĐIỀU KHIỂN & GỌI AI DUY NHẤT ==================== -->
+    <!-- ==================== LOGIC JAVASCRIPT ĐIỀU KHIỂN & GỌI AI TOÀN DIỆN ==================== -->
     <script>
         const teacherName = "Hồ Tấn Khải";
         const schoolName = "Trường THPT Mang Thít";
@@ -415,9 +428,21 @@
         let timerSeconds = 0;
         let timerInterval = null;
 
+        // TỔNG SỐ CÂU HỎI MẶC ĐỊNH CHO TỪNG PHẦN THEO CHUẨN 7991 (KHÓA TỔNG & TỰ PHÂN BỔ)
+        let matrixGlobalTotals = {
+            p1_b: 9,
+            p1_h: 6,
+            p1_vd: 3,
+            p2_h: 2,
+            p2_vd: 2,
+            p3_h: 3,
+            p3_vd: 3
+        };
+
+        // BỘ NHỚ LƯU SỐ CÂU ĐÃ ĐƯỢC PHÂN BỔ TỰ ĐỘNG CHO TỪNG BÀI
         let examMatrixCustomCounts = {};
 
-        // DANH SÁCH TOÀN BỘ BÀI HỌC SGK
+        // DANH SÁCH BÀI HỌC SGK
         const sgkCurriculumDatabase = {
             "Sinh học": {
                 "10": [
@@ -491,7 +516,7 @@
             }
         };
 
-        // BẢNG TRA CỨU MÃ NLS & AI CHO TỪNG BÀI
+        // BẢNG TRA CỨU MÃ NLS & AI RIÊNG CHO TỪNG BÀI
         function getDynamicNlsAiInfo(lessonName, grade) {
             if (lessonName.includes("Bài 1:")) {
                 return {
@@ -556,10 +581,12 @@
                 localStorage.setItem('google_drive_script_url', DEFAULT_DRIVE_APP_URL);
             }
             onFilterChange();
-            executeActionGenerate('5512');
+            // Khởi tạo giao diện xem trước nội hàm sẵn sàng
+            renderGiaoAn5512HighEnd("Sinh học", "10", "Kết Nối Tri Thức", currentSelectedLesson);
             checkStoredApiKey();
         });
 
+        // KHI THAY ĐỔI MÔN/LỚP/SÁCH: CẬP NHẬT DANH SÁCH BÀI, KHÔNG TỰ ĐỘNG CHẠY AI
         function onFilterChange() {
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
@@ -589,7 +616,7 @@
 
                 itemRow.innerHTML = `
                     <input type="checkbox" ${isCheckedForExam ? 'checked' : ''} onchange="toggleLessonInExam('${lessonName}', this.checked)" class="rounded accent-amber-500 w-4 h-4 cursor-pointer" title="Tích chọn đưa vào Ma trận Đề thi 7991">
-                    <span onclick="selectCurrentLesson('${lessonName}')" class="truncate flex-1 cursor-pointer font-semibold" title="Click để chọn soạn bài này">
+                    <span onclick="selectCurrentLesson('${lessonName}')" class="truncate flex-1 cursor-pointer font-semibold" title="Click để chọn bài này">
                         ${lessonName}
                     </span>
                     <i onclick="selectCurrentLesson('${lessonName}')" class="fa-solid fa-arrow-right text-[10px] text-cyan-400 opacity-60 cursor-pointer"></i>
@@ -598,13 +625,14 @@
             });
 
             document.getElementById('active-selected-lesson-title').innerText = currentSelectedLesson;
+            updateButtonLabels();
         }
 
+        // KHI CHỌN BÀI: CHỈ ĐỔI TRẠNG THÁI CHỌN, KHÔNG TỰ Ý CHẠY AI ĐỂ THẦY CÔ CHỦ ĐỘNG
         function selectCurrentLesson(lessonName) {
             currentSelectedLesson = lessonName;
             document.getElementById('active-selected-lesson-title').innerText = lessonName;
             onFilterChange();
-            executeActionGenerate(currentActiveMode);
         }
 
         function toggleLessonInExam(lessonName, isChecked) {
@@ -613,7 +641,10 @@
             } else {
                 selectedLessonsForExam = selectedLessonsForExam.filter(name => name !== lessonName);
             }
-            if (currentActiveMode === '7991') renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
+            if (currentActiveMode === '7991') {
+                distributeMatrixFromTotals();
+                renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
+            }
         }
 
         function toggleSelectAllExams(selectAll) {
@@ -623,14 +654,121 @@
             
             selectedLessonsForExam = selectAll ? [...lessonList] : [];
             onFilterChange();
-            if (currentActiveMode === '7991') renderMaTranDeKiemTra(subject, grade, document.getElementById('sel-book').value);
+            if (currentActiveMode === '7991') {
+                distributeMatrixFromTotals();
+                renderMaTranDeKiemTra(subject, grade, document.getElementById('sel-book').value);
+            }
         }
 
-        // ==================== HÀM GỌI API GEMINI DUY NHẤT & CHỐNG LỖI 404 TRIỆT ĐỂ ====================
+        function updateButtonLabels() {
+            const modeTextMap = {
+                '5512': 'TẠO GIÁO ÁN (CV 5512)',
+                'slide': 'TẠO BÀI GIẢNG PPT (16 SLIDE)',
+                '7991': 'TẠO ĐỀ THI & MA TRẬN 7991'
+            };
+            const label = modeTextMap[currentActiveMode] || 'TẠO NỘI DUNG';
+            document.getElementById('btn-left-create-text').innerText = label;
+            document.getElementById('btn-top-create-text').innerText = label;
+        }
+
+        // CHUYỂN TAB XEM (KHÔNG TỰ ĐỘNG CHẠY AI, CHỈ HIỂN THỊ DỮ LIỆU ĐANG CÓ HOẶC NỘI HÀM)
+        function switchViewTab(mode) {
+            currentActiveMode = mode;
+            updateButtonLabels();
+
+            const docContainer = document.getElementById('container-a4-doc');
+            const slideContainer = document.getElementById('container-slide-presentation');
+            const badge = document.getElementById('current-badge-view');
+
+            const btnExportWord = document.getElementById('btn-export-word');
+            const btnExportPptx = document.getElementById('btn-export-pptx');
+
+            ['5512', 'slide', '7991'].forEach(m => {
+                const b = document.getElementById('btn-tab-' + m);
+                b.className = "px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white";
+            });
+            document.getElementById('btn-tab-' + mode).className = "px-3 py-1.5 rounded-lg font-bold transition bg-blue-600 text-white";
+
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const book = document.getElementById('sel-book').value;
+
+            if (mode === '5512') {
+                docContainer.classList.remove('hidden');
+                slideContainer.classList.add('hidden');
+                badge.innerText = "KẾ HOẠCH BÀI DẠY (CÔNG VĂN 5512 CẢI TIẾN HIGH-END)";
+                btnExportWord.classList.remove('hidden');
+                btnExportPptx.classList.add('hidden');
+                
+                const cacheKey = `cached_5512_${subject}_${grade}_${currentSelectedLesson}`.replace(/[^a-zA-Z0-9_]/g, '_');
+                const cachedContent = localStorage.getItem(cacheKey);
+                if (cachedContent) {
+                    docContainer.innerHTML = cachedContent;
+                } else {
+                    renderGiaoAn5512HighEnd(subject, grade, book, currentSelectedLesson);
+                }
+            } else if (mode === 'slide') {
+                docContainer.classList.add('hidden');
+                slideContainer.classList.remove('hidden');
+                badge.innerText = "BÀI GIẢNG ĐIỆN TỬ SLIDE 16:9 (TYPOGRAPHY ≥ 32PT)";
+                btnExportWord.classList.add('hidden');
+                btnExportPptx.classList.remove('hidden');
+                renderPowerPointSlideDeck(subject, grade, book, currentSelectedLesson);
+            } else if (mode === '7991') {
+                docContainer.classList.remove('hidden');
+                slideContainer.classList.add('hidden');
+                badge.innerText = "HỒ SƠ KHẢO THÍ & MA TRẬN ĐẶC TẢ ĐỀ THI (7991)";
+                btnExportWord.classList.remove('hidden');
+                btnExportPptx.classList.add('hidden');
+                distributeMatrixFromTotals();
+                renderMaTranDeKiemTra(subject, grade, book);
+            }
+        }
+
+        // BẤM NÚT TRÊN HEADER ĐỂ KÍCH HOẠT TẠO
+        function triggerGenerateMode(mode) {
+            switchViewTab(mode);
+            executeActionGenerate(mode);
+        }
+
+        // ==================== CƠ CHẾ KHÓA TỔNG VÀ TỰ ĐỘNG PHÂN BỔ SỐ CÂU ====================
+        function distributeMatrixFromTotals() {
+            const lessons = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [currentSelectedLesson];
+            const numLessons = lessons.length;
+
+            examMatrixCustomCounts = {};
+            lessons.forEach(les => {
+                examMatrixCustomCounts[les] = {
+                    p1_b: 0, p1_h: 0, p1_vd: 0,
+                    p2_h: 0, p2_vd: 0,
+                    p3_h: 0, p3_vd: 0
+                };
+            });
+
+            // Phân bổ từng tiêu chí đều cho các bài
+            const fields = ['p1_b', 'p1_h', 'p1_vd', 'p2_h', 'p2_vd', 'p3_h', 'p3_vd'];
+            fields.forEach(f => {
+                const total = parseInt(matrixGlobalTotals[f]) || 0;
+                const base = Math.floor(total / numLessons);
+                let remainder = total % numLessons;
+
+                lessons.forEach((les, idx) => {
+                    examMatrixCustomCounts[les][f] = base + (idx < remainder ? 1 : 0);
+                });
+            });
+        }
+
+        function updateGlobalTotalField(field, value) {
+            const val = parseInt(value) || 0;
+            matrixGlobalTotals[field] = val;
+            distributeMatrixFromTotals();
+            renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
+        }
+
+        // ==================== HÀM GỌI API GEMINI DUY NHẤT & CHỐNG LỖI 404 ====================
         async function callGeminiUnifiedEngine(promptText, apiKey, statusCallback) {
             const key = apiKey.trim();
 
-            // Danh sách model chuẩn chính thức của Google theo thứ tự ưu tiên
             const defaultModels = [
                 'gemini-1.5-flash',
                 'gemini-2.0-flash',
@@ -641,7 +779,7 @@
 
             let candidateModels = [...defaultModels];
 
-            // Tự động truy vấn các model khả dụng cho Key
+            // Tự động nhận diện model khả dụng của chính Key
             try {
                 const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
                 if (listRes.ok) {
@@ -652,7 +790,6 @@
                                 const name = (m.name || '').replace('models/', '');
                                 const methods = m.supportedGenerationMethods || [];
                                 const isGen = methods.includes('generateContent');
-                                // Loại trừ các model chuyên biệt audio, tts, vision hoặc tên thử nghiệm lạ
                                 const isSpecial = /tts|transcribe|image|audio|robotics|computer-use|lyria|embedding|banana/i.test(name);
                                 return isGen && !isSpecial;
                             })
@@ -671,16 +808,12 @@
                     }
                 }
             } catch (e) {
-                console.warn("Không thể lấy danh sách models tự động, dùng danh sách mặc định:", e);
+                console.warn("Dùng danh mục model dự phòng chuẩn:", e);
             }
-
-            defaultModels.forEach(dm => {
-                if (!candidateModels.includes(dm)) candidateModels.push(dm);
-            });
 
             let lastError = null;
 
-            // VÒNG LẶP DỰ PHÒNG: NẾU BẤT KỲ MODEL NÀO BỊ 404, TỰ ĐỘNG CHUYỂN SANG MODEL KẾ TIẾP
+            // Thử lần lượt các model, nếu gặp 404 lập tức chuyển sang model kế tiếp
             for (const model of candidateModels) {
                 try {
                     if (statusCallback) statusCallback(`Đang biên soạn với [${model}]...`);
@@ -702,34 +835,26 @@
                     });
 
                     if (!res.ok) {
-                        const errJson = await res.json().catch(() => ({}));
-                        console.warn(`Model ${model} báo lỗi HTTP ${res.status}:`, errJson);
                         lastError = new Error(`HTTP ${res.status} trên model ${model}`);
-                        continue; // Tiếp tục thử model sau trong danh sách
+                        continue;
                     }
 
                     const data = await res.json();
                     const outputText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
                     if (outputText && outputText.trim() !== '') {
-                        console.log(`%c[BioMaster AI] Kết nối thành công model: ${model}`, "color: #10b981; font-weight: bold;");
                         return outputText.replace(/^```html/i, '').replace(/```$/i, '').trim();
-                    } else {
-                        lastError = new Error(`Phản hồi rỗng từ ${model}`);
                     }
                 } catch (err) {
-                    console.warn(`Lỗi khi gọi model ${model}:`, err.message);
                     lastError = err;
                 }
             }
 
-            throw lastError || new Error("Tất cả model AI đều không phản hồi.");
+            throw lastError || new Error("Không thể kết nối API AI");
         }
 
-        // ==================== HÀM THỰC THI CHÍNH CỦA HỆ THỐNG ====================
+        // ==================== HÀM THỰC THI CHÍNH KHI NHẤN NÚT "TẠO" ====================
         async function executeActionGenerate(type) {
-            switchViewMode(type);
-
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
             const book = document.getElementById('sel-book').value;
@@ -737,19 +862,16 @@
             const customGuide = document.getElementById('ai-custom-instructions') ? document.getElementById('ai-custom-instructions').value.trim() : "";
             const docContainer = document.getElementById('container-a4-doc');
 
-            // 1. KIỂM TRA BỘ NHỚ CACHE
-            const cacheKey = `cached_${type}_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
-            const cachedContent = localStorage.getItem(cacheKey);
-
-            if (cachedContent && type !== 'slide') {
-                docContainer.innerHTML = cachedContent;
+            // Slide 16:9 được tạo bằng hệ thống render chuyên dụng
+            if (type === 'slide') {
+                renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
                 return;
             }
 
             const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
 
-            // 2. GỌI AI KHI CÓ API KEY
-            if (savedKey !== "" && type !== 'slide' && docContainer) {
+            // NẾU CÓ KEY -> GỌI AI THỰC HIỆN
+            if (savedKey !== "" && docContainer) {
                 docContainer.innerHTML = `
                     <div style="text-align: center; padding: 70px 20px; font-family: sans-serif;">
                         <div style="font-size: 36px; color: #0284c7; margin-bottom: 16px;"><i class="fa-solid fa-brain fa-bounce"></i></div>
@@ -777,7 +899,7 @@
                         Yêu cầu:
                         - Tiêu đề: SỞ GD&ĐT VĨNH LONG - TRƯỜNG THPT MANG THÍT - Họ và tên giáo viên: Hồ Tấn Khải.
                         - Mục tiêu: Kiến thức; Năng lực chung; Năng lực đặc thù; Năng lực số [NLS 2.1]; Năng lực AI (mã chuẩn ${grade}.A1.2); Phẩm chất.
-                        - Tiến trình 4 hoạt động: Hoạt động 2 trình bày dạng BẢNG 2 CỘT VIỀN ĐEN chi tiết nội dung ghi vở của học sinh; Hoạt động 3 Luyện tập đủ 3 dạng thức trắc nghiệm; Hoạt động 4 Vận dụng gắn liền nông nghiệp Vĩnh Long / ĐBSCL.
+                        - Tiến trình 4 hoạt động: Hoạt động 2 trình bày dạng BẢNG 2 CỘT VIỀN ĐEN chi tiết nội dung ghi vở của học sinh; Hoạt động 3 Luyện tập đủ 3 dạng thức trắc nghiệm; Hoạt động 4 Vận dụng gắn liền thực tiễn nông nghiệp địa phương.
                         - Đủ 3 phụ lục: Phiếu học tập số 1, Rubric NLS 2.1 (5 cột), Rubric Năng lực AI (5 cột).
                         - Ghi chú thêm từ giáo viên: ${customGuide}${filePromptPart}
                         - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html) để chèn thẳng vào trang A4.`;
@@ -794,26 +916,26 @@
 
                     const aiGeneratedHtml = await callGeminiUnifiedEngine(promptText, savedKey, updateStatus);
 
+                    const cacheKey = `cached_${type}_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
                     localStorage.setItem(cacheKey, aiGeneratedHtml);
                     docContainer.innerHTML = aiGeneratedHtml;
                     return;
 
                 } catch (error) {
-                    console.warn("AI không phản hồi, tự động kích hoạt bộ dữ liệu chuẩn nội hàm:", error);
+                    console.warn("AI gặp sự cố, tự động nạp dữ liệu gốc chuẩn mực nội hàm:", error);
                 }
             }
 
-            // 3. CỨU CÁNH AN TOÀN NỘI HÀM
+            // PHẦN DỰ PHÒNG CHẮC CHẮN 100%: NẠP DỮ LIỆU GỐC NỘI HÀM NẾU KHÔNG CÓ AI HOẶC AI LỖI
             if (type === '5512') {
                 renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle);
             } else if (type === '7991') {
+                distributeMatrixFromTotals();
                 renderMaTranDeKiemTra(subject, grade, book);
-            } else if (type === 'slide') {
-                renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
             }
         }
 
-        // ==================== 1. KẾ HOẠCH BÀI DẠY CV 5512 NỘI HÀM ====================
+        // ==================== 1. DỮ LIỆU GỐC: KẾ HOẠCH BÀI DẠY CV 5512 ====================
         function renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle) {
             const docContainer = document.getElementById('container-a4-doc');
             const info = getDynamicNlsAiInfo(lessonTitle, grade);
@@ -1033,49 +1155,21 @@
             `;
         }
 
-        // ==================== 2. MA TRẬN & ĐỀ THI 7991 NỘI HÀM ====================
+        // ==================== 2. DỮ LIỆU GỐC: MA TRẬN & ĐỀ THI 7991 (KHÓA TỔNG & TỰ ĐIỀU CHỈNH) ====================
         function renderMaTranDeKiemTra(subject, grade, book) {
             const docContainer = document.getElementById('container-a4-doc');
             const lessons = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [currentSelectedLesson];
 
-            lessons.forEach((les, idx) => {
-                if (!examMatrixCustomCounts[les]) {
-                    examMatrixCustomCounts[les] = {
-                        p1_b: Math.round(18 / lessons.length * 0.5) || 1,
-                        p1_h: Math.round(18 / lessons.length * 0.3) || 1,
-                        p1_vd: Math.round(18 / lessons.length * 0.2) || 1,
-                        p2_h: 1,
-                        p2_vd: (idx === 0 ? 1 : 0),
-                        p3_h: 1,
-                        p3_vd: 1
-                    };
-                }
-            });
-
-            let total_p1_b = 0, total_p1_h = 0, total_p1_vd = 0;
-            let total_p2_h = 0, total_p2_vd = 0;
-            let total_p3_h = 0, total_p3_vd = 0;
-
-            lessons.forEach(les => {
-                const c = examMatrixCustomCounts[les];
-                total_p1_b += parseInt(c.p1_b) || 0;
-                total_p1_h += parseInt(c.p1_h) || 0;
-                total_p1_vd += parseInt(c.p1_vd) || 0;
-                total_p2_h += parseInt(c.p2_h) || 0;
-                total_p2_vd += parseInt(c.p2_vd) || 0;
-                total_p3_h += parseInt(c.p3_h) || 0;
-                total_p3_vd += parseInt(c.p3_vd) || 0;
-            });
-
-            const countP1 = total_p1_b + total_p1_h + total_p1_vd;
-            const countP2 = total_p2_h + total_p2_vd;
-            const countP3 = total_p3_h + total_p3_vd;
+            const countP1 = (parseInt(matrixGlobalTotals.p1_b)||0) + (parseInt(matrixGlobalTotals.p1_h)||0) + (parseInt(matrixGlobalTotals.p1_vd)||0);
+            const countP2 = (parseInt(matrixGlobalTotals.p2_h)||0) + (parseInt(matrixGlobalTotals.p2_vd)||0);
+            const countP3 = (parseInt(matrixGlobalTotals.p3_h)||0) + (parseInt(matrixGlobalTotals.p3_vd)||0);
             const totalQuestions = countP1 + countP2 + countP3;
 
+            // XÂY DỰNG ĐỀ THI KHỚP ĐÚNG 100% SỐ CÂU ĐÃ PHÂN BỔ
             let p1Html = "";
             let p1Index = 1;
             lessons.forEach(les => {
-                const num = (parseInt(examMatrixCustomCounts[les].p1_b)||0) + (parseInt(examMatrixCustomCounts[les].p1_h)||0) + (parseInt(examMatrixCustomCounts[les].p1_vd)||0);
+                const num = (parseInt(examMatrixCustomCounts[les]?.p1_b)||0) + (parseInt(examMatrixCustomCounts[les]?.p1_h)||0) + (parseInt(examMatrixCustomCounts[les]?.p1_vd)||0);
                 for (let k = 1; k <= num; k++) {
                     p1Html += `
                         <p style="margin: 3px 0;"><strong>Câu ${p1Index}:</strong> [${les}] Đặc điểm cốt lõi nào sau đây phản ánh chính xác nhất bản chất khoa học của bài học?</p>
@@ -1089,7 +1183,7 @@
             let p2Html = "";
             let p2Index = 1;
             lessons.forEach(les => {
-                const num = (parseInt(examMatrixCustomCounts[les].p2_h)||0) + (parseInt(examMatrixCustomCounts[les].p2_vd)||0);
+                const num = (parseInt(examMatrixCustomCounts[les]?.p2_h)||0) + (parseInt(examMatrixCustomCounts[les]?.p2_vd)||0);
                 for (let k = 1; k <= num; k++) {
                     p2Html += `
                         <p style="margin: 4px 0;"><strong>Câu ${p2Index}:</strong> [${les}] Trong một nghiên cứu khoa học thực nghiệm về điều kiện phát triển nông nghiệp:</p>
@@ -1105,7 +1199,7 @@
             let p3Html = "";
             let p3Index = 1;
             lessons.forEach(les => {
-                const num = (parseInt(examMatrixCustomCounts[les].p3_h)||0) + (parseInt(examMatrixCustomCounts[les].p3_vd)||0);
+                const num = (parseInt(examMatrixCustomCounts[les]?.p3_h)||0) + (parseInt(examMatrixCustomCounts[les]?.p3_vd)||0);
                 for (let k = 1; k <= num; k++) {
                     p3Html += `
                         <p style="margin: 3px 0;"><strong>Câu ${p3Index}:</strong> [${les}] Một cấu trúc ban đầu nhân đôi liên tiếp ${p3Index + 1} lần sẽ tạo ra bao nhiêu cấu trúc con?</p>
@@ -1136,8 +1230,10 @@
                     <p style="margin: 2px 0 0 0; font-style: italic; font-size: 12pt;">Môn học: ${subject} ${grade} • Thời gian làm bài: 45 phút</p>
                 </div>
 
-                <p style="font-weight: bold; margin: 12px 0 4px 0;">MỤC 1: KHUNG MA TRẬN ĐỀ KIỂM TRA (TÙY CHỈNH TRỰC TIẾP SỐ CÂU)</p>
-                <p style="font-style: italic; font-size: 10pt; color: #475569;" class="no-print">* Thầy sửa số câu trong ô nhập bên dưới, hệ thống sẽ tự động tính lại điểm số và đồng bộ đề thi:</p>
+                <p style="font-weight: bold; margin: 12px 0 4px 0;">MỤC 1: KHUNG MA TRẬN ĐỀ KIỂM TRA (ĐIỀU KHIỂN TỔNG SỐ CÂU)</p>
+                <p style="font-style: italic; font-size: 10pt; color: #475569;" class="no-print">
+                    * Thầy chỉ cần chỉnh <strong>Tổng số câu</strong> ở dòng TỔNG CỘNG bên dưới, hệ thống sẽ tự động phân bổ đều số câu về từng bài:
+                </p>
 
                 <table>
                     <thead>
@@ -1147,8 +1243,7 @@
                             <th colspan="3">Phần I (Nhiều lựa chọn)</th>
                             <th colspan="2">Phần II (Đúng/Sai)</th>
                             <th colspan="2">Phần III (Trả lời ngắn)</th>
-                            <th rowspan="2">Tổng câu</th>
-                            <th rowspan="2">Điểm số</th>
+                            <th rowspan="2">Tổng bài</th>
                         </tr>
                         <tr style="background: #F0F4F8; text-align: center; font-size: 9.5pt;">
                             <th>Biết</th><th>Hiểu</th><th>VD</th>
@@ -1158,30 +1253,41 @@
                     </thead>
                     <tbody>
                         ${lessons.map((les, i) => {
-                            const c = examMatrixCustomCounts[les];
+                            const c = examMatrixCustomCounts[les] || {};
                             const sumRow = (parseInt(c.p1_b)||0) + (parseInt(c.p1_h)||0) + (parseInt(c.p1_vd)||0) + (parseInt(c.p2_h)||0) + (parseInt(c.p2_vd)||0) + (parseInt(c.p3_h)||0) + (parseInt(c.p3_vd)||0);
                             return `
                                 <tr>
                                     <td style="text-align: center;">${i + 1}</td>
                                     <td><strong>${les}</strong></td>
-                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p1_b}" onchange="updateMatrixCustomCount('${les}', 'p1_b', this.value)" style="width: 36px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px;"></td>
-                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p1_h}" onchange="updateMatrixCustomCount('${les}', 'p1_h', this.value)" style="width: 36px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px;"></td>
-                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p1_vd}" onchange="updateMatrixCustomCount('${les}', 'p1_vd', this.value)" style="width: 36px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px;"></td>
-                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p2_h}" onchange="updateMatrixCustomCount('${les}', 'p2_h', this.value)" style="width: 36px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px;"></td>
-                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p2_vd}" onchange="updateMatrixCustomCount('${les}', 'p2_vd', this.value)" style="width: 36px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px;"></td>
-                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p3_h}" onchange="updateMatrixCustomCount('${les}', 'p3_h', this.value)" style="width: 36px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px;"></td>
-                                    <td style="text-align: center;"><input type="number" min="0" value="${c.p3_vd}" onchange="updateMatrixCustomCount('${les}', 'p3_vd', this.value)" style="width: 36px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px;"></td>
-                                    <td style="text-align: center; font-weight: bold;">${sumRow} câu</td>
-                                    <td style="text-align: center; font-weight: bold;">${((sumRow / (totalQuestions || 1)) * 10).toFixed(1)} đ</td>
+                                    <td style="text-align: center; background: #fafafa;">${c.p1_b || 0}</td>
+                                    <td style="text-align: center; background: #fafafa;">${c.p1_h || 0}</td>
+                                    <td style="text-align: center; background: #fafafa;">${c.p1_vd || 0}</td>
+                                    <td style="text-align: center; background: #fafafa;">${c.p2_h || 0}</td>
+                                    <td style="text-align: center; background: #fafafa;">${c.p2_vd || 0}</td>
+                                    <td style="text-align: center; background: #fafafa;">${c.p3_h || 0}</td>
+                                    <td style="text-align: center; background: #fafafa;">${c.p3_vd || 0}</td>
+                                    <td style="text-align: center; font-weight: bold; background: #f1f5f9;">${sumRow} câu</td>
                                 </tr>
                             `;
                         }).join('')}
+                        
+                        <!-- DÒNG TỔNG CỘNG CHO PHÉP NHẬP KHÓA TỔNG VÀ PHÂN BỔ TỰ ĐỘNG -->
+                        <tr style="background: #dbeafe; font-weight: bold; text-align: center; border-top: 2px solid #1e40af;">
+                            <td colspan="2" style="color: #1e3a8a;">TỔNG SỐ CÂU (CHỈNH TẠI ĐÂY):</td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p1_b}" onchange="updateGlobalTotalField('p1_b', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Biết Phần I"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p1_h}" onchange="updateGlobalTotalField('p1_h', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Hiểu Phần I"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p1_vd}" onchange="updateGlobalTotalField('p1_vd', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Vận dụng Phần I"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p2_h}" onchange="updateGlobalTotalField('p2_h', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Hiểu Phần II"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p2_vd}" onchange="updateGlobalTotalField('p2_vd', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Vận dụng Phần II"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p3_h}" onchange="updateGlobalTotalField('p3_h', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Hiểu Phần III"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p3_vd}" onchange="updateGlobalTotalField('p3_vd', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Vận dụng Phần III"></td>
+                            <td style="color: #b91c1c; font-size: 11pt;">${totalQuestions} câu</td>
+                        </tr>
                         <tr style="background: #E6EEF8; font-weight: bold; text-align: center;">
-                            <td colspan="2">TỔNG CỘNG</td>
+                            <td colspan="2">TỔNG ĐIỂM TỪNG PHẦN</td>
                             <td colspan="3">${countP1} câu (4.5 đ)</td>
                             <td colspan="2">${countP2} câu (4.0 đ)</td>
                             <td colspan="2">${countP3} câu (1.5 đ)</td>
-                            <td>${totalQuestions} câu</td>
                             <td>10.0 Điểm</td>
                         </tr>
                     </tbody>
@@ -1199,15 +1305,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        ${lessons.map((les, idx) => `
-                            <tr>
-                                <td style="text-align: center;">${idx + 1}</td>
-                                <td><strong>${les}</strong></td>
-                                <td>Nhận biết được khái niệm, thành phần cấu tạo cơ bản và quy luật diễn biến. Phân tích được dữ liệu thực nghiệm và giải thích hiện tượng sinh học.</td>
-                                <td>Phần I, II, III</td>
-                                <td style="text-align: center; font-weight: bold;">${(parseInt(examMatrixCustomCounts[les].p1_b)||0)+(parseInt(examMatrixCustomCounts[les].p1_h)||0)+(parseInt(examMatrixCustomCounts[les].p1_vd)||0)+(parseInt(examMatrixCustomCounts[les].p2_h)||0)+(parseInt(examMatrixCustomCounts[les].p2_vd)||0)+(parseInt(examMatrixCustomCounts[les].p3_h)||0)+(parseInt(examMatrixCustomCounts[les].p3_vd)||0)} câu</td>
-                            </tr>
-                        `).join('')}
+                        ${lessons.map((les, idx) => {
+                            const c = examMatrixCustomCounts[les] || {};
+                            const sum = (parseInt(c.p1_b)||0)+(parseInt(c.p1_h)||0)+(parseInt(c.p1_vd)||0)+(parseInt(c.p2_h)||0)+(parseInt(c.p2_vd)||0)+(parseInt(c.p3_h)||0)+(parseInt(c.p3_vd)||0);
+                            return `
+                                <tr>
+                                    <td style="text-align: center;">${idx + 1}</td>
+                                    <td><strong>${les}</strong></td>
+                                    <td>Nhận biết được khái niệm, thành phần cấu tạo cơ bản và quy luật diễn biến. Phân tích được dữ liệu thực nghiệm và giải thích hiện tượng sinh học.</td>
+                                    <td>Phần I, II, III</td>
+                                    <td style="text-align: center; font-weight: bold;">${sum} câu</td>
+                                </tr>
+                            `;
+                        }).join('')}
                     </tbody>
                 </table>
 
@@ -1261,13 +1371,7 @@
             `;
         }
 
-        function updateMatrixCustomCount(lessonName, field, value) {
-            if (!examMatrixCustomCounts[lessonName]) return;
-            examMatrixCustomCounts[lessonName][field] = parseInt(value) || 0;
-            renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
-        }
-
-        // ==================== 3. BÀI GIẢNG PPT NGUYÊN BẢN ====================
+        // ==================== 3. DỮ LIỆU GỐC: BÀI GIẢNG PPT NGUYÊN BẢN ====================
         function renderPowerPointSlideDeck(subject, grade, book, lessonTitle) {
             slideDeckData = [];
 
@@ -1439,7 +1543,7 @@
             renderCurrentSlide();
         }
 
-        // ==================== CÁC HÀM TIỆN ÍCH TRÌNH CHIẾU ====================
+        // ==================== TIỆN ÍCH SLIDE & ĐỒNG HỒ & GỌI SỐ HS ====================
         function toggleSlideAnswer(btn) {
             const answerBox = btn.nextElementSibling;
             if (answerBox.classList.contains('hidden')) {
@@ -1448,44 +1552,6 @@
             } else {
                 answerBox.classList.add('hidden');
                 btn.innerHTML = '<i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng';
-            }
-        }
-
-        function switchViewMode(mode) {
-            currentActiveMode = mode;
-            const docContainer = document.getElementById('container-a4-doc');
-            const slideContainer = document.getElementById('container-slide-presentation');
-            const badge = document.getElementById('current-badge-view');
-
-            const btnExportWord = document.getElementById('btn-export-word');
-            const btnExportPptx = document.getElementById('btn-export-pptx');
-
-            ['5512', 'slide', '7991'].forEach(m => {
-                const b = document.getElementById('btn-tab-' + m);
-                b.className = "px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white";
-            });
-            document.getElementById('btn-tab-' + mode).className = "px-3 py-1.5 rounded-lg font-bold transition bg-blue-600 text-white";
-
-            if (mode === '5512') {
-                docContainer.classList.remove('hidden');
-                slideContainer.classList.add('hidden');
-                badge.innerText = "KẾ HOẠCH BÀI DẠY (CÔNG VĂN 5512 CẢI TIẾN HIGH-END)";
-                btnExportWord.classList.remove('hidden');
-                btnExportPptx.classList.add('hidden');
-            } else if (mode === 'slide') {
-                docContainer.classList.add('hidden');
-                slideContainer.classList.remove('hidden');
-                badge.innerText = "BÀI GIẢNG ĐIỆN TỬ SLIDE 16:9 (TYPOGRAPHY ≥ 32PT)";
-                btnExportWord.classList.add('hidden');
-                btnExportPptx.classList.remove('hidden');
-                renderCurrentSlide();
-            } else if (mode === '7991') {
-                docContainer.classList.remove('hidden');
-                slideContainer.classList.add('hidden');
-                badge.innerText = "HỒ SƠ KHẢO THÍ & MA TRẬN ĐẶC TẢ ĐỀ THI (7991)";
-                btnExportWord.classList.remove('hidden');
-                btnExportPptx.classList.add('hidden');
-                renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
             }
         }
 
@@ -1522,7 +1588,6 @@
             }
         }
 
-        // ==================== ĐỒNG HỒ & GỌI SỐ HỌC SINH ====================
         function startSlideTimer(seconds) {
             clearInterval(timerInterval);
             timerSeconds = seconds;
@@ -1690,7 +1755,7 @@
             localStorage.setItem('gemini_api_key', key);
             checkStoredApiKey();
             closeAIKeyModal();
-            alert("Đã lưu API Key thành công! AI sẵn sàng biên soạn và tự lưu bài vào máy.");
+            alert("Đã lưu API Key thành công!");
         }
         function checkStoredApiKey() {
             const key = localStorage.getItem('gemini_api_key');
