@@ -141,7 +141,6 @@
                         <span class="text-lg font-black tracking-tight text-white">BioMaster AI</span>
                         <span class="text-[10px] bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-extrabold px-2 py-0.5 rounded-full shadow-sm">High-End Edition</span>
                     </div>
-                    <!-- Thông tin nhận diện dự thi của Thầy Khải -->
                     <p class="text-xs text-slate-200 font-bold flex items-center gap-1.5 mt-0.5">
                         <i class="fa-solid fa-user-check text-cyan-400 text-xs"></i> 
                         <span class="text-cyan-300">Giáo viên: Hồ Tấn Khải</span>
@@ -168,7 +167,7 @@
             <div class="flex items-center gap-2.5">
                 <button onclick="executeActionAI()" class="btn-3d btn-3d-purple px-4 py-2 rounded-xl text-white font-black text-xs flex items-center gap-2 animate-pulse hover:animate-none" title="Chỉ kích hoạt AI khi bấm vào đây">
                     <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                    <span id="header-ai-btn-text">SOẠN HOẠT ĐỘNG 2 BẰNG AI</span>
+                    <span id="header-ai-btn-text">SOẠN HĐ 2, 3, 4 BẰNG AI</span>
                 </button>
 
                 <button onclick="openDriveSyncModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-xs font-bold border border-blue-500/30 transition flex items-center gap-1.5" title="Đồng bộ Google Drive Apps Script">
@@ -254,7 +253,7 @@
                 <div class="mt-3.5 pt-2 border-t border-brand-border/60 space-y-2">
                     <button onclick="executeActionAI()" class="btn-3d btn-3d-purple py-2.5 px-3 rounded-xl text-white font-extrabold text-xs flex items-center justify-center gap-2 w-full">
                         <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                        <span id="btn-sidebar-ai-text">SOẠN HOẠT ĐỘNG 2 BẰNG AI</span>
+                        <span id="btn-sidebar-ai-text">SOẠN HĐ 2, 3, 4 BẰNG AI</span>
                     </button>
 
                     <button onclick="forceUseInternalData()" class="btn-3d btn-3d-slate py-2 px-3 rounded-xl text-slate-200 font-bold text-xs flex items-center justify-center gap-2 w-full hover:text-white" title="Quay về dùng nội dung mẫu nội hàm chuẩn mực">
@@ -327,7 +326,7 @@
             <div id="ai-review-bar" class="hidden bg-purple-950/60 border-b border-purple-500/40 px-4 py-2 flex items-center justify-between text-xs no-print">
                 <div class="flex items-center gap-2 text-purple-200">
                     <span class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-ping"></span>
-                    <span>AI vừa hoàn tất biên soạn. Thầy hãy kiểm tra và chọn thao tác:</span>
+                    <span>AI vừa hoàn tất biên soạn HĐ 2, 3, 4. Thầy kiểm tra nội dung và chọn thao tác:</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="saveCurrentAIContent()" class="btn-3d btn-3d-emerald px-3 py-1 rounded-lg text-white font-bold flex items-center gap-1">
@@ -435,7 +434,7 @@
                 <button onclick="closeAIKeyModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="mt-4 space-y-3 text-xs text-slate-300">
-                <p>Thầy dán mã <strong>Gemini API Key</strong> vào đây để kích hoạt AI biên soạn Hoạt động 2:</p>
+                <p>Thầy dán mã <strong>Gemini API Key</strong> vào đây để kích hoạt AI biên soạn Hoạt động 2, 3, 4:</p>
                 <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
                 <p class="text-[11px] text-slate-500 leading-relaxed">
                     * Model sử dụng: <strong>gemini-3.5-flash</strong> siêu tốc.
@@ -712,8 +711,8 @@
 
         function updateButtonLabels() {
             if (currentActiveMode === '5512') {
-                document.getElementById('header-ai-btn-text').innerText = "SOẠN HOẠT ĐỘNG 2 BẰNG AI";
-                document.getElementById('btn-sidebar-ai-text').innerText = "SOẠN HOẠT ĐỘNG 2 BẰNG AI";
+                document.getElementById('header-ai-btn-text').innerText = "SOẠN HĐ 2, 3, 4 BẰNG AI";
+                document.getElementById('btn-sidebar-ai-text').innerText = "SOẠN HĐ 2, 3, 4 BẰNG AI";
             } else {
                 const modeName = currentActiveMode === 'slide' ? 'Slide Giảng Dạy' : 'Đề Thi 7991';
                 document.getElementById('header-ai-btn-text').innerText = `TẠO ${modeName.toUpperCase()} BẰNG AI`;
@@ -788,7 +787,7 @@
 
             if (cachedAIContent) {
                 docContainer.innerHTML = cachedAIContent;
-                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp bản lưu từ AI (Đã kiểm duyệt)</span>`;
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp bản lưu từ AI (HĐ 2, 3, 4 hoàn chỉnh)</span>`;
                 return;
             }
 
@@ -801,7 +800,6 @@
             }
         }
 
-        // NÚT XÓA BẢN AI VÀ QUAY VỀ BẢN GỐC NỘI HÀM
         function discardCurrentAIContent() {
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
@@ -816,7 +814,6 @@
             alert("Đã xóa bài soạn AI và trở về bản gốc nội hàm an toàn!");
         }
 
-        // NÚT LƯU BÀI AI THÀNH CÔNG
         function saveCurrentAIContent() {
             if (!temporaryAIGeneratedDoc) {
                 temporaryAIGeneratedDoc = document.getElementById('container-a4-doc').innerHTML;
@@ -830,7 +827,7 @@
             hideAIReviewBar();
             renderLessonListUI();
             const statusInd = document.getElementById('content-source-indicator');
-            statusInd.innerHTML = `<span class="text-emerald-400 font-bold flex items-center gap-1"><i class="fa-solid fa-check-double text-[10px]"></i> Đã lưu bài AI vào máy thành công!</span>`;
+            statusInd.innerHTML = `<span class="text-emerald-400 font-bold flex items-center gap-1"><i class="fa-solid fa-check-double text-[10px]"></i> Đã lưu trọn bộ HĐ 2, 3, 4 AI vào máy!</span>`;
             alert("Đã lưu bài soạn AI thành công! Những lần sau chọn bài này sẽ tự động nạp ngay.");
         }
 
@@ -838,7 +835,7 @@
             discardCurrentAIContent();
         }
 
-        // ==================== ENGINE GỌI API GEMINI (MODEL GEMINI-3.5-FLASH SIÊU TỐC) ====================
+        // ==================== ENGINE GỌI API GEMINI (MODEL GEMINI-3.5-FLASH) ====================
         async function callGeminiUnifiedEngine(promptText, apiKey, statusCallback) {
             const key = apiKey.trim();
 
@@ -895,7 +892,7 @@
             throw new Error(detailedErrors.join(" | ") || "Không thể kết nối đến máy chủ AI.");
         }
 
-        // ==================== AI CHỈ SOẠN HOẠT ĐỘNG 2 CHO NHANH VÀ CHUẨN XÁC ====================
+        // ==================== AI SOẠN HOẠT ĐỘNG 2 + 3 + 4 ĐỒNG BỘ ====================
         async function executeActionAI() {
             const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
             if (!savedKey) {
@@ -920,15 +917,15 @@
 
             docContainer.innerHTML = `
                 <div style="text-align: center; padding: 75px 20px; font-family: sans-serif;">
-                    <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-bolt fa-bounce"></i></div>
-                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">AI đang tăng tốc biên soạn Hoạt động 2 (Hình thành kiến thức)...</h3>
+                    <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-wand-magic-sparkles fa-bounce"></i></div>
+                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">AI đang tăng tốc biên soạn HĐ 2 (Kiến thức) + HĐ 3 (Luyện tập) + HĐ 4 (Vận dụng)...</h3>
                     <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
                         Bài học: <strong>${lessonTitle}</strong> (${subject}${grade})
                     </p>
                 </div>
             `;
 
-            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang xử lý thần tốc...</span>`;
+            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang xử lý HĐ 2, 3, 4...</span>`;
 
             try {
                 let filePromptPart = "";
@@ -938,16 +935,28 @@
 
                 let promptText = "";
                 if (currentActiveMode === '5512') {
-                    // Prompt CHỈ SOẠN HOẠT ĐỘNG 2: Tốc độ siêu nhanh, đủ sâu, chuẩn YCCĐ và SGK hiện hành
-                    promptText = `Bạn là chuyên gia sư phạm THPT. Hãy soạn duy nhất mục "HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI" theo chuẩn Công văn 5512 cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
-                    YÊU CẦU BẮT BUỘC:
-                    1. Đầy đủ nội dung kiến thức trọng tâm theo Yêu cầu cần đạt (YCCĐ) của Chương trình GDPT 2018 và SGK hiện hành.
-                    2. Bắt đầu bằng 1 khung div tóm tắt Năng lực số [NLS 2.1] và Khung phản biện AI (mã chuẩn ${grade}.A1.2).
-                    3. Trình bày nội dung chính dạng BẢNG 2 CỘT VIỀN ĐEN:
-                       - Cột trái (50%): "HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH" (chia rõ từng nội dung/mục nhỏ 1, 2, 3; mỗi mục có đủ 4 bước: Bước 1 Chuyển giao nhiệm vụ, Bước 2 Thực hiện nhiệm vụ, Bước 3 Báo cáo thảo luận, Bước 4 Kết luận nhận định).
-                       - Cột phải (50%): "DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ)" chi tiết, đầy đủ kiến thức khoa học cốt lõi học sinh cần ghi nhớ vào vở.
-                    4. Ghi chú thêm: ${customGuide}${filePromptPart}
-                    5. Trả về mã HTML thuần của Hoạt động 2 (bắt đầu bằng thẻ <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p> cùng khung div và thẻ table 2 cột), tuyệt đối không bọc trong thẻ markdown \`\`\`html.`;
+                    // Prompt SOẠN LIÊN HOÀN HOẠT ĐỘNG 2, 3, 4 THEO CHUẨN CV 5512
+                    promptText = `Bạn là chuyên gia sư phạm THPT. Hãy biên soạn nội dung chuyên sâu cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book} gồm 3 hoạt động liên tiếp theo chuẩn Công văn 5512:
+
+1. "HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI":
+   - Bắt đầu bằng 1 khung div tóm tắt Năng lực số [NLS 2.1] và Khung phản biện AI (mã chuẩn ${grade}.A1.2).
+   - Trình bày dạng BẢNG 2 CỘT VIỀN ĐEN:
+     + Cột trái (50%): "HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH" (chia rõ từng mục nhỏ 1, 2, 3; mỗi mục có đủ 4 bước: Bước 1 Chuyển giao nhiệm vụ, Bước 2 Thực hiện nhiệm vụ, Bước 3 Báo cáo thảo luận, Bước 4 Kết luận nhận định).
+     + Cột phải (50%): "DỰ KIẾN SẢN PHẨM (NỘI DUNG GHI VỞ)" chi tiết, đầy đủ kiến thức khoa học cốt lõi học sinh cần ghi nhớ vào vở bám sát Yêu cầu cần đạt (YCCĐ) và SGK hiện hành.
+
+2. "HOẠT ĐỘNG 3: LUYỆN TẬP":
+   - Nêu đủ 4 bước tổ chức dạy học của giáo viên và học sinh.
+   - Mục "* DỰ KIẾN SẢN PHẨM:" phải có đủ 3 dạng thức trắc nghiệm mới chuẩn GDPT:
+     + Dạng 1: Trắc nghiệm 4 lựa chọn (chọn 1 đáp án đúng A, B, C, D - ít nhất 2 câu hỏi bám sát kiến thức bài học, in đậm đáp án đúng).
+     + Dạng 2: Trắc nghiệm Đúng / Sai (1 câu hỏi gồm 4 ý a, b, c, d gắn liền với bối cảnh thực nghiệm sinh học/nông nghiệp, ghi rõ [ĐÚNG] hoặc [SAI]).
+     + Dạng 3: Trắc nghiệm trả lời ngắn (2 câu hỏi điền số hoặc thuật ngữ ngắn gọn, có lời giải đáp án rõ ràng).
+
+3. "HOẠT ĐỘNG 4: VẬN DỤNG":
+   - Nêu đủ 4 bước tổ chức dạy học.
+   - Nội dung và sản phẩm bài tập vận dụng bắt buộc phải gắn liền với thực tiễn sản xuất nông nghiệp, sinh thái hoặc đời sống tại huyện Mang Thít, tỉnh Vĩnh Long (ví dụ: mô hình trồng bưởi Năm Roi, cam sành, cây ăn trái, xử lý dịch hại sinh học, canh tác ứng dụng công nghệ...).
+
+Ghi chú sư phạm bổ sung từ giáo viên: ${customGuide}${filePromptPart}
+Yêu cầu định dạng: Toàn bộ danh sách gạch đầu dòng dùng dấu gạch ngang (-), không dùng dấu chấm tròn. Trả về mã HTML thuần bắt đầu từ <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p> đến hết Hoạt động 4, tuyệt đối không bọc trong thẻ markdown \`\`\`html.`;
                 } else if (currentActiveMode === '7991') {
                     promptText = `Bạn là chuyên gia khảo thí Bộ GD&ĐT. Hãy soạn Ma trận, Bản đặc tả và Đề kiểm tra định kì (CV 7991) cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
                     Yêu cầu: Bản giáo viên gạch chân đáp án đúng (<u>A</u>, <u>a)</u>, Đáp án là: <u>...</u>). Đủ 4 mục: Khung ma trận, Bản đặc tả, Đề thi 3 phần, Hướng dẫn chấm. Ghi chú: ${customGuide}${filePromptPart}. Trả về mã HTML thuần.`;
@@ -961,7 +970,7 @@
                 const aiOutputHtml = await callGeminiUnifiedEngine(promptText, savedKey, updateStatusText);
 
                 if (currentActiveMode === '5512') {
-                    // Tự động ghép Hoạt động 2 do AI biên soạn vào cấu trúc Kế hoạch bài dạy CV 5512 hoàn chỉnh
+                    // Tự động ghép Hoạt động 2, 3, 4 do AI biên soạn vào khung Kế hoạch bài dạy CV 5512
                     renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, aiOutputHtml);
                 } else {
                     docContainer.innerHTML = aiOutputHtml;
@@ -970,7 +979,7 @@
                 // Lưu vào biến tạm và hiển thị thanh duyệt (Lưu hoặc Xóa)
                 temporaryAIGeneratedDoc = docContainer.innerHTML;
                 showAIReviewBar();
-                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-bolt"></i> AI vừa biên soạn Hoạt động 2 (Chờ Thầy lưu hoặc xóa)</span>`;
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> AI vừa biên soạn HĐ 2, 3, 4 (Chờ Thầy lưu hoặc xóa)</span>`;
 
             } catch (error) {
                 console.error("Chi tiết lỗi AI:", error);
@@ -1008,13 +1017,13 @@
             renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
         }
 
-        // ==================== 1. KẾ HOẠCH BÀI DẠY CV 5512 (HỖ TRỢ THAY THẾ HOẠT ĐỘNG 2 CỦA AI) ====================
-        function renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, customAct2Html = null) {
+        // ==================== 1. KẾ HOẠCH BÀI DẠY CV 5512 (HỖ TRỢ THAY THẾ HOẠT ĐỘNG 2, 3, 4 CỦA AI) ====================
+        function renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, customAct234Html = null) {
             const docContainer = document.getElementById('container-a4-doc');
             const info = getDynamicNlsAiInfo(lessonTitle, grade);
 
-            // Hoạt động 2 mặc định nội hàm
-            const defaultAct2Html = `
+            // Cụm Hoạt động 2 + 3 + 4 mặc định nội hàm
+            const defaultAct234Html = `
                 <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p>
                 <div style="background: #eef2ff; border-left: 4px solid #3b82f6; padding: 6px 10px; margin: 4px 0; font-size: 11pt;">
                     👉 <strong>[Tích hợp năng lực số - ${info.nls}]:</strong> ${info.nlsDesc}.<br>
@@ -1075,10 +1084,43 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 3: LUYỆN TẬP</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao hệ thống câu hỏi trắc nghiệm đánh giá năng lực gồm đủ 3 dạng thức.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS làm việc cá nhân hoàn thành vào phiếu trắc nghiệm.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Học sinh công bố đáp án, giải thích cơ sở lý thuyết lựa chọn.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV nhận xét, chốt đáp án chuẩn và phân tích lỗi sai.</p>
+                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
+                
+                <p style="margin: 2px 0 2px 25px; font-weight: bold;">Dạng 1: Trắc nghiệm 4 lựa chọn (Chọn 1 đáp án đúng A, B, C, D - 4 câu):</p>
+                <p style="margin: 1px 0 1px 30px;">Câu 1: Đặc điểm nào sau đây mô tả đúng nhất về đối tượng nghiên cứu của bài học?</p>
+                <p style="margin: 1px 0 1px 40px;">A. Có cấu tạo đa bào hoàn chỉnh &nbsp;&nbsp;&nbsp;&nbsp; <strong>B. Mang thông tin di truyền đặc trưng và tuân thủ các quy luật sinh học</strong></p>
+                <p style="margin: 1px 0 1px 40px;">C. Tự nhân đôi không cần năng lượng &nbsp;&nbsp;&nbsp;&nbsp; D. Không chịu ảnh hưởng của các yếu tố môi trường</p>
+                <p style="margin: 1px 0 1px 30px;">Câu 2: Cơ chế cơ bản bảo đảm sự ổn định vật chất di truyền trong quá trình sinh trưởng là gì?</p>
+                <p style="margin: 1px 0 1px 40px;">A. Đột biến cấu trúc &nbsp;&nbsp;&nbsp;&nbsp; <strong>B. Sao chép chính xác và phân ly đồng đều vật chất di truyền</strong> &nbsp;&nbsp;&nbsp;&nbsp; C. Tự tiêu biến &nbsp;&nbsp;&nbsp;&nbsp; D. Thụ tinh chéo</p>
+
+                <p style="margin: 4px 0 2px 25px; font-weight: bold;">Dạng 2: Trắc nghiệm Đúng / Sai (1 câu hỏi gồm 4 ý a, b, c, d có bối cảnh khoa học):</p>
+                <p style="margin: 1px 0 1px 30px;">Câu 1: Trong một nghiên cứu khoa học chuyên sâu về tác động của các nhân tố sinh thái lên tiến trình phát triển:</p>
+                <p style="margin: 1px 0 1px 40px;">a) Sự thay đổi nhiệt độ vượt ngưỡng tối ưu làm giảm hiệu suất hoạt động của các enzyme. [ĐÚNG]</p>
+                <p style="margin: 1px 0 1px 40px;">b) Mọi tác nhân đột biến đều làm tăng tốc độ sinh trưởng của cá thể sinh vật. [SAI]</p>
+                <p style="margin: 1px 0 1px 40px;">c) Nắm vững quy luật giúp con người chủ động can thiệp vào quy trình nông nghiệp nâng cao năng suất. [ĐÚNG]</p>
+                <p style="margin: 1px 0 1px 40px;">d) Các phản ứng sinh hóa nội bào hoàn toàn độc lập và không chịu sự kiểm soát di truyền. [SAI]</p>
+
+                <p style="margin: 4px 0 2px 25px; font-weight: bold;">Dạng 3: Trắc nghiệm trả lời ngắn (2 câu điền số/từ):</p>
+                <p style="margin: 1px 0 1px 30px;">Câu 1: Một cấu trúc ban đầu trải qua 3 đợt biến đổi liên tiếp tạo ra bao nhiêu đơn vị con? ➜ <strong>Đáp án: 8</strong></p>
+                <p style="margin: 1px 0 1px 30px;">Câu 2: Số thành phần cấu tạo cơ bản nhất luôn có mặt ở đối tượng là bao nhiêu? ➜ <strong>Đáp án: 2</strong></p>
+
+                <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 4: VẬN DỤNG</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao bài tập tình huống thực tế nông nghiệp Vĩnh Long.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS tìm hiểu thực tế tại địa phương, hoàn thành báo cáo thu hoạch.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Nộp sản phẩm qua nhóm học tập trực tuyến trước buổi học sau.</p>
+                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV nhận xét, đánh giá sản phẩm và trao giải sáng tạo.</p>
+                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
+                <p style="margin: 2px 0 8px 25px;">- Bản báo cáo đề xuất giải pháp kỹ thuật cụ thể ứng dụng vào trồng trọt, phòng chống dịch hại cây trồng tại Mang Thít.</p>
             `;
 
-            // Nếu AI soạn Hoạt động 2, dùng nội dung AI; nếu không dùng bản nội hàm
-            const act2Content = customAct2Html || defaultAct2Html;
+            // Thay thế cụm HĐ 2, 3, 4 bằng nội dung do AI sinh ra (nếu có)
+            const act234Content = customAct234Html || defaultAct234Html;
 
             docContainer.innerHTML = `
                 <table style="width: 100%; border: none; margin-bottom: 12px;">
@@ -1131,40 +1173,8 @@
                 <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
                 <p style="margin: 2px 0 8px 25px;">- Câu trả lời bước đầu của học sinh chỉ ra được sự cần thiết phải tìm hiểu cơ chế bản chất của ${lessonTitle}.</p>
 
-                ${act2Content}
-
-                <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 3: LUYỆN TẬP</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao hệ thống câu hỏi trắc nghiệm đánh giá năng lực gồm đủ 3 dạng thức.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS làm việc cá nhân hoàn thành vào phiếu trắc nghiệm.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Học sinh công bố đáp án, giải thích cơ sở lý thuyết lựa chọn.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV nhận xét, chốt đáp án chuẩn và phân tích lỗi sai.</p>
-                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
-                
-                <p style="margin: 2px 0 2px 25px; font-weight: bold;">Dạng 1: Trắc nghiệm 4 lựa chọn (Chọn 1 đáp án đúng A, B, C, D - 4 câu):</p>
-                <p style="margin: 1px 0 1px 30px;">Câu 1: Đặc điểm nào sau đây mô tả đúng nhất về đối tượng nghiên cứu của bài học?</p>
-                <p style="margin: 1px 0 1px 40px;">A. Có cấu tạo đa bào hoàn chỉnh &nbsp;&nbsp;&nbsp;&nbsp; <strong>B. Mang thông tin di truyền đặc trưng và tuân thủ các quy luật sinh học</strong></p>
-                <p style="margin: 1px 0 1px 40px;">C. Tự nhân đôi không cần năng lượng &nbsp;&nbsp;&nbsp;&nbsp; D. Không chịu ảnh hưởng của các yếu tố môi trường</p>
-                <p style="margin: 1px 0 1px 30px;">Câu 2: Cơ chế cơ bản bảo đảm sự ổn định vật chất di truyền trong quá trình sinh trưởng là gì?</p>
-                <p style="margin: 1px 0 1px 40px;">A. Đột biến cấu trúc &nbsp;&nbsp;&nbsp;&nbsp; <strong>B. Sao chép chính xác và phân ly đồng đều vật chất di truyền</strong> &nbsp;&nbsp;&nbsp;&nbsp; C. Tự tiêu biến &nbsp;&nbsp;&nbsp;&nbsp; D. Thụ tinh chéo</p>
-
-                <p style="margin: 4px 0 2px 25px; font-weight: bold;">Dạng 2: Trắc nghiệm Đúng / Sai (1 câu hỏi gồm 4 ý a, b, c, d có bối cảnh khoa học):</p>
-                <p style="margin: 1px 0 1px 30px;">Câu 1: Trong một nghiên cứu khoa học chuyên sâu về tác động của các nhân tố sinh thái lên tiến trình phát triển:</p>
-                <p style="margin: 1px 0 1px 40px;">a) Sự thay đổi nhiệt độ vượt ngưỡng tối ưu làm giảm hiệu suất hoạt động của các enzyme. [ĐÚNG]</p>
-                <p style="margin: 1px 0 1px 40px;">b) Mọi tác nhân đột biến đều làm tăng tốc độ sinh trưởng của cá thể sinh vật. [SAI]</p>
-                <p style="margin: 1px 0 1px 40px;">c) Nắm vững quy luật giúp con người chủ động can thiệp vào quy trình nông nghiệp nâng cao năng suất. [ĐÚNG]</p>
-                <p style="margin: 1px 0 1px 40px;">d) Các phản ứng sinh hóa nội bào hoàn toàn độc lập và không chịu sự kiểm soát di truyền. [SAI]</p>
-
-                <p style="margin: 4px 0 2px 25px; font-weight: bold;">Dạng 3: Trắc nghiệm trả lời ngắn (2 câu điền số/từ):</p>
-                <p style="margin: 1px 0 1px 30px;">Câu 1: Một cấu trúc ban đầu trải qua 3 đợt biến đổi liên tiếp tạo ra bao nhiêu đơn vị con? ➜ <strong>Đáp án: 8</strong></p>
-                <p style="margin: 1px 0 1px 30px;">Câu 2: Số thành phần cấu tạo cơ bản nhất luôn có mặt ở đối tượng là bao nhiêu? ➜ <strong>Đáp án: 2</strong></p>
-
-                <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 4: VẬN DỤNG</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 1: Chuyển giao nhiệm vụ: GV giao bài tập tình huống thực tế nông nghiệp Vĩnh Long.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 2: Thực hiện nhiệm vụ: HS tìm hiểu thực tế tại địa phương, hoàn thành báo cáo thu hoạch.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 3: Báo cáo, thảo luận: Nộp sản phẩm qua nhóm học tập trực tuyến trước buổi học sau.</p>
-                <p style="margin: 2px 0 2px 15px;">- Bước 4: Kết luận, nhận định: GV nhận xét, đánh giá sản phẩm và trao giải sáng tạo.</p>
-                <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
-                <p style="margin: 2px 0 8px 25px;">- Bản báo cáo đề xuất giải pháp kỹ thuật cụ thể ứng dụng vào trồng trọt, phòng chống dịch hại cây trồng tại Mang Thít.</p>
+                <!-- Cụm HĐ 2 + 3 + 4 do AI tạo hoặc bản nội hàm mẫu -->
+                ${act234Content}
 
                 <p style="font-weight: bold; margin: 12px 0 4px 0;">IV. HỒ SƠ DẠY HỌC / PHỤ LỤC</p>
                 <p style="font-weight: bold; text-decoration: underline;">Phụ lục 1: PHIẾU HỌC TẬP SỐ 1</p>
@@ -1622,7 +1632,7 @@
             renderCurrentSlide();
         }
 
-        // ==================== CÁC HÀM TIỆN ÍCH SLIDE & ĐỒNG HỒ ====================
+        // ==================== TIỆN ÍCH SLIDE & ĐỒNG HỒ ====================
         function toggleSlideAnswer(btn) {
             const answerBox = btn.nextElementSibling;
             if (answerBox.classList.contains('hidden')) {
