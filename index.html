@@ -41,7 +41,7 @@
         ::-webkit-scrollbar-thumb { background: #24324f; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
 
-        /* Nút 3D Skeuomorphic nổi khối bắt mắt */
+        /* Nút 3D Skeuomorphic nổi khối */
         .btn-3d {
             position: relative;
             transition: all 0.15s ease;
@@ -52,13 +52,6 @@
             box-shadow: 0 1px 0 rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        .btn-3d-blue {
-            background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
-            border: 1px solid #60a5fa;
-            box-shadow: 0 4px 0 #1e3a8a, 0 6px 15px rgba(37,99,235,0.4);
-        }
-        .btn-3d-blue:active { box-shadow: 0 1px 0 #1e3a8a; }
-
         .btn-3d-purple {
             background: linear-gradient(180deg, #9333ea 0%, #6b21a8 100%);
             border: 1px solid #c084fc;
@@ -66,19 +59,19 @@
         }
         .btn-3d-purple:active { box-shadow: 0 1px 0 #4c1d95; }
 
-        .btn-3d-amber {
-            background: linear-gradient(180deg, #f59e0b 0%, #b45309 100%);
-            border: 1px solid #fcd34d;
-            box-shadow: 0 4px 0 #78350f, 0 6px 15px rgba(245,158,11,0.4);
+        .btn-3d-blue {
+            background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+            border: 1px solid #60a5fa;
+            box-shadow: 0 4px 0 #1e3a8a, 0 6px 15px rgba(37,99,235,0.4);
         }
-        .btn-3d-amber:active { box-shadow: 0 1px 0 #78350f; }
+        .btn-3d-blue:active { box-shadow: 0 1px 0 #1e3a8a; }
 
-        .btn-3d-emerald {
-            background: linear-gradient(180deg, #10b981 0%, #047857 100%);
-            border: 1px solid #6ee7b7;
-            box-shadow: 0 4px 0 #064e3b, 0 6px 15px rgba(16,185,129,0.4);
+        .btn-3d-slate {
+            background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+            border: 1px solid #64748b;
+            box-shadow: 0 4px 0 #0f172a, 0 6px 12px rgba(0,0,0,0.3);
         }
-        .btn-3d-emerald:active { box-shadow: 0 1px 0 #064e3b; }
+        .btn-3d-slate:active { box-shadow: 0 1px 0 #0f172a; }
 
         .page-a4 {
             width: 210mm;
@@ -120,7 +113,7 @@
 </head>
 <body class="bg-brand-dark text-slate-200 font-sans min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white">
 
-    <!-- ==================== HEADER HỆ THỐNG TINH GỌN (ĐÃ BỎ CHI TIẾT SỞ/TRƯỜNG/GV TRÊN ĐẦU) ==================== -->
+    <!-- ==================== HEADER HỆ THỐNG TINH GỌN ==================== -->
     <header class="bg-brand-surface border-b border-brand-border px-5 py-2.5 sticky top-0 z-50 shadow-lg no-print">
         <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-4">
             
@@ -138,34 +131,31 @@
                 </div>
             </div>
 
-            <!-- BỘ 3 NÚT TẠO 3D TRÊN THANH CÔNG CỤ -->
-            <div class="flex items-center gap-2.5">
-                <button onclick="triggerGenerateMode('5512')" class="btn-3d btn-3d-blue py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
-                    <i class="fa-solid fa-file-signature text-sm"></i>
-                    <span>TẠO GIÁO ÁN (CV 5512)</span>
+            <!-- CHUYỂN TAB CÁC PHÂN HỆ CHÍNH -->
+            <div class="flex items-center bg-[#0b1222] p-1 rounded-xl border border-brand-border shadow-inner text-xs">
+                <button id="btn-tab-5512" onclick="switchViewTab('5512')" class="px-4 py-2 rounded-lg font-bold transition bg-blue-600 text-white flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-signature"></i> <span>Kế Hoạch Bài Dạy (5512)</span>
                 </button>
-
-                <button onclick="triggerGenerateMode('slide')" class="btn-3d btn-3d-purple py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
-                    <i class="fa-solid fa-chalkboard-user text-sm"></i>
-                    <span>TẠO BÀI GIẢNG PPT (16 SLIDE)</span>
+                <button id="btn-tab-slide" onclick="switchViewTab('slide')" class="px-4 py-2 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5">
+                    <i class="fa-solid fa-chalkboard-user"></i> <span>Slide Giảng Dạy (16:9)</span>
                 </button>
-
-                <button onclick="triggerGenerateMode('7991')" class="btn-3d btn-3d-amber py-2 px-3.5 rounded-xl text-white font-extrabold text-xs flex items-center gap-2">
-                    <i class="fa-solid fa-list-check text-sm"></i>
-                    <span>TẠO ĐỀ THI & MA TRẬN 7991</span>
+                <button id="btn-tab-7991" onclick="switchViewTab('7991')" class="px-4 py-2 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5">
+                    <i class="fa-solid fa-list-check"></i> <span>Đề Thi & Ma Trận (7991)</span>
                 </button>
             </div>
 
-            <!-- Chuyển Tab Xem & Cài Đặt API AI / Drive -->
-            <div class="flex items-center gap-2">
-                <button onclick="openDriveSyncModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-xs font-bold border border-blue-500/30 transition flex items-center gap-1.5" title="Đồng bộ Google Drive Apps Script">
-                    <i class="fa-brands fa-google-drive"></i> <span>Google Drive</span>
+            <!-- NÚT TẠO BẰNG AI & CÀI ĐẶT TRÊN HEADER -->
+            <div class="flex items-center gap-2.5">
+                <!-- NÚT TẠO BẰNG AI TỔNG THỂ -->
+                <button onclick="executeActionAI()" class="btn-3d btn-3d-purple px-4 py-2 rounded-xl text-white font-black text-xs flex items-center gap-2 animate-pulse hover:animate-none" title="Chỉ kích hoạt AI khi bấm vào đây">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                    <span id="header-ai-btn-text">TẠO BẰNG AI</span>
                 </button>
-                <div class="flex items-center bg-[#0b1222] p-1 rounded-xl border border-brand-border shadow-inner text-xs">
-                    <button id="btn-tab-5512" onclick="switchViewTab('5512')" class="px-3 py-1.5 rounded-lg font-bold transition bg-blue-600 text-white">5512</button>
-                    <button id="btn-tab-slide" onclick="switchViewTab('slide')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Slide 16:9</button>
-                    <button id="btn-tab-7991" onclick="switchViewTab('7991')" class="px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">Đề & Ma Trận</button>
-                </div>
+
+                <button onclick="openDriveSyncModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-xs font-bold border border-blue-500/30 transition flex items-center gap-1.5" title="Đồng bộ Google Drive Apps Script">
+                    <i class="fa-brands fa-google-drive"></i> <span>Drive</span>
+                </button>
+
                 <button onclick="openAIKeyModal()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-key"></i> <span id="api-status-text">Cài API AI</span>
                 </button>
@@ -217,8 +207,8 @@
                 </div>
             </div>
 
-            <!-- KHỐI 2: KHUNG CHỌN BÀI DẠY VÀ TÍCH CHỌN NHIỀU BÀI CHO ĐỀ KIỂM TRA -->
-            <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md flex flex-col min-h-[260px]">
+            <!-- KHỐI 2: KHUNG CHỌN BÀI DẠY VÀ NÚT TẠO BẰNG AI / DÙNG NỘI HÀM -->
+            <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md flex flex-col min-h-[300px]">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-brand-border/60">
                     <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200 flex items-center gap-1.5">
                         <i class="fa-solid fa-list-check text-emerald-400"></i> Danh Sách Bài Học SGK
@@ -230,7 +220,7 @@
                     </div>
                 </div>
 
-                <p class="text-[11px] text-slate-400 mb-2">Click vào bài để <strong>chọn Soạn bài/Slide</strong>; tích chọn checkbox để <strong>đưa vào Đề 7991</strong>:</p>
+                <p class="text-[11px] text-slate-400 mb-2">Click chọn bài; nhãn <span class="text-purple-300 font-bold bg-purple-500/20 px-1 py-0.5 rounded">AI</span> là bài đã biên soạn và lưu sẵn trên máy:</p>
 
                 <div id="lesson-items-container" class="space-y-1.5 overflow-y-auto max-h-[175px] pr-1"></div>
 
@@ -241,11 +231,18 @@
                     </div>
                 </div>
 
-                <!-- Nút Tạo ngay bên dưới để giáo viên thuận tay bấm sau khi chọn bài -->
-                <button onclick="executeActionGenerate(currentActiveMode)" class="mt-3 btn-3d btn-3d-emerald py-2.5 px-3 rounded-xl text-white font-extrabold text-xs flex items-center justify-center gap-2 w-full">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span id="btn-left-create-text">BẮT ĐẦU TẠO (CV 5512)</span>
-                </button>
+                <!-- BỘ 2 NÚT THAO TÁC RÕ RÀNG Ở CỘT TRÁI -->
+                <div class="mt-3.5 pt-2 border-t border-brand-border/60 space-y-2">
+                    <button onclick="executeActionAI()" class="btn-3d btn-3d-purple py-2.5 px-3 rounded-xl text-white font-extrabold text-xs flex items-center justify-center gap-2 w-full">
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                        <span id="btn-sidebar-ai-text">TẠO BẰNG AI (GEMINI)</span>
+                    </button>
+
+                    <button onclick="forceUseInternalData()" class="btn-3d btn-3d-slate py-2 px-3 rounded-xl text-slate-200 font-bold text-xs flex items-center justify-center gap-2 w-full hover:text-white" title="Quay về dùng nội dung mẫu nội hàm chuẩn mực">
+                        <i class="fa-solid fa-database text-cyan-400"></i>
+                        <span>DÙNG KẾT QUẢ NỘI HÀM CÓ SẴN</span>
+                    </button>
+                </div>
             </div>
 
             <!-- KHỐI 3: KÉO THẢ TÀI LIỆU SGK TỰ NẠP -->
@@ -253,8 +250,8 @@
                 <div id="drop-zone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)" onclick="document.getElementById('file-input').click()" 
                      class="border-2 border-dashed border-slate-700 hover:border-cyan-400/80 bg-[#0b1222]/80 hover:bg-[#0b1222] rounded-2xl p-3 text-center cursor-pointer transition flex flex-col items-center justify-center gap-1.5">
                     <i class="fa-solid fa-cloud-arrow-up text-xl text-cyan-400"></i>
-                    <p class="text-xs font-bold text-slate-200">Kéo thả file SGK / Tài liệu hướng dẫn</p>
-                    <p class="text-[10px] text-slate-400">Hỗ trợ PDF, DOCX, TXT để AI ưu tiên phân tích ngữ liệu</p>
+                    <p class="text-xs font-bold text-slate-200">Kéo thả file SGK / Ngữ liệu bổ sung</p>
+                    <p class="text-[10px] text-slate-400">Hỗ trợ PDF, DOCX, TXT để AI ưu tiên bám sát</p>
                     <input type="file" id="file-input" onchange="handleFileSelect(event)" class="hidden" accept=".pdf,.doc,.docx,.txt">
                 </div>
 
@@ -264,30 +261,34 @@
                 </div>
             </div>
 
-            <!-- KHỐI 4: CHỈ DẪN BỔ SUNG TÙY BIẾN -->
+            <!-- KHỐI 4: CHỈ DẪN BỔ SUNG CHO AI -->
             <div class="bg-brand-card rounded-2xl p-4 border border-brand-border/80 shadow-md space-y-2">
                 <h3 class="text-xs uppercase font-extrabold tracking-wider text-cyan-300 flex items-center gap-1.5">
-                    <i class="fa-solid fa-pen-fancy text-amber-400"></i> Ghi Chú Sư Phạm Bổ Sung Cho AI (Nếu có)
+                    <i class="fa-solid fa-pen-fancy text-amber-400"></i> Ghi Chú Sư Phạm Bổ Sung (Khi gọi AI)
                 </h3>
-                <textarea id="ai-custom-instructions" rows="2" placeholder="Ví dụ: Lồng ghép nông nghiệp địa phương, nhấn mạnh liên hệ thực tiễn, câu hỏi trắc nghiệm đặc thù..." class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400"></textarea>
+                <textarea id="ai-custom-instructions" rows="2" placeholder="Ví dụ: Lồng ghép thực tiễn nông nghiệp Vĩnh Long, chú trọng phát triển năng lực AI cho học sinh..." class="w-full bg-[#0b1222] border border-slate-700 rounded-xl p-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400"></textarea>
             </div>
         </aside>
 
         <!-- CỘT PHẢI: KHÔNG GIAN HIỂN THỊ SẢN PHẨM -->
         <section class="flex-1 flex flex-col bg-brand-surface rounded-2xl border border-brand-border overflow-hidden shadow-2xl relative">
             
-            <!-- THANH THAO TÁC XUẤT BẢN THẬT VÀ NÚT TẠO CHÍNH -->
+            <!-- THANH THAO TÁC XUẤT BẢN THẬT -->
             <div class="bg-brand-card/90 px-4 py-2.5 border-b border-brand-border flex flex-wrap items-center justify-between gap-3 no-print">
                 <div class="flex items-center gap-2 text-xs">
                     <span id="current-badge-view" class="px-2.5 py-1 rounded bg-blue-500/20 text-cyan-300 font-bold border border-cyan-500/30">
                         KẾ HOẠCH BÀI DẠY (CÔNG VĂN 5512 CẢI TIẾN HIGH-END)
                     </span>
-                    <span class="text-slate-400">• Bấm trực tiếp vào văn bản để chỉnh sửa</span>
+                    <span id="content-source-indicator" class="text-emerald-400 font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check text-[10px]"></i> Bản gốc nội hàm có sẵn
+                    </span>
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <button onclick="executeActionGenerate(currentActiveMode)" class="btn-3d btn-3d-emerald px-3.5 py-1.5 rounded-lg text-white text-xs font-bold flex items-center gap-1.5">
-                        <i class="fa-solid fa-play"></i> <span id="btn-top-create-text">Tạo Ngay</span>
+                    <!-- Nút Tạo bằng AI ngay trên thanh thao tác sản phẩm -->
+                    <button onclick="executeActionAI()" class="btn-3d btn-3d-purple px-3 py-1.5 rounded-lg text-white text-xs font-extrabold flex items-center gap-1.5">
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                        <span>Tạo Bằng AI</span>
                     </button>
 
                     <button id="btn-export-word" onclick="downloadWordDoc()" class="btn-3d btn-3d-blue px-3.5 py-1.5 rounded-lg text-white text-xs font-bold flex items-center gap-1.5">
@@ -367,7 +368,7 @@
         </section>
     </main>
 
-    <!-- MODAL ĐỒNG BỘ GOOGLE DRIVE APPS SCRIPT -->
+    <!-- MODAL GOOGLE DRIVE SYNC -->
     <div id="modal-drive-sync" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-brand-surface border border-brand-border rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <div class="flex items-center justify-between pb-3 border-b border-brand-border">
@@ -377,7 +378,7 @@
                 <button onclick="closeDriveSyncModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="mt-4 space-y-3 text-xs text-slate-300">
-                <p>Đường dẫn Google Apps Script Web App của Thầy dùng để đồng bộ đám mây và RAG ngữ liệu:</p>
+                <p>Đường dẫn Google Apps Script Web App dùng để đồng bộ đám mây và RAG ngữ liệu:</p>
                 <input type="text" id="input-drive-script-url" class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-cyan-300 font-mono text-xs focus:outline-none focus:border-cyan-400">
                 <p class="text-[11px] text-slate-500 leading-relaxed">
                     * Hệ thống đã cài sẵn đường dẫn Web App của Thầy. Bấm Lưu để xác nhận kết nối.
@@ -400,10 +401,10 @@
                 <button onclick="closeAIKeyModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="mt-4 space-y-3 text-xs text-slate-300">
-                <p>Thầy dán mã <strong>Gemini API Key</strong> vào đây để AI tự động kết nối và viết bài trực tiếp theo thời gian thực:</p>
+                <p>Thầy dán mã <strong>Gemini API Key</strong> vào đây để AI sẵn sàng hoạt động khi bấm nút Tạo Bằng AI:</p>
                 <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
                 <p class="text-[11px] text-slate-500 leading-relaxed">
-                    * Nếu AI gặp sự cố hoặc chưa có Key, hệ thống sẽ tự động dùng dữ liệu chuẩn mực dự phòng nội hàm ngay lập tức.
+                    * Khi chuyển bài hoặc mở web, hệ thống mặc định nạp kết quả nội hàm siêu tốc. Chỉ khi Thầy bấm nút "Tạo Bằng AI" thì AI mới thực thi và lưu lại.
                 </p>
             </div>
             <div class="mt-5 flex justify-end gap-2 text-xs">
@@ -413,7 +414,7 @@
         </div>
     </div>
 
-    <!-- ==================== LOGIC JAVASCRIPT ĐIỀU KHIỂN & GỌI AI TOÀN DIỆN ==================== -->
+    <!-- ==================== LOGIC JAVASCRIPT ĐIỀU KHIỂN & LƯU TRỮ AI ==================== -->
     <script>
         const teacherName = "Hồ Tấn Khải";
         const schoolName = "Trường THPT Mang Thít";
@@ -428,7 +429,7 @@
         let timerSeconds = 0;
         let timerInterval = null;
 
-        // TỔNG SỐ CÂU HỎI MẶC ĐỊNH CHO TỪNG PHẦN THEO CHUẨN 7991 (KHÓA TỔNG & TỰ PHÂN BỔ)
+        // TỔNG SỐ CÂU HỎI KHÓA Ở DÒNG TỔNG 7991 (TỰ ĐỘNG PHÂN BỔ VỀ CÁC BÀI)
         let matrixGlobalTotals = {
             p1_b: 9,
             p1_h: 6,
@@ -439,10 +440,9 @@
             p3_vd: 3
         };
 
-        // BỘ NHỚ LƯU SỐ CÂU ĐÃ ĐƯỢC PHÂN BỔ TỰ ĐỘNG CHO TỪNG BÀI
         let examMatrixCustomCounts = {};
 
-        // DANH SÁCH BÀI HỌC SGK
+        // DANH MỤC BÀI HỌC SGK GDPT 2018
         const sgkCurriculumDatabase = {
             "Sinh học": {
                 "10": [
@@ -516,7 +516,7 @@
             }
         };
 
-        // BẢNG TRA CỨU MÃ NLS & AI RIÊNG CHO TỪNG BÀI
+        // BẢNG NLS & AI TỪNG BÀI
         function getDynamicNlsAiInfo(lessonName, grade) {
             if (lessonName.includes("Bài 1:")) {
                 return {
@@ -576,17 +576,22 @@
             }
         }
 
+        // TẠO KHÓA LƯU TRỮ AI DUY NHẤT CHO TỪNG BÀI
+        function getAICacheKey(mode, subject, grade, lessonTitle) {
+            return `cached_ai_${mode}_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             if (!localStorage.getItem('google_drive_script_url')) {
                 localStorage.setItem('google_drive_script_url', DEFAULT_DRIVE_APP_URL);
             }
             onFilterChange();
-            // Khởi tạo giao diện xem trước nội hàm sẵn sàng
-            renderGiaoAn5512HighEnd("Sinh học", "10", "Kết Nối Tri Thức", currentSelectedLesson);
+            // Khởi động trang với nội dung mặc định
+            displayContentForCurrentLesson();
             checkStoredApiKey();
         });
 
-        // KHI THAY ĐỔI MÔN/LỚP/SÁCH: CẬP NHẬT DANH SÁCH BÀI, KHÔNG TỰ ĐỘNG CHẠY AI
+        // KHI THAY ĐỔI MÔN / LỚP / BỘ SÁCH: CẬP NHẬT GIAO DIỆN VÀ NẠP NỘI HÀM (KHÔNG GỌI AI)
         function onFilterChange() {
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
@@ -600,12 +605,26 @@
                 selectedLessonsForExam = [lessonList[0]];
             }
 
+            renderLessonListUI();
+            displayContentForCurrentLesson();
+        }
+
+        // VẼ DANH SÁCH BÀI HỌC VÀ ĐÁNH DẤU BÀI ĐÃ ĐƯỢC AI BIÊN SOẠN
+        function renderLessonListUI() {
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const lessonList = (sgkCurriculumDatabase[subject] && sgkCurriculumDatabase[subject][grade]) || [];
+
             const container = document.getElementById('lesson-items-container');
             container.innerHTML = "";
 
             lessonList.forEach((lessonName) => {
                 const isCurrent = (lessonName === currentSelectedLesson);
                 const isCheckedForExam = selectedLessonsForExam.includes(lessonName);
+
+                // Kiểm tra xem bài này đã có bản lưu từ AI hay chưa
+                const aiKey = getAICacheKey(currentActiveMode, subject, grade, lessonName);
+                const hasAICache = !!localStorage.getItem(aiKey);
 
                 const itemRow = document.createElement('div');
                 itemRow.className = `flex items-center gap-2 p-2 rounded-xl border text-xs transition ${
@@ -616,8 +635,9 @@
 
                 itemRow.innerHTML = `
                     <input type="checkbox" ${isCheckedForExam ? 'checked' : ''} onchange="toggleLessonInExam('${lessonName}', this.checked)" class="rounded accent-amber-500 w-4 h-4 cursor-pointer" title="Tích chọn đưa vào Ma trận Đề thi 7991">
-                    <span onclick="selectCurrentLesson('${lessonName}')" class="truncate flex-1 cursor-pointer font-semibold" title="Click để chọn bài này">
+                    <span onclick="selectCurrentLesson('${lessonName}')" class="truncate flex-1 cursor-pointer font-semibold flex items-center gap-1.5" title="Click để xem bài này">
                         ${lessonName}
+                        ${hasAICache ? '<span class="text-[9px] bg-purple-500/30 text-purple-300 border border-purple-500/40 px-1.5 py-0.2 rounded font-black">AI</span>' : ''}
                     </span>
                     <i onclick="selectCurrentLesson('${lessonName}')" class="fa-solid fa-arrow-right text-[10px] text-cyan-400 opacity-60 cursor-pointer"></i>
                 `;
@@ -628,11 +648,12 @@
             updateButtonLabels();
         }
 
-        // KHI CHỌN BÀI: CHỈ ĐỔI TRẠNG THÁI CHỌN, KHÔNG TỰ Ý CHẠY AI ĐỂ THẦY CÔ CHỦ ĐỘNG
+        // KHI DI CHUYỂN BÀI: TỰ ĐỘNG LẤY KẾT QUẢ ĐÃ LƯU (NẾU CÓ) HOẶC DÙNG KẾT QUẢ NỘI HÀM
         function selectCurrentLesson(lessonName) {
             currentSelectedLesson = lessonName;
             document.getElementById('active-selected-lesson-title').innerText = lessonName;
-            onFilterChange();
+            renderLessonListUI();
+            displayContentForCurrentLesson();
         }
 
         function toggleLessonInExam(lessonName, isChecked) {
@@ -643,7 +664,7 @@
             }
             if (currentActiveMode === '7991') {
                 distributeMatrixFromTotals();
-                renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
+                displayContentForCurrentLesson();
             }
         }
 
@@ -653,45 +674,38 @@
             const lessonList = sgkCurriculumDatabase[subject][grade] || [];
             
             selectedLessonsForExam = selectAll ? [...lessonList] : [];
-            onFilterChange();
+            renderLessonListUI();
             if (currentActiveMode === '7991') {
                 distributeMatrixFromTotals();
-                renderMaTranDeKiemTra(subject, grade, document.getElementById('sel-book').value);
+                displayContentForCurrentLesson();
             }
         }
 
         function updateButtonLabels() {
-            const modeTextMap = {
-                '5512': 'TẠO GIÁO ÁN (CV 5512)',
-                'slide': 'TẠO BÀI GIẢNG PPT (16 SLIDE)',
-                '7991': 'TẠO ĐỀ THI & MA TRẬN 7991'
-            };
-            const label = modeTextMap[currentActiveMode] || 'TẠO NỘI DUNG';
-            document.getElementById('btn-left-create-text').innerText = label;
-            document.getElementById('btn-top-create-text').innerText = label;
+            const modeName = {
+                '5512': 'Giáo Án 5512',
+                'slide': 'Slide Giảng Dạy',
+                '7991': 'Đề Thi 7991'
+            }[currentActiveMode] || 'Nội Dung';
+
+            document.getElementById('header-ai-btn-text').innerText = `TẠO ${modeName.toUpperCase()} BẰNG AI`;
+            document.getElementById('btn-sidebar-ai-text').innerText = `TẠO ${modeName.toUpperCase()} BẰNG AI`;
         }
 
-        // CHUYỂN TAB XEM (KHÔNG TỰ ĐỘNG CHẠY AI, CHỈ HIỂN THỊ DỮ LIỆU ĐANG CÓ HOẶC NỘI HÀM)
+        // CHUYỂN PHÂN HỆ XEM
         function switchViewTab(mode) {
             currentActiveMode = mode;
-            updateButtonLabels();
+            ['5512', 'slide', '7991'].forEach(m => {
+                const b = document.getElementById('btn-tab-' + m);
+                b.className = "px-4 py-2 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5";
+            });
+            document.getElementById('btn-tab-' + mode).className = "px-4 py-2 rounded-lg font-bold transition bg-blue-600 text-white flex items-center gap-1.5";
 
             const docContainer = document.getElementById('container-a4-doc');
             const slideContainer = document.getElementById('container-slide-presentation');
             const badge = document.getElementById('current-badge-view');
-
             const btnExportWord = document.getElementById('btn-export-word');
             const btnExportPptx = document.getElementById('btn-export-pptx');
-
-            ['5512', 'slide', '7991'].forEach(m => {
-                const b = document.getElementById('btn-tab-' + m);
-                b.className = "px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white";
-            });
-            document.getElementById('btn-tab-' + mode).className = "px-3 py-1.5 rounded-lg font-bold transition bg-blue-600 text-white";
-
-            const subject = document.getElementById('sel-subject').value;
-            const grade = document.getElementById('sel-grade').value;
-            const book = document.getElementById('sel-book').value;
 
             if (mode === '5512') {
                 docContainer.classList.remove('hidden');
@@ -699,87 +713,170 @@
                 badge.innerText = "KẾ HOẠCH BÀI DẠY (CÔNG VĂN 5512 CẢI TIẾN HIGH-END)";
                 btnExportWord.classList.remove('hidden');
                 btnExportPptx.classList.add('hidden');
-                
-                const cacheKey = `cached_5512_${subject}_${grade}_${currentSelectedLesson}`.replace(/[^a-zA-Z0-9_]/g, '_');
-                const cachedContent = localStorage.getItem(cacheKey);
-                if (cachedContent) {
-                    docContainer.innerHTML = cachedContent;
-                } else {
-                    renderGiaoAn5512HighEnd(subject, grade, book, currentSelectedLesson);
-                }
             } else if (mode === 'slide') {
                 docContainer.classList.add('hidden');
                 slideContainer.classList.remove('hidden');
                 badge.innerText = "BÀI GIẢNG ĐIỆN TỬ SLIDE 16:9 (TYPOGRAPHY ≥ 32PT)";
                 btnExportWord.classList.add('hidden');
                 btnExportPptx.classList.remove('hidden');
-                renderPowerPointSlideDeck(subject, grade, book, currentSelectedLesson);
             } else if (mode === '7991') {
                 docContainer.classList.remove('hidden');
                 slideContainer.classList.add('hidden');
                 badge.innerText = "HỒ SƠ KHẢO THÍ & MA TRẬN ĐẶC TẢ ĐỀ THI (7991)";
                 btnExportWord.classList.remove('hidden');
                 btnExportPptx.classList.add('hidden');
+            }
+
+            renderLessonListUI();
+            displayContentForCurrentLesson();
+        }
+
+        // ==================== CƠ CHẾ NẠP KẾT QUẢ ĐÃ LƯU HOẶC NỘI HÀM (KHÔNG TỰ GỌI AI) ====================
+        function displayContentForCurrentLesson() {
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const book = document.getElementById('sel-book').value;
+            const lessonTitle = currentSelectedLesson;
+            const docContainer = document.getElementById('container-a4-doc');
+            const statusInd = document.getElementById('content-source-indicator');
+
+            if (currentActiveMode === 'slide') {
+                statusInd.innerHTML = `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check"></i> Bản giảng dạy 16:9 tương tác</span>`;
+                renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
+                return;
+            }
+
+            // 1. KIỂM TRA XEM BÀI NÀY ĐÃ TỪNG ĐƯỢC AI TẠO VÀ LƯU CHƯA
+            const aiKey = getAICacheKey(currentActiveMode, subject, grade, lessonTitle);
+            const cachedAIContent = localStorage.getItem(aiKey);
+
+            if (cachedAIContent) {
+                // ĐÃ CÓ BẢN AI -> LẤY RA DÙNG NGAY, KHÔNG CẦN TẠO NỮA
+                docContainer.innerHTML = cachedAIContent;
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp bản lưu từ AI (Không tốn lượt tạo)</span>`;
+                return;
+            }
+
+            // 2. NẾU CHƯA CÓ BẢN AI -> MẶC ĐỊNH DÙNG BẢN GỐC NỘI HÀM CÓ SẴN NGAY LẬP TỨC
+            statusInd.innerHTML = `<span class="text-emerald-400 font-bold flex items-center gap-1"><i class="fa-solid fa-circle-check text-[10px]"></i> Bản gốc nội hàm có sẵn</span>`;
+            if (currentActiveMode === '5512') {
+                renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle);
+            } else if (currentActiveMode === '7991') {
                 distributeMatrixFromTotals();
                 renderMaTranDeKiemTra(subject, grade, book);
             }
         }
 
-        // BẤM NÚT TRÊN HEADER ĐỂ KÍCH HOẠT TẠO
-        function triggerGenerateMode(mode) {
-            switchViewTab(mode);
-            executeActionGenerate(mode);
+        // NÚT BẮT BUỘC DÙNG LẠI KẾT QUẢ NỘI HÀM
+        function forceUseInternalData() {
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const book = document.getElementById('sel-book').value;
+            const lessonTitle = currentSelectedLesson;
+            const statusInd = document.getElementById('content-source-indicator');
+
+            statusInd.innerHTML = `<span class="text-emerald-400 font-bold flex items-center gap-1"><i class="fa-solid fa-circle-check text-[10px]"></i> Đã chuyển sang Bản gốc nội hàm có sẵn</span>`;
+            if (currentActiveMode === '5512') {
+                renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle);
+            } else if (currentActiveMode === '7991') {
+                distributeMatrixFromTotals();
+                renderMaTranDeKiemTra(subject, grade, book);
+            } else if (currentActiveMode === 'slide') {
+                renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
+            }
         }
 
-        // ==================== CƠ CHẾ KHÓA TỔNG VÀ TỰ ĐỘNG PHÂN BỔ SỐ CÂU ====================
-        function distributeMatrixFromTotals() {
-            const lessons = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [currentSelectedLesson];
-            const numLessons = lessons.length;
+        // ==================== CHỈ CHẠY AI KHI BẤM VÀO NÚT "TẠO BẰNG AI" ====================
+        async function executeActionAI() {
+            const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
+            if (!savedKey) {
+                openAIKeyModal();
+                alert("Thầy vui lòng nhập Gemini API Key để AI bắt đầu biên soạn bài mới!");
+                return;
+            }
 
-            examMatrixCustomCounts = {};
-            lessons.forEach(les => {
-                examMatrixCustomCounts[les] = {
-                    p1_b: 0, p1_h: 0, p1_vd: 0,
-                    p2_h: 0, p2_vd: 0,
-                    p3_h: 0, p3_vd: 0
+            const subject = document.getElementById('sel-subject').value;
+            const grade = document.getElementById('sel-grade').value;
+            const book = document.getElementById('sel-book').value;
+            const lessonTitle = currentSelectedLesson;
+            const customGuide = document.getElementById('ai-custom-instructions') ? document.getElementById('ai-custom-instructions').value.trim() : "";
+            const docContainer = document.getElementById('container-a4-doc');
+            const statusInd = document.getElementById('content-source-indicator');
+
+            // Slide 16:9 sử dụng engine render chuyên dụng
+            if (currentActiveMode === 'slide') {
+                renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
+                alert("Đã cập nhật Slide bài giảng điện tử 16:9!");
+                return;
+            }
+
+            docContainer.innerHTML = `
+                <div style="text-align: center; padding: 75px 20px; font-family: sans-serif;">
+                    <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-brain fa-bounce"></i></div>
+                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">Đang kết nối Gemini AI để biên soạn bài mới...</h3>
+                    <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
+                        Bài học: <strong>${lessonTitle}</strong> (${subject} ${grade})
+                    </p>
+                </div>
+            `;
+
+            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang trực tiếp biên soạn...</span>`;
+
+            try {
+                let filePromptPart = "";
+                if (uploadedFileContent && uploadedFileContent.trim() !== "") {
+                    filePromptPart = `\n- NGỮ LIỆU/TÀI LIỆU SGK BỔ SUNG:\n"""\n${uploadedFileContent.slice(0, 8000)}\n"""\n(Ưu tiên phân tích bám sát ngữ liệu trên).`;
+                }
+
+                let promptText = "";
+                if (currentActiveMode === '5512') {
+                    promptText = `Bạn là chuyên gia sư phạm THPT. Hãy soạn Kế hoạch bài dạy theo chuẩn Công văn 5512/BGDĐT-GDTrH cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
+                    Yêu cầu:
+                    - Tiêu đề: SỞ GD&ĐT VĨNH LONG - TRƯỜNG THPT MANG THÍT - Họ và tên giáo viên: Hồ Tấn Khải.
+                    - Mục tiêu: Kiến thức; Năng lực chung; Năng lực đặc thù; Năng lực số [NLS 2.1]; Năng lực AI (mã chuẩn ${grade}.A1.2); Phẩm chất.
+                    - Tiến trình 4 hoạt động: Hoạt động 2 trình bày dạng BẢNG 2 CỘT VIỀN ĐEN chi tiết nội dung ghi vở của học sinh; Hoạt động 3 Luyện tập đủ 3 dạng thức trắc nghiệm; Hoạt động 4 Vận dụng gắn liền thực tiễn nông nghiệp địa phương.
+                    - Đủ 3 phụ lục: Phiếu học tập số 1, Rubric NLS 2.1 (5 cột), Rubric Năng lực AI (5 cột).
+                    - Ghi chú thêm: ${customGuide}${filePromptPart}
+                    - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html) để chèn thẳng vào trang A4.`;
+                } else if (currentActiveMode === '7991') {
+                    promptText = `Bạn là chuyên gia khảo thí Bộ GD&ĐT. Hãy soạn Ma trận, Bản đặc tả và Đề kiểm tra định kì (CV 7991) cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
+                    Yêu cầu:
+                    - Khung ma trận, Bản đặc tả ma trận.
+                    - Đề kiểm tra chính thức (Bản giáo viên: gạch chân các phương án đúng <u>A</u>, <u>a)</u>, Đáp án là: <u>...</u>). Đủ 3 phần: Phần I nhiều lựa chọn, Phần II đúng/sai, Phần III trả lời ngắn.
+                    - Hướng dẫn chấm và biểu điểm chi tiết.
+                    - Ghi chú thêm: ${customGuide}${filePromptPart}
+                    - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html).`;
+                }
+
+                const updateStatusText = (msg) => {
+                    const el = document.getElementById('ai-loading-status');
+                    if (el) el.innerText = msg;
                 };
-            });
 
-            // Phân bổ từng tiêu chí đều cho các bài
-            const fields = ['p1_b', 'p1_h', 'p1_vd', 'p2_h', 'p2_vd', 'p3_h', 'p3_vd'];
-            fields.forEach(f => {
-                const total = parseInt(matrixGlobalTotals[f]) || 0;
-                const base = Math.floor(total / numLessons);
-                let remainder = total % numLessons;
+                const aiHtmlResult = await callGeminiUnifiedEngine(promptText, savedKey, updateStatusText);
 
-                lessons.forEach((les, idx) => {
-                    examMatrixCustomCounts[les][f] = base + (idx < remainder ? 1 : 0);
-                });
-            });
+                // LƯU LẠI VÀO BỘ NHỚ ĐỂ NHỮNG LẦN SAU KHÔNG CẦN TẠO LẠI
+                const aiKey = getAICacheKey(currentActiveMode, subject, grade, lessonTitle);
+                localStorage.setItem(aiKey, aiHtmlResult);
+
+                docContainer.innerHTML = aiHtmlResult;
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã tạo và lưu thành công bằng AI!</span>`;
+                renderLessonListUI(); // Cập nhật nhãn AI trên danh sách
+
+            } catch (error) {
+                console.warn("Lỗi gọi AI, tự động nạp kết quả nội hàm:", error);
+                statusInd.innerHTML = `<span class="text-amber-400 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> AI gặp lỗi, đã tự nạp Bản gốc nội hàm</span>`;
+                displayContentForCurrentLesson();
+                alert("Kết nối AI gặp sự cố. Hệ thống đã tự động kích hoạt Bản gốc nội hàm chuẩn mực để Thầy tiếp tục làm việc!");
+            }
         }
 
-        function updateGlobalTotalField(field, value) {
-            const val = parseInt(value) || 0;
-            matrixGlobalTotals[field] = val;
-            distributeMatrixFromTotals();
-            renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
-        }
-
-        // ==================== HÀM GỌI API GEMINI DUY NHẤT & CHỐNG LỖI 404 ====================
+        // ==================== ENGINE GỌI API GEMINI DỰ PHÒNG CHỐNG LỖI 404 ====================
         async function callGeminiUnifiedEngine(promptText, apiKey, statusCallback) {
             const key = apiKey.trim();
-
-            const defaultModels = [
-                'gemini-1.5-flash',
-                'gemini-2.0-flash',
-                'gemini-1.5-pro',
-                'gemini-1.5-flash-latest',
-                'gemini-pro'
-            ];
-
+            const defaultModels = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro', 'gemini-1.5-flash-latest', 'gemini-pro'];
             let candidateModels = [...defaultModels];
 
-            // Tự động nhận diện model khả dụng của chính Key
             try {
                 const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
                 if (listRes.ok) {
@@ -797,40 +894,27 @@
 
                         if (verifiedModels.length > 0) {
                             const reordered = [];
-                            defaultModels.forEach(dm => {
-                                if (verifiedModels.includes(dm)) reordered.push(dm);
-                            });
-                            verifiedModels.forEach(vm => {
-                                if (!reordered.includes(vm)) reordered.push(vm);
-                            });
+                            defaultModels.forEach(dm => { if (verifiedModels.includes(dm)) reordered.push(dm); });
+                            verifiedModels.forEach(vm => { if (!reordered.includes(vm)) reordered.push(vm); });
                             if (reordered.length > 0) candidateModels = reordered;
                         }
                     }
                 }
             } catch (e) {
-                console.warn("Dùng danh mục model dự phòng chuẩn:", e);
+                console.warn("Dùng danh mục model chuẩn:", e);
             }
 
             let lastError = null;
-
-            // Thử lần lượt các model, nếu gặp 404 lập tức chuyển sang model kế tiếp
             for (const model of candidateModels) {
                 try {
                     if (statusCallback) statusCallback(`Đang biên soạn với [${model}]...`);
-
                     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
                     const res = await fetch(endpoint, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-goog-api-key': key
-                        },
+                        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
                         body: JSON.stringify({
                             contents: [{ role: 'user', parts: [{ text: promptText }] }],
-                            generationConfig: {
-                                temperature: 0.7,
-                                maxOutputTokens: 8192
-                            }
+                            generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
                         })
                     });
 
@@ -840,102 +924,46 @@
                     }
 
                     const data = await res.json();
-                    const outputText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                    if (outputText && outputText.trim() !== '') {
-                        return outputText.replace(/^```html/i, '').replace(/```$/i, '').trim();
+                    const textOut = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (textOut && textOut.trim() !== '') {
+                        return textOut.replace(/^```html/i, '').replace(/```$/i, '').trim();
                     }
                 } catch (err) {
                     lastError = err;
                 }
             }
-
             throw lastError || new Error("Không thể kết nối API AI");
         }
 
-        // ==================== HÀM THỰC THI CHÍNH KHI NHẤN NÚT "TẠO" ====================
-        async function executeActionGenerate(type) {
-            const subject = document.getElementById('sel-subject').value;
-            const grade = document.getElementById('sel-grade').value;
-            const book = document.getElementById('sel-book').value;
-            const lessonTitle = currentSelectedLesson;
-            const customGuide = document.getElementById('ai-custom-instructions') ? document.getElementById('ai-custom-instructions').value.trim() : "";
-            const docContainer = document.getElementById('container-a4-doc');
+        // ==================== KHÓA TỔNG VÀ TỰ PHÂN BỔ SỐ CÂU ĐỀ 7991 ====================
+        function distributeMatrixFromTotals() {
+            const lessons = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [currentSelectedLesson];
+            const numLessons = lessons.length;
 
-            // Slide 16:9 được tạo bằng hệ thống render chuyên dụng
-            if (type === 'slide') {
-                renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
-                return;
-            }
+            examMatrixCustomCounts = {};
+            lessons.forEach(les => {
+                examMatrixCustomCounts[les] = { p1_b: 0, p1_h: 0, p1_vd: 0, p2_h: 0, p2_vd: 0, p3_h: 0, p3_vd: 0 };
+            });
 
-            const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
+            const fields = ['p1_b', 'p1_h', 'p1_vd', 'p2_h', 'p2_vd', 'p3_h', 'p3_vd'];
+            fields.forEach(f => {
+                const total = parseInt(matrixGlobalTotals[f]) || 0;
+                const base = Math.floor(total / numLessons);
+                let remainder = total % numLessons;
 
-            // NẾU CÓ KEY -> GỌI AI THỰC HIỆN
-            if (savedKey !== "" && docContainer) {
-                docContainer.innerHTML = `
-                    <div style="text-align: center; padding: 70px 20px; font-family: sans-serif;">
-                        <div style="font-size: 36px; color: #0284c7; margin-bottom: 16px;"><i class="fa-solid fa-brain fa-bounce"></i></div>
-                        <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">Đang kết nối hệ thống Gemini AI...</h3>
-                        <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
-                            Đang xử lý nội dung chuyên sâu cho: <strong>${lessonTitle}</strong>
-                        </p>
-                    </div>
-                `;
-
-                const updateStatus = (msg) => {
-                    const el = document.getElementById('ai-loading-status');
-                    if (el) el.innerText = msg;
-                };
-
-                try {
-                    let filePromptPart = "";
-                    if (uploadedFileContent && uploadedFileContent.trim() !== "") {
-                        filePromptPart = `\n- NGỮ LIỆU/TÀI LIỆU SGK BỔ SUNG TỪ GIÁO VIÊN:\n"""\n${uploadedFileContent.slice(0, 8000)}\n"""\n(Hãy ưu tiên bám sát ngữ liệu trên).`;
-                    }
-
-                    let promptText = "";
-                    if (type === '5512') {
-                        promptText = `Bạn là chuyên gia sư phạm THPT. Hãy soạn Kế hoạch bài dạy theo chuẩn Công văn 5512/BGDĐT-GDTrH cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
-                        Yêu cầu:
-                        - Tiêu đề: SỞ GD&ĐT VĨNH LONG - TRƯỜNG THPT MANG THÍT - Họ và tên giáo viên: Hồ Tấn Khải.
-                        - Mục tiêu: Kiến thức; Năng lực chung; Năng lực đặc thù; Năng lực số [NLS 2.1]; Năng lực AI (mã chuẩn ${grade}.A1.2); Phẩm chất.
-                        - Tiến trình 4 hoạt động: Hoạt động 2 trình bày dạng BẢNG 2 CỘT VIỀN ĐEN chi tiết nội dung ghi vở của học sinh; Hoạt động 3 Luyện tập đủ 3 dạng thức trắc nghiệm; Hoạt động 4 Vận dụng gắn liền thực tiễn nông nghiệp địa phương.
-                        - Đủ 3 phụ lục: Phiếu học tập số 1, Rubric NLS 2.1 (5 cột), Rubric Năng lực AI (5 cột).
-                        - Ghi chú thêm từ giáo viên: ${customGuide}${filePromptPart}
-                        - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html) để chèn thẳng vào trang A4.`;
-                    } else if (type === '7991') {
-                        promptText = `Bạn là chuyên gia khảo thí Bộ GD&ĐT. Hãy soạn Ma trận, Bản đặc tả và Đề kiểm tra định kì (CV 7991) cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách ${book}.
-                        Yêu cầu:
-                        - Mục 1: Khung ma trận (Bảng tính tỉ lệ % nhận thức Biết, Hiểu, Vận dụng).
-                        - Mục 2: Bản đặc tả ma trận.
-                        - Mục 3: Đề kiểm tra chính thức (Bản giáo viên: gạch chân các phương án đúng <u>A</u>, <u>a)</u>, Đáp án là: <u>...</u>). Đủ 3 phần: Phần I nhiều lựa chọn, Phần II đúng/sai, Phần III trả lời ngắn.
-                        - Mục 4: Hướng dẫn chấm và biểu điểm chi tiết.
-                        - Ghi chú thêm: ${customGuide}${filePromptPart}
-                        - Trả về mã HTML thuần (không bọc trong thẻ \`\`\`html).`;
-                    }
-
-                    const aiGeneratedHtml = await callGeminiUnifiedEngine(promptText, savedKey, updateStatus);
-
-                    const cacheKey = `cached_${type}_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
-                    localStorage.setItem(cacheKey, aiGeneratedHtml);
-                    docContainer.innerHTML = aiGeneratedHtml;
-                    return;
-
-                } catch (error) {
-                    console.warn("AI gặp sự cố, tự động nạp dữ liệu gốc chuẩn mực nội hàm:", error);
-                }
-            }
-
-            // PHẦN DỰ PHÒNG CHẮC CHẮN 100%: NẠP DỮ LIỆU GỐC NỘI HÀM NẾU KHÔNG CÓ AI HOẶC AI LỖI
-            if (type === '5512') {
-                renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle);
-            } else if (type === '7991') {
-                distributeMatrixFromTotals();
-                renderMaTranDeKiemTra(subject, grade, book);
-            }
+                lessons.forEach((les, idx) => {
+                    examMatrixCustomCounts[les][f] = base + (idx < remainder ? 1 : 0);
+                });
+            });
         }
 
-        // ==================== 1. DỮ LIỆU GỐC: KẾ HOẠCH BÀI DẠY CV 5512 ====================
+        function updateGlobalTotalField(field, value) {
+            matrixGlobalTotals[field] = parseInt(value) || 0;
+            distributeMatrixFromTotals();
+            renderMaTranDeKiemTra(document.getElementById('sel-subject').value, document.getElementById('sel-grade').value, document.getElementById('sel-book').value);
+        }
+
+        // ==================== 1. BẢN GỐC NỘI HÀM: KẾ HOẠCH BÀI DẠY CV 5512 ====================
         function renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle) {
             const docContainer = document.getElementById('container-a4-doc');
             const info = getDynamicNlsAiInfo(lessonTitle, grade);
@@ -1155,7 +1183,7 @@
             `;
         }
 
-        // ==================== 2. DỮ LIỆU GỐC: MA TRẬN & ĐỀ THI 7991 (KHÓA TỔNG & TỰ ĐIỀU CHỈNH) ====================
+        // ==================== 2. BẢN GỐC NỘI HÀM: MA TRẬN & ĐỀ THI 7991 ====================
         function renderMaTranDeKiemTra(subject, grade, book) {
             const docContainer = document.getElementById('container-a4-doc');
             const lessons = selectedLessonsForExam.length > 0 ? selectedLessonsForExam : [currentSelectedLesson];
@@ -1165,7 +1193,6 @@
             const countP3 = (parseInt(matrixGlobalTotals.p3_h)||0) + (parseInt(matrixGlobalTotals.p3_vd)||0);
             const totalQuestions = countP1 + countP2 + countP3;
 
-            // XÂY DỰNG ĐỀ THI KHỚP ĐÚNG 100% SỐ CÂU ĐÃ PHÂN BỔ
             let p1Html = "";
             let p1Index = 1;
             lessons.forEach(les => {
@@ -1232,7 +1259,7 @@
 
                 <p style="font-weight: bold; margin: 12px 0 4px 0;">MỤC 1: KHUNG MA TRẬN ĐỀ KIỂM TRA (ĐIỀU KHIỂN TỔNG SỐ CÂU)</p>
                 <p style="font-style: italic; font-size: 10pt; color: #475569;" class="no-print">
-                    * Thầy chỉ cần chỉnh <strong>Tổng số câu</strong> ở dòng TỔNG CỘNG bên dưới, hệ thống sẽ tự động phân bổ đều số câu về từng bài:
+                    * Thầy chỉnh <strong>Tổng số câu</strong> ở dòng TỔNG CỘNG màu xanh bên dưới, hệ thống sẽ tự động phân bổ đều số câu về từng bài:
                 </p>
 
                 <table>
@@ -1271,16 +1298,15 @@
                             `;
                         }).join('')}
                         
-                        <!-- DÒNG TỔNG CỘNG CHO PHÉP NHẬP KHÓA TỔNG VÀ PHÂN BỔ TỰ ĐỘNG -->
                         <tr style="background: #dbeafe; font-weight: bold; text-align: center; border-top: 2px solid #1e40af;">
                             <td colspan="2" style="color: #1e3a8a;">TỔNG SỐ CÂU (CHỈNH TẠI ĐÂY):</td>
-                            <td><input type="number" min="0" value="${matrixGlobalTotals.p1_b}" onchange="updateGlobalTotalField('p1_b', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Biết Phần I"></td>
-                            <td><input type="number" min="0" value="${matrixGlobalTotals.p1_h}" onchange="updateGlobalTotalField('p1_h', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Hiểu Phần I"></td>
-                            <td><input type="number" min="0" value="${matrixGlobalTotals.p1_vd}" onchange="updateGlobalTotalField('p1_vd', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Vận dụng Phần I"></td>
-                            <td><input type="number" min="0" value="${matrixGlobalTotals.p2_h}" onchange="updateGlobalTotalField('p2_h', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Hiểu Phần II"></td>
-                            <td><input type="number" min="0" value="${matrixGlobalTotals.p2_vd}" onchange="updateGlobalTotalField('p2_vd', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Vận dụng Phần II"></td>
-                            <td><input type="number" min="0" value="${matrixGlobalTotals.p3_h}" onchange="updateGlobalTotalField('p3_h', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Hiểu Phần III"></td>
-                            <td><input type="number" min="0" value="${matrixGlobalTotals.p3_vd}" onchange="updateGlobalTotalField('p3_vd', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;" title="Tổng câu Vận dụng Phần III"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p1_b}" onchange="updateGlobalTotalField('p1_b', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p1_h}" onchange="updateGlobalTotalField('p1_h', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p1_vd}" onchange="updateGlobalTotalField('p1_vd', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p2_h}" onchange="updateGlobalTotalField('p2_h', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p2_vd}" onchange="updateGlobalTotalField('p2_vd', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p3_h}" onchange="updateGlobalTotalField('p3_h', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;"></td>
+                            <td><input type="number" min="0" value="${matrixGlobalTotals.p3_vd}" onchange="updateGlobalTotalField('p3_vd', this.value)" style="width: 38px; text-align: center; font-weight: bold; border: 1px solid #2563eb; border-radius: 4px; background: #fff;"></td>
                             <td style="color: #b91c1c; font-size: 11pt;">${totalQuestions} câu</td>
                         </tr>
                         <tr style="background: #E6EEF8; font-weight: bold; text-align: center;">
@@ -1371,7 +1397,7 @@
             `;
         }
 
-        // ==================== 3. DỮ LIỆU GỐC: BÀI GIẢNG PPT NGUYÊN BẢN ====================
+        // ==================== 3. BÀI GIẢNG PPT NGUYÊN BẢN (16 SLIDE LUYỆN TẬP) ====================
         function renderPowerPointSlideDeck(subject, grade, book, lessonTitle) {
             slideDeckData = [];
 
@@ -1543,7 +1569,7 @@
             renderCurrentSlide();
         }
 
-        // ==================== TIỆN ÍCH SLIDE & ĐỒNG HỒ & GỌI SỐ HS ====================
+        // ==================== CÁC HÀM TIỆN ÍCH SLIDE & ĐỒNG HỒ ====================
         function toggleSlideAnswer(btn) {
             const answerBox = btn.nextElementSibling;
             if (answerBox.classList.contains('hidden')) {
@@ -1755,7 +1781,7 @@
             localStorage.setItem('gemini_api_key', key);
             checkStoredApiKey();
             closeAIKeyModal();
-            alert("Đã lưu API Key thành công!");
+            alert("Đã lưu API Key thành công! AI sẵn sàng hoạt động khi Thầy bấm Tạo Bằng AI.");
         }
         function checkStoredApiKey() {
             const key = localStorage.getItem('gemini_api_key');
