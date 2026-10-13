@@ -1,8 +1,10 @@
 /**
  * ==============================================================================
- * BIOMASTER AI - KHẮC PHỤC DỨT ĐIỂM: BÓC TÁCH CHUẨN KIẾN THỨC HĐ 2 SANG SLIDE
+ * BIOMASTER AI - KHẮC PHỤC TRIỆT ĐỂ: CHỐNG TRÀN CHỮ VÀ VỠ VIỀN SLIDE PPT 16:9
  * GV: Hồ Tấn Khải - Trường THPT Mang Thít
- * Loại bỏ triệt để bảng Quốc hiệu tiêu ngữ, lấy đúng bảng bài học & câu hỏi luyện tập.
+ * 1. Bố cục Anti-Overflow chuẩn thị giác: Khóa cứng tỷ lệ 16:9, không tràn viền.
+ * 2. Tự động co giãn nội dung linh hoạt, giữ vững tiêu đề và chân trang định danh.
+ * 3. Tinh gọn lưới câu hỏi trắc nghiệm (Dạng 1, 2, 3) có nút xem đáp án chống lộ.
  * ==============================================================================
  */
 
@@ -97,7 +99,7 @@ window.toggleSlideAnswer = function(btn) {
     }
 };
 
-// 5. TRÌNH VẼ SLIDE TỰ THÂN (TYPOGRAPHY >= 34PT, NỀN #0F2922)
+// 5. TRÌNH VẼ SLIDE ANTI-OVERFLOW (CHỐNG TRÀN CHỮ VÀ VỠ VIỀN TUYỆT ĐỐI)
 window.renderSlideSafe = function() {
     let container = document.getElementById('container-slide-presentation');
     const docContainer = document.getElementById('container-a4-doc');
@@ -135,58 +137,68 @@ window.renderSlideSafe = function() {
     const totalSlides = window.slideDeckData.length;
     const slide = window.slideDeckData[currentIdx];
 
+    // Khung Canvas 16:9 có chống tràn viền tuyệt đối
     container.innerHTML = `
-        <div class="w-full flex flex-col gap-3 font-sans" style="user-select: none;">
-            <!-- THANH ĐIỀU KHIỂN SLIDE -->
-            <div class="flex items-center justify-between bg-slate-900/90 border border-slate-700/80 px-4 py-2.5 rounded-xl shadow-lg backdrop-blur">
-                <div class="flex items-center gap-3">
-                    <span class="px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 font-extrabold text-sm border border-amber-500/30">
+        <style>
+            .custom-slide-scroll::-webkit-scrollbar { width: 5px; }
+            .custom-slide-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+            .custom-slide-scroll::-webkit-scrollbar-thumb { background: rgba(215, 140, 15, 0.5); border-radius: 4px; }
+            .custom-slide-scroll::-webkit-scrollbar-thumb:hover { background: rgba(215, 140, 15, 0.8); }
+        </style>
+
+        <div class="w-full flex flex-col gap-2 font-sans" style="user-select: none;">
+            <!-- THANH ĐIỀU KHIỂN SLIDE TINH GỌN -->
+            <div class="flex items-center justify-between bg-slate-900/90 border border-slate-700/80 px-3 py-2 rounded-xl shadow-lg backdrop-blur">
+                <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 font-extrabold text-xs md:text-sm border border-amber-500/30">
                         Slide ${currentIdx + 1} / ${totalSlides}
                     </span>
                     <span class="text-xs text-slate-300 hidden md:inline font-medium">
                         (Dùng phím ◄ / ► hoặc phím Cách để chuyển trang)
                     </span>
-                    <span id="custom-slide-timer-box" class="hidden px-2.5 py-0.5 rounded bg-red-600/30 text-red-400 font-bold text-sm border border-red-500/40"></span>
+                    <span id="custom-slide-timer-box" class="hidden px-2 py-0.5 rounded bg-red-600/30 text-red-400 font-bold text-xs border border-red-500/40"></span>
                 </div>
 
-                <div class="flex items-center gap-2">
-                    <button onclick="window.prevSlideCustom()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm border border-slate-600 transition flex items-center gap-1">
+                <div class="flex items-center gap-1.5">
+                    <button onclick="window.prevSlideCustom()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-600 transition flex items-center gap-1">
                         <i class="fa-solid fa-chevron-left"></i> Trước
                     </button>
-                    <button onclick="window.nextSlideCustom()" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition flex items-center gap-1 shadow-md">
+                    <button onclick="window.nextSlideCustom()" class="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition flex items-center gap-1 shadow-md">
                         Tiếp <i class="fa-solid fa-chevron-right"></i>
                     </button>
-                    <button onclick="window.startSlideTimer(30)" title="Đếm ngược 30 giây" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-600 text-sm">
+                    <button onclick="window.startSlideTimer(30)" title="Đếm ngược 30 giây" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-600 text-xs">
                         <i class="fa-solid fa-stopwatch"></i> 30s
                     </button>
-                    <button onclick="window.pickRandomStudent()" title="Gọi ngẫu nhiên học sinh" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-600 text-sm">
+                    <button onclick="window.pickRandomStudent()" title="Gọi ngẫu nhiên học sinh" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-600 text-xs">
                         <i class="fa-solid fa-dice"></i> Gọi HS
                     </button>
-                    <button onclick="window.toggleSlideFullscreen()" title="Toàn màn hình" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 text-sm">
+                    <button onclick="window.toggleSlideFullscreen()" title="Toàn màn hình" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 text-xs">
                         <i class="fa-solid fa-expand"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- KHUNG TRÌNH CHIẾU 16:9 -->
-            <div class="w-full rounded-2xl shadow-2xl p-8 md:p-12 relative flex flex-col justify-between overflow-hidden" 
-                 style="background: linear-gradient(145deg, #0F2922 0%, #071713 100%); border: 2px solid rgba(215, 140, 15, 0.4); min-height: 540px; aspect-ratio: 16/9;">
+            <!-- KHUNG CANVAS 16:9 ANTI-OVERFLOW (CỐ ĐỊNH TỶ LỆ, BẢO VỆ VIỀN TUYỆT ĐỐI) -->
+            <div class="w-full rounded-2xl shadow-2xl p-6 md:p-8 relative flex flex-col justify-between overflow-hidden" 
+                 style="background: linear-gradient(145deg, #0F2922 0%, #071713 100%); border: 2.5px solid #D78C0F; aspect-ratio: 16/9; max-height: calc(100vh - 210px); box-sizing: border-box;">
                 
-                <div class="space-y-3">
-                    <div class="inline-block px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 font-extrabold text-sm uppercase tracking-wide border border-amber-400/30">
+                <!-- PHẦN 1: TIÊU ĐỀ SLIDE (KHÔNG BỊ CO ÉP) -->
+                <div class="flex-shrink-0 space-y-1.5 pb-2 border-b border-emerald-800/40">
+                    <div class="inline-block px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-extrabold text-xs uppercase tracking-wide border border-amber-400/30">
                         ${slide.tag || "BÀI GIẢNG ĐIỆN TỬ"}
                     </div>
-                    <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight" style="color: #FBBF24;">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-black text-amber-300 tracking-tight leading-snug line-clamp-2">
                         ${slide.title || ""}
                     </h2>
-                    <div class="w-24 h-1 bg-amber-500 rounded-full mt-2"></div>
                 </div>
 
-                <div class="my-auto py-4 text-slate-100 text-xl md:text-2xl leading-relaxed">
+                <!-- PHẦN 2: NỘI DUNG SLIDE (FLEX CO GIÃN THÔNG MINH, CHỐNG TRÀN XUỐNG DƯỚI) -->
+                <div class="flex-1 min-h-0 overflow-y-auto custom-slide-scroll flex flex-col justify-center my-2 text-slate-100 text-base md:text-lg lg:text-xl leading-relaxed">
                     ${slide.body || ""}
                 </div>
 
-                <div class="flex items-center justify-between border-t border-emerald-900/60 pt-4 text-xs md:text-sm text-slate-300 font-medium">
+                <!-- PHẦN 3: CHÂN TRANG ĐỊNH DANH (CỐ ĐỊNH Ở ĐÁY, KHÔNG BỊ ĐẨY MẤT) -->
+                <div class="flex-shrink-0 flex items-center justify-between border-t border-emerald-800/50 pt-2.5 text-xs text-slate-300 font-medium">
                     <span>Trường THPT Mang Thít • Tổ Sinh học - Công nghệ</span>
                     <span class="font-bold text-amber-300">Giáo viên: Hồ Tấn Khải</span>
                 </div>
@@ -210,7 +222,7 @@ window.prevSlideCustom = function() {
     }
 };
 
-// 6. BỘ BÓC TÁCH THÔNG MINH: LOẠI BỎ 100% BẢNG QUỐC HIỆU TIÊU NGỮ HÀNH CHÍNH
+// 6. BỘ BÓC TÁCH THÔNG MINH TỪ GIÁO ÁN VÀ TẠO BỘ SLIDE ANTI-OVERFLOW
 window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
     const lesTitle = String(lessonTitle || document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài 1: Giới thiệu khái quát môn Sinh học");
     const aiKey = `cached_ai_5512_${subject}_${grade}_${lesTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
@@ -224,13 +236,12 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
 
     const knowledgeSections = [];
 
-    // Nếu có giáo án đã soạn, bóc tách bảng Hoạt động 2 chuẩn xác
+    // Bóc tách bảng Hoạt động 2 (loại bỏ hoàn toàn bảng hành chính)
     if (cached5512) {
         try {
             const parserDiv = document.createElement('div');
             parserDiv.innerHTML = cached5512;
 
-            // 1. Lọc lấy các bảng thực sự thuộc Hoạt động 2 (loại bỏ hoàn toàn bảng Quốc hiệu tiêu ngữ)
             const allTables = Array.from(parserDiv.querySelectorAll('table'));
             const act2Tables = allTables.filter(tbl => {
                 const txt = tbl.innerText.toUpperCase();
@@ -239,26 +250,17 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
                 return !isHeaderTable && isAct2Table;
             });
 
-            // Nếu tìm thấy bảng Hoạt động 2, tiến hành bóc tách từng hàng nội dung
             act2Tables.forEach(tbl => {
                 const rows = Array.from(tbl.querySelectorAll('tr'));
-                rows.forEach((row, rIdx) => {
+                rows.forEach((row) => {
                     const cells = row.querySelectorAll('td, th');
                     if (cells.length >= 2) {
                         const c0 = cells[0].innerText.trim();
                         const c1 = cells[1].innerHTML.trim();
 
-                        // Bỏ qua hàng tiêu đề cột
-                        if (c0.toUpperCase().includes('HOẠT ĐỘNG CỦA GIÁO VIÊN') || cells[1].innerText.toUpperCase().includes('DỰ KIẾN SẢN PHẨM')) {
-                            return;
-                        }
+                        if (c0.toUpperCase().includes('HOẠT ĐỘNG CỦA GIÁO VIÊN') || cells[1].innerText.toUpperCase().includes('DỰ KIẾN SẢN PHẨM')) return;
+                        if (c0.includes('CỘNG HÒA') || c1.includes('CỘNG HÒA') || c0.includes('SỞ GD&ĐT')) return;
 
-                        // Bỏ qua nếu vẫn dính văn bản hành chính
-                        if (c0.includes('CỘNG HÒA') || c1.includes('CỘNG HÒA') || c0.includes('SỞ GD&ĐT')) {
-                            return;
-                        }
-
-                        // Trích xuất tên đề mục thực tế
                         let subTitle = cells[0].querySelector('strong, b')?.innerText?.trim();
                         if (!subTitle) {
                             const lines = c0.split('\n').map(l => l.trim()).filter(l => l.length > 0);
@@ -270,7 +272,7 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
                         if (c1.length > 15) {
                             knowledgeSections.push({
                                 title: subTitle.toUpperCase(),
-                                body: `<div class="space-y-3 leading-relaxed text-xl">${c1}</div>`
+                                body: `<div class="space-y-2 leading-relaxed">${c1}</div>`
                             });
                         }
                     }
@@ -281,83 +283,81 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         }
     }
 
-    // Nếu giáo án chưa soạn hoặc không tìm thấy bảng HĐ 2, tự động nạp 3 mục kiến thức chuẩn SGK Kết nối tri thức
     if (knowledgeSections.length === 0) {
         knowledgeSections.push({
             title: `I. ${info.core1 ? info.core1.slice(0, 50).toUpperCase() : "ĐẶC ĐIỂM VÀ CẤU TRÚC BẢN CHẤT"}`,
-            body: `<div class="space-y-3 text-xl"><p class="mb-3">• ${info.core1 || "Bản chất và cấu trúc sinh học nền tảng theo SGK Kết nối tri thức."}</p><p>• Cơ chế tương tác và biến đổi năng lượng thích nghi bảo đảm sự sống.</p></div>`
+            body: `<div class="space-y-2.5"><p>• ${info.core1 || "Bản chất và cấu trúc sinh học nền tảng theo SGK Kết nối tri thức."}</p><p>• Cơ chế tương tác và biến đổi năng lượng thích nghi bảo đảm sự sống.</p></div>`
         });
         knowledgeSections.push({
             title: `II. ${info.core2 ? info.core2.slice(0, 50).toUpperCase() : "QUY LUẬT VÀ CƠ CHẾ SINH HỌC"}`,
-            body: `<div class="space-y-3 text-xl"><p class="mb-3">• ${info.core2 || "Quy luật điều hòa và ổn định nội môi trong cơ thể sinh vật."}</p><p>• Duy trì tính toàn vẹn và nâng cao khả năng chống chịu trước môi trường.</p></div>`
+            body: `<div class="space-y-2.5"><p>• ${info.core2 || "Quy luật điều hòa và ổn định nội môi trong cơ thể sinh vật."}</p><p>• Duy trì tính toàn vẹn và nâng cao khả năng chống chịu trước môi trường.</p></div>`
         });
         knowledgeSections.push({
             title: `III. ${info.core3 ? info.core3.slice(0, 50).toUpperCase() : "ỨNG DỤNG THỰC TIỄN NÔNG NGHIỆP"}`,
-            body: `<div class="space-y-3 text-xl"><p class="mb-3">• ${info.core3 || "Ứng dụng khoa học kỹ thuật vào sản xuất nông nghiệp công nghệ cao."}</p><p>• Thực tiễn sản xuất và bảo vệ hệ sinh thái tại huyện Mang Thít, tỉnh Vĩnh Long.</p></div>`
+            body: `<div class="space-y-2.5"><p>• ${info.core3 || "Ứng dụng khoa học kỹ thuật vào sản xuất nông nghiệp công nghệ cao."}</p><p>• Thực tiễn sản xuất và bảo vệ hệ sinh thái tại huyện Mang Thít, tỉnh Vĩnh Long.</p></div>`
         });
     }
 
-    // TẠO BỘ SLIDE CHUẨN 23 TRANG HOÀN CHỈNH
     window.slideDeckData = [];
 
-    // SLIDE 1: BÌA BÀI HỌC
+    // 1. SLIDE BÌA
     window.slideDeckData.push({
         title: lesTitle.toUpperCase(),
         tag: `${subject} ${grade} • ${book}`,
         body: `
-            <div class="text-center py-6 space-y-4">
-                <p class="text-amber-300 font-bold text-2xl uppercase tracking-widest">
+            <div class="text-center py-4 space-y-3">
+                <p class="text-amber-300 font-bold text-xl md:text-2xl uppercase tracking-widest">
                     TRƯỜNG THPT MANG THÍT
                 </p>
-                <p class="text-slate-200 text-2xl max-w-2xl mx-auto pt-4">
+                <p class="text-slate-200 text-lg md:text-xl max-w-2xl mx-auto pt-2">
                     Giáo viên thực hiện: <strong class="text-white">Hồ Tấn Khải</strong>
                 </p>
-                <p class="text-emerald-400 font-semibold text-xl">
+                <p class="text-emerald-400 font-semibold text-base md:text-lg">
                     Chương trình Giáo dục Phổ thông 2018
                 </p>
             </div>
         `
     });
 
-    // SLIDE 2: HOẠT ĐỘNG 1 - KHỞI ĐỘNG
+    // 2. SLIDE HOẠT ĐỘNG 1: KHỞI ĐỘNG
     window.slideDeckData.push({
         title: "HOẠT ĐỘNG 1: MỞ ĐẦU (WARM-UP)",
         tag: "KHỞI ĐỘNG",
         body: `
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xl">
-                <div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-3">
-                    <span class="px-3 py-1 rounded bg-amber-500/20 text-amber-300 font-bold text-base">Hiện tượng thực tế</span>
-                    <p class="font-bold text-white text-2xl">Mâu thuẫn nhận thức khoa học</p>
-                    <p class="text-slate-200 leading-relaxed">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-base md:text-lg">
+                <div class="bg-black/40 p-4 md:p-5 rounded-xl border border-emerald-500/30 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold text-xs">Hiện tượng thực tế</span>
+                    <p class="font-bold text-white text-lg md:text-xl">Mâu thuẫn nhận thức khoa học</p>
+                    <p class="text-slate-200 leading-relaxed text-sm md:text-base">
                         Làm thế nào cơ thể sinh vật duy trì sự sống bền vững và thích ứng linh hoạt với điều kiện môi trường luôn biến đổi?
                     </p>
                 </div>
-                <div class="bg-emerald-950/40 p-6 rounded-2xl border border-emerald-500/40 space-y-4">
-                    <p class="text-amber-300 font-bold text-2xl"><i class="fa-solid fa-lightbulb mr-2"></i> Câu hỏi định hướng tư duy:</p>
-                    <p class="text-slate-200">1. Yếu tố bản chất nào đóng vai trò cốt lõi trong cơ chế này?</p>
-                    <p class="text-slate-200">2. Quy luật tự nhiên nào chi phối trực tiếp tiến trình trên?</p>
-                    <p class="text-amber-400 font-bold">➜ Hãy cùng khám phá bài học mới!</p>
+                <div class="bg-emerald-950/40 p-4 md:p-5 rounded-xl border border-emerald-500/40 space-y-2.5">
+                    <p class="text-amber-300 font-bold text-lg"><i class="fa-solid fa-lightbulb mr-2"></i> Câu hỏi định hướng tư duy:</p>
+                    <p class="text-slate-200 text-sm md:text-base">1. Yếu tố bản chất nào đóng vai trò cốt lõi trong cơ chế này?</p>
+                    <p class="text-slate-200 text-sm md:text-base">2. Quy luật tự nhiên nào chi phối trực tiếp tiến trình trên?</p>
+                    <p class="text-amber-400 font-bold text-sm md:text-base">➜ Hãy cùng khám phá bài học mới!</p>
                 </div>
             </div>
         `
     });
 
-    // SLIDE 3, 4, 5...: HÌNH THÀNH KIẾN THỨC THEO CÁC MỤC THẬT CỦA BÀI
+    // 3. CÁC SLIDE HÌNH THÀNH KIẾN THỨC THEO ĐỀ MỤC
     knowledgeSections.forEach((sec, idx) => {
         window.slideDeckData.push({
             title: sec.title,
             tag: `HÌNH THÀNH KIẾN THỨC (MỤC ${idx + 1})`,
-            body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-xl">${sec.body}</div>`
+            body: `<div class="bg-black/40 p-4 md:p-5 rounded-xl border border-emerald-500/30 text-base md:text-lg leading-relaxed">${sec.body}</div>`
         });
     });
 
-    // SLIDE CHỐT KIẾN THỨC CỐT LÕI (NỘI DUNG GHI VỞ BẮT BUỘC)
+    // 4. SLIDE CHỐT KIẾN THỨC CỐT LÕI
     window.slideDeckData.push({
         title: "KIẾN THỨC CỐT LÕI (NỘI DUNG GHI VỞ)",
         tag: "CHỐT KIẾN THỨC BẮT BUỘC",
         body: `
-            <div class="bg-black/50 p-6 rounded-2xl border-2 border-amber-400/60 space-y-4 text-xl">
-                <p class="text-amber-300 font-bold text-2xl"><i class="fa-solid fa-book-bookmark mr-2"></i> Học sinh ghi nhớ các điểm then chốt:</p>
+            <div class="bg-black/50 p-4 md:p-5 rounded-xl border-2 border-amber-400/60 space-y-2.5 text-base md:text-lg">
+                <p class="text-amber-300 font-bold text-lg md:text-xl"><i class="fa-solid fa-book-bookmark mr-2"></i> Học sinh ghi nhớ các điểm then chốt:</p>
                 <p class="text-slate-200">• <strong>Bản chất:</strong> Nắm vững định nghĩa, cấu trúc và quy luật cơ bản theo SGK Kết nối tri thức.</p>
                 <p class="text-slate-200">• <strong>Cơ chế:</strong> Diễn biến chuyển hóa, tương tác thích nghi bảo đảm ổn định di truyền.</p>
                 <p class="text-slate-200">• <strong>Ý nghĩa:</strong> Ứng dụng khoa học kỹ thuật vào sản xuất nông nghiệp và đời sống tại địa phương.</p>
@@ -365,25 +365,25 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         `
     });
 
-    // SLIDE TRẮC NGHIỆM 4 LỰA CHỌN (DẠNG 1)
+    // 5. SLIDE DẠNG 1: 4 LỰA CHỌN (TỐI ƯU GỌN GÀNG, CHỐNG TRÀN NÚT ĐÁP ÁN)
     for (let i = 1; i <= 6; i++) {
         window.slideDeckData.push({
             title: `LUYỆN TẬP: TRẮC NGHIỆM ${i}`,
             tag: `DẠNG 1: 4 LỰA CHỌN (${i}/6)`,
             body: `
-                <div class="space-y-4 text-xl">
-                    <p class="font-bold text-white text-2xl">Câu ${i}: Nhận định nào sau đây phản ánh chính xác nhất bản chất khoa học của bài học?</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-lg">
-                        <div class="p-4 bg-black/40 rounded-xl border border-slate-700">A. Không tuân theo các quy luật di truyền</div>
-                        <div class="p-4 bg-black/40 rounded-xl border border-slate-700">B. Luôn bảo đảm sao chép chính xác và thích nghi</div>
-                        <div class="p-4 bg-black/40 rounded-xl border border-slate-700">C. Tự nhân đôi không phụ thuộc năng lượng</div>
-                        <div class="p-4 bg-black/40 rounded-xl border border-slate-700">D. Diễn ra ngẫu nhiên không kiểm soát</div>
+                <div class="space-y-3">
+                    <p class="font-bold text-white text-base md:text-xl leading-snug">Câu ${i}: Nhận định nào sau đây phản ánh chính xác nhất bản chất khoa học của bài học?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm md:text-base">
+                        <div class="p-2.5 bg-black/40 rounded-lg border border-slate-700">A. Không tuân theo các quy luật di truyền</div>
+                        <div class="p-2.5 bg-black/40 rounded-lg border border-slate-700">B. Luôn bảo đảm sao chép chính xác và thích nghi</div>
+                        <div class="p-2.5 bg-black/40 rounded-lg border border-slate-700">C. Tự nhân đôi không phụ thuộc năng lượng</div>
+                        <div class="p-2.5 bg-black/40 rounded-lg border border-slate-700">D. Diễn ra ngẫu nhiên không kiểm soát</div>
                     </div>
-                    <div class="pt-2">
-                        <button onclick="window.toggleSlideAnswer(this)" class="px-5 py-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-base flex items-center">
+                    <div class="pt-1">
+                        <button onclick="window.toggleSlideAnswer(this)" class="px-3.5 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-xs md:text-sm flex items-center">
                             <i class="fa-solid fa-eye mr-2"></i> Hiển thị đáp án đúng
                         </button>
-                        <div class="hidden mt-3 p-4 bg-emerald-950/90 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-xl">
+                        <div class="hidden mt-2 p-2.5 bg-emerald-950/90 rounded-lg border border-emerald-500/60 font-bold text-emerald-300 text-sm md:text-base">
                             ➜ Đáp án đúng: B (Bảo đảm tính toàn vẹn và thích nghi sinh thái)
                         </div>
                     </div>
@@ -392,25 +392,25 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         });
     }
 
-    // SLIDE TRẮC NGHIỆM ĐÚNG / SAI (DẠNG 2)
+    // 6. SLIDE DẠNG 2: ĐÚNG / SAI
     for (let i = 1; i <= 4; i++) {
         window.slideDeckData.push({
             title: `LUYỆN TẬP: TRẮC NGHIỆM ĐÚNG/SAI ${i}`,
             tag: `DẠNG 2: BỐI CẢNH THỰC NGHIỆM (${i}/4)`,
             body: `
-                <div class="space-y-3 text-xl">
-                    <p class="font-bold text-amber-300 text-2xl">Câu ${i}: Trong một nghiên cứu khoa học thực nghiệm về điều kiện môi trường sống:</p>
-                    <div class="space-y-2 bg-black/40 p-5 rounded-xl border border-slate-700 text-lg">
+                <div class="space-y-2.5">
+                    <p class="font-bold text-amber-300 text-base md:text-lg leading-snug">Câu ${i}: Trong một nghiên cứu khoa học thực nghiệm về điều kiện môi trường sống:</p>
+                    <div class="space-y-1.5 bg-black/40 p-3 rounded-lg border border-slate-700 text-xs md:text-base">
                         <p>a) Điều kiện nhiệt độ và độ ẩm tối ưu giúp quá trình chuyển hóa đạt hiệu suất cao nhất.</p>
                         <p>b) Mọi tác nhân đột biến đều làm tăng tốc độ sinh trưởng của cá thể sinh vật.</p>
                         <p>c) Nắm vững quy luật giúp nông dân chủ động phòng trừ dịch hại nâng cao năng suất.</p>
                         <p>d) Các biến đổi nội tại diễn ra hoàn toàn tự phát mà không cần năng lượng trao đổi.</p>
                     </div>
                     <div>
-                        <button onclick="window.toggleSlideAnswer(this)" class="px-5 py-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-base flex items-center">
+                        <button onclick="window.toggleSlideAnswer(this)" class="px-3.5 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-xs md:text-sm flex items-center">
                             <i class="fa-solid fa-eye mr-2"></i> Hiển thị đáp án đúng
                         </button>
-                        <div class="hidden mt-3 p-4 bg-emerald-950/90 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-xl">
+                        <div class="hidden mt-2 p-2.5 bg-emerald-950/90 rounded-lg border border-emerald-500/60 font-bold text-emerald-300 text-sm md:text-base">
                             ➜ Đáp án: a) ĐÚNG | b) SAI | c) ĐÚNG | d) SAI
                         </div>
                     </div>
@@ -419,20 +419,20 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         });
     }
 
-    // SLIDE TRẢ LỜI NGẮN (DẠNG 3)
+    // 7. SLIDE DẠNG 3: TRẢ LỜI NGẮN
     for (let i = 1; i <= 6; i++) {
         window.slideDeckData.push({
             title: `LUYỆN TẬP: TRẢ LỜI NGẮN ${i}`,
             tag: `DẠNG 3: ĐIỀN CON SỐ (${i}/6)`,
             body: `
-                <div class="space-y-4 text-xl">
-                    <p class="font-bold text-white text-2xl">Câu ${i}: Một cấu trúc sinh học ban đầu trải qua ${i + 1} đợt phân bào liên tiếp sẽ tạo ra bao nhiêu cấu trúc con?</p>
-                    <p class="text-slate-300 italic text-lg">(Đáp án là con số cụ thể không quá 4 ký tự)</p>
+                <div class="space-y-3">
+                    <p class="font-bold text-white text-base md:text-xl leading-snug">Câu ${i}: Một cấu trúc sinh học ban đầu trải qua ${i + 1} đợt phân bào liên tiếp sẽ tạo ra bao nhiêu cấu trúc con?</p>
+                    <p class="text-slate-300 italic text-xs md:text-sm">(Đáp án là con số cụ thể không quá 4 ký tự)</p>
                     <div>
-                        <button onclick="window.toggleSlideAnswer(this)" class="px-5 py-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-base flex items-center">
+                        <button onclick="window.toggleSlideAnswer(this)" class="px-3.5 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-xs md:text-sm flex items-center">
                             <i class="fa-solid fa-eye mr-2"></i> Hiển thị đáp án đúng
                         </button>
-                        <div class="hidden mt-3 p-4 bg-emerald-950/90 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-2xl">
+                        <div class="hidden mt-2 p-2.5 bg-emerald-950/90 rounded-lg border border-emerald-500/60 font-bold text-emerald-300 text-lg md:text-xl">
                             ➜ Đáp án chính xác: ${Math.pow(2, i + 1)}
                         </div>
                     </div>
@@ -441,19 +441,19 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         });
     }
 
-    // SLIDE VẬN DỤNG & DỰ ÁN MỞ RỘNG
+    // 8. SLIDE HOẠT ĐỘNG 4: VẬN DỤNG & DỰ ÁN
     window.slideDeckData.push({
         title: "HOẠT ĐỘNG 4: VẬN DỤNG THỰC TẾ",
         tag: "VẬN DỤNG & DỰ ÁN",
         body: `
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xl">
-                <div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-3">
-                    <h4 class="font-bold text-emerald-300 text-2xl"><i class="fa-solid fa-house-laptop mr-2"></i> 1. Nhiệm vụ thực tế địa phương</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base">
+                <div class="bg-black/40 p-4 rounded-xl border border-emerald-500/30 space-y-2">
+                    <h4 class="font-bold text-emerald-300 text-base md:text-lg"><i class="fa-solid fa-house-laptop mr-2"></i> 1. Nhiệm vụ thực tế địa phương</h4>
                     <p class="text-slate-200">• Tìm hiểu ứng dụng kỹ thuật và công nghệ sinh học tại huyện Mang Thít, tỉnh Vĩnh Long.</p>
                     <p class="text-slate-200">• Hoàn thành bài thu hoạch báo cáo nộp qua nhóm học tập trực tuyến.</p>
                 </div>
-                <div class="bg-black/40 p-6 rounded-2xl border border-amber-500/30 space-y-3">
-                    <h4 class="font-bold text-amber-300 text-2xl"><i class="fa-solid fa-compass mr-2"></i> 2. Chuẩn bị cho bài học tiếp theo</h4>
+                <div class="bg-black/40 p-4 rounded-xl border border-amber-500/30 space-y-2">
+                    <h4 class="font-bold text-amber-300 text-base md:text-lg"><i class="fa-solid fa-compass mr-2"></i> 2. Chuẩn bị cho bài học tiếp theo</h4>
                     <p class="text-slate-200">• Đọc trước nội dung bài học mới trong SGK Kết nối tri thức.</p>
                     <p class="text-slate-200">• Quét mã QR ôn tập bài học trên hệ thống học liệu số của trường.</p>
                 </div>
@@ -946,7 +946,7 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
     `;
 };
 
-// 12. GHI ĐÈ NÚT KÍCH HOẠT AI TÁCH BIỆT 100% CẢ 3 CHẾ ĐỘ
+// 12. GHI ĐÈ NÚT KÍCH HOẠT AI TÁCH BIỆT CẢ 3 PHÂN HỆ
 window.executeActionAI = async function() {
     const realMode = window.getRealActiveMode();
     const subject = document.getElementById('sel-subject')?.value || "Sinh học";
