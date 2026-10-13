@@ -2,10 +2,10 @@
  * ==============================================================================
  * BIOMASTER AI - MODULE CẬP NHẬT TÍNH NĂNG ĐỘC LẬP
  * GV: Hồ Tấn Khải - THPT Mang Thít
- * Cập nhật: 
- * 1. Slide PPT tạo bằng AI bám sát chỉ dẫn sư phạm
- * 2. Hỗ trợ nút Lưu lại hoặc Trở về bản gốc nội hàm cho cả Slide PPT & Đề thi
- * 3. Ma trận 7991 khống chế số câu & điểm số vừa khít 1 trang A4
+ * Bám sát chuẩn 3 tệp chỉ dẫn:
+ * 1. AI- TẠO GIÁO ÁN.docx (CV 5512 Cải tiến High-End, NLS 1007 & Năng lực AI)
+ * 2. AI- TẠO SLIDE PPT.docx (Slide 16:9 Typography >= 34pt, Hệ màu 60-30-10)
+ * 3. AI. TẠO ĐỀ.docx (Ma trận 4 phần đầy đủ: Tổng câu, Tổng điểm từng phần, thang 10đ)
  * ==============================================================================
  */
 
@@ -16,7 +16,7 @@ window.FALLBACK_MODELS = [
     "gemini-3.6-flash"
 ];
 
-// 2. MA TRẬN 7991: ĐỦ 4 PHẦN & KHỐNG CHẾ SỐ CÂU/ĐIỂM SỐ
+// 2. KHAI BÁO MA TRẬN 4 PHẦN & KHỐNG CHẾ ĐIỂM SỐ (THANG 10 ĐIỂM CHUẨN)
 window.matrixGlobalTotals = {
     p1_b: 6, p1_h: 4, p1_vd: 2,  // Phần I: 12 câu
     p2_b: 4, p2_h: 4, p2_vd: 2,  // Phần II: 10 ý Đúng/Sai
@@ -25,13 +25,13 @@ window.matrixGlobalTotals = {
 };
 
 window.matrixPartScores = {
-    p1: 3.0,  // Điểm Phần I
-    p2: 3.0,  // Điểm Phần II
-    p3: 1.5,  // Điểm Phần III
-    p4: 2.5   // Điểm Phần IV (Tự luận)
+    p1: 3.0,  // Điểm Phần I (Trắc nghiệm 4 lựa chọn)
+    p2: 3.0,  // Điểm Phần II (Trắc nghiệm Đúng/Sai)
+    p3: 1.5,  // Điểm Phần III (Trả lời ngắn)
+    p4: 2.5   // Điểm Phần IV (Tự luận) -> Tổng toàn bài = 10.0 điểm
 };
 
-// 3. TỰ ĐỘNG PHÂN BỔ SỐ CÂU/Ý VỀ TỪNG BÀI ĐƯỢC CHỌN
+// 3. TỰ ĐỘNG PHÂN BỔ SỐ CÂU/Ý CHO CÁC BÀI HỌC ĐƯỢC CHỌN
 window.distributeMatrixFromTotals = function() {
     const lessons = (selectedLessonsForExam && selectedLessonsForExam.length > 0) 
         ? selectedLessonsForExam 
@@ -79,7 +79,7 @@ window.updatePartScoreField = function(part, value) {
     );
 };
 
-// 4. ĐỒNG BỘ HIỂN THỊ NỘI DUNG (KIỂM TRA CẢ BẢN LƯU CỦA SLIDE PPT)
+// 4. HIỂN THỊ NỘI DUNG & KIỂM TRA BẢN LƯU LOCALSTORAGE CHO CẢ SLIDE VÀ VĂN BẢN
 window.displayContentForCurrentLesson = function() {
     const subject = document.getElementById('sel-subject').value;
     const grade = document.getElementById('sel-grade').value;
@@ -91,7 +91,6 @@ window.displayContentForCurrentLesson = function() {
     const aiKey = getAICacheKey(currentActiveMode, subject, grade, lessonTitle);
     const cachedData = localStorage.getItem(aiKey);
 
-    // NẾU ĐANG Ở TAB SLIDE:
     if (currentActiveMode === 'slide') {
         if (cachedData) {
             try {
@@ -109,7 +108,6 @@ window.displayContentForCurrentLesson = function() {
         return;
     }
 
-    // NẾU Ở TAB 5512 HOẶC 7991:
     if (cachedData) {
         docContainer.innerHTML = cachedData;
         statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp nội dung từ AI (Đã kiểm duyệt)</span>`;
@@ -125,7 +123,7 @@ window.displayContentForCurrentLesson = function() {
     }
 };
 
-// 5. NÂNG CẤP NÚT LƯU BÀI (HỖ TRỢ CẢ SLIDE PPT VÀ VĂN BẢN)
+// 5. NÚT LƯU BÀI VÀ NÚT QUAY VỀ BẢN GỐC NỘI HÀM
 window.saveCurrentAIContent = function() {
     const subject = document.getElementById('sel-subject').value;
     const grade = document.getElementById('sel-grade').value;
@@ -156,7 +154,6 @@ window.saveCurrentAIContent = function() {
     alert("Đã lưu bài soạn AI thành công! Những lần sau chọn bài này sẽ tự động nạp ngay.");
 };
 
-// 6. NÂNG CẤP NÚT TRỞ VỀ BẢN GỐC NỘI HÀM (HỖ TRỢ CẢ SLIDE VÀ VĂN BẢN)
 window.discardCurrentAIContent = function() {
     const subject = document.getElementById('sel-subject').value;
     const grade = document.getElementById('sel-grade').value;
@@ -178,140 +175,7 @@ window.discardCurrentAIContent = function() {
     }
 };
 
-// 7. GHI ĐÈ HÀM GỌI AI CHO CẢ 3 CHẾ ĐỘ (SLIDE PPT BÁM SÁT CHỈ DẪN)
-window.executeActionAI = async function() {
-    const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
-    if (!savedKey) {
-        openAIKeyModal();
-        alert("Thầy vui lòng nhập và lưu Gemini API Key trước!");
-        return;
-    }
-
-    const preferredModel = localStorage.getItem('gemini_preferred_model') || 'auto';
-    const subject = document.getElementById('sel-subject').value;
-    const grade = document.getElementById('sel-grade').value;
-    const book = document.getElementById('sel-book').value;
-    const lessonTitle = currentSelectedLesson;
-    const customGuide = document.getElementById('ai-custom-instructions') ? document.getElementById('ai-custom-instructions').value.trim() : "";
-    const docContainer = document.getElementById('container-a4-doc');
-    const statusInd = document.getElementById('content-source-indicator');
-
-    let filePromptPart = "";
-    if (uploadedFileContent && uploadedFileContent.trim() !== "") {
-        filePromptPart = `\n- NGỮ LIỆU BỔ SUNG TỪ FILE: """${uploadedFileContent.slice(0, 8000)}"""`;
-    }
-
-    // ==================== A. TẠO SLIDE POWERPOINT BẰNG AI ====================
-    if (currentActiveMode === 'slide') {
-        statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang thiết kế Slide bám sát chỉ dẫn...</span>`;
-        
-        const promptSlide = `Bạn là chuyên gia thiết kế bài giảng điện tử PowerPoint môn ${subject} ${grade} (${book}). Hãy biên soạn bộ slide bài giảng 16:9 cho bài: "${lessonTitle}".
-CHỈ DẪN SƯ PHẠM ĐẶC BIỆT CỦA GIÁO VIÊN: """${customGuide || "Ưu tiên làm nổi bật kiến thức trọng tâm SGK, các quy luật sinh học và bài tập liên hệ thực tiễn huyện Mang Thít, tỉnh Vĩnh Long."}"""${filePromptPart}
-
-YÊU CẦU ĐỊNH DẠNG:
-Trả về DUY NHẤT một mảng JSON thuần túy (không bọc giải thích ngoài, không thêm ký tự lạ):
-[
-  {
-    "tag": "HOẠT ĐỘNG 1: KHỞI ĐỘNG",
-    "title": "TÌNH HUỐNG MỞ ĐẦU",
-    "body": "<div class='space-y-3 text-base'><p>Nội dung câu hỏi hoặc tình huống khơi gợi mâu thuẫn nhận thức...</p></div>"
-  }
-]
-
-CẤU TRÚC BỘ SLIDE (TỪ 8 ĐẾN 12 SLIDE BẮT BUỘC):
-- Slide 1: Trang bìa giới thiệu bài học ${lessonTitle}.
-- Slide 2: Tình huống thực tiễn mở đầu (Khởi động).
-- Slide 3 đến 5: Hình thành kiến thức mới (chia nhỏ từng luận điểm SGK, bám sát chỉ dẫn của giáo viên).
-- Slide 6: Kiến thức cốt lõi chốt lại để học sinh ghi vở.
-- Slide 7 đến 9: Hệ thống câu hỏi trắc nghiệm tương tác (có nút bấm hiển thị đáp án).
-- Slide 10: Vận dụng thực tiễn gắn với đời sống/nông nghiệp tại huyện Mang Thít, tỉnh Vĩnh Long.`;
-
-        try {
-            const aiResult = await fetchGeminiWithCascade(promptSlide, savedKey, preferredModel);
-            let raw = aiResult.text.replace(/```json/gi, '').replace(/```/gi, '').trim();
-            const newSlides = JSON.parse(raw);
-
-            if (Array.isArray(newSlides) && newSlides.length > 0) {
-                slideDeckData = newSlides;
-                currentSlideIndex = 0;
-                renderCurrentSlide();
-                
-                // HIỂN THỊ THANH DUYỆT BÀI VÀ THÔNG BÁO CHO THẦY
-                showAIReviewBar();
-                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> AI đã tạo xong ${newSlides.length} slide! Thầy bấm "Lưu Lại" để hoàn tất.</span>`;
-            } else {
-                throw new Error("Dữ liệu JSON slide trả về không đúng cấu trúc mảng.");
-            }
-        } catch (e) {
-            console.error("Lỗi tạo slide AI:", e);
-            alert("Lỗi tạo slide AI: " + e.message + ". Hệ thống chuyển về slide mặc định.");
-            renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
-        }
-        return;
-    }
-
-    // ==================== B & C. SOẠN GIÁO ÁN 5512 & ĐỀ THI 7991 ====================
-    docContainer.innerHTML = `
-        <div style="text-align: center; padding: 75px 20px; font-family: sans-serif;">
-            <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-wand-magic-sparkles fa-bounce"></i></div>
-            <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">Đang kết nối Gemini...</h3>
-            <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
-                Đang xử lý: <strong>${currentActiveMode === '5512' ? 'KHBD 5512' : 'Đề kiểm tra 7991'}</strong> - ${lessonTitle}
-            </p>
-        </div>
-    `;
-    statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang biên soạn dữ liệu...</span>`;
-
-    try {
-        if (currentActiveMode === '7991') {
-            const lessons = (selectedLessonsForExam && selectedLessonsForExam.length > 0) ? selectedLessonsForExam.join(', ') : lessonTitle;
-            const promptExam = `Bạn là chuyên gia khảo thí THPT môn ${subject} ${grade}. Hãy biên soạn ĐỀ KIỂM TRA ĐỊNH KỲ bám sát Quyết định 7991/BGDĐT cho: ${lessons}. Bộ sách: ${book}.
-CHỈ DẪN GIÁO VIÊN: """${customGuide}"""${filePromptPart}
-Ma trận và thang điểm bắt buộc:
-1. PHẦN I (Trắc nghiệm 4 lựa chọn - ${matrixPartScores.p1}đ): ${matrixGlobalTotals.p1_b} câu Biết, ${matrixGlobalTotals.p1_h} câu Hiểu, ${matrixGlobalTotals.p1_vd} câu Vận dụng (in đậm hoặc gạch chân đáp án đúng).
-2. PHẦN II (Trắc nghiệm Đúng/Sai - ${matrixPartScores.p2}đ): ${(parseInt(matrixGlobalTotals.p2_b)||0) + (parseInt(matrixGlobalTotals.p2_h)||0) + (parseInt(matrixGlobalTotals.p2_vd)||0)} Ý LỆNH HỎI (${matrixGlobalTotals.p2_b} ý Biết, ${matrixGlobalTotals.p2_h} ý Hiểu, ${matrixGlobalTotals.p2_vd} ý Vận dụng). Mỗi câu gồm bối cảnh thực nghiệm và 4 ý a, b, c, d có [ĐÚNG] hoặc [SAI].
-3. PHẦN III (Trắc nghiệm Trả lời ngắn - ${matrixPartScores.p3}đ): ${matrixGlobalTotals.p3_b} câu Biết, ${matrixGlobalTotals.p3_h} câu Hiểu, ${matrixGlobalTotals.p3_vd} câu Vận dụng. Mỗi câu điền số/từ ngắn kèm đáp án.
-4. PHẦN IV (Tự luận - ${matrixPartScores.p4}đ): ${matrixGlobalTotals.p4_b} câu Biết, ${matrixGlobalTotals.p4_h} câu Hiểu, ${matrixGlobalTotals.p4_vd} câu Vận dụng (liên hệ thực tế nông nghiệp huyện Mang Thít, tỉnh Vĩnh Long).
-KÈM BẢNG ĐÁP ÁN VÀ THANG ĐIỂM BAREM CHI TIẾT ĐỦ 10.0 ĐIỂM Ở CUỐI ĐỀ.
-Định dạng HTML thuần túy không bọc markdown. Font Times New Roman 13pt.`;
-
-            const aiResult = await fetchGeminiWithCascade(promptExam, savedKey, preferredModel);
-            let out = aiResult.text.replace(/^```html/i, '').replace(/```$/i, '').trim();
-            docContainer.innerHTML = out;
-            temporaryAIGeneratedDoc = out;
-            showAIReviewBar();
-            statusInd.innerHTML = `<span class="text-purple-400 font-bold"><i class="fa-solid fa-sparkles"></i> Đã tạo xong Đề thi 7991 qua [${aiResult.modelUsed}]!</span>`;
-            return;
-        }
-
-        // Chế độ 5512:
-        const info = getDynamicNlsAiInfo(lessonTitle, grade);
-        const prompt5512 = `Bạn là chuyên gia sư phạm THPT. Hãy biên soạn nội dung kiến thức chuyên môn bám sát SGK ${book} của bài: "${lessonTitle}", môn ${subject} ${grade}.
-CHỈ DẪN GIÁO VIÊN: """${customGuide}"""${filePromptPart}
-Cấu trúc:
-1. HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI (Bảng 2 cột viền đen: Hoạt động GV-HS và Dự kiến sản phẩm ghi vở).
-2. HOẠT ĐỘNG 3: LUYỆN TẬP (Trắc nghiệm 4 lựa chọn, Đúng/Sai, Trả lời ngắn).
-3. HOẠT ĐỘNG 4: VẬN DỤNG (Tình huống gắn với huyện Mang Thít Vĩnh Long).
-Định dạng HTML không bọc markdown. Font Times New Roman 13pt.`;
-
-        const aiResult = await fetchGeminiWithCascade(prompt5512, savedKey, preferredModel);
-        let textOut = aiResult.text.replace(/^```html/i, '').replace(/```$/i, '').trim();
-        const fixedAiHtml = sanitizeAndFixAIActivities(textOut);
-
-        renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, fixedAiHtml);
-        temporaryAIGeneratedDoc = docContainer.innerHTML;
-        showAIReviewBar();
-        statusInd.innerHTML = `<span class="text-purple-400 font-bold"><i class="fa-solid fa-sparkles"></i> Đã bơm kiến thức 5512 qua [${aiResult.modelUsed}]!</span>`;
-
-    } catch (error) {
-        console.error("Lỗi AI:", error);
-        statusInd.innerHTML = `<span class="text-amber-400 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> AI gặp sự cố</span>`;
-        displayContentForCurrentLesson();
-        alert("Lỗi AI: " + error.message);
-    }
-};
-
-// 8. GHI ĐÈ GIAO DIỆN MA TRẬN 7991 VỪA KHÍT 1 TRANG A4
+// 6. GHI ĐÈ BẢNG MA TRẬN 4 PHẦN CÓ RIÊNG TỔNG CÂU VÀ TỔNG ĐIỂM TỪNG PHẦN (VỪA KHÍT TRANG 1 A4)
 window.renderMaTranDeKiemTra = function(subject, grade, book) {
     const docContainer = document.getElementById('container-a4-doc');
     const lessons = (selectedLessonsForExam && selectedLessonsForExam.length > 0) 
@@ -388,7 +252,8 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
     });
 
     docContainer.innerHTML = `
-        <div style="page-break-after: always; min-height: 250mm; display: flex; flex-direction: column; justify-content: space-between;">
+        <!-- ==================== TRANG 1: KHUNG MA TRẬN 4 PHẦN ĐẦY ĐỦ CÓ TỔNG CÂU & ĐIỂM (VỪA KHÍT A4) ==================== -->
+        <div style="page-break-after: always; min-height: 252mm; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
                 <table style="width: 100%; border: none; margin-bottom: 4px;">
                     <tr style="border: none;">
@@ -405,27 +270,42 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
                     </tr>
                 </table>
 
-                <div style="text-align: center; margin: 6px 0 8px 0;">
-                    <h2 style="margin: 0; font-size: 12pt; font-weight: bold; text-transform: uppercase;">KHUNG MA TRẬN ĐỀ KIỂM TRA ĐỊNH KỲ</h2>
-                    <p style="margin: 1px 0 0 0; font-style: italic; font-size: 10pt;">Môn học: ${subject} ${grade} • Thời gian: 45 phút • Bộ sách: ${book}</p>
+                <div style="text-align: center; margin: 5px 0 7px 0;">
+                    <h2 style="margin: 0; font-size: 11.5pt; font-weight: bold; text-transform: uppercase;">KHUNG MA TRẬN ĐỀ KIỂM TRA ĐỊNH KỲ (THANG ĐIỂM 10.0)</h2>
+                    <p style="margin: 1px 0 0 0; font-style: italic; font-size: 9.5pt;">Môn học: ${subject} ${grade} • Thời gian: 45 phút • Bộ sách: ${book}</p>
                 </div>
 
-                <table style="width: 100%; border-collapse: collapse; font-size: 8pt; margin: 4px 0;">
+                <!-- BẢNG MA TRẬN ĐỦ 4 PHẦN CÓ CỘT TỔNG CÂU VÀ TỔNG ĐIỂM TỪNG PHẦN -->
+                <table style="width: 100%; border-collapse: collapse; font-size: 7.5pt; margin: 3px 0;">
                     <thead>
                         <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
-                            <th rowspan="2" style="width: 22px; padding: 3px 1px;">TT</th>
-                            <th rowspan="2" style="width: 145px; padding: 3px 4px; text-align: left;">Chủ đề / Bài học</th>
-                            <th colspan="3" style="padding: 3px 1px;">Phần I (Nhiều LC)</th>
-                            <th colspan="3" style="padding: 3px 1px; color: #15803d; background: #e8f5e9;">Phần II (Đúng/Sai - Ý)</th>
-                            <th colspan="3" style="padding: 3px 1px; color: #0284c7; background: #e1f5fe;">Phần III (Ngắn)</th>
-                            <th colspan="3" style="padding: 3px 1px; color: #b91c1c; background: #ffebee;">Phần IV (Tự luận)</th>
-                            <th rowspan="2" style="width: 55px; padding: 3px 1px;">Tổng câu/ý</th>
+                            <th rowspan="2" style="width: 20px; padding: 3px 1px;">TT</th>
+                            <th rowspan="2" style="width: 125px; padding: 3px 3px; text-align: left;">Chủ đề / Bài học</th>
+                            
+                            <!-- PHẦN I -->
+                            <th colspan="3" style="padding: 2px 1px; background: #f1f5f9;">Phần I (Nhiều LC)</th>
+                            <th rowspan="2" style="width: 28px; padding: 2px 1px; background: #e2e8f0; font-weight: bold;">Tổng P1</th>
+
+                            <!-- PHẦN II -->
+                            <th colspan="3" style="padding: 2px 1px; color: #15803d; background: #e8f5e9;">Phần II (Đúng/Sai)</th>
+                            <th rowspan="2" style="width: 28px; padding: 2px 1px; color: #15803d; background: #dcfce7; font-weight: bold;">Tổng P2</th>
+
+                            <!-- PHẦN III -->
+                            <th colspan="3" style="padding: 2px 1px; color: #0284c7; background: #e1f5fe;">Phần III (Ngắn)</th>
+                            <th rowspan="2" style="width: 28px; padding: 2px 1px; color: #0284c7; background: #bae6fd; font-weight: bold;">Tổng P3</th>
+
+                            <!-- PHẦN IV -->
+                            <th colspan="3" style="padding: 2px 1px; color: #b91c1c; background: #ffebee;">Phần IV (Tự luận)</th>
+                            <th rowspan="2" style="width: 28px; padding: 2px 1px; color: #b91c1c; background: #fecaca; font-weight: bold;">Tổng P4</th>
+
+                            <!-- TỔNG TOÀN BÀI -->
+                            <th rowspan="2" style="width: 45px; padding: 2px 1px; background: #e0e7ff; font-weight: bold;">Tổng bài</th>
                         </tr>
-                        <tr style="background: #F0F4F8; text-align: center; font-size: 7.5pt;">
-                            <th style="width: 24px; padding: 2px 0;">Biết</th><th style="width: 24px; padding: 2px 0;">Hiểu</th><th style="width: 24px; padding: 2px 0;">VD</th>
-                            <th style="width: 24px; padding: 2px 0; color: #15803d; background: #e8f5e9;">Biết</th><th style="width: 24px; padding: 2px 0; color: #15803d; background: #e8f5e9;">Hiểu</th><th style="width: 24px; padding: 2px 0; color: #15803d; background: #e8f5e9;">VD</th>
-                            <th style="width: 24px; padding: 2px 0; color: #0284c7; background: #e1f5fe;">Biết</th><th style="width: 24px; padding: 2px 0; color: #0284c7; background: #e1f5fe;">Hiểu</th><th style="width: 24px; padding: 2px 0; color: #0284c7; background: #e1f5fe;">VD</th>
-                            <th style="width: 24px; padding: 2px 0; color: #b91c1c; background: #ffebee;">Biết</th><th style="width: 24px; padding: 2px 0; color: #b91c1c; background: #ffebee;">Hiểu</th><th style="width: 24px; padding: 2px 0; color: #b91c1c; background: #ffebee;">VD</th>
+                        <tr style="background: #F0F4F8; text-align: center; font-size: 7pt;">
+                            <th style="width: 18px; padding: 2px 0;">B</th><th style="width: 18px; padding: 2px 0;">H</th><th style="width: 18px; padding: 2px 0;">VD</th>
+                            <th style="width: 18px; padding: 2px 0; color: #15803d; background: #e8f5e9;">B</th><th style="width: 18px; padding: 2px 0; color: #15803d; background: #e8f5e9;">H</th><th style="width: 18px; padding: 2px 0; color: #15803d; background: #e8f5e9;">VD</th>
+                            <th style="width: 18px; padding: 2px 0; color: #0284c7; background: #e1f5fe;">B</th><th style="width: 18px; padding: 2px 0; color: #0284c7; background: #e1f5fe;">H</th><th style="width: 18px; padding: 2px 0; color: #0284c7; background: #e1f5fe;">VD</th>
+                            <th style="width: 18px; padding: 2px 0; color: #b91c1c; background: #ffebee;">B</th><th style="width: 18px; padding: 2px 0; color: #b91c1c; background: #ffebee;">H</th><th style="width: 18px; padding: 2px 0; color: #b91c1c; background: #ffebee;">VD</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -435,79 +315,105 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
                             const s2 = (parseInt(c.p2_b)||0) + (parseInt(c.p2_h)||0) + (parseInt(c.p2_vd)||0);
                             const s3 = (parseInt(c.p3_b)||0) + (parseInt(c.p3_h)||0) + (parseInt(c.p3_vd)||0);
                             const s4 = (parseInt(c.p4_b)||0) + (parseInt(c.p4_h)||0) + (parseInt(c.p4_vd)||0);
+                            const sumAll = s1 + s2 + s3 + s4;
                             return `
                                 <tr>
                                     <td style="text-align: center; padding: 2px 1px;">${i + 1}</td>
-                                    <td style="padding: 2px 4px; line-height: 1.1;"><strong>${les}</strong></td>
+                                    <td style="padding: 2px 3px; line-height: 1.1;"><strong>${les}</strong></td>
+                                    
+                                    <!-- Phần I -->
                                     <td style="text-align: center; padding: 2px 0;">${c.p1_b || 0}</td>
                                     <td style="text-align: center; padding: 2px 0;">${c.p1_h || 0}</td>
                                     <td style="text-align: center; padding: 2px 0;">${c.p1_vd || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4; font-weight: bold;">${c.p2_b || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4; font-weight: bold;">${c.p2_h || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4; font-weight: bold;">${c.p2_vd || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff; font-weight: bold;">${c.p3_b || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff; font-weight: bold;">${c.p3_h || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff; font-weight: bold;">${c.p3_vd || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2; font-weight: bold;">${c.p4_b || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2; font-weight: bold;">${c.p4_h || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2; font-weight: bold;">${c.p4_vd || 0}</td>
-                                    <td style="text-align: center; font-weight: bold; background: #f8fafc; font-size: 7.5pt; padding: 2px 1px;">
-                                        ${s1}c \vert{}${s2}ý | ${s3}c \vert{}${s4}tl
+                                    <td style="text-align: center; padding: 2px 0; font-weight: bold; background: #f8fafc;">${s1}c</td>
+                                    
+                                    <!-- Phần II -->
+                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4;">${c.p2_b || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4;">${c.p2_h || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4;">${c.p2_vd || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; font-weight: bold; background: #dcfce7; color: #15803d;">${s2}ý</td>
+
+                                    <!-- Phần III -->
+                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff;">${c.p3_b || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff;">${c.p3_h || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff;">${c.p3_vd || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; font-weight: bold; background: #bae6fd; color: #0284c7;">${s3}c</td>
+
+                                    <!-- Phần IV -->
+                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2;">${c.p4_b || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2;">${c.p4_h || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2;">${c.p4_vd || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; font-weight: bold; background: #fecaca; color: #b91c1c;">${s4}tl</td>
+
+                                    <td style="text-align: center; font-weight: bold; background: #e0e7ff; color: #3730a3; padding: 2px 1px;">
+                                        ${sumAll} mục
                                     </td>
                                 </tr>
                             `;
                         }).join('')}
                         
+                        <!-- DÒNG 1: TỔNG SỐ CÂU/Ý TỪNG MỨC ĐỘ & TỔNG CÂU TỪNG PHẦN -->
                         <tr style="background: #eff6ff; font-weight: bold; text-align: center; border-top: 2px solid #1e40af;">
-                            <td colspan="2" style="color: #1e3a8a; text-align: right; padding: 3px 6px;">TỔNG SỐ CÂU / Ý (Khống chế):</td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_b}" onchange="updateGlobalTotalField('p1_b', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #2563eb; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fff;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_h}" onchange="updateGlobalTotalField('p1_h', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #2563eb; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fff;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_vd}" onchange="updateGlobalTotalField('p1_vd', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #2563eb; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fff;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_b}" onchange="updateGlobalTotalField('p2_b', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #16a34a; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #dcfce7;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_h}" onchange="updateGlobalTotalField('p2_h', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #16a34a; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #dcfce7;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_vd}" onchange="updateGlobalTotalField('p2_vd', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #16a34a; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #dcfce7;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_b}" onchange="updateGlobalTotalField('p3_b', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #0284c7; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #e0f2fe;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_h}" onchange="updateGlobalTotalField('p3_h', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #0284c7; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #e0f2fe;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_vd}" onchange="updateGlobalTotalField('p3_vd', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #0284c7; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #e0f2fe;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_b}" onchange="updateGlobalTotalField('p4_b', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #dc2626; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fee2e2;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_h}" onchange="updateGlobalTotalField('p4_h', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #dc2626; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fee2e2;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_vd}" onchange="updateGlobalTotalField('p4_vd', this.value)" style="width: 26px; height: 18px; text-align: center; border: 1px solid #dc2626; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fee2e2;"></td>
-                            <td style="color: #b91c1c; font-size: 8pt; padding: 2px 1px;">${countP1}c|${countP2}ý|${countP3}c|${countP4}tl</td>
+                            <td colspan="2" style="color: #1e3a8a; text-align: right; padding: 3px 4px;">TỔNG CÂU / Ý (Khống chế):</td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_b}" onchange="updateGlobalTotalField('p1_b', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #2563eb; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fff;"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_h}" onchange="updateGlobalTotalField('p1_h', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #2563eb; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fff;"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_vd}" onchange="updateGlobalTotalField('p1_vd', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #2563eb; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fff;"></td>
+                            <td style="background: #e2e8f0; color: #1e3a8a; font-size: 8pt;">${countP1} câu</td>
+                            
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_b}" onchange="updateGlobalTotalField('p2_b', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #16a34a; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #dcfce7;"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_h}" onchange="updateGlobalTotalField('p2_h', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #16a34a; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #dcfce7;"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_vd}" onchange="updateGlobalTotalField('p2_vd', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #16a34a; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #dcfce7;"></td>
+                            <td style="background: #dcfce7; color: #15803d; font-size: 8pt;">${countP2} ý</td>
+
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_b}" onchange="updateGlobalTotalField('p3_b', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #0284c7; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #e0f2fe;"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_h}" onchange="updateGlobalTotalField('p3_h', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #0284c7; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #e0f2fe;"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_vd}" onchange="updateGlobalTotalField('p3_vd', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #0284c7; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #e0f2fe;"></td>
+                            <td style="background: #bae6fd; color: #0284c7; font-size: 8pt;">${countP3} câu</td>
+
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_b}" onchange="updateGlobalTotalField('p4_b', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #dc2626; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fee2e2;"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_h}" onchange="updateGlobalTotalField('p4_h', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #dc2626; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fee2e2;"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_vd}" onchange="updateGlobalTotalField('p4_vd', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #dc2626; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fee2e2;"></td>
+                            <td style="background: #fecaca; color: #b91c1c; font-size: 8pt;">${countP4} câu</td>
+
+                            <td style="color: #3730a3; font-size: 7.5pt; background: #e0e7ff; padding: 2px 1px;">
+                                ${countP1}c|${countP2}ý|${countP3}c|${countP4}tl
+                            </td>
                         </tr>
 
+                        <!-- DÒNG 2: TỔNG SỐ ĐIỂM TỪNG PHẦN VÀ TỔNG ĐIỂM TOÀN BÀI (10.0 ĐIỂM) -->
                         <tr style="background: #fefce8; font-weight: bold; text-align: center; border-top: 1px solid #ca8a04;">
-                            <td colspan="2" style="color: #854d0e; text-align: right; padding: 3px 6px;">ĐIỂM SỐ TỪNG PHẦN (Khống chế):</td>
-                            <td colspan="3" style="padding: 2px;">
-                                <input type="number" step="0.25" min="0" value="${scoreP1}" onchange="updatePartScoreField('p1', this.value)" style="width: 44px; height: 18px; text-align: center; border: 1px solid #ca8a04; font-size: 8.5pt; font-weight: bold; background: #fff;"> đ
-                                <span style="font-size: 7pt; color: #64748b; display: block;">(${p1PerQ}đ/câu)</span>
+                            <td colspan="2" style="color: #854d0e; text-align: right; padding: 3px 4px;">TỔNG ĐIỂM TỪNG PHẦN:</td>
+                            <td colspan="4" style="padding: 2px; background: #fef9c3;">
+                                <input type="number" step="0.25" min="0" value="${scoreP1}" onchange="updatePartScoreField('p1', this.value)" style="width: 36px; height: 17px; text-align: center; border: 1px solid #ca8a04; font-size: 8pt; font-weight: bold; background: #fff;"> đ
+                                <span style="font-size: 6.8pt; color: #64748b; display: inline-block; margin-left: 2px;">(${p1PerQ}đ/câu)</span>
                             </td>
-                            <td colspan="3" style="padding: 2px; background: #f0fdf4;">
-                                <input type="number" step="0.25" min="0" value="${scoreP2}" onchange="updatePartScoreField('p2', this.value)" style="width: 44px; height: 18px; text-align: center; border: 1px solid #16a34a; font-size: 8.5pt; font-weight: bold; background: #fff;"> đ
-                                <span style="font-size: 7pt; color: #15803d; display: block;">(Lũy tiến ý)</span>
+                            <td colspan="4" style="padding: 2px; background: #f0fdf4;">
+                                <input type="number" step="0.25" min="0" value="${scoreP2}" onchange="updatePartScoreField('p2', this.value)" style="width: 36px; height: 17px; text-align: center; border: 1px solid #16a34a; font-size: 8pt; font-weight: bold; background: #fff;"> đ
+                                <span style="font-size: 6.8pt; color: #15803d; display: inline-block; margin-left: 2px;">(Lũy tiến ý)</span>
                             </td>
-                            <td colspan="3" style="padding: 2px; background: #f0f9ff;">
-                                <input type="number" step="0.25" min="0" value="${scoreP3}" onchange="updatePartScoreField('p3', this.value)" style="width: 44px; height: 18px; text-align: center; border: 1px solid #0284c7; font-size: 8.5pt; font-weight: bold; background: #fff;"> đ
-                                <span style="font-size: 7pt; color: #0369a1; display: block;">(${p3PerQ}đ/câu)</span>
+                            <td colspan="4" style="padding: 2px; background: #f0f9ff;">
+                                <input type="number" step="0.25" min="0" value="${scoreP3}" onchange="updatePartScoreField('p3', this.value)" style="width: 36px; height: 17px; text-align: center; border: 1px solid #0284c7; font-size: 8pt; font-weight: bold; background: #fff;"> đ
+                                <span style="font-size: 6.8pt; color: #0369a1; display: inline-block; margin-left: 2px;">(${p3PerQ}đ/câu)</span>
                             </td>
-                            <td colspan="3" style="padding: 2px; background: #fef2f2;">
-                                <input type="number" step="0.25" min="0" value="${scoreP4}" onchange="updatePartScoreField('p4', this.value)" style="width: 44px; height: 18px; text-align: center; border: 1px solid #dc2626; font-size: 8.5pt; font-weight: bold; background: #fff;"> đ
-                                <span style="font-size: 7pt; color: #b91c1c; display: block;">(${p4PerQ}đ/câu)</span>
+                            <td colspan="4" style="padding: 2px; background: #fef2f2;">
+                                <input type="number" step="0.25" min="0" value="${scoreP4}" onchange="updatePartScoreField('p4', this.value)" style="width: 36px; height: 17px; text-align: center; border: 1px solid #dc2626; font-size: 8pt; font-weight: bold; background: #fff;"> đ
+                                <span style="font-size: 6.8pt; color: #b91c1c; display: inline-block; margin-left: 2px;">(${p4PerQ}đ/câu)</span>
                             </td>
-                            <td style="color: #b91c1c; font-size: 9pt; background: #fee2e2;">
-                                <strong>${totalScore} Điểm</strong>
+                            <td style="color: #b91c1c; font-size: 8.5pt; background: #fee2e2;">
+                                <strong>${totalScore} Đ</strong>
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
-                <p style="font-weight: bold; font-size: 9pt; margin: 6px 0 2px 0;">BẢN ĐẶC TẢ YÊU CẦU CẦN ĐẠT CỦA CÁC CHỦ ĐỀ:</p>
-                <table style="width: 100%; border-collapse: collapse; font-size: 8pt; margin-bottom: 6px;">
+                <p style="font-weight: bold; font-size: 8.5pt; margin: 5px 0 2px 0;">BẢN ĐẶC TẢ YÊU CẦU CẦN ĐẠT CỦA CÁC CHỦ ĐỀ:</p>
+                <table style="width: 100%; border-collapse: collapse; font-size: 7.5pt; margin-bottom: 4px;">
                     <thead>
                         <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
                             <th style="width: 25px; padding: 2px;">TT</th>
-                            <th style="width: 150px; padding: 2px;">Chủ đề</th>
+                            <th style="width: 135px; padding: 2px;">Chủ đề</th>
                             <th style="padding: 2px;">Mức độ đánh giá & Yêu cầu cần đạt (GDPT 2018)</th>
-                            <th style="width: 75px; padding: 2px;">Số câu thực tế</th>
+                            <th style="width: 70px; padding: 2px;">Số câu thực tế</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -518,9 +424,9 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
                                 <tr>
                                     <td style="text-align: center; padding: 2px;">${idx + 1}</td>
                                     <td style="padding: 2px;"><strong>${les}</strong></td>
-                                    <td style="padding: 2px; font-size: 7.5pt; line-height: 1.15;">
-                                        - <em>Biết:</em> Nhận biết cấu trúc, đối tượng và khái niệm cốt lõi.<br>
-                                        - <em>Hiểu:</em> Phân tích cơ chế, so sánh biến đổi và giải thích thực nghiệm.<br>
+                                    <td style="padding: 2px; font-size: 7pt; line-height: 1.15;">
+                                        - <em>Biết:</em> Nhận biết cấu trúc, đối tượng và khái niệm cốt lõi theo SGK Kết nối tri thức.<br>
+                                        - <em>Hiểu:</em> Phân tích cơ chế sinh học, so sánh biến đổi và giải thích thực nghiệm.<br>
                                         - <em>Vận dụng:</em> Giải quyết tình huống thực tiễn sinh học và nông nghiệp địa phương.
                                     </td>
                                     <td style="text-align: center; font-weight: bold; padding: 2px;">${sum} mục</td>
@@ -531,11 +437,11 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
                 </table>
             </div>
 
-            <div style="border-top: 1px dashed #cbd5e1; padding-top: 4px; font-size: 8pt; color: #475569;">
+            <div style="border-top: 1px dashed #cbd5e1; padding-top: 3px; font-size: 7.5pt; color: #475569;">
                 <table style="width: 100%; border: none;">
                     <tr style="border: none;">
                         <td style="border: none; width: 60%; vertical-align: top; padding: 0;">
-                            * <strong>Hướng dẫn Thầy:</strong> Chỉnh trực tiếp ô số câu/ý và điểm số ở 2 dòng màu vàng/xanh chân bảng. Đề thi ở trang sau sẽ tự động cập nhật số câu tương ứng.
+                            * <strong>Hướng dẫn Thầy:</strong> Chỉnh trực tiếp ô số câu/ý và điểm số ở 2 dòng chân bảng. Đề thi ở trang sau sẽ tự động cập nhật số câu và barem điểm tương ứng.
                         </td>
                         <td style="border: none; width: 40%; text-align: center; vertical-align: top; padding: 0;">
                             <p style="margin: 0; font-style: italic;">Mang Thít, ngày ...... tháng ...... năm 202...</p>
@@ -546,6 +452,7 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
             </div>
         </div>
 
+        <!-- ==================== TRANG 2 TRỞ ĐI: ĐỀ KIỂM TRA ĐỊNH KỲ ==================== -->
         <div>
             <div style="text-align: center; margin-bottom: 12px;">
                 <h3 style="margin: 0; font-size: 13pt; font-weight: bold; text-transform: uppercase;">ĐỀ KIỂM TRA ĐỊNH KỲ CHÍNH THỨC</h3>
@@ -571,11 +478,167 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
                 PHẦN IV. Tự luận (${countP4} câu - ${scoreP4} điểm)
             </p>
             ${p4Html || '<p style="font-style: italic; font-size: 10.5pt;">(Không có câu hỏi ở phần này)</p>'}
+
+            <div style="margin-top: 25px; text-align: right; font-style: italic; font-weight: bold;">
+                Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít
+            </div>
         </div>
     `;
 };
 
-// 9. TỰ ĐỘNG CẬP NHẬT GIAO DIỆN NGAY KHI LOAD FILE
+// 7. GHI ĐÈ HÀM GỌI AI BÁM SÁT 3 TỆP CHỈ DẪN SƯ PHẠM
+window.executeActionAI = async function() {
+    const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
+    if (!savedKey) {
+        openAIKeyModal();
+        alert("Thầy vui lòng nhập và lưu Gemini API Key trước!");
+        return;
+    }
+
+    const preferredModel = localStorage.getItem('gemini_preferred_model') || 'auto';
+    const subject = document.getElementById('sel-subject').value;
+    const grade = document.getElementById('sel-grade').value;
+    const book = document.getElementById('sel-book').value;
+    const lessonTitle = currentSelectedLesson;
+    const customGuide = document.getElementById('ai-custom-instructions') ? document.getElementById('ai-custom-instructions').value.trim() : "";
+    const docContainer = document.getElementById('container-a4-doc');
+    const statusInd = document.getElementById('content-source-indicator');
+
+    let filePromptPart = "";
+    if (uploadedFileContent && uploadedFileContent.trim() !== "") {
+        filePromptPart = `\n- NGỮ LIỆU BỔ SUNG TỪ TÀI LIỆU TẢI LÊN: """${uploadedFileContent.slice(0, 8000)}"""`;
+    }
+
+    // ==================== [A] SOẠN SLIDE BÁM SÁT TỆP: AI- TẠO SLIDE PPT.docx ====================
+    if (currentActiveMode === 'slide') {
+        statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang thiết kế Slide 16:9 Typography >= 34pt...</span>`;
+        
+        const promptSlide = `Bạn là "CHUYÊN GIA THIẾT KẾ BÀI GIẢNG SƯ PHẠM VÀ HỘI GIẢNG TOÀN QUỐC" theo chuẩn Công văn 5512/BGDĐT-GDTrH và CT GDPT 2018.
+Nhiệm vụ: Thiết kế bộ slide bài giảng 16:9 cho bài: "${lessonTitle}", môn ${subject} ${grade}, bộ sách "Kết nối tri thức với cuộc sống".
+CHỈ DẪN GIÁO VIÊN: """${customGuide || "Ưu tiên làm nổi bật kiến thức trọng tâm SGK, các quy luật sinh học và bài tập liên hệ thực tiễn huyện Mang Thít, tỉnh Vĩnh Long."}"""${filePromptPart}
+
+BỘ NGUYÊN TẮC THIẾT KẾ BẮT BUỘC (CRITICAL DESIGN RULES):
+1. PHÂN CẤP CỠ CHỮ TUYỆT ĐỐI: Tất cả các chữ trên slide BẮT BUỘC từ 34pt trở lên (Tiêu đề 51-52pt, Thẻ mục 41-42pt, Nội dung 38-40pt). Tuyệt đối không có cỡ chữ dưới 34pt.
+2. BẢNG MÃ MÀU 60-30-10 MÔN SINH HỌC/NÔNG NGHIỆP: Nền tối/Xanh rừng sâu #0F2922, chữ trắng/kem sáng, nhấn Vàng Gold #D78C0F & Đỏ cam #C02626.
+3. TIẾN TRÌNH DẠY HỌC 4 HOẠT ĐỘNG:
+   - HĐ 1 (Mở đầu): Slide 1 Bìa bài học; Slide 2 Tình huống có vấn đề kèm 2 câu hỏi định hướng tư duy.
+   - HĐ 2 (Hình thành kiến thức): Mỗi mục SGK một slide. NGAY SAU MỖI MỤC LỚN BẮT BUỘC CÓ 1 SLIDE ĐỘC LẬP: "[KIẾN THỨC CỐT LÕI CẦN GHI NHỚ - MỤC ... (NỘI DUNG GHI VỞ)]".
+   - HĐ 3 (Luyện tập):
+     * Dạng 1: Đủ 6 câu trắc nghiệm 4 lựa chọn nằm trên 6 slides riêng biệt.
+     * Dạng 2: Đủ 4 câu trắc nghiệm Đúng/Sai đa ý nằm trên 4 slides riêng biệt (bối cảnh đồ thị/thực nghiệm/y học/môi trường).
+     * Dạng 3: Đủ 6 câu trắc nghiệm trả lời ngắn nằm trên 6 slides riêng biệt (đáp án số/chuỗi số <= 4 ký tự).
+     * Tất cả các câu hỏi đều có nút/khối đáp án ẩn (chỉ hiển thị khi bấm, không lộ đáp án khi chiếu).
+   - HĐ 4 (Vận dụng): 1 Slide dự án học tập thực tế huyện Mang Thít, tỉnh Vĩnh Long kèm Rubric đánh giá ngắn gọn.
+   - Cuối sản phẩm ghi: "Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít".
+
+ĐỊNH DẠNG ĐẦU RA BẮT BUỘC: Trả về DUY NHẤT một mảng JSON thuần túy (không bọc text ngoài):
+[
+  {
+    "tag": "HOẠT ĐỘNG 1: KHỞI ĐỘNG",
+    "title": "TÌNH HUỐNG MỞ ĐẦU",
+    "body": "<div class='space-y-3 text-lg'><p>Nội dung câu hỏi tình huống...</p></div>"
+  }
+]`;
+
+        try {
+            const aiResult = await fetchGeminiWithCascade(promptSlide, savedKey, preferredModel);
+            let raw = aiResult.text.replace(/```json/gi, '').replace(/```/gi, '').trim();
+            const newSlides = JSON.parse(raw);
+
+            if (Array.isArray(newSlides) && newSlides.length > 0) {
+                slideDeckData = newSlides;
+                currentSlideIndex = 0;
+                renderCurrentSlide();
+                showAIReviewBar();
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> AI đã tạo ${newSlides.length} slide chuẩn Hội giảng! Thầy bấm "Lưu Lại" để hoàn tất.</span>`;
+            } else {
+                throw new Error("Dữ liệu JSON không hợp lệ");
+            }
+        } catch (e) {
+            console.error("Lỗi slide AI:", e);
+            alert("Lỗi tạo slide AI: " + e.message + ". Đang nạp bản slide mẫu.");
+            renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
+        }
+        return;
+    }
+
+    // ==================== [B] SOẠN GIÁO ÁN & ĐỀ THI ====================
+    docContainer.innerHTML = `
+        <div style="text-align: center; padding: 75px 20px; font-family: sans-serif;">
+            <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-wand-magic-sparkles fa-bounce"></i></div>
+            <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">Đang kết nối Gemini...</h3>
+            <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
+                Đang biên soạn: <strong>${currentActiveMode === '5512' ? 'Kế hoạch bài dạy CV 5512 High-End' : 'Hồ sơ khảo thí & Đề thi 7991 (4 Phần)'}</strong> - ${lessonTitle}
+            </p>
+        </div>
+    `;
+    statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang biên soạn dữ liệu...</span>`;
+
+    try {
+        // --- [B1] ĐỀ THI BÁM SÁT: AI. TẠO ĐỀ.docx ---
+        if (currentActiveMode === '7991') {
+            const lessons = (selectedLessonsForExam && selectedLessonsForExam.length > 0) ? selectedLessonsForExam.join(', ') : lessonTitle;
+            const promptExam = `Bạn là chuyên gia khảo thí THPT hàng đầu Việt Nam môn ${subject} ${grade}. Hãy biên soạn HỒ SƠ KHẢO THÍ VÀ ĐỀ KIỂM TRA ĐỊNH KỲ bám sát Quyết định 7991/BGDĐT cho: ${lessons}. Bộ sách: ${book}.
+CHỈ DẪN GIÁO VIÊN: """${customGuide}"""${filePromptPart}
+
+YÊU CẦU ĐÚNG MA TRẬN VÀ THANG ĐIỂM KHỐNG CHẾ 10.0 ĐIỂM:
+1. PHẦN I (Trắc nghiệm 4 lựa chọn - ${matrixPartScores.p1} điểm): ${matrixGlobalTotals.p1_b} câu Biết, ${matrixGlobalTotals.p1_h} câu Hiểu, ${matrixGlobalTotals.p1_vd} câu Vận dụng (in đậm hoặc gạch chân đáp án đúng).
+2. PHẦN II (Trắc nghiệm Đúng/Sai - ${matrixPartScores.p2} điểm): ${(parseInt(matrixGlobalTotals.p2_b)||0) + (parseInt(matrixGlobalTotals.p2_h)||0) + (parseInt(matrixGlobalTotals.p2_vd)||0)} Ý LỆNH HỎI (${matrixGlobalTotals.p2_b} ý Biết, ${matrixGlobalTotals.p2_h} ý Hiểu, ${matrixGlobalTotals.p2_vd} ý Vận dụng). Mỗi câu gồm bối cảnh nghiên cứu thực nghiệm và 4 ý a, b, c, d có [ĐÚNG] hoặc [SAI].
+3. PHẦN III (Trắc nghiệm Trả lời ngắn - ${matrixPartScores.p3} điểm): Gồm ${matrixGlobalTotals.p3_b} câu Biết, ${matrixGlobalTotals.p3_h} câu Hiểu, ${matrixGlobalTotals.p3_vd} câu Vận dụng. Mỗi câu điền số/từ ngắn kèm đáp án.
+4. PHẦN IV (Tự luận - ${matrixPartScores.p4} điểm): Gồm ${matrixGlobalTotals.p4_b} câu Biết, ${matrixGlobalTotals.p4_h} câu Hiểu, ${matrixGlobalTotals.p4_vd} câu Vận dụng (yêu cầu phân tích cơ chế và giải pháp thực tế nông nghiệp tại huyện Mang Thít, tỉnh Vĩnh Long).
+
+KÈM BẢNG ĐÁP ÁN VÀ THANG ĐIỂM BAREM CHI TIẾT TỪNG PHẦN ĐỦ 10.0 ĐIỂM Ở CUỐI ĐỀ.
+Cuối bài ghi: "Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít".
+Định dạng HTML thuần túy không bọc markdown. Font Times New Roman 13pt.`;
+
+            const aiResult = await fetchGeminiWithCascade(promptExam, savedKey, preferredModel);
+            let out = aiResult.text.replace(/^```html/i, '').replace(/```$/i, '').trim();
+            docContainer.innerHTML = out;
+            temporaryAIGeneratedDoc = out;
+            showAIReviewBar();
+            statusInd.innerHTML = `<span class="text-purple-400 font-bold"><i class="fa-solid fa-sparkles"></i> Đã tạo xong Đề thi 7991 (4 Phần) qua [${aiResult.modelUsed}]!</span>`;
+            return;
+        }
+
+        // --- [B2] GIÁO ÁN BÁM SÁT: AI- TẠO GIÁO ÁN.docx ---
+        const info = getDynamicNlsAiInfo(lessonTitle, grade);
+        const prompt5512 = `Bạn là "SIÊU AI SƯ PHẠM & KIẾN TẠO GIÁO ÁN ĐẲNG CẤP HIGH-END" am hiểu tường tận Công văn 5512/BGDĐT-GDTrH và Khung năng lực số 1007/QĐ-BGDĐT.
+Nhiệm vụ: Biên soạn nội dung chuyên môn bám sát SGK Kết nối tri thức cho bài: "${lessonTitle}", môn ${subject} ${grade}.
+CHỈ DẪN GIÁO VIÊN: """${customGuide}"""${filePromptPart}
+
+BỘ QUY TẮC BẮT BUỘC THEO CV 5512 CẢI TIẾN HIGH-END:
+1. HOẠT ĐỘNG 2 (Hình thành kiến thức mới): BẮT BUỘC TRÌNH BÀY DẠNG BẢNG 2 CỘT KẺ VIỀN ĐEN 100%.
+   - Cột 1 (Bên trái): "HOẠT ĐỘNG CỦA GIÁO VIÊN VÀ HỌC SINH" (Đủ 4 bước: Bước 1 Chuyển giao nhiệm vụ -> Bước 2 Thực hiện nhiệm vụ -> Bước 3 Báo cáo, thảo luận -> Bước 4 Kết luận, nhận định).
+   - Cột 2 (Bên phải): "DỰ KIẾN SẢN PHẨM" (Kiến thức chuẩn hóa, chi tiết. KHÔNG ghi "nội dung bài học" trên tiêu đề cột).
+   - Tích hợp Năng lực số: 👉 [Tích hợp năng lực số]: [${info.nls}] - Ghi rõ thao tác GV và HS.
+   - Tích hợp Năng lực AI: 👉 [Tích hợp năng lực AI]: [Mã ${info.aiCode}] - Ghi rõ vị trí AI can thiệp và vị trí Con người giữ quyền kiểm soát tối cao & ra quyết định. Không tích hợp cả 2 năng lực vào cùng 1 hoạt động.
+2. HOẠT ĐỘNG 3 (Luyện tập): TUYỆT ĐỐI KHÔNG CHIA BẢNG. Trình bày văn bản 4 bước kèm "* DỰ KIẾN SẢN PHẨM" gồm đủ 3 dạng:
+   - Dạng 1: Trắc nghiệm 4 lựa chọn (4 câu hỏi có đáp án in đậm).
+   - Dạng 2: Trắc nghiệm Đúng / Sai (1 câu hỏi gồm 4 ý a, b, c, d bối cảnh thực nghiệm khoa học, ghi rõ [ĐÚNG] hoặc [SAI]).
+   - Dạng 3: Trắc nghiệm trả lời ngắn (2 câu điền từ/số).
+3. HOẠT ĐỘNG 4 (Vận dụng): TUYỆT ĐỐI KHÔNG CHIA BẢNG. Trình bày văn bản 4 bước và "* DỰ KIẾN SẢN PHẨM" gắn với thực tế tại huyện Mang Thít, tỉnh Vĩnh Long.
+4. KHÔNG ghi phân bổ số phút ở tiêu đề các hoạt động. Dùng dấu gạch ngang (-) ở đầu dòng, KHÔNG dùng (-) trước các đáp án trắc nghiệm.
+Cuối bài ghi: "Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít".
+Định dạng HTML thuần túy không bọc markdown. Font Times New Roman 13pt.`;
+
+        const aiResult = await fetchGeminiWithCascade(prompt5512, savedKey, preferredModel);
+        let textOut = aiResult.text.replace(/^```html/i, '').replace(/```$/i, '').trim();
+        const fixedAiHtml = sanitizeAndFixAIActivities(textOut);
+
+        renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, fixedAiHtml);
+        temporaryAIGeneratedDoc = docContainer.innerHTML;
+        showAIReviewBar();
+        statusInd.innerHTML = `<span class="text-purple-400 font-bold"><i class="fa-solid fa-sparkles"></i> Đã bơm kiến thức 5512 chuẩn mực qua [${aiResult.modelUsed}]!</span>`;
+
+    } catch (error) {
+        console.error("Lỗi AI:", error);
+        statusInd.innerHTML = `<span class="text-amber-400 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> AI gặp sự cố</span>`;
+        displayContentForCurrentLesson();
+        alert("Lỗi AI: " + error.message);
+    }
+};
+
+// 8. TỰ ĐỘNG CHẠY PHÂN BỔ VÀ HIỂN THỊ KHI LOAD SCRIPT
 if (typeof distributeMatrixFromTotals === 'function') {
     distributeMatrixFromTotals();
     if (typeof displayContentForCurrentLesson === 'function') {
