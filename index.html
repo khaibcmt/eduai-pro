@@ -1931,5 +1931,18 @@ Quy cách: Danh sách gạch đầu dòng dùng dấu gạch ngang (-). Font Tim
             }
         }
     </script>
+<!-- ================= BỘ NẠP CẬP NHẬT TỰ ĐỘNG (HOT-PATCH LOADER) ================= -->
+    <script>
+        (function() {
+            const patchScript = document.createElement('script');
+            // Thêm mốc thời gian ?v= để trình duyệt luôn tải bản mới nhất, không bị lưu cache cũ
+            patchScript.src = 'custom-update.js?v=' + Date.now();
+            patchScript.onload = () => console.log(' [BioMaster] Đã nạp bản cập nhật custom-update.js thành công!');
+            patchScript.onerror = () => console.log(' [BioMaster] Đang chạy mã gốc (chưa tạo custom-update.js).');
+            document.body.appendChild(patchScript);
+        })();
+    </script>
+</body>
+</html>
 </body>
 </html>
