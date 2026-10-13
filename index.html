@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioMaster AI - Trợ Lý Sư Phạm Toàn Năng | GV: Hồ Tấn Khải - THPT Mang Thít</title>
+    <link rel="icon" href="data:,">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -175,7 +176,7 @@
                     <i class="fa-brands fa-google-drive"></i> <span>Drive</span>
                 </button>
 
-                <button onclick="openAIKeyModal()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30 transition flex items-center gap-1.5">
+                <button id="btn-api-modal-trigger" onclick="openAIKeyModal()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-key"></i> <span id="api-status-text">Cài API AI</span>
                 </button>
             </div>
@@ -270,8 +271,8 @@
                      class="border-2 border-dashed border-slate-700 hover:border-cyan-400/80 bg-[#0b1222]/80 hover:bg-[#0b1222] rounded-2xl p-3 text-center cursor-pointer transition flex flex-col items-center justify-center gap-1.5">
                     <i class="fa-solid fa-cloud-arrow-up text-xl text-cyan-400"></i>
                     <p class="text-xs font-bold text-slate-200">Kéo thả file SGK / Ngữ liệu bổ sung</p>
-                    <p class="text-[10px] text-slate-400">Hỗ trợ PDF, DOCX, TXT để AI ưu tiên bám sát</p>
-                    <input type="file" id="file-input" onchange="handleFileSelect(event)" class="hidden" accept=".pdf,.doc,.docx,.txt">
+                    <p class="text-[10px] text-slate-400">Ưu tiên file văn bản (.txt) hoặc dán vào ô bên dưới</p>
+                    <input type="file" id="file-input" onchange="handleFileSelect(event)" class="hidden" accept=".txt,.doc,.docx,.pdf">
                 </div>
 
                 <div id="file-status-box" class="hidden mt-2 p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-center justify-between">
@@ -425,7 +426,7 @@
         </div>
     </div>
 
-    <!-- MODAL API KEY -->
+    <!-- MODAL API KEY & CHỌN MODEL -->
     <div id="modal-api" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-brand-surface border border-brand-border rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <div class="flex items-center justify-between pb-3 border-b border-brand-border">
@@ -435,11 +436,25 @@
                 <button onclick="closeAIKeyModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="mt-4 space-y-3 text-xs text-slate-300">
-                <p>Thầy dán mã <strong>Gemini API Key</strong> vào đây để kích hoạt AI biên soạn kiến thức SGK:</p>
-                <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
-                <p class="text-[11px] text-slate-500 leading-relaxed">
-                    * Model sử dụng: <strong>gemini-3.8-flash</strong> thế hệ mới siêu tốc.
-                </p>
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-200">Gemini API Key:</label>
+                    <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400">
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-200">Mô hình AI ưu tiên:</label>
+                    <select id="select-ai-model" class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-amber-300 font-semibold focus:outline-none focus:border-amber-400 cursor-pointer">
+                        <option value="auto" selected>Tự động chọn & Dự phòng thông minh (Khuyên dùng)</option>
+                        <option value="gemini-2.5-flash">gemini-2.5-flash (Chuẩn ổn định cao nhất)</option>
+                        <option value="gemini-2.0-flash">gemini-2.0-flash (Tốc độ cao)</option>
+                        <option value="gemini-1.5-flash">gemini-1.5-flash (Tương thích tốt)</option>
+                        <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (Tiết kiệm hạn mức)</option>
+                    </select>
+                </div>
+
+                <div class="p-2.5 bg-blue-950/40 rounded-xl border border-blue-500/30 text-[11px] text-cyan-200 leading-relaxed">
+                    <i class="fa-solid fa-shield-halved text-cyan-400 mr-1"></i> <strong>Tính năng chống nghẽn:</strong> Hệ thống tự động chuyển model dự phòng nếu model đang chọn gặp tình trạng quá tải (HTTP 503).
+                </div>
             </div>
             <div class="mt-5 flex justify-end gap-2 text-xs">
                 <button onclick="closeAIKeyModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold">Đóng</button>
@@ -453,6 +468,14 @@
         const teacherName = "Hồ Tấn Khải";
         const schoolName = "Trường THPT Mang Thít";
         const DEFAULT_DRIVE_APP_URL = "https://script.google.com/macros/s/AKfycbzHCaKQIqUJnc7nLfNd4NcIugwCThQYllJfFs7aA6nt0Q79zjlDP6WMpF1F5TpNW-yE_g/exec";
+
+        // Danh sách model ưu tiên theo thứ tự độ ổn định
+        const FALLBACK_MODELS = [
+            "gemini-2.5-flash",
+            "gemini-2.0-flash",
+            "gemini-1.5-flash",
+            "gemini-2.5-flash-lite"
+        ];
 
         let currentActiveMode = '5512';
         let currentSelectedLesson = "Bài 1: Giới thiệu khái quát môn Sinh học";
@@ -860,7 +883,66 @@
             return sandbox.innerHTML;
         }
 
-        // ==================== HÀM SOẠN KIẾN THỨC SGK BẰNG AI & BƠM VÀO KHUNG NỘI HÀM ====================
+        // ==================== BỘ GỌI API GEMINI THÔNG MINH (CHỐNG NGHẼN 503 VÀ TỰ ĐỔI MODEL) ====================
+        async function fetchGeminiWithCascade(promptText, apiKey, preferredModel = 'auto') {
+            const modelsToTry = (preferredModel && preferredModel !== 'auto')
+                ? [preferredModel, ...FALLBACK_MODELS.filter(m => m !== preferredModel)]
+                : [...FALLBACK_MODELS];
+
+            let lastErrorMsg = "";
+
+            for (let i = 0; i < modelsToTry.length; i++) {
+                const modelName = modelsToTry[i];
+                const statusEl = document.getElementById('ai-loading-status');
+                if (statusEl) {
+                    statusEl.innerText = `Đang kết nối mô hình ${modelName} (${i + 1}/${modelsToTry.length})...`;
+                }
+
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+
+                try {
+                    // Thử gọi với retry 1 lần nếu gặp lỗi 503
+                    for (let attempt = 0; attempt < 2; attempt++) {
+                        const res = await fetch(endpoint, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contents: [{ parts: [{ text: promptText }] }],
+                                generationConfig: { 
+                                    temperature: 0.7, 
+                                    maxOutputTokens: 8192 
+                                }
+                            })
+                        });
+
+                        if (res.status === 503 && attempt === 0) {
+                            await new Promise(r => setTimeout(r, 1200));
+                            continue;
+                        }
+
+                        const data = await res.json();
+                        if (!res.ok) {
+                            throw new Error(data?.error?.message || `Lỗi HTTP ${res.status}`);
+                        }
+
+                        const textOut = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                        if (!textOut || textOut.trim() === '') {
+                            throw new Error("Không có nội dung trả về từ mô hình.");
+                        }
+
+                        return { text: textOut, modelUsed: modelName };
+                    }
+                } catch (err) {
+                    console.warn(`Mô hình ${modelName} gặp sự cố:`, err.message);
+                    lastErrorMsg = `[${modelName}] ${err.message}`;
+                    // Tự động chuyển sang model tiếp theo trong danh sách
+                }
+            }
+
+            throw new Error(`Tất cả các mô hình AI đều không thể phản hồi lúc này. Chi tiết: ${lastErrorMsg}`);
+        }
+
+        // ==================== HÀM SOẠN KIẾN THỨC SGK BẰNG AI ====================
         async function executeActionAI() {
             const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
             if (!savedKey) {
@@ -869,6 +951,7 @@
                 return;
             }
 
+            const preferredModel = localStorage.getItem('gemini_preferred_model') || 'auto';
             const subject = document.getElementById('sel-subject').value;
             const grade = document.getElementById('sel-grade').value;
             const book = document.getElementById('sel-book').value;
@@ -879,21 +962,21 @@
 
             if (currentActiveMode === 'slide') {
                 renderPowerPointSlideDeck(subject, grade, book, lessonTitle);
-                alert("Đã cập nhật Slide bài giảng điện tử 16:9!");
+                alert("Đã cập nhật bài giảng Slide 16:9!");
                 return;
             }
 
             docContainer.innerHTML = `
                 <div style="text-align: center; padding: 75px 20px; font-family: sans-serif;">
                     <div style="font-size: 38px; color: #9333ea; margin-bottom: 16px;"><i class="fa-solid fa-wand-magic-sparkles fa-bounce"></i></div>
-                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">Gemini 3.5 đang biên soạn nội dung kiến thức SGK cho bài học...</h3>
+                    <h3 style="font-size: 15pt; font-weight: bold; color: #0f172a;" id="ai-loading-status">Đang khởi tạo kết nối Gemini siêu tốc...</h3>
                     <p style="color: #64748b; font-size: 11pt; margin-top: 6px;">
                         Bài học: <strong>${lessonTitle}</strong> (${subject} ${grade} - ${book})
                     </p>
                 </div>
             `;
 
-            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang sinh kiến thức SGK...</span>`;
+            statusInd.innerHTML = `<span class="text-amber-400 font-bold animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i> AI đang xử lý...</span>`;
 
             try {
                 let filePromptPart = "";
@@ -903,7 +986,7 @@
 
                 const info = getDynamicNlsAiInfo(lessonTitle, grade);
                 
-                // Prompt CHỈ TẬP TRUNG BIÊN SOẠN KIẾN THỨC CHUYÊN MÔN SGK CHO HĐ 2, 3, 4
+                // Prompt soạn nội dung kiến thức chuyên môn SGK cho HĐ 2, 3, 4
                 const promptText = `Bạn là chuyên gia sư phạm Sinh học THPT. Hãy biên soạn nội dung kiến thức chuyên môn bám sát SGK Kết nối tri thức và Yêu cầu cần đạt (YCCĐ) của bài: "${lessonTitle}", môn ${subject} ${grade}.
 
 YÊU CẦU CHỈ SOẠN NỘI DUNG CHUYÊN MÔN THEO ĐÚNG CẤU TRÚC SAU:
@@ -953,45 +1036,24 @@ YÊU CẦU CHỈ SOẠN NỘI DUNG CHUYÊN MÔN THEO ĐÚNG CẤU TRÚC SAU:
 Ghi chú: ${customGuide}${filePromptPart}
 Quy cách: Danh sách gạch đầu dòng dùng dấu gạch ngang (-). Font Times New Roman 13pt. Không bọc thẻ markdown.`;
 
-                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${savedKey}`;
-                
-                const res = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: promptText }] }],
-                        generationConfig: { 
-                            temperature: 0.7, 
-                            maxOutputTokens: 8192 
-                        }
-                    })
-                });
-
-                const data = await res.json();
-                if (!res.ok) {
-                    throw new Error(data?.error?.message || `Lỗi HTTP ${res.status}`);
-                }
-
-                let textOut = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (!textOut || textOut.trim() === '') {
-                    throw new Error("AI không phản hồi nội dung văn bản.");
-                }
+                const aiResult = await fetchGeminiWithCascade(promptText, savedKey, preferredModel);
+                let textOut = aiResult.text;
 
                 textOut = textOut.replace(/^```html/i, '').replace(/```$/i, '').trim();
                 const fixedAiHtml = sanitizeAndFixAIActivities(textOut);
 
-                // BƠM NỘI DUNG KIẾN THỨC VỪA SINH VÀO KHUNG GỐC NỘI HÀM CỰC ĐẸP
+                // Bơm nội dung kiến thức vào khung gốc
                 renderGiaoAn5512HighEnd(subject, grade, book, lessonTitle, fixedAiHtml);
 
                 temporaryAIGeneratedDoc = docContainer.innerHTML;
                 showAIReviewBar();
-                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã bơm kiến thức SGK AI vào khung nội hàm chuẩn mực!</span>`;
+                statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã biên soạn thành công qua [${aiResult.modelUsed}]!</span>`;
 
             } catch (error) {
                 console.error("Chi tiết lỗi AI:", error);
                 statusInd.innerHTML = `<span class="text-amber-400 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> AI gặp sự cố, đã nạp bản nội hàm</span>`;
                 displayContentForCurrentLesson();
-                alert("AI gặp sự cố: " + error.message);
+                alert("Thông báo lỗi AI: " + error.message);
             }
         }
 
@@ -1028,7 +1090,6 @@ Quy cách: Danh sách gạch đầu dòng dùng dấu gạch ngang (-). Font Tim
             const docContainer = document.getElementById('container-a4-doc');
             const info = getDynamicNlsAiInfo(lessonTitle, grade);
 
-            // Cụm Hoạt động 2, 3, 4 mặc định nội hàm chuẩn chỉ
             const defaultAct234Html = `
                 <p style="font-weight: bold; color: #1e40af; margin: 8px 0 2px 0;">HOẠT ĐỘNG 2: HÌNH THÀNH KIẾN THỨC MỚI</p>
                 <div style="background: #eef2ff; border-left: 4px solid #3b82f6; padding: 6px 10px; margin: 4px 0; font-size: 11pt;">
@@ -1125,7 +1186,6 @@ Quy cách: Danh sách gạch đầu dòng dùng dấu gạch ngang (-). Font Tim
                 <p style="margin: 2px 0 8px 25px;">- Bản báo cáo đề xuất giải pháp kỹ thuật cụ thể ứng dụng vào trồng trọt, phòng chống dịch hại cây trồng tại Mang Thít.</p>
             `;
 
-            // Lấy nội dung do AI tạo hoặc bản nội hàm mẫu
             const act234Content = customAct234Html || defaultAct234Html;
 
             docContainer.innerHTML = `
@@ -1179,7 +1239,6 @@ Quy cách: Danh sách gạch đầu dòng dùng dấu gạch ngang (-). Font Tim
                 <p style="margin: 4px 0 2px 15px; font-weight: bold;">* DỰ KIẾN SẢN PHẨM:</p>
                 <p style="margin: 2px 0 8px 25px;">- Câu trả lời bước đầu của học sinh chỉ ra được sự cần thiết phải tìm hiểu cơ chế bản chất của ${lessonTitle}.</p>
 
-                <!-- KHU VỰC ĐƯỢC BƠM KIẾN THỨC CHUYÊN MÔN SGK DO AI SINH RA -->
                 <div id="wrapper-act234-zone">
                     ${act234Content}
                 </div>
@@ -1812,6 +1871,9 @@ Quy cách: Danh sách gạch đầu dòng dùng dấu gạch ngang (-). Font Tim
         }
         function handleFileSelect(e) { if (e.target.files.length > 0) processUploadedFile(e.target.files[0]); }
         function processUploadedFile(file) {
+            if (!file.name.endsWith('.txt')) {
+                alert("Lưu ý: Đối với tài liệu SGK dài hoặc file Word/PDF, Thầy nên sao chép trực tiếp nội dung văn bản vào ô 'Ghi Chú Sư Phạm Bổ Sung' để AI đọc chính xác nhất!");
+            }
             document.getElementById('drop-zone').classList.add('hidden');
             const statusBox = document.getElementById('file-status-box');
             statusBox.classList.remove('hidden');
@@ -1844,25 +1906,30 @@ Quy cách: Danh sách gạch đầu dòng dùng dấu gạch ngang (-). Font Tim
         // CẤU HÌNH API KEY
         function openAIKeyModal() {
             document.getElementById('input-api-key').value = localStorage.getItem('gemini_api_key') || '';
+            const preferred = localStorage.getItem('gemini_preferred_model') || 'auto';
+            document.getElementById('select-ai-model').value = preferred;
             document.getElementById('modal-api').classList.remove('hidden');
         }
         function closeAIKeyModal() { document.getElementById('modal-api').classList.add('hidden'); }
         function saveApiKey() {
             const key = document.getElementById('input-api-key').value.trim();
+            const modelChoice = document.getElementById('select-ai-model').value;
             localStorage.setItem('gemini_api_key', key);
+            localStorage.setItem('gemini_preferred_model', modelChoice);
             checkStoredApiKey();
             closeAIKeyModal();
-            alert("Đã lưu API Key thành công! AI sẵn sàng hoạt động khi Thầy bấm Tạo Bằng AI.");
+            alert("Đã lưu API Key & cấu hình mô hình thành công!");
         }
         function checkStoredApiKey() {
             const key = localStorage.getItem('gemini_api_key');
             const txt = document.getElementById('api-status-text');
+            const btn = document.getElementById('btn-api-modal-trigger');
             if (key) {
                 txt.innerText = "API Đã Bật";
-                txt.parentElement.classList.remove('text-amber-400', 'border-amber-500/30');
-                txt.parentElement.classList.add('text-emerald-400', 'border-emerald-500/30', 'bg-emerald-500/10');
+                btn.className = "px-2.5 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30 transition flex items-center gap-1.5";
             } else {
                 txt.innerText = "Cài API AI";
+                btn.className = "px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30 transition flex items-center gap-1.5";
             }
         }
     </script>
