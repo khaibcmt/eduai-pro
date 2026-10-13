@@ -1,10 +1,7 @@
 /**
  * ==============================================================================
- * BIOMASTER AI - BẢN SỬA DỨT ĐIỂM: HIỂN THỊ SLIDE PPT & MA TRẬN ĐỀ THI 7991
+ * BIOMASTER AI - KHẮC PHỤC TRIỆT ĐỂ 100%: GHI ĐÈ SWITCHVIEWTAB & HIỂN THỊ SLIDE PPT
  * GV: Hồ Tấn Khải - THPT Mang Thít
- * 1. Khắc phục triệt để lỗi Slide PPT không hiển thị (mở khóa DOM & bóc tách an toàn).
- * 2. Khắc phục triệt để lỗi Ma trận 7991 (thang 10đ, không undefined, auto chia số câu).
- * 3. Tách biệt 100% các chế độ: Giáo án 5512, Slide 16:9, Đề thi 7991.
  * ==============================================================================
  */
 
@@ -15,33 +12,33 @@ window.FALLBACK_MODELS = [
     "gemini-3.6-flash"
 ];
 
-// 2. KHỞI TẠO BỘ NHỚ MA TRẬN ĐỘC LẬP (CHỐNG LỖI UNDEFINED & SỐ 0)
+// 2. KHỞI TẠO BỘ NHỚ MA TRẬN ĐỘC LẬP (THANG 10 ĐIỂM)
 window.BIOMASTER_MATRIX = {
     totals: {
-        p1_b: 6, p1_h: 4, p1_vd: 2,  // Phần I: 12 câu
-        p2_b: 4, p2_h: 4, p2_vd: 2,  // Phần II: 10 ý Đúng/Sai
-        p3_b: 2, p3_h: 2, p3_vd: 1,  // Phần III: 5 câu ngắn
-        p4_b: 1, p4_h: 1, p4_vd: 1   // Phần IV: 3 câu tự luận
+        p1_b: 6, p1_h: 4, p1_vd: 2,
+        p2_b: 4, p2_h: 4, p2_vd: 2,
+        p3_b: 2, p3_h: 2, p3_vd: 1,
+        p4_b: 1, p4_h: 1, p4_vd: 1
     },
     scores: {
-        p1: 3.0,  // Điểm Phần I
-        p2: 3.0,  // Điểm Phần II
-        p3: 1.5,  // Điểm Phần III
-        p4: 2.5   // Điểm Phần IV -> Tổng toàn bài = 10.0đ
+        p1: 3.0,
+        p2: 3.0,
+        p3: 1.5,
+        p4: 2.5
     },
     counts: {}
 };
 
-// 3. XÁC ĐỊNH CHÍNH XÁC CHẾ ĐỘ ĐANG CHỌN TỪ NÚT BẤM GIAO DIỆN
-function getRealActiveMode() {
+// 3. HÀM XÁC ĐỊNH CHẾ ĐỘ ĐANG CHỌN
+window.getRealActiveMode = function() {
     const tab7991 = document.getElementById('btn-tab-7991');
     const tabSlide = document.getElementById('btn-tab-slide');
     if (tab7991 && tab7991.classList.contains('bg-blue-600')) return '7991';
     if (tabSlide && tabSlide.classList.contains('bg-blue-600')) return 'slide';
     return '5512';
-}
+};
 
-function getRealSelectedLessons() {
+window.getRealSelectedLessons = function() {
     const checkedBoxes = document.querySelectorAll('#lesson-items-container input[type="checkbox"]:checked');
     if (checkedBoxes.length > 0) {
         return Array.from(checkedBoxes).map(cb => {
@@ -51,81 +48,88 @@ function getRealSelectedLessons() {
     }
     const currentTitle = document.getElementById('active-selected-lesson-title')?.innerText?.trim();
     return [currentTitle || "Bài 1: Giới thiệu khái quát môn Sinh học"];
-}
-
-// 4. TỰ ĐỘNG PHÂN BỔ SỐ CÂU/Ý CHO MA TRẬN ĐỀ THI
-window.distributeMatrixFromTotals = function() {
-    const lessons = getRealSelectedLessons();
-    const numLessons = lessons.length;
-    window.BIOMASTER_MATRIX.counts = {};
-
-    lessons.forEach(les => {
-        window.BIOMASTER_MATRIX.counts[les] = { 
-            p1_b: 0, p1_h: 0, p1_vd: 0, 
-            p2_b: 0, p2_h: 0, p2_vd: 0, 
-            p3_b: 0, p3_h: 0, p3_vd: 0, 
-            p4_b: 0, p4_h: 0, p4_vd: 0 
-        };
-    });
-
-    const fields = ['p1_b', 'p1_h', 'p1_vd', 'p2_b', 'p2_h', 'p2_vd', 'p3_b', 'p3_h', 'p3_vd', 'p4_b', 'p4_h', 'p4_vd'];
-    fields.forEach(f => {
-        const total = parseInt(window.BIOMASTER_MATRIX.totals[f]) || 0;
-        const base = Math.floor(total / numLessons);
-        let remainder = total % numLessons;
-
-        lessons.forEach((les, idx) => {
-            window.BIOMASTER_MATRIX.counts[les][f] = base + (idx < remainder ? 1 : 0);
-        });
-    });
 };
 
-window.updateGlobalTotalField = function(field, value) {
-    window.BIOMASTER_MATRIX.totals[field] = parseInt(value) || 0;
-    window.distributeMatrixFromTotals();
-    window.renderMaTranDeKiemTra(
-        document.getElementById('sel-subject')?.value || "Sinh học",
-        document.getElementById('sel-grade')?.value || "10",
-        document.getElementById('sel-book')?.value || "Kết Nối Tri Thức"
-    );
-};
+// 4. HÀM VẼ SLIDE TRỰC TIẾP LÊN DOM (CỠ CHỮ >= 34PT, KHÔNG LỘ ĐÁP ÁN)
+window.renderSlideSafe = function() {
+    if (!window.slideDeckData || !Array.isArray(window.slideDeckData) || window.slideDeckData.length === 0) {
+        const subject = document.getElementById('sel-subject')?.value || "Sinh học";
+        const grade = document.getElementById('sel-grade')?.value || "10";
+        const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức Với Cuộc Sống";
+        const les = document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài 1: Giới thiệu khái quát môn Sinh học";
+        window.buildPPTFromGiaoAn(subject, grade, book, les);
+        return;
+    }
 
-window.updatePartScoreField = function(part, value) {
-    window.BIOMASTER_MATRIX.scores[part] = parseFloat(value) || 0;
-    window.renderMaTranDeKiemTra(
-        document.getElementById('sel-subject')?.value || "Sinh học",
-        document.getElementById('sel-grade')?.value || "10",
-        document.getElementById('sel-book')?.value || "Kết Nối Tri Thức"
-    );
-};
+    if (window.currentSlideIndex < 0) window.currentSlideIndex = 0;
+    if (window.currentSlideIndex >= window.slideDeckData.length) window.currentSlideIndex = window.slideDeckData.length - 1;
 
-// 5. BỘ DỰNG SLIDE PPT: BÓC TÁCH TỪ GIÁO ÁN VÀ TỰ ĐỘNG BẬT HIỂN THỊ DOM
-window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
-    const lesTitle = String(lessonTitle || document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài học");
+    const slide = window.slideDeckData[window.currentSlideIndex];
     
-    // MỞ KHÓA DOM BẮT BUỘC
+    // Cập nhật bộ đếm số trang
+    const ind = document.getElementById('slide-num-indicator');
+    if (ind) ind.innerText = `${window.currentSlideIndex + 1} / ${window.slideDeckData.length}`;
+
+    // Ép nội dung trực tiếp vào khung trình chiếu
+    const box = document.getElementById('slide-core-content');
+    if (box) {
+        box.innerHTML = `
+            <div class="space-y-4">
+                <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 rounded text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase">
+                        ${slide.tag || "BÀI GIẢNG ĐIỆN TỬ"}
+                    </span>
+                    <h2 class="text-2xl font-black text-white">${slide.title || ""}</h2>
+                </div>
+                <div class="text-slate-100">${slide.body || ""}</div>
+            </div>
+        `;
+    }
+};
+window.renderCurrentSlide = window.renderSlideSafe;
+
+// Nút mở/đóng đáp án luyện tập trên Slide
+window.toggleSlideAnswer = function(btn) {
+    if (!btn) return;
+    const ansBox = btn.nextElementSibling;
+    if (ansBox) {
+        ansBox.classList.toggle('hidden');
+        btn.innerHTML = ansBox.classList.contains('hidden') 
+            ? `<i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng`
+            : `<i class="fa-solid fa-eye-slash mr-1"></i> Ẩn đáp án`;
+    }
+};
+
+// 5. BỘ DỰNG BÀI GIẢNG PPT ÉP TRỰC TIẾP TỪ NỘI DUNG GIÁO ÁN
+window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
+    const lesTitle = String(lessonTitle || document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài 1: Giới thiệu khái quát môn Sinh học");
+
+    // ÉP DOM HIỂN THỊ KHUNG SLIDE NGAY LẬP TỨC
     const docContainer = document.getElementById('container-a4-doc');
     const slideContainer = document.getElementById('container-slide-presentation');
     if (docContainer) docContainer.classList.add('hidden');
-    if (slideContainer) slideContainer.classList.remove('hidden');
+    if (slideContainer) {
+        slideContainer.classList.remove('hidden');
+        slideContainer.style.display = 'block';
+    }
 
     const aiKey = `cached_ai_5512_${subject}_${grade}_${lesTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
     const cached5512 = localStorage.getItem(aiKey);
 
     const info = window.getDynamicNlsAiInfo ? window.getDynamicNlsAiInfo(lesTitle, grade) : {
-        core1: "Cấu trúc và đặc điểm bản chất của bài học",
-        core2: "Quy luật tương tác và cơ chế sinh học",
-        core3: "Ứng dụng thực tiễn trong nông nghiệp địa phương"
+        core1: "Cấu trúc và đặc điểm bản chất của bài học theo SGK Kết nối tri thức",
+        core2: "Quy luật tương tác, thích nghi và trao đổi chất của sinh vật",
+        core3: "Ứng dụng thực tiễn trong nông nghiệp công nghệ cao tại địa phương"
     };
 
     let c1_title = "1. CẤU TRÚC VÀ ĐẶC ĐIỂM BẢN CHẤT";
-    let c1_body = `<p class='text-slate-200'>• ${info.core1 || "Bản chất và cấu trúc sinh học cốt lõi theo SGK Kết nối tri thức."}</p><p class='text-slate-200'>• Cơ chế tương tác và biến đổi năng lượng thích nghi.</p>`;
+    let c1_body = `<p class='text-slate-200'>• ${info.core1}</p><p class='text-slate-200'>• Cơ chế tương tác và biến đổi năng lượng thích nghi.</p>`;
     let c2_title = "2. QUY LUẬT VÀ CƠ CHẾ SINH HỌC";
-    let c2_body = `<p class='text-slate-200'>• ${info.core2 || "Quy luật điều hòa, thích nghi và trao đổi chất của sinh vật."}</p><p class='text-slate-200'>• Duy trì tính toàn vẹn và ổn định nội môi trong cơ thể sinh vật.</p>`;
+    let c2_body = `<p class='text-slate-200'>• ${info.core2}</p><p class='text-slate-200'>• Duy trì tính toàn vẹn và ổn định nội môi trong cơ thể sinh vật.</p>`;
     let c3_title = "3. ỨNG DỤNG THỰC TIỄN NÔNG NGHIỆP";
-    let c3_body = `<p class='text-slate-200'>• ${info.core3 || "Ứng dụng vào trồng trọt, phòng chống sâu bệnh và chăn nuôi công nghệ cao."}</p><p class='text-slate-200'>• Thực tiễn sản xuất nông nghiệp tại huyện Mang Thít, tỉnh Vĩnh Long.</p>`;
+    let c3_body = `<p class='text-slate-200'>• ${info.core3}</p><p class='text-slate-200'>• Thực tiễn sản xuất nông nghiệp tại huyện Mang Thít, tỉnh Vĩnh Long.</p>`;
 
-    // Bóc tách an toàn nếu giáo án đã có
+    // Trích xuất an toàn nếu đã có giáo án
     if (cached5512) {
         try {
             const parserDiv = document.createElement('div');
@@ -153,10 +157,10 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         } catch(e) {}
     }
 
-    // XÂY DỰNG BỘ SLIDE CHUẨN MỰC
+    // TẠO BỘ SLIDE CHUẨN MỰC
     window.slideDeckData = [];
 
-    // SLIDE 1: BÌA BÀI HỌC
+    // SLIDE 1: BÌA
     window.slideDeckData.push({
         title: lesTitle.toUpperCase(),
         tag: `${subject} ${grade} • ${book}`,
@@ -175,7 +179,7 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         `
     });
 
-    // SLIDE 2: HOẠT ĐỘNG 1 (KHỞI ĐỘNG)
+    // SLIDE 2: KHỞI ĐỘNG
     window.slideDeckData.push({
         title: "HOẠT ĐỘNG 1: MỞ ĐẦU (WARM-UP)",
         tag: "KHỞI ĐỘNG",
@@ -217,7 +221,7 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-base">${c3_body}</div>`
     });
 
-    // SLIDE 6: CHỐT KIẾN THỨC CỐT LÕI
+    // SLIDE 6: CHỐT KIẾN THỨC CỐT LÕI (NỘI DUNG GHI VỞ)
     window.slideDeckData.push({
         title: "KIẾN THỨC CỐT LÕI (NỘI DUNG GHI VỞ)",
         tag: "CHỐT KIẾN THỨC BẮT BUỘC",
@@ -307,7 +311,7 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         });
     }
 
-    // SLIDE 23: VẬN DỤNG & DỰ ÁN MỞ RỘNG
+    // SLIDE 23: VẬN DỤNG
     window.slideDeckData.push({
         title: "HOẠT ĐỘNG 4: VẬN DỤNG THỰC TẾ",
         tag: "VẬN DỤNG & DỰ ÁN",
@@ -328,39 +332,82 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
     });
 
     window.currentSlideIndex = 0;
-    renderSlideSafe();
+    window.renderSlideSafe();
 };
 
-// HÀM VẼ SLIDE AN TOÀN TRỰC TIẾP LÊN DOM
-function renderSlideSafe() {
-    if (!window.slideDeckData || window.slideDeckData.length === 0) return;
-    const slide = window.slideDeckData[window.currentSlideIndex || 0];
-    const ind = document.getElementById('slide-num-indicator');
-    if (ind) ind.innerText = `${(window.currentSlideIndex || 0) + 1} / ${window.slideDeckData.length}`;
+// 6. GHI ĐÈ HÀM SWITCHVIEWTAB CỦA INDEX.HTML ĐỂ MỞ KHÓA DOM DỨT ĐIỂM
+window.switchViewTab = function(mode) {
+    const btn5512 = document.getElementById('btn-tab-5512');
+    const btnSlide = document.getElementById('btn-tab-slide');
+    const btn7991 = document.getElementById('btn-tab-7991');
+    const docContainer = document.getElementById('container-a4-doc');
+    const slideContainer = document.getElementById('container-slide-presentation');
+    const btnDoc = document.getElementById('btn-export-doc');
+    const btnPptx = document.getElementById('btn-export-pptx');
+    const aiBtnLabel = document.getElementById('ai-action-btn-label');
 
-    const box = document.getElementById('slide-core-content');
-    if (box) {
-        box.innerHTML = `
-            <div class="space-y-4">
-                <div class="flex items-center gap-2">
-                    <span class="px-3 py-1 rounded text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase">
-                        ${slide.tag}
-                    </span>
-                    <h2 class="text-2xl font-black text-white">${slide.title}</h2>
-                </div>
-                <div>${slide.body}</div>
-            </div>
-        `;
+    // Đổi màu nút tab
+    [btn5512, btnSlide, btn7991].forEach(b => {
+        if (b) {
+            b.classList.remove('bg-blue-600', 'text-white');
+            b.classList.add('text-slate-300');
+        }
+    });
+
+    const activeBtn = mode === '5512' ? btn5512 : (mode === 'slide' ? btnSlide : btn7991);
+    if (activeBtn) {
+        activeBtn.classList.remove('text-slate-300');
+        activeBtn.classList.add('bg-blue-600', 'text-white');
     }
-}
-window.renderCurrentSlide = renderSlideSafe;
 
-// 6. GHI ĐÈ HÀM HIỂN THỊ KHI CHỌN BÀI / CHUYỂN TAB
+    if (mode === 'slide') {
+        if (docContainer) docContainer.classList.add('hidden');
+        if (slideContainer) {
+            slideContainer.classList.remove('hidden');
+            slideContainer.style.display = 'block';
+        }
+        if (btnDoc) btnDoc.classList.add('hidden');
+        if (btnPptx) btnPptx.classList.remove('hidden');
+        if (aiBtnLabel) aiBtnLabel.innerText = "TẠO SLIDE GIẢNG DẠY BẰNG AI";
+
+        const subject = document.getElementById('sel-subject')?.value || "Sinh học";
+        const grade = document.getElementById('sel-grade')?.value || "10";
+        const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức Với Cuộc Sống";
+        const les = document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài 1: Giới thiệu khái quát môn Sinh học";
+        window.buildPPTFromGiaoAn(subject, grade, book, les);
+    } else {
+        if (docContainer) {
+            docContainer.classList.remove('hidden');
+            docContainer.style.display = 'block';
+        }
+        if (slideContainer) {
+            slideContainer.classList.add('hidden');
+            slideContainer.style.display = 'none';
+        }
+        if (btnDoc) btnDoc.classList.remove('hidden');
+        if (btnPptx) btnPptx.classList.add('hidden');
+
+        if (mode === '5512') {
+            if (aiBtnLabel) aiBtnLabel.innerText = "SOẠN KẾ HOẠCH BÀI DẠY BẰNG AI";
+            window.displayContentForCurrentLesson();
+        } else if (mode === '7991') {
+            if (aiBtnLabel) aiBtnLabel.innerText = "TẠO ĐỀ THI 7991 BẰNG AI";
+            window.distributeMatrixFromTotals();
+            window.renderMaTranDeKiemTra(
+                document.getElementById('sel-subject')?.value || "Sinh học",
+                document.getElementById('sel-grade')?.value || "10",
+                document.getElementById('sel-book')?.value || "Kết Nối Tri Thức Với Cuộc Sống"
+            );
+        }
+    }
+};
+
+// 7. GHI ĐÈ HÀM HIỂN THỊ NỘI DUNG KHI CHỌN BÀI HỌC Ở CỘT TRÁI
 window.displayContentForCurrentLesson = function() {
-    const realMode = getRealActiveMode();
+    const realMode = window.getRealActiveMode();
     const subject = document.getElementById('sel-subject')?.value || "Sinh học";
     const grade = document.getElementById('sel-grade')?.value || "10";
-    const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức";
+    const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức Với Cuộc Sống";
     const lessonTitle = document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài 1: Giới thiệu khái quát môn Sinh học";
     const docContainer = document.getElementById('container-a4-doc');
     const slideContainer = document.getElementById('container-slide-presentation');
@@ -369,16 +416,17 @@ window.displayContentForCurrentLesson = function() {
     const aiKey = `cached_ai_${realMode}_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
     const cachedData = localStorage.getItem(aiKey);
 
-    // KHI Ở TAB SLIDE: MỞ KHÓA DOM VÀ VẼ SLIDE NGAY
     if (realMode === 'slide') {
         if (docContainer) docContainer.classList.add('hidden');
-        if (slideContainer) slideContainer.classList.remove('hidden');
-
+        if (slideContainer) {
+            slideContainer.classList.remove('hidden');
+            slideContainer.style.display = 'block';
+        }
         if (cachedData) {
             try {
                 window.slideDeckData = JSON.parse(cachedData);
                 window.currentSlideIndex = 0;
-                renderSlideSafe();
+                window.renderSlideSafe();
                 if (statusInd) statusInd.innerHTML = `<span class="text-purple-400 font-bold flex items-center gap-1"><i class="fa-solid fa-sparkles"></i> Đã nạp Slide bài giảng từ AI (Đã lưu)</span>`;
                 return;
             } catch(e) {}
@@ -388,9 +436,14 @@ window.displayContentForCurrentLesson = function() {
         return;
     }
 
-    // KHI Ở TAB GIÁO ÁN HOẶC ĐỀ THI: MỞ KHUNG GIẤY A4
-    if (docContainer) docContainer.classList.remove('hidden');
-    if (slideContainer) slideContainer.classList.add('hidden');
+    if (docContainer) {
+        docContainer.classList.remove('hidden');
+        docContainer.style.display = 'block';
+    }
+    if (slideContainer) {
+        slideContainer.classList.add('hidden');
+        slideContainer.style.display = 'none';
+    }
 
     if (cachedData) {
         if (docContainer) docContainer.innerHTML = cachedData;
@@ -409,13 +462,35 @@ window.displayContentForCurrentLesson = function() {
     }
 };
 
-// 7. GHI ĐÈ BẢNG MA TRẬN 4 PHẦN CHUẨN 100% (VỪA KHÍT 1 TRANG A4)
+// 8. BẮT TRỰC TIẾP CÁC NÚT ĐIỀU HƯỚNG SLIDE (NEXT / PREV)
+document.addEventListener('click', (e) => {
+    // Nút Next Slide
+    if (e.target && (e.target.id === 'btn-next-slide' || e.target.closest('#btn-next-slide'))) {
+        if (window.slideDeckData && window.slideDeckData.length > 0) {
+            if (window.currentSlideIndex < window.slideDeckData.length - 1) {
+                window.currentSlideIndex++;
+                window.renderSlideSafe();
+            }
+        }
+    }
+    // Nút Prev Slide
+    if (e.target && (e.target.id === 'btn-prev-slide' || e.target.closest('#btn-prev-slide'))) {
+        if (window.slideDeckData && window.slideDeckData.length > 0) {
+            if (window.currentSlideIndex > 0) {
+                window.currentSlideIndex--;
+                window.renderSlideSafe();
+            }
+        }
+    }
+});
+
+// 9. GHI ĐÈ BẢNG MA TRẬN 4 PHẦN CHUẨN 100%
 window.renderMaTranDeKiemTra = function(subject, grade, book) {
     const docContainer = document.getElementById('container-a4-doc');
     if (!docContainer) return;
 
     window.distributeMatrixFromTotals();
-    const lessons = getRealSelectedLessons();
+    const lessons = window.getRealSelectedLessons();
 
     const t = window.BIOMASTER_MATRIX.totals;
     const countP1 = (t.p1_b || 0) + (t.p1_h || 0) + (t.p1_vd || 0);
@@ -486,7 +561,7 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
             p4Html += `
                 <p style="margin: 5px 0 2px 0;"><strong>Câu ${p4Idx} (Tự luận - ${p4PerQ} điểm):</strong> [${les}]</p>
                 <p style="margin: 1px 0 1px 15px;">a) Phân tích cơ chế và bản chất quy luật sinh học được nêu trong bài học.</p>
-                <p style="margin: 1px 0 5px 15px;">b) Hãy đề xuất 02 giải pháp kỹ thuật cụ thể ứng dụng vào sản xuất hoặc bảo vệ môi trường nông nghiệp tại huyện Mang Thít, tỉnh Vĩnh Long.</p>
+                <p style="margin: 1px 0 5px 15px;">b) Hãy đề xuất 02 giải pháp kỹ thuật cụ thể ứng dụng vào sản xuất nông nghiệp tại huyện Mang Thít, tỉnh Vĩnh Long.</p>
             `;
             p4Idx++;
         }
@@ -690,16 +765,15 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
     `;
 };
 
-// 8. GHI ĐÈ NÚT KÍCH HOẠT AI TÁCH BIỆT 100% CẢ 3 CHẾ ĐỘ
+// 10. GHI ĐÈ NÚT KÍCH HOẠT AI TÁCH BIỆT 100% CẢ 3 PHÂN HỆ
 window.executeActionAI = async function() {
-    const realMode = getRealActiveMode();
+    const realMode = window.getRealActiveMode();
     const subject = document.getElementById('sel-subject')?.value || "Sinh học";
     const grade = document.getElementById('sel-grade')?.value || "10";
-    const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức";
+    const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức Với Cuộc Sống";
     const lessonTitle = document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài 1: Giới thiệu khái quát môn Sinh học";
     const statusInd = document.getElementById('content-source-indicator');
 
-    // === CHẾ ĐỘ SLIDE 16:9 ===
     if (realMode === 'slide') {
         window.buildPPTFromGiaoAn(subject, grade, book, lessonTitle);
         if (typeof window.showAIReviewBar === 'function') window.showAIReviewBar();
@@ -710,7 +784,6 @@ window.executeActionAI = async function() {
         return;
     }
 
-    // === GỌI GEMINI CHO TAB ĐỀ THI 7991 HOẶC GIÁO ÁN 5512 ===
     const savedKey = (localStorage.getItem('gemini_api_key') || '').trim();
     if (!savedKey) {
         if (typeof window.openAIKeyModal === 'function') window.openAIKeyModal();
@@ -740,7 +813,7 @@ window.executeActionAI = async function() {
 
     try {
         if (realMode === '7991') {
-            const lessons = getRealSelectedLessons().join(', ');
+            const lessons = window.getRealSelectedLessons().join(', ');
             const t = window.BIOMASTER_MATRIX.totals;
             const s = window.BIOMASTER_MATRIX.scores;
             const countP2Y = (t.p2_b || 0) + (t.p2_h || 0) + (t.p2_vd || 0);
@@ -767,7 +840,7 @@ Cuối bài ghi: "Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít".
             return;
         }
 
-        // Chế độ Giáo án 5512:
+        // Chế độ Giáo án 5512
         const info = window.getDynamicNlsAiInfo ? window.getDynamicNlsAiInfo(lessonTitle, grade) : { nls: "NLS 1.1", nlsDesc: "Khai thác dữ liệu số", aiCode: `${grade}.A1.2` };
         const prompt5512 = `Bạn là "SIÊU AI SƯ PHẠM & KIẾN TẠO GIÁO ÁN ĐẲNG CẤP HIGH-END" am hiểu tường tận Công văn 5512/BGDĐT-GDTrH và Khung năng lực số 1007/QĐ-BGDĐT.
 Nhiệm vụ: Biên soạn nội dung chuyên môn bám sát SGK Kết nối tri thức cho bài: "${lessonTitle}", môn ${subject} ${grade}.
@@ -806,55 +879,18 @@ Cuối bài ghi: "Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít".
     }
 };
 
-// 9. LẮNG NGHE SỰ KIỆN CLICK TAB VÀ CHECKBOX BÀI HỌC
-document.addEventListener('click', (e) => {
-    if (e.target && (e.target.id === 'btn-tab-slide' || e.target.closest('#btn-tab-slide'))) {
-        setTimeout(() => {
-            const subject = document.getElementById('sel-subject')?.value || "Sinh học";
-            const grade = document.getElementById('sel-grade')?.value || "10";
-            const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức";
-            const lessonTitle = document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài 1: Giới thiệu khái quát môn Sinh học";
-            window.buildPPTFromGiaoAn(subject, grade, book, lessonTitle);
-        }, 50);
-    }
-
-    if (e.target && (e.target.id === 'btn-tab-7991' || e.target.closest('#btn-tab-7991'))) {
-        setTimeout(() => {
-            window.renderMaTranDeKiemTra(
-                document.getElementById('sel-subject')?.value || "Sinh học",
-                document.getElementById('sel-grade')?.value || "10",
-                document.getElementById('sel-book')?.value || "Kết Nối Tri Thức"
-            );
-        }, 50);
-    }
-});
-
-document.addEventListener('change', (e) => {
-    if (e.target && e.target.matches('#lesson-items-container input[type="checkbox"]')) {
-        setTimeout(() => {
-            if (getRealActiveMode() === '7991') {
-                window.renderMaTranDeKiemTra(
-                    document.getElementById('sel-subject')?.value || "Sinh học",
-                    document.getElementById('sel-grade')?.value || "10",
-                    document.getElementById('sel-book')?.value || "Kết Nối Tri Thức"
-                );
-            }
-        }, 50);
-    }
-});
-
-// TỰ ĐỘNG CHẠY KHI LOAD XONG FILE
+// 11. KHỞI TẠO TỰ ĐỘNG
 setTimeout(() => {
     window.distributeMatrixFromTotals();
-    const mode = getRealActiveMode();
+    const mode = window.getRealActiveMode();
     const subject = document.getElementById('sel-subject')?.value || "Sinh học";
     const grade = document.getElementById('sel-grade')?.value || "10";
-    const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức";
-    const lessonTitle = document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài 1: Giới thiệu khái quát môn Sinh học";
+    const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức Với Cuộc Sống";
+    const les = document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài 1: Giới thiệu khái quát môn Sinh học";
 
-    if (mode === '7991') {
+    if (mode === 'slide') {
+        window.buildPPTFromGiaoAn(subject, grade, book, les);
+    } else if (mode === '7991') {
         window.renderMaTranDeKiemTra(subject, grade, book);
-    } else if (mode === 'slide') {
-        window.buildPPTFromGiaoAn(subject, grade, book, lessonTitle);
     }
-}, 100);
+}, 150);
