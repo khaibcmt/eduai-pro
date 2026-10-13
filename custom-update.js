@@ -1,21 +1,75 @@
 /**
  * ==============================================================================
- * BIOMASTER AI - BẢN CẬP NHẬT ĐỘC LẬP: MA TRẬN ĐỀ THI & ĐỒNG BỘ SLIDE TỪ GIÁO ÁN
+ * BIOMASTER AI - FIX LỖI: Cannot read properties of undefined (reading 'includes')
  * GV: Hồ Tấn Khải - THPT Mang Thít
- * 1. Giữ nguyên 100% cấu hình Giáo án 5512.
- * 2. Tự động cập nhật Ma trận 4 phần (Biết - Hiểu - VD, thang 10đ, auto phân bổ).
- * 3. PPT ép trực tiếp nội dung kiến thức và bài tập từ Giáo án vào khung nội hàm chuẩn.
  * ==============================================================================
  */
 
-// 1. MÔ HÌNH GEMINI HỢP LỆ
+// 1. DANH SÁCH MÔ HÌNH GEMINI HỢP LỆ
 window.FALLBACK_MODELS = [
     "gemini-3.8-flash",
     "gemini-3.5-flash-lite",
     "gemini-3.6-flash"
 ];
 
-// 2. MA TRẬN 4 PHẦN & KHỐNG CHẾ ĐIỂM SỐ (THANG 10 ĐIỂM CHUẨN)
+// 2. KHỞI TẠO BIẾN TOÀN CỤC CHỐNG LỖI UNDEFINED
+if (!window.selectedLessonsForExam || !Array.isArray(window.selectedLessonsForExam)) {
+    window.selectedLessonsForExam = [window.currentSelectedLesson || "Bài 1: Giới thiệu khái quát môn Sinh học"];
+}
+
+// BỌC LẠI HÀM getDynamicNlsAiInfo CHỐNG SẬP KHI lessonName BỊ RỖNG HOẶC UNDEFINED
+window.getDynamicNlsAiInfo = function(lessonName, grade) {
+    const name = String(lessonName || "");
+    const g = String(grade || "10");
+
+    if (name.includes("Bài 1:")) {
+        return {
+            nls: "NLS 1.1",
+            nlsDesc: "Khai thác dữ liệu số, tra cứu hệ thống thông tin sinh thái và ngành nghề sinh học hiện đại",
+            aiCode: `${g}.A1.2`,
+            aiDesc: "Sử dụng AI tìm kiếm tư liệu ngành nghề sinh học và kiểm chứng chéo với tài liệu SGK",
+            core1: "Đối tượng và các lĩnh vực nghiên cứu sinh học (Vi sinh vật học, Di truyền học, Sinh thái học...)",
+            core2: "Mục tiêu và vai trò của Sinh học đối với sự phát triển bền vững môi trường và đời sống",
+            core3: "Các ngành nghề sinh học trong tương lai (Y - Dược học, Nông nghiệp công nghệ cao, Chế biến thực phẩm)",
+            factCheck: "AI nhận định: 'Môn Sinh học không có ứng dụng trong công nghệ thông tin và AI'. Học sinh đối chiếu mục III SGK để phản biện rằng Tin sinh học và AI là xu thế cốt lõi."
+        };
+    } else if (name.includes("Bài 2:")) {
+        return {
+            nls: "NLS 3.1",
+            nlsDesc: "Xử lý bảng dữ liệu thực nghiệm bằng phần mềm bảng tính số",
+            aiCode: `${g}.A2.1`,
+            aiDesc: "Phối hợp cùng AI thiết kế quy trình thí nghiệm khoa học có đối chứng",
+            core1: "Phương pháp quan sát và làm việc an toàn trong phòng thí nghiệm",
+            core2: "Phương pháp thực nghiệm khoa học và các kĩ năng tiến trình nghiên cứu",
+            core3: "Ứng dụng tin sinh học và AI trong lưu trữ, phân tích cơ sở dữ liệu sinh học",
+            factCheck: "AI nhận định: 'Một thí nghiệm chỉ cần làm 1 lần là đủ kết luận'. Học sinh phản biện: Thí nghiệm bắt buộc phải lặp lại nhiều lần và có lô đối chứng."
+        };
+    } else if (name.includes("tế bào") || name.includes("Bài 4:") || name.includes("Bài 7:") || name.includes("Bài 8:")) {
+        return {
+            nls: "NLS 2.1",
+            nlsDesc: "Tương tác mô hình 3D về kích thước và cấu trúc hiển vi của tế bào",
+            aiCode: `${g}.A1.2`,
+            aiDesc: "Tra cứu hình thái tế bào và kiểm chứng tỉ lệ diện tích bề mặt trên thể tích (S/V)",
+            core1: "Học thuyết tế bào và sự phát triển của sinh học hiện đại",
+            core2: "Tế bào là đơn vị cấu trúc và chức năng cơ bản của thế giới sống",
+            core3: "Kích thước hiển vi và ý nghĩa của tỉ lệ S/V đối với tốc độ trao đổi chất",
+            factCheck: "AI nhận định: 'Tế bào càng lớn trao đổi chất càng nhanh'. Học sinh phản biện: Tế bào nhỏ có tỉ lệ S/V lớn hơn giúp trao đổi chất nhanh hơn."
+        };
+    } else {
+        return {
+            nls: "NLS 2.1",
+            nlsDesc: "Khai thác và xử lý dữ liệu số, tra cứu hình ảnh hiển vi và mô hình tương tác trực quan",
+            aiCode: `${g}.A1.2`,
+            aiDesc: "Nhận thức được vai trò hỗ trợ của AI trong tra cứu thông tin; con người giữ quyền đánh giá và ra quyết định",
+            core1: "Bản chất, cấu tạo và đặc điểm khoa học nền tảng của bài học",
+            core2: "Quy luật tương tác, cơ chế biến đổi và thích nghi sinh học",
+            core3: "Ứng dụng thực tiễn trong đời sống và nông nghiệp tại địa phương",
+            factCheck: "AI nhận định: 'Quá trình này diễn ra hoàn toàn tự phát mà không cần năng lượng'. Học sinh phản biện: Bắt buộc phải có sự chuyển hóa năng lượng."
+        };
+    }
+};
+
+// 3. MA TRẬN 4 PHẦN & KHỐNG CHẾ ĐIỂM SỐ (THANG 10 ĐIỂM CHUẨN)
 window.matrixGlobalTotals = {
     p1_b: 6, p1_h: 4, p1_vd: 2,  // Phần I: 12 câu
     p2_b: 4, p2_h: 4, p2_vd: 2,  // Phần II: 10 ý Đúng/Sai
@@ -30,13 +84,13 @@ window.matrixPartScores = {
     p4: 2.5   // Điểm Phần IV (Tự luận) -> Tổng = 10.0 điểm
 };
 
-// 3. TỰ ĐỘNG PHÂN BỔ SỐ CÂU/Ý CHO CÁC BÀI ĐƯỢC CHỌN (KHẮC PHỤC LỖI KHÔNG AUTO CẬP NHẬT)
+// 4. TỰ ĐỘNG PHÂN BỔ SỐ CÂU/Ý CHO CÁC BÀI ĐƯỢC CHỌN (BẢO VỆ CHỐNG RỖNG MẢNG)
 window.distributeMatrixFromTotals = function() {
-    const lessons = (window.selectedLessonsForExam && window.selectedLessonsForExam.length > 0) 
-        ? window.selectedLessonsForExam 
-        : [window.currentSelectedLesson];
-    const numLessons = lessons.length;
+    let lessons = (window.selectedLessonsForExam && Array.isArray(window.selectedLessonsForExam) && window.selectedLessonsForExam.length > 0)
+        ? window.selectedLessonsForExam
+        : [window.currentSelectedLesson || "Bài 1: Giới thiệu khái quát môn Sinh học"];
 
+    const numLessons = lessons.length;
     window.examMatrixCustomCounts = {};
     lessons.forEach(les => {
         window.examMatrixCustomCounts[les] = { 
@@ -59,37 +113,41 @@ window.distributeMatrixFromTotals = function() {
     });
 };
 
-// 4. ĐỒNG BỘ CHECKBOX CHỌN BÀI THI TỰ ĐỘNG (KHẮC PHỤC LỖI CHỌN BÀI)
+// 5. ĐỒNG BỘ CHỌN BÀI THI (AN TOÀN TUYỆT ĐỐI)
 window.toggleLessonInExam = function(lessonName, isChecked) {
-    if (!window.selectedLessonsForExam) window.selectedLessonsForExam = [];
+    if (!window.selectedLessonsForExam || !Array.isArray(window.selectedLessonsForExam)) {
+        window.selectedLessonsForExam = [];
+    }
     if (isChecked) {
-        if (!window.selectedLessonsForExam.includes(lessonName)) window.selectedLessonsForExam.push(lessonName);
+        if (!window.selectedLessonsForExam.includes(lessonName)) {
+            window.selectedLessonsForExam.push(lessonName);
+        }
     } else {
         window.selectedLessonsForExam = window.selectedLessonsForExam.filter(name => name !== lessonName);
     }
     if (window.selectedLessonsForExam.length === 0) {
-        window.selectedLessonsForExam = [window.currentSelectedLesson];
+        window.selectedLessonsForExam = [window.currentSelectedLesson || lessonName];
     }
     window.distributeMatrixFromTotals();
     if (window.currentActiveMode === '7991') {
         window.renderMaTranDeKiemTra(
-            document.getElementById('sel-subject').value,
-            document.getElementById('sel-grade').value,
-            document.getElementById('sel-book').value
+            document.getElementById('sel-subject')?.value || "Sinh học",
+            document.getElementById('sel-grade')?.value || "10",
+            document.getElementById('sel-book')?.value || "Kết Nối Tri Thức"
         );
     }
 };
 
 window.toggleSelectAllExams = function(selectAll) {
-    const subject = document.getElementById('sel-subject').value;
-    const grade = document.getElementById('sel-grade').value;
-    const lessonList = (window.sgkCurriculumDatabase[subject] && window.sgkCurriculumDatabase[subject][grade]) || [];
+    const subject = document.getElementById('sel-subject')?.value || "Sinh học";
+    const grade = document.getElementById('sel-grade')?.value || "10";
+    const lessonList = (window.sgkCurriculumDatabase?.[subject]?.[grade]) || [];
     
-    window.selectedLessonsForExam = selectAll ? [...lessonList] : [window.currentSelectedLesson];
+    window.selectedLessonsForExam = selectAll ? [...lessonList] : [window.currentSelectedLesson || lessonList[0]];
     if (typeof window.renderLessonListUI === 'function') window.renderLessonListUI();
     window.distributeMatrixFromTotals();
     if (window.currentActiveMode === '7991') {
-        window.renderMaTranDeKiemTra(subject, grade, document.getElementById('sel-book').value);
+        window.renderMaTranDeKiemTra(subject, grade, document.getElementById('sel-book')?.value || "Kết Nối Tri Thức");
     }
 };
 
@@ -97,40 +155,35 @@ window.updateGlobalTotalField = function(field, value) {
     window.matrixGlobalTotals[field] = parseInt(value) || 0;
     window.distributeMatrixFromTotals();
     window.renderMaTranDeKiemTra(
-        document.getElementById('sel-subject').value,
-        document.getElementById('sel-grade').value,
-        document.getElementById('sel-book').value
+        document.getElementById('sel-subject')?.value || "Sinh học",
+        document.getElementById('sel-grade')?.value || "10",
+        document.getElementById('sel-book')?.value || "Kết Nối Tri Thức"
     );
 };
 
 window.updatePartScoreField = function(part, value) {
     window.matrixPartScores[part] = parseFloat(value) || 0;
     window.renderMaTranDeKiemTra(
-        document.getElementById('sel-subject').value,
-        document.getElementById('sel-grade').value,
-        document.getElementById('sel-book').value
+        document.getElementById('sel-subject')?.value || "Sinh học",
+        document.getElementById('sel-grade')?.value || "10",
+        document.getElementById('sel-book')?.value || "Kết Nối Tri Thức"
     );
 };
 
-// 5. TRÍCH XUẤT KIẾN THỨC & CÂU HỎI TỪ GIÁO ÁN 5512 ĐỂ ÉP VÀO SLIDE
-function getTeachingContentFrom5512(lessonTitle, grade, subject, book) {
-    const aiKey = `cached_ai_5512_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
+// 6. XÂY DỰNG SLIDE PPT ÉP TRỰC TIẾP TỪ NỘI DUNG GIÁO ÁN SANG KHUNG NỘI HÀM VIP
+window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
+    const lesTitle = String(lessonTitle || window.currentSelectedLesson || "Bài học");
+    const aiKey = `cached_ai_5512_${subject}_${grade}_${lesTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
     const cached5512 = localStorage.getItem(aiKey);
-    const info = window.getDynamicNlsAiInfo ? window.getDynamicNlsAiInfo(lessonTitle, grade) : {
-        core1: "Cấu trúc và đặc điểm bản chất của bài học",
-        core2: "Quy luật tương tác và cơ chế sinh học",
-        core3: "Ứng dụng thực tiễn trong nông nghiệp địa phương"
-    };
+    const info = window.getDynamicNlsAiInfo(lesTitle, grade);
 
     let c1_title = "1. CẤU TRÚC VÀ ĐẶC ĐIỂM BẢN CHẤT";
-    let c1_body = `<p class='text-slate-200'>• ${info.core1 || "Đặc điểm cấu tạo và bản chất sinh học theo SGK Kết nối tri thức."}</p><p class='text-slate-200'>• Mối quan hệ mật thiết giữa cấu trúc và chức năng sinh học thích nghi.</p>`;
+    let c1_body = `<p class='text-slate-200'>• ${info.core1}</p><p class='text-slate-200'>• Mối quan hệ mật thiết giữa cấu trúc và chức năng sinh học thích nghi.</p>`;
     let c2_title = "2. QUY LUẬT VÀ CƠ CHẾ SINH HỌC";
-    let c2_body = `<p class='text-slate-200'>• ${info.core2 || "Quy luật điều hòa, thích nghi và trao đổi chất của sinh vật."}</p><p class='text-slate-200'>• Duy trì tính toàn vẹn và ổn định nội môi trong cơ thể sinh vật.</p>`;
+    let c2_body = `<p class='text-slate-200'>• ${info.core2}</p><p class='text-slate-200'>• Duy trì tính toàn vẹn và ổn định nội môi trong cơ thể sinh vật.</p>`;
     let c3_title = "3. ỨNG DỤNG THỰC TIỄN NÔNG NGHIỆP";
-    let c3_body = `<p class='text-slate-200'>• ${info.core3 || "Ứng dụng vào trồng trọt, phòng chống sâu bệnh và chăn nuôi công nghệ cao."}</p><p class='text-slate-200'>• Thực tiễn sản xuất nông nghiệp tại huyện Mang Thít, tỉnh Vĩnh Long.</p>`;
-    let coreMemo = `<p class='text-slate-200'>• <strong>Bản chất:</strong> Nắm vững quy luật sinh học cốt lõi theo SGK Kết nối tri thức.</p><p class='text-slate-200'>• <strong>Ý nghĩa:</strong> Ứng dụng an toàn sinh học và phát triển kinh tế sinh thái bền vững.</p>`;
+    let c3_body = `<p class='text-slate-200'>• ${info.core3}</p><p class='text-slate-200'>• Thực tiễn sản xuất nông nghiệp tại huyện Mang Thít, tỉnh Vĩnh Long.</p>`;
 
-    // Nếu Giáo án 5512 đã được biên soạn, bóc tách chính xác các bảng sản phẩm ghi vở sang
     if (cached5512) {
         try {
             const tempDiv = document.createElement('div');
@@ -155,22 +208,14 @@ function getTeachingContentFrom5512(lessonTitle, grade, subject, book) {
                     }
                 }
             }
-        } catch(e) {
-            console.warn("Dùng dữ liệu chuẩn nội hàm cho slide:", e);
-        }
+        } catch(e) {}
     }
 
-    return { c1_title, c1_body, c2_title, c2_body, c3_title, c3_body, coreMemo };
-}
-
-// 6. XÂY DỰNG TOÀN BỘ SLIDE PPT ÉP TỪ GIÁO ÁN VÀO KHUNG NỘI HÀM CHUẨN CHỈ (TYPOGRAPHY >= 34PT)
-window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
-    const data = getTeachingContentFrom5512(lessonTitle, grade, subject, book);
     window.slideDeckData = [];
 
-    // SLIDE 1: BÌA BÀI HỌC
+    // SLIDE 1: BÌA
     window.slideDeckData.push({
-        title: lessonTitle.toUpperCase(),
+        title: lesTitle.toUpperCase(),
         tag: `${subject} ${grade} • ${book}`,
         body: `
             <div class="text-center py-6 space-y-4">
@@ -178,7 +223,7 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
                     TRƯỜNG THPT MANG THÍT • BÀI GIẢNG ĐIỆN TỬ VIP
                 </div>
                 <h1 class="text-5xl font-black text-amber-300 tracking-tight leading-tight">
-                    ${lessonTitle}
+                    ${lesTitle}
                 </h1>
                 <p class="text-slate-200 text-lg max-w-2xl mx-auto">
                     Giáo viên: <strong>Hồ Tấn Khải</strong> • Tổ Sinh học - Công nghệ
@@ -187,7 +232,7 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         `
     });
 
-    // SLIDE 2: HOẠT ĐỘNG 1 (KHỞI ĐỘNG)
+    // SLIDE 2: KHỞI ĐỘNG
     window.slideDeckData.push({
         title: "HOẠT ĐỘNG 1: MỞ ĐẦU (WARM-UP)",
         tag: "KHỞI ĐỘNG",
@@ -210,38 +255,39 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         `
     });
 
-    // SLIDE 3, 4, 5: HÌNH THÀNH KIẾN THỨC (LẤY TỪ SẢN PHẨM HĐ 2 CỦA GIÁO ÁN)
+    // SLIDE 3, 4, 5: HÌNH THÀNH KIẾN THỨC
     window.slideDeckData.push({
-        title: data.c1_title,
+        title: c1_title,
         tag: "HÌNH THÀNH KIẾN THỨC (MỤC I)",
-        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-base">${data.c1_body}</div>`
+        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-base">${c1_body}</div>`
     });
 
     window.slideDeckData.push({
-        title: data.c2_title,
+        title: c2_title,
         tag: "HÌNH THÀNH KIẾN THỨC (MỤC II)",
-        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-base">${data.c2_body}</div>`
+        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-base">${c2_body}</div>`
     });
 
     window.slideDeckData.push({
-        title: data.c3_title,
+        title: c3_title,
         tag: "HÌNH THÀNH KIẾN THỨC (MỤC III)",
-        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-base">${data.c3_body}</div>`
+        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-base">${c3_body}</div>`
     });
 
-    // SLIDE 6: SLIDE CHỐT KIẾN THỨC CỐT LÕI (BẮT BUỘC THEO CHỈ DẪN)
+    // SLIDE 6: CHỐT KIẾN THỨC CỐT LÕI
     window.slideDeckData.push({
         title: "KIẾN THỨC CỐT LÕI (NỘI DUNG GHI VỞ)",
         tag: "CHỐT KIẾN THỨC BẮT BUỘC",
         body: `
             <div class="bg-black/50 p-6 rounded-2xl border-2 border-amber-400/60 space-y-4 text-base">
                 <p class="text-amber-300 font-bold text-xl"><i class="fa-solid fa-book-bookmark mr-2"></i> Học sinh ghi nhớ các điểm then chốt:</p>
-                ${data.coreMemo}
+                <p class="text-slate-200">• <strong>Bản chất:</strong> Nắm vững quy luật sinh học cốt lõi theo SGK Kết nối tri thức.</p>
+                <p class="text-slate-200">• <strong>Ý nghĩa:</strong> Ứng dụng an toàn sinh học và phát triển kinh tế sinh thái bền vững.</p>
             </div>
         `
     });
 
-    // SLIDE 7 - 12: ĐỦ 6 CÂU TRẮC NGHIỆM 4 LỰA CHỌN (DẠNG 1 TỪ GIÁO ÁN SANG)
+    // SLIDE 7 - 12: ĐỦ 6 CÂU 4 LỰA CHỌN
     for (let i = 1; i <= 6; i++) {
         window.slideDeckData.push({
             title: `LUYỆN TẬP: CÂU HỎI TRẮC NGHIỆM ${i}`,
@@ -268,7 +314,7 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         });
     }
 
-    // SLIDE 13 - 16: ĐỦ 4 CÂU ĐÚNG / SAI (DẠNG 2 TỪ GIÁO ÁN SANG)
+    // SLIDE 13 - 16: ĐỦ 4 CÂU ĐÚNG / SAI
     for (let i = 1; i <= 4; i++) {
         window.slideDeckData.push({
             title: `LUYỆN TẬP: TRẮC NGHIỆM ĐÚNG/SAI ${i}`,
@@ -295,7 +341,7 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         });
     }
 
-    // SLIDE 17 - 22: ĐỦ 6 CÂU TRẢ LỜI NGẮN (DẠNG 3 TỪ GIÁO ÁN SANG, ĐÁP ÁN <= 4 KÝ TỰ)
+    // SLIDE 17 - 22: ĐỦ 6 CÂU TRẢ LỜI NGẮN
     for (let i = 1; i <= 6; i++) {
         window.slideDeckData.push({
             title: `LUYỆN TẬP: TRẢ LỜI NGẮN ${i}`,
@@ -317,7 +363,7 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         });
     }
 
-    // SLIDE 23: VẬN DỤNG & DỰ ÁN MỞ RỘNG (HĐ 4 TỪ GIÁO ÁN)
+    // SLIDE 23: VẬN DỤNG
     window.slideDeckData.push({
         title: "HOẠT ĐỘNG 4: VẬN DỤNG & HƯỚNG DẪN TỰ HỌC",
         tag: "VẬN DỤNG THỰC TẾ",
@@ -341,12 +387,14 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
     if (typeof window.renderCurrentSlide === 'function') window.renderCurrentSlide();
 };
 
-// 7. GHI ĐÈ BẢNG MA TRẬN 4 PHẦN CHUẨN 100% (VỪA KHÍT 1 TRANG A4, ĐỦ BIẾT - HIỂU - VD)
+// 7. GHI ĐÈ BẢNG MA TRẬN 4 PHẦN TINH GỌN (VỪA KHÍT 1 TRANG A4)
 window.renderMaTranDeKiemTra = function(subject, grade, book) {
     const docContainer = document.getElementById('container-a4-doc');
-    const lessons = (window.selectedLessonsForExam && window.selectedLessonsForExam.length > 0) 
+    if (!docContainer) return;
+
+    let lessons = (window.selectedLessonsForExam && Array.isArray(window.selectedLessonsForExam) && window.selectedLessonsForExam.length > 0) 
         ? window.selectedLessonsForExam 
-        : [window.currentSelectedLesson];
+        : [window.currentSelectedLesson || "Bài 1: Giới thiệu khái quát môn Sinh học"];
 
     const countP1 = (parseInt(matrixGlobalTotals.p1_b)||0) + (parseInt(matrixGlobalTotals.p1_h)||0) + (parseInt(matrixGlobalTotals.p1_vd)||0);
     const countP2 = (parseInt(matrixGlobalTotals.p2_b)||0) + (parseInt(matrixGlobalTotals.p2_h)||0) + (parseInt(matrixGlobalTotals.p2_vd)||0);
@@ -476,12 +524,12 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
                                     <td style="text-align: center; padding: 2px 0; background: #f0fdf4; font-weight: bold;">${c.p2_b || 0}</td>
                                     <td style="text-align: center; padding: 2px 0; background: #f0fdf4; font-weight: bold;">${c.p2_h || 0}</td>
                                     <td style="text-align: center; padding: 2px 0; background: #f0fdf4; font-weight: bold;">${c.p2_vd || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff; font-weight: bold;">${c.p3_b || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff; font-weight: bold;">${c.p3_h || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff; font-weight: bold;">${c.p3_vd || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2; font-weight: bold;">${c.p4_b || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2; font-weight: bold;">${c.p4_h || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2; font-weight: bold;">${c.p4_vd || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff;">${c.p3_b || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff;">${c.p3_h || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff;">${c.p3_vd || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2;">${c.p4_b || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2;">${c.p4_h || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2;">${c.p4_vd || 0}</td>
                                     <td style="text-align: center; font-weight: bold; background: #f8fafc; font-size: 7.5pt; padding: 2px 1px;">
                                         ${s1}c\vert{}${s2}ý|${s3}c\vert{}${s4}tl
                                     </td>
@@ -621,10 +669,10 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
 
 // 8. ĐỒNG BỘ NÚT AI: NẾU Ở TAB SLIDE THÌ ÉP TRỰC TIẾP TỪ GIÁO ÁN SANG KHUNG NỘI HÀM
 window.executeActionAI = async function() {
-    const subject = document.getElementById('sel-subject').value;
-    const grade = document.getElementById('sel-grade').value;
-    const book = document.getElementById('sel-book').value;
-    const lessonTitle = window.currentSelectedLesson;
+    const subject = document.getElementById('sel-subject')?.value || "Sinh học";
+    const grade = document.getElementById('sel-grade')?.value || "10";
+    const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức";
+    const lessonTitle = window.currentSelectedLesson || "Bài 1: Giới thiệu khái quát môn Sinh học";
     const statusInd = document.getElementById('content-source-indicator');
 
     // NẾU ĐANG Ở TAB SLIDE: ÉP TRỰC TIẾP TỪ GIÁO ÁN VÀO KHUNG SLIDE NỘI HÀM VIP
@@ -647,7 +695,7 @@ window.executeActionAI = async function() {
     }
 
     const preferredModel = localStorage.getItem('gemini_preferred_model') || 'auto';
-    const customGuide = document.getElementById('ai-custom-instructions') ? document.getElementById('ai-custom-instructions').value.trim() : "";
+    const customGuide = document.getElementById('ai-custom-instructions')?.value.trim() || "";
     const docContainer = document.getElementById('container-a4-doc');
 
     let filePromptPart = "";
