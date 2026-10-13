@@ -5,7 +5,7 @@
  * Bám sát chuẩn 3 tệp chỉ dẫn:
  * 1. AI- TẠO GIÁO ÁN.docx (CV 5512 Cải tiến High-End, NLS 1007 & Năng lực AI)
  * 2. AI- TẠO SLIDE PPT.docx (Slide 16:9 Typography >= 34pt, Hệ màu 60-30-10)
- * 3. AI. TẠO ĐỀ.docx (Ma trận 4 phần đầy đủ: Tổng câu, Tổng điểm từng phần, thang 10đ)
+ * 3. AI. TẠO ĐỀ.docx (Ma trận 4 phần đơn giản: Biết - Hiểu - Vận dụng, Thang 10đ)
  * ==============================================================================
  */
 
@@ -16,7 +16,7 @@ window.FALLBACK_MODELS = [
     "gemini-3.6-flash"
 ];
 
-// 2. KHAI BÁO MA TRẬN 4 PHẦN & KHỐNG CHẾ ĐIỂM SỐ (THANG 10 ĐIỂM CHUẨN)
+// 2. MA TRẬN 4 PHẦN & KHỐNG CHẾ ĐIỂM SỐ (THANG 10 ĐIỂM CHUẨN)
 window.matrixGlobalTotals = {
     p1_b: 6, p1_h: 4, p1_vd: 2,  // Phần I: 12 câu
     p2_b: 4, p2_h: 4, p2_vd: 2,  // Phần II: 10 ý Đúng/Sai
@@ -31,7 +31,7 @@ window.matrixPartScores = {
     p4: 2.5   // Điểm Phần IV (Tự luận) -> Tổng toàn bài = 10.0 điểm
 };
 
-// 3. TỰ ĐỘNG PHÂN BỔ SỐ CÂU/Ý CHO CÁC BÀI HỌC ĐƯỢC CHỌN
+// 3. TỰ ĐỘNG PHÂN BỔ SỐ CÂU/Ý CHO CÁC BÀI HỌC Ở TRÊN
 window.distributeMatrixFromTotals = function() {
     const lessons = (selectedLessonsForExam && selectedLessonsForExam.length > 0) 
         ? selectedLessonsForExam 
@@ -43,7 +43,7 @@ window.distributeMatrixFromTotals = function() {
         window.examMatrixCustomCounts[les] = { 
             p1_b: 0, p1_h: 0, p1_vd: 0, 
             p2_b: 0, p2_h: 0, p2_vd: 0, 
-            p3_b: 0, p3_h: 0, p3_vd: 0,
+            p3_b: 0, p3_h: 0, p3_vd: 0, 
             p4_b: 0, p4_h: 0, p4_vd: 0 
         };
     });
@@ -79,7 +79,7 @@ window.updatePartScoreField = function(part, value) {
     );
 };
 
-// 4. HIỂN THỊ NỘI DUNG & KIỂM TRA BẢN LƯU LOCALSTORAGE CHO CẢ SLIDE VÀ VĂN BẢN
+// 4. HIỂN THỊ NỘI DUNG & KIỂM TRA BẢN LƯU CHO CẢ SLIDE VÀ VĂN BẢN
 window.displayContentForCurrentLesson = function() {
     const subject = document.getElementById('sel-subject').value;
     const grade = document.getElementById('sel-grade').value;
@@ -175,7 +175,7 @@ window.discardCurrentAIContent = function() {
     }
 };
 
-// 6. GHI ĐÈ BẢNG MA TRẬN 4 PHẦN CÓ RIÊNG TỔNG CÂU VÀ TỔNG ĐIỂM TỪNG PHẦN (VỪA KHÍT TRANG 1 A4)
+// 6. GHI ĐÈ KHUNG MA TRẬN 4 PHẦN TINH GỌN (CHỐNG VỠ KHUNG & VỪA KHÍT TRANG 1 A4)
 window.renderMaTranDeKiemTra = function(subject, grade, book) {
     const docContainer = document.getElementById('container-a4-doc');
     const lessons = (selectedLessonsForExam && selectedLessonsForExam.length > 0) 
@@ -197,6 +197,7 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
     const p3PerQ = countP3 > 0 ? (scoreP3 / countP3).toFixed(2) : 0;
     const p4PerQ = countP4 > 0 ? (scoreP4 / countP4).toFixed(2) : 0;
 
+    // --- TẠO CÂU HỎI MẪU NỘI HÀM THEO MA TRẬN ---
     let p1Html = "", p1Idx = 1;
     lessons.forEach(les => {
         const num = (parseInt(examMatrixCustomCounts[les]?.p1_b)||0) + (parseInt(examMatrixCustomCounts[les]?.p1_h)||0) + (parseInt(examMatrixCustomCounts[les]?.p1_vd)||0);
@@ -252,7 +253,7 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
     });
 
     docContainer.innerHTML = `
-        <!-- ==================== TRANG 1: KHUNG MA TRẬN 4 PHẦN ĐẦY ĐỦ CÓ TỔNG CÂU & ĐIỂM (VỪA KHÍT A4) ==================== -->
+        <!-- ==================== TRANG 1: KHUNG MA TRẬN 4 PHẦN TINH GỌN (VỪA KHÍT 1 TRANG A4) ==================== -->
         <div style="page-break-after: always; min-height: 252mm; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
                 <table style="width: 100%; border: none; margin-bottom: 4px;">
@@ -270,42 +271,38 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
                     </tr>
                 </table>
 
-                <div style="text-align: center; margin: 5px 0 7px 0;">
+                <div style="text-align: center; margin: 4px 0 6px 0;">
                     <h2 style="margin: 0; font-size: 11.5pt; font-weight: bold; text-transform: uppercase;">KHUNG MA TRẬN ĐỀ KIỂM TRA ĐỊNH KỲ (THANG ĐIỂM 10.0)</h2>
                     <p style="margin: 1px 0 0 0; font-style: italic; font-size: 9.5pt;">Môn học: ${subject} ${grade} • Thời gian: 45 phút • Bộ sách: ${book}</p>
                 </div>
 
-                <!-- BẢNG MA TRẬN ĐỦ 4 PHẦN CÓ CỘT TỔNG CÂU VÀ TỔNG ĐIỂM TỪNG PHẦN -->
-                <table style="width: 100%; border-collapse: collapse; font-size: 7.5pt; margin: 3px 0;">
+                <!-- BẢNG MA TRẬN 4 PHẦN CHUẨN: MỖI PHẦN CÓ BIẾT - HIỂU - VẬN DỤNG VÀ DÒNG KHỐNG CHẾ -->
+                <table style="width: 100%; border-collapse: collapse; font-size: 8pt; margin: 3px 0; table-layout: fixed;">
                     <thead>
                         <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
-                            <th rowspan="2" style="width: 20px; padding: 3px 1px;">TT</th>
-                            <th rowspan="2" style="width: 125px; padding: 3px 3px; text-align: left;">Chủ đề / Bài học</th>
+                            <th rowspan="2" style="width: 25px; padding: 3px 1px;">TT</th>
+                            <th rowspan="2" style="width: 150px; padding: 3px 3px; text-align: left;">Chủ đề / Bài học</th>
                             
                             <!-- PHẦN I -->
                             <th colspan="3" style="padding: 2px 1px; background: #f1f5f9;">Phần I (Nhiều LC)</th>
-                            <th rowspan="2" style="width: 28px; padding: 2px 1px; background: #e2e8f0; font-weight: bold;">Tổng P1</th>
 
                             <!-- PHẦN II -->
                             <th colspan="3" style="padding: 2px 1px; color: #15803d; background: #e8f5e9;">Phần II (Đúng/Sai)</th>
-                            <th rowspan="2" style="width: 28px; padding: 2px 1px; color: #15803d; background: #dcfce7; font-weight: bold;">Tổng P2</th>
 
                             <!-- PHẦN III -->
                             <th colspan="3" style="padding: 2px 1px; color: #0284c7; background: #e1f5fe;">Phần III (Ngắn)</th>
-                            <th rowspan="2" style="width: 28px; padding: 2px 1px; color: #0284c7; background: #bae6fd; font-weight: bold;">Tổng P3</th>
 
                             <!-- PHẦN IV -->
                             <th colspan="3" style="padding: 2px 1px; color: #b91c1c; background: #ffebee;">Phần IV (Tự luận)</th>
-                            <th rowspan="2" style="width: 28px; padding: 2px 1px; color: #b91c1c; background: #fecaca; font-weight: bold;">Tổng P4</th>
 
-                            <!-- TỔNG TOÀN BÀI -->
-                            <th rowspan="2" style="width: 45px; padding: 2px 1px; background: #e0e7ff; font-weight: bold;">Tổng bài</th>
+                            <!-- TỔNG CỘNG -->
+                            <th rowspan="2" style="width: 55px; padding: 2px 1px; background: #e0e7ff; font-weight: bold;">Tổng bài</th>
                         </tr>
-                        <tr style="background: #F0F4F8; text-align: center; font-size: 7pt;">
-                            <th style="width: 18px; padding: 2px 0;">B</th><th style="width: 18px; padding: 2px 0;">H</th><th style="width: 18px; padding: 2px 0;">VD</th>
-                            <th style="width: 18px; padding: 2px 0; color: #15803d; background: #e8f5e9;">B</th><th style="width: 18px; padding: 2px 0; color: #15803d; background: #e8f5e9;">H</th><th style="width: 18px; padding: 2px 0; color: #15803d; background: #e8f5e9;">VD</th>
-                            <th style="width: 18px; padding: 2px 0; color: #0284c7; background: #e1f5fe;">B</th><th style="width: 18px; padding: 2px 0; color: #0284c7; background: #e1f5fe;">H</th><th style="width: 18px; padding: 2px 0; color: #0284c7; background: #e1f5fe;">VD</th>
-                            <th style="width: 18px; padding: 2px 0; color: #b91c1c; background: #ffebee;">B</th><th style="width: 18px; padding: 2px 0; color: #b91c1c; background: #ffebee;">H</th><th style="width: 18px; padding: 2px 0; color: #b91c1c; background: #ffebee;">VD</th>
+                        <tr style="background: #F0F4F8; text-align: center; font-size: 7.5pt;">
+                            <th style="padding: 2px 0;">Biết</th><th style="padding: 2px 0;">Hiểu</th><th style="padding: 2px 0;">VD</th>
+                            <th style="padding: 2px 0; color: #15803d; background: #e8f5e9;">Biết</th><th style="padding: 2px 0; color: #15803d; background: #e8f5e9;">Hiểu</th><th style="padding: 2px 0; color: #15803d; background: #e8f5e9;">VD</th>
+                            <th style="padding: 2px 0; color: #0284c7; background: #e1f5fe;">Biết</th><th style="padding: 2px 0; color: #0284c7; background: #e1f5fe;">Hiểu</th><th style="padding: 2px 0; color: #0284c7; background: #e1f5fe;">VD</th>
+                            <th style="padding: 2px 0; color: #b91c1c; background: #ffebee;">Biết</th><th style="padding: 2px 0; color: #b91c1c; background: #ffebee;">Hiểu</th><th style="padding: 2px 0; color: #b91c1c; background: #ffebee;">VD</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -315,89 +312,80 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
                             const s2 = (parseInt(c.p2_b)||0) + (parseInt(c.p2_h)||0) + (parseInt(c.p2_vd)||0);
                             const s3 = (parseInt(c.p3_b)||0) + (parseInt(c.p3_h)||0) + (parseInt(c.p3_vd)||0);
                             const s4 = (parseInt(c.p4_b)||0) + (parseInt(c.p4_h)||0) + (parseInt(c.p4_vd)||0);
-                            const sumAll = s1 + s2 + s3 + s4;
                             return `
                                 <tr>
                                     <td style="text-align: center; padding: 2px 1px;">${i + 1}</td>
-                                    <td style="padding: 2px 3px; line-height: 1.1;"><strong>${les}</strong></td>
+                                    <td style="padding: 2px 4px; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><strong>${les}</strong></td>
                                     
                                     <!-- Phần I -->
                                     <td style="text-align: center; padding: 2px 0;">${c.p1_b || 0}</td>
                                     <td style="text-align: center; padding: 2px 0;">${c.p1_h || 0}</td>
                                     <td style="text-align: center; padding: 2px 0;">${c.p1_vd || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; font-weight: bold; background: #f8fafc;">${s1}c</td>
                                     
                                     <!-- Phần II -->
-                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4;">${c.p2_b || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4;">${c.p2_h || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4;">${c.p2_vd || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; font-weight: bold; background: #dcfce7; color: #15803d;">${s2}ý</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4; font-weight: bold;">${c.p2_b || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4; font-weight: bold;">${c.p2_h || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0fdf4; font-weight: bold;">${c.p2_vd || 0}</td>
 
                                     <!-- Phần III -->
-                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff;">${c.p3_b || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff;">${c.p3_h || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff;">${c.p3_vd || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; font-weight: bold; background: #bae6fd; color: #0284c7;">${s3}c</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff; font-weight: bold;">${c.p3_b || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff; font-weight: bold;">${c.p3_h || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #f0f9ff; font-weight: bold;">${c.p3_vd || 0}</td>
 
                                     <!-- Phần IV -->
-                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2;">${c.p4_b || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2;">${c.p4_h || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2;">${c.p4_vd || 0}</td>
-                                    <td style="text-align: center; padding: 2px 0; font-weight: bold; background: #fecaca; color: #b91c1c;">${s4}tl</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2; font-weight: bold;">${c.p4_b || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2; font-weight: bold;">${c.p4_h || 0}</td>
+                                    <td style="text-align: center; padding: 2px 0; background: #fef2f2; font-weight: bold;">${c.p4_vd || 0}</td>
 
-                                    <td style="text-align: center; font-weight: bold; background: #e0e7ff; color: #3730a3; padding: 2px 1px;">
-                                        ${sumAll} mục
+                                    <td style="text-align: center; font-weight: bold; background: #f8fafc; font-size: 7.5pt; padding: 2px 1px;">
+                                        ${s1}c\vert{}${s2}ý|${s3}c\vert{}${s4}tl
                                     </td>
                                 </tr>
                             `;
                         }).join('')}
                         
-                        <!-- DÒNG 1: TỔNG SỐ CÂU/Ý TỪNG MỨC ĐỘ & TỔNG CÂU TỪNG PHẦN -->
+                        <!-- DÒNG 1: TỔNG SỐ CÂU/Ý TỪNG MỨC ĐỘ & Ô KHỐNG CHẾ -->
                         <tr style="background: #eff6ff; font-weight: bold; text-align: center; border-top: 2px solid #1e40af;">
-                            <td colspan="2" style="color: #1e3a8a; text-align: right; padding: 3px 4px;">TỔNG CÂU / Ý (Khống chế):</td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_b}" onchange="updateGlobalTotalField('p1_b', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #2563eb; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fff;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_h}" onchange="updateGlobalTotalField('p1_h', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #2563eb; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fff;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_vd}" onchange="updateGlobalTotalField('p1_vd', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #2563eb; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fff;"></td>
-                            <td style="background: #e2e8f0; color: #1e3a8a; font-size: 8pt;">${countP1} câu</td>
+                            <td colspan="2" style="color: #1e3a8a; text-align: right; padding: 3px 4px;">TỔNG SỐ CÂU / Ý (Khống chế):</td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_b}" onchange="updateGlobalTotalField('p1_b', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #2563eb; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fff;"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_h}" onchange="updateGlobalTotalField('p1_h', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #2563eb; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fff;"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p1_vd}" onchange="updateGlobalTotalField('p1_vd', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #2563eb; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fff;"></td>
                             
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_b}" onchange="updateGlobalTotalField('p2_b', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #16a34a; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #dcfce7;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_h}" onchange="updateGlobalTotalField('p2_h', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #16a34a; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #dcfce7;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_vd}" onchange="updateGlobalTotalField('p2_vd', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #16a34a; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #dcfce7;"></td>
-                            <td style="background: #dcfce7; color: #15803d; font-size: 8pt;">${countP2} ý</td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_b}" onchange="updateGlobalTotalField('p2_b', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #16a34a; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #dcfce7;" title="Số ý Biết"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_h}" onchange="updateGlobalTotalField('p2_h', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #16a34a; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #dcfce7;" title="Số ý Hiểu"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p2_vd}" onchange="updateGlobalTotalField('p2_vd', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #16a34a; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #dcfce7;" title="Số ý Vận dụng"></td>
 
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_b}" onchange="updateGlobalTotalField('p3_b', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #0284c7; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #e0f2fe;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_h}" onchange="updateGlobalTotalField('p3_h', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #0284c7; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #e0f2fe;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_vd}" onchange="updateGlobalTotalField('p3_vd', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #0284c7; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #e0f2fe;"></td>
-                            <td style="background: #bae6fd; color: #0284c7; font-size: 8pt;">${countP3} câu</td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_b}" onchange="updateGlobalTotalField('p3_b', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #0284c7; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #e0f2fe;" title="TL ngắn Biết"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_h}" onchange="updateGlobalTotalField('p3_h', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #0284c7; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #e0f2fe;" title="TL ngắn Hiểu"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p3_vd}" onchange="updateGlobalTotalField('p3_vd', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #0284c7; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #e0f2fe;" title="TL ngắn Vận dụng"></td>
 
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_b}" onchange="updateGlobalTotalField('p4_b', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #dc2626; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fee2e2;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_h}" onchange="updateGlobalTotalField('p4_h', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #dc2626; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fee2e2;"></td>
-                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_vd}" onchange="updateGlobalTotalField('p4_vd', this.value)" style="width: 20px; height: 17px; text-align: center; border: 1px solid #dc2626; font-size: 7.5pt; border-radius: 2px; font-weight: bold; background: #fee2e2;"></td>
-                            <td style="background: #fecaca; color: #b91c1c; font-size: 8pt;">${countP4} câu</td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_b}" onchange="updateGlobalTotalField('p4_b', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #dc2626; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fee2e2;" title="Tự luận Biết"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_h}" onchange="updateGlobalTotalField('p4_h', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #dc2626; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fee2e2;" title="Tự luận Hiểu"></td>
+                            <td style="padding: 1px;"><input type="number" min="0" value="${matrixGlobalTotals.p4_vd}" onchange="updateGlobalTotalField('p4_vd', this.value)" style="width: 24px; height: 18px; text-align: center; border: 1px solid #dc2626; font-size: 8pt; border-radius: 3px; font-weight: bold; background: #fee2e2;" title="Tự luận Vận dụng"></td>
 
-                            <td style="color: #3730a3; font-size: 7.5pt; background: #e0e7ff; padding: 2px 1px;">
+                            <td style="color: #b91c1c; font-size: 8pt; padding: 2px 1px;">
                                 ${countP1}c|${countP2}ý|${countP3}c|${countP4}tl
                             </td>
                         </tr>
 
                         <!-- DÒNG 2: TỔNG SỐ ĐIỂM TỪNG PHẦN VÀ TỔNG ĐIỂM TOÀN BÀI (10.0 ĐIỂM) -->
                         <tr style="background: #fefce8; font-weight: bold; text-align: center; border-top: 1px solid #ca8a04;">
-                            <td colspan="2" style="color: #854d0e; text-align: right; padding: 3px 4px;">TỔNG ĐIỂM TỪNG PHẦN:</td>
-                            <td colspan="4" style="padding: 2px; background: #fef9c3;">
-                                <input type="number" step="0.25" min="0" value="${scoreP1}" onchange="updatePartScoreField('p1', this.value)" style="width: 36px; height: 17px; text-align: center; border: 1px solid #ca8a04; font-size: 8pt; font-weight: bold; background: #fff;"> đ
-                                <span style="font-size: 6.8pt; color: #64748b; display: inline-block; margin-left: 2px;">(${p1PerQ}đ/câu)</span>
+                            <td colspan="2" style="color: #854d0e; text-align: right; padding: 3px 4px;">TỔNG ĐIỂM (Khống chế - 10đ):</td>
+                            <td colspan="3" style="padding: 2px; background: #fef9c3;">
+                                <input type="number" step="0.25" min="0" value="${scoreP1}" onchange="updatePartScoreField('p1', this.value)" style="width: 38px; height: 18px; text-align: center; border: 1px solid #ca8a04; font-size: 8pt; font-weight: bold; background: #fff;"> đ
+                                <span style="font-size: 7pt; color: #64748b; display: block;">(${countP1} câu - ${p1PerQ}đ/c)</span>
                             </td>
-                            <td colspan="4" style="padding: 2px; background: #f0fdf4;">
-                                <input type="number" step="0.25" min="0" value="${scoreP2}" onchange="updatePartScoreField('p2', this.value)" style="width: 36px; height: 17px; text-align: center; border: 1px solid #16a34a; font-size: 8pt; font-weight: bold; background: #fff;"> đ
-                                <span style="font-size: 6.8pt; color: #15803d; display: inline-block; margin-left: 2px;">(Lũy tiến ý)</span>
+                            <td colspan="3" style="padding: 2px; background: #f0fdf4;">
+                                <input type="number" step="0.25" min="0" value="${scoreP2}" onchange="updatePartScoreField('p2', this.value)" style="width: 38px; height: 18px; text-align: center; border: 1px solid #16a34a; font-size: 8pt; font-weight: bold; background: #fff;"> đ
+                                <span style="font-size: 7pt; color: #15803d; display: block;">(${countP2} ý - Lũy tiến)</span>
                             </td>
-                            <td colspan="4" style="padding: 2px; background: #f0f9ff;">
-                                <input type="number" step="0.25" min="0" value="${scoreP3}" onchange="updatePartScoreField('p3', this.value)" style="width: 36px; height: 17px; text-align: center; border: 1px solid #0284c7; font-size: 8pt; font-weight: bold; background: #fff;"> đ
-                                <span style="font-size: 6.8pt; color: #0369a1; display: inline-block; margin-left: 2px;">(${p3PerQ}đ/câu)</span>
+                            <td colspan="3" style="padding: 2px; background: #f0f9ff;">
+                                <input type="number" step="0.25" min="0" value="${scoreP3}" onchange="updatePartScoreField('p3', this.value)" style="width: 38px; height: 18px; text-align: center; border: 1px solid #0284c7; font-size: 8pt; font-weight: bold; background: #fff;"> đ
+                                <span style="font-size: 7pt; color: #0369a1; display: block;">(${countP3} câu - ${p3PerQ}đ/c)</span>
                             </td>
-                            <td colspan="4" style="padding: 2px; background: #fef2f2;">
-                                <input type="number" step="0.25" min="0" value="${scoreP4}" onchange="updatePartScoreField('p4', this.value)" style="width: 36px; height: 17px; text-align: center; border: 1px solid #dc2626; font-size: 8pt; font-weight: bold; background: #fff;"> đ
-                                <span style="font-size: 6.8pt; color: #b91c1c; display: inline-block; margin-left: 2px;">(${p4PerQ}đ/câu)</span>
+                            <td colspan="3" style="padding: 2px; background: #fef2f2;">
+                                <input type="number" step="0.25" min="0" value="${scoreP4}" onchange="updatePartScoreField('p4', this.value)" style="width: 38px; height: 18px; text-align: center; border: 1px solid #dc2626; font-size: 8pt; font-weight: bold; background: #fff;"> đ
+                                <span style="font-size: 7pt; color: #b91c1c; display: block;">(${countP4} câu - ${p4PerQ}đ/c)</span>
                             </td>
                             <td style="color: #b91c1c; font-size: 8.5pt; background: #fee2e2;">
                                 <strong>${totalScore} Đ</strong>
@@ -411,9 +399,9 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
                     <thead>
                         <tr style="background: #E6EEF8; text-align: center; font-weight: bold;">
                             <th style="width: 25px; padding: 2px;">TT</th>
-                            <th style="width: 135px; padding: 2px;">Chủ đề</th>
+                            <th style="width: 140px; padding: 2px;">Chủ đề</th>
                             <th style="padding: 2px;">Mức độ đánh giá & Yêu cầu cần đạt (GDPT 2018)</th>
-                            <th style="width: 70px; padding: 2px;">Số câu thực tế</th>
+                            <th style="width: 75px; padding: 2px;">Số câu thực tế</th>
                         </tr>
                     </thead>
                     <tbody>
