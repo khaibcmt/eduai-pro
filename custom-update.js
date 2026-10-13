@@ -1,7 +1,9 @@
 /**
  * ==============================================================================
- * BIOMASTER AI - KHẮC PHỤC TRIỆT ĐỂ 100%: GHI ĐÈ SWITCHVIEWTAB & HIỂN THỊ SLIDE PPT
- * GV: Hồ Tấn Khải - THPT Mang Thít
+ * BIOMASTER AI - BỘ ĐIỀU KHIỂN ĐỘC LẬP HOÀN CHỈNH (SLIDE PPT & MA TRẬN 7991)
+ * GV: Hồ Tấn Khải - Trường THPT Mang Thít
+ * Tự động mở khóa DOM, tự dựng giao diện Slide 16:9 độc lập chống sập,
+ * đồng bộ 100% kiến thức từ Giáo án 5512 sang Slide và bảo toàn Ma trận 7991.
  * ==============================================================================
  */
 
@@ -12,24 +14,24 @@ window.FALLBACK_MODELS = [
     "gemini-3.6-flash"
 ];
 
-// 2. KHỞI TẠO BỘ NHỚ MA TRẬN ĐỘC LẬP (THANG 10 ĐIỂM)
+// 2. KHỞI TẠO BỘ NHỚ MA TRẬN 4 PHẦN (THANG 10 ĐIỂM)
 window.BIOMASTER_MATRIX = {
     totals: {
-        p1_b: 6, p1_h: 4, p1_vd: 2,
-        p2_b: 4, p2_h: 4, p2_vd: 2,
-        p3_b: 2, p3_h: 2, p3_vd: 1,
-        p4_b: 1, p4_h: 1, p4_vd: 1
+        p1_b: 6, p1_h: 4, p1_vd: 2,  // Phần I: 12 câu
+        p2_b: 4, p2_h: 4, p2_vd: 2,  // Phần II: 10 ý Đúng/Sai
+        p3_b: 2, p3_h: 2, p3_vd: 1,  // Phần III: 5 câu ngắn
+        p4_b: 1, p4_h: 1, p4_vd: 1   // Phần IV: 3 câu tự luận
     },
     scores: {
-        p1: 3.0,
-        p2: 3.0,
-        p3: 1.5,
-        p4: 2.5
+        p1: 3.0,  // Điểm Phần I
+        p2: 3.0,  // Điểm Phần II
+        p3: 1.5,  // Điểm Phần III
+        p4: 2.5   // Điểm Phần IV -> Tổng = 10.0đ
     },
     counts: {}
 };
 
-// 3. HÀM XÁC ĐỊNH CHẾ ĐỘ ĐANG CHỌN
+// 3. XÁC ĐỊNH CHẾ ĐỘ ĐANG CHỌN (TÁCH BIỆT 100%)
 window.getRealActiveMode = function() {
     const tab7991 = document.getElementById('btn-tab-7991');
     const tabSlide = document.getElementById('btn-tab-slide');
@@ -50,8 +52,74 @@ window.getRealSelectedLessons = function() {
     return [currentTitle || "Bài 1: Giới thiệu khái quát môn Sinh học"];
 };
 
-// 4. HÀM VẼ SLIDE TRỰC TIẾP LÊN DOM (CỠ CHỮ >= 34PT, KHÔNG LỘ ĐÁP ÁN)
+// 4. TIỆN ÍCH LỚP HỌC (ĐẾM GIỜ & GỌI TÊN NGẪU NHIÊN)
+window.slideTimerInterval = null;
+window.startSlideTimer = function(seconds) {
+    clearInterval(window.slideTimerInterval);
+    let left = seconds;
+    const timerBox = document.getElementById('custom-slide-timer-box');
+    if (!timerBox) return;
+    timerBox.classList.remove('hidden');
+    timerBox.innerText = `⏱ ${left}s`;
+    window.slideTimerInterval = setInterval(() => {
+        left--;
+        if (left <= 0) {
+            clearInterval(window.slideTimerInterval);
+            timerBox.innerText = "⏱ HẾT GIỜ!";
+        } else {
+            timerBox.innerText = `⏱ ${left}s`;
+        }
+    }, 1000);
+};
+
+window.pickRandomStudent = function() {
+    const num = Math.floor(Math.random() * 45) + 1;
+    alert(`🎯 Xin mời học sinh có số thứ tự [ ${num} ] trả lời câu hỏi!`);
+};
+
+window.toggleSlideFullscreen = function() {
+    const elem = document.getElementById('container-slide-presentation');
+    if (!elem) return;
+    if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(() => {});
+    } else {
+        document.exitFullscreen().catch(() => {});
+    }
+};
+
+window.toggleSlideAnswer = function(btn) {
+    if (!btn) return;
+    const ansBox = btn.nextElementSibling;
+    if (ansBox) {
+        ansBox.classList.toggle('hidden');
+        btn.innerHTML = ansBox.classList.contains('hidden') 
+            ? `<i class="fa-solid fa-eye mr-2"></i> Hiển thị đáp án đúng`
+            : `<i class="fa-solid fa-eye-slash mr-2"></i> Ẩn đáp án`;
+    }
+};
+
+// 5. TRÌNH VẼ SLIDE TỰ THÂN (ĐỘC LẬP VỚI CẤU TRÚC GỐC CỦA INDEX.HTML)
 window.renderSlideSafe = function() {
+    let container = document.getElementById('container-slide-presentation');
+    const docContainer = document.getElementById('container-a4-doc');
+
+    if (docContainer) {
+        docContainer.classList.add('hidden');
+        docContainer.style.setProperty('display', 'none', 'important');
+    }
+
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'container-slide-presentation';
+        if (docContainer && docContainer.parentElement) {
+            docContainer.parentElement.appendChild(container);
+        }
+    }
+
+    container.classList.remove('hidden');
+    container.style.setProperty('display', 'block', 'important');
+    container.style.setProperty('visibility', 'visible', 'important');
+
     if (!window.slideDeckData || !Array.isArray(window.slideDeckData) || window.slideDeckData.length === 0) {
         const subject = document.getElementById('sel-subject')?.value || "Sinh học";
         const grade = document.getElementById('sel-grade')?.value || "10";
@@ -64,55 +132,92 @@ window.renderSlideSafe = function() {
     if (window.currentSlideIndex < 0) window.currentSlideIndex = 0;
     if (window.currentSlideIndex >= window.slideDeckData.length) window.currentSlideIndex = window.slideDeckData.length - 1;
 
-    const slide = window.slideDeckData[window.currentSlideIndex];
-    
-    // Cập nhật bộ đếm số trang
-    const ind = document.getElementById('slide-num-indicator');
-    if (ind) ind.innerText = `${window.currentSlideIndex + 1} / ${window.slideDeckData.length}`;
+    const currentIdx = window.currentSlideIndex;
+    const totalSlides = window.slideDeckData.length;
+    const slide = window.slideDeckData[currentIdx];
 
-    // Ép nội dung trực tiếp vào khung trình chiếu
-    const box = document.getElementById('slide-core-content');
-    if (box) {
-        box.innerHTML = `
-            <div class="space-y-4">
-                <div class="flex items-center gap-2">
-                    <span class="px-3 py-1 rounded text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase">
-                        ${slide.tag || "BÀI GIẢNG ĐIỆN TỬ"}
+    // Vẽ toàn bộ giao diện trình chiếu trực tiếp vào khung
+    container.innerHTML = `
+        <div class="w-full flex flex-col gap-3 font-sans" style="user-select: none;">
+            <!-- THANH ĐIỀU KHIỂN SLIDE CHUYÊN NGHIỆP -->
+            <div class="flex items-center justify-between bg-slate-900/90 border border-slate-700/80 px-4 py-2.5 rounded-xl shadow-lg backdrop-blur">
+                <div class="flex items-center gap-3">
+                    <span class="px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 font-extrabold text-sm border border-amber-500/30">
+                        Slide ${currentIdx + 1} / ${totalSlides}
                     </span>
-                    <h2 class="text-2xl font-black text-white">${slide.title || ""}</h2>
+                    <span class="text-xs text-slate-300 hidden md:inline font-medium">
+                        (Dùng phím ◄ / ► hoặc phím Cách để chuyển trang)
+                    </span>
+                    <span id="custom-slide-timer-box" class="hidden px-2.5 py-0.5 rounded bg-red-600/30 text-red-400 font-bold text-sm border border-red-500/40"></span>
                 </div>
-                <div class="text-slate-100">${slide.body || ""}</div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="window.prevSlideCustom()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm border border-slate-600 transition flex items-center gap-1">
+                        <i class="fa-solid fa-chevron-left"></i> Trước
+                    </button>
+                    <button onclick="window.nextSlideCustom()" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition flex items-center gap-1 shadow-md">
+                        Tiếp <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                    <button onclick="window.startSlideTimer(30)" title="Đếm ngược 30 giây" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-600 text-sm">
+                        <i class="fa-solid fa-stopwatch"></i> 30s
+                    </button>
+                    <button onclick="window.pickRandomStudent()" title="Gọi ngẫu nhiên học sinh" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-600 text-sm">
+                        <i class="fa-solid fa-dice"></i> Gọi HS
+                    </button>
+                    <button onclick="window.toggleSlideFullscreen()" title="Toàn màn hình" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 text-sm">
+                        <i class="fa-solid fa-expand"></i>
+                    </button>
+                </div>
             </div>
-        `;
-    }
+
+            <!-- KHUNG CANVAS 16:9 TRÌNH CHIẾU CHUẨN THỊ GIÁC (TYPOGRAPHY >= 34PT, NỀN #0F2922) -->
+            <div class="w-full rounded-2xl shadow-2xl p-8 md:p-12 relative flex flex-col justify-between overflow-hidden" 
+                 style="background: linear-gradient(145deg, #0F2922 0%, #071713 100%); border: 2px solid rgba(215, 140, 15, 0.4); min-height: 540px; aspect-ratio: 16/9;">
+                
+                <!-- TIÊU ĐỀ SLIDE -->
+                <div class="space-y-3">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 font-extrabold text-sm uppercase tracking-wide border border-amber-400/30">
+                        ${slide.tag || "BÀI GIẢNG ĐIỆN TỬ"}
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight" style="color: #FBBF24;">
+                        ${slide.title || ""}
+                    </h2>
+                    <div class="w-24 h-1 bg-amber-500 rounded-full mt-2"></div>
+                </div>
+
+                <!-- NỘI DUNG SLIDE (FONT LỚN ĐẢM BẢO NGỒI CUỐI LỚP VẪN ĐỌC RÕ) -->
+                <div class="my-auto py-4 text-slate-100 text-xl md:text-2xl leading-relaxed">
+                    ${slide.body || ""}
+                </div>
+
+                <!-- CHÂN TRANG ĐỊNH DANH SƯ PHẠM -->
+                <div class="flex items-center justify-between border-t border-emerald-900/60 pt-4 text-xs md:text-sm text-slate-300 font-medium">
+                    <span>Trường THPT Mang Thít • Tổ Sinh học - Công nghệ</span>
+                    <span class="font-bold text-amber-300">Giáo viên: Hồ Tấn Khải</span>
+                </div>
+            </div>
+        </div>
+    `;
 };
 window.renderCurrentSlide = window.renderSlideSafe;
 
-// Nút mở/đóng đáp án luyện tập trên Slide
-window.toggleSlideAnswer = function(btn) {
-    if (!btn) return;
-    const ansBox = btn.nextElementSibling;
-    if (ansBox) {
-        ansBox.classList.toggle('hidden');
-        btn.innerHTML = ansBox.classList.contains('hidden') 
-            ? `<i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng`
-            : `<i class="fa-solid fa-eye-slash mr-1"></i> Ẩn đáp án`;
+window.nextSlideCustom = function() {
+    if (window.slideDeckData && window.currentSlideIndex < window.slideDeckData.length - 1) {
+        window.currentSlideIndex++;
+        window.renderSlideSafe();
     }
 };
 
-// 5. BỘ DỰNG BÀI GIẢNG PPT ÉP TRỰC TIẾP TỪ NỘI DUNG GIÁO ÁN
+window.prevSlideCustom = function() {
+    if (window.slideDeckData && window.currentSlideIndex > 0) {
+        window.currentSlideIndex--;
+        window.renderSlideSafe();
+    }
+};
+
+// 6. BỘ TẠO DỮ LIỆU SLIDE TỪ GIÁO ÁN (HOẶC NỘI HÀM DỰ PHÒNG 23 SLIDE HOÀN HẢO)
 window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
     const lesTitle = String(lessonTitle || document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài 1: Giới thiệu khái quát môn Sinh học");
-
-    // ÉP DOM HIỂN THỊ KHUNG SLIDE NGAY LẬP TỨC
-    const docContainer = document.getElementById('container-a4-doc');
-    const slideContainer = document.getElementById('container-slide-presentation');
-    if (docContainer) docContainer.classList.add('hidden');
-    if (slideContainer) {
-        slideContainer.classList.remove('hidden');
-        slideContainer.style.display = 'block';
-    }
-
     const aiKey = `cached_ai_5512_${subject}_${grade}_${lesTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
     const cached5512 = localStorage.getItem(aiKey);
 
@@ -123,13 +228,13 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
     };
 
     let c1_title = "1. CẤU TRÚC VÀ ĐẶC ĐIỂM BẢN CHẤT";
-    let c1_body = `<p class='text-slate-200'>• ${info.core1}</p><p class='text-slate-200'>• Cơ chế tương tác và biến đổi năng lượng thích nghi.</p>`;
+    let c1_body = `<p class='mb-3'>• ${info.core1 || "Bản chất và cấu trúc cốt lõi theo SGK Kết nối tri thức."}</p><p>• Cơ chế tương tác và biến đổi năng lượng thích nghi bảo đảm sự sống.</p>`;
     let c2_title = "2. QUY LUẬT VÀ CƠ CHẾ SINH HỌC";
-    let c2_body = `<p class='text-slate-200'>• ${info.core2}</p><p class='text-slate-200'>• Duy trì tính toàn vẹn và ổn định nội môi trong cơ thể sinh vật.</p>`;
+    let c2_body = `<p class='mb-3'>• ${info.core2 || "Quy luật điều hòa và ổn định nội môi trong cơ thể sinh vật."}</p><p>• Duy trì tính toàn vẹn và nâng cao khả năng chống chịu trước môi trường.</p>`;
     let c3_title = "3. ỨNG DỤNG THỰC TIỄN NÔNG NGHIỆP";
-    let c3_body = `<p class='text-slate-200'>• ${info.core3}</p><p class='text-slate-200'>• Thực tiễn sản xuất nông nghiệp tại huyện Mang Thít, tỉnh Vĩnh Long.</p>`;
+    let c3_body = `<p class='mb-3'>• ${info.core3 || "Ứng dụng khoa học kỹ thuật vào sản xuất nông nghiệp công nghệ cao."}</p><p>• Thực tiễn sản xuất và bảo vệ hệ sinh thái tại huyện Mang Thít, tỉnh Vĩnh Long.</p>`;
 
-    // Trích xuất an toàn nếu đã có giáo án
+    // Bóc tách trực tiếp từ Giáo án 5512 nếu có
     if (cached5512) {
         try {
             const parserDiv = document.createElement('div');
@@ -139,63 +244,62 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
                 const td0 = rows[0].querySelectorAll('td');
                 if (td0.length >= 2) {
                     c1_title = "1. " + (td0[0].querySelector('strong')?.innerText || "KIẾN THỨC MỤC 1").toUpperCase();
-                    c1_body = `<div class='text-slate-200 leading-relaxed text-lg'>${td0[1].innerHTML}</div>`;
+                    c1_body = `<div class='space-y-2'>${td0[1].innerHTML}</div>`;
                 }
                 const td1 = rows[1].querySelectorAll('td');
                 if (td1.length >= 2) {
                     c2_title = "2. " + (td1[0].querySelector('strong')?.innerText || "KIẾN THỨC MỤC 2").toUpperCase();
-                    c2_body = `<div class='text-slate-200 leading-relaxed text-lg'>${td1[1].innerHTML}</div>`;
+                    c2_body = `<div class='space-y-2'>${td1[1].innerHTML}</div>`;
                 }
                 if (rows.length >= 3) {
                     const td2 = rows[2].querySelectorAll('td');
                     if (td2.length >= 2) {
                         c3_title = "3. " + (td2[0].querySelector('strong')?.innerText || "ỨNG DỤNG THỰC TIỄN").toUpperCase();
-                        c3_body = `<div class='text-slate-200 leading-relaxed text-lg'>${td2[1].innerHTML}</div>`;
+                        c3_body = `<div class='space-y-2'>${td2[1].innerHTML}</div>`;
                     }
                 }
             }
         } catch(e) {}
     }
 
-    // TẠO BỘ SLIDE CHUẨN MỰC
     window.slideDeckData = [];
 
-    // SLIDE 1: BÌA
+    // SLIDE 1: BÌA BÀI GIẢNG
     window.slideDeckData.push({
         title: lesTitle.toUpperCase(),
         tag: `${subject} ${grade} • ${book}`,
         body: `
             <div class="text-center py-6 space-y-4">
-                <div class="inline-block px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 font-bold text-sm uppercase border border-amber-400/30">
-                    TRƯỜNG THPT MANG THÍT • BÀI GIẢNG ĐIỆN TỬ VIP
-                </div>
-                <h1 class="text-5xl font-black text-amber-300 tracking-tight leading-tight">
-                    ${lesTitle}
-                </h1>
-                <p class="text-slate-200 text-lg max-w-2xl mx-auto">
-                    Giáo viên: <strong>Hồ Tấn Khải</strong> • Tổ Sinh học - Công nghệ
+                <p class="text-amber-300 font-bold text-2xl uppercase tracking-widest">
+                    TRƯỜNG THPT MANG THÍT
+                </p>
+                <p class="text-slate-200 text-2xl max-w-2xl mx-auto pt-4">
+                    Giáo viên thực hiện: <strong class="text-white">Hồ Tấn Khải</strong>
+                </p>
+                <p class="text-emerald-400 font-semibold text-xl">
+                    Chương trình Giáo dục Phổ thông 2018
                 </p>
             </div>
         `
     });
 
-    // SLIDE 2: KHỞI ĐỘNG
+    // SLIDE 2: HOẠT ĐỘNG 1 - KHỞI ĐỘNG
     window.slideDeckData.push({
         title: "HOẠT ĐỘNG 1: MỞ ĐẦU (WARM-UP)",
         tag: "KHỞI ĐỘNG",
         body: `
-            <div class="grid grid-cols-2 gap-6 items-center text-base">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xl">
                 <div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-3">
-                    <span class="px-3 py-1 rounded bg-amber-500/20 text-amber-300 font-bold text-sm">Hiện tượng thực tiễn</span>
-                    <h3 class="text-xl font-bold text-white">Mâu thuẫn nhận thức khoa học</h3>
+                    <span class="px-3 py-1 rounded bg-amber-500/20 text-amber-300 font-bold text-base">Hiện tượng thực tế</span>
+                    <p class="font-bold text-white text-2xl">Mâu thuẫn nhận thức khoa học</p>
                     <p class="text-slate-200 leading-relaxed">
-                        Làm thế nào cơ thể sinh vật duy trì sự sống bền vững và thích ứng linh hoạt với điều kiện sống biến đổi liên tục?
+                        Làm thế nào cơ thể sinh vật duy trì được sự sống ổn định và thích nghi với điều kiện môi trường luôn biến đổi?
                     </p>
                 </div>
-                <div class="bg-emerald-950/40 p-6 rounded-2xl border border-emerald-500/40 space-y-3">
-                    <h4 class="text-amber-300 font-bold text-lg"><i class="fa-solid fa-lightbulb mr-2"></i> Câu hỏi định hướng tư duy:</h4>
-                    <p class="text-slate-200">• 1. Thành phần bản chất nào đóng vai trò then chốt?</p>
-                    <p class="text-slate-200">• 2. Quy luật tự nhiên nào chi phối trực tiếp tiến trình trên?</p>
+                <div class="bg-emerald-950/40 p-6 rounded-2xl border border-emerald-500/40 space-y-4">
+                    <p class="text-amber-300 font-bold text-2xl"><i class="fa-solid fa-lightbulb mr-2"></i> Câu hỏi định hướng tư duy:</p>
+                    <p class="text-slate-200">1. Yếu tố bản chất nào đóng vai trò cốt lõi trong cơ chế này?</p>
+                    <p class="text-slate-200">2. Quy luật tự nhiên nào chi phối trực tiếp tiến trình trên?</p>
                     <p class="text-amber-400 font-bold">➜ Hãy cùng khám phá bài học mới!</p>
                 </div>
             </div>
@@ -206,54 +310,54 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
     window.slideDeckData.push({
         title: c1_title,
         tag: "HÌNH THÀNH KIẾN THỨC (MỤC I)",
-        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-base">${c1_body}</div>`
+        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-xl">${c1_body}</div>`
     });
 
     window.slideDeckData.push({
         title: c2_title,
         tag: "HÌNH THÀNH KIẾN THỨC (MỤC II)",
-        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-base">${c2_body}</div>`
+        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-xl">${c2_body}</div>`
     });
 
     window.slideDeckData.push({
         title: c3_title,
         tag: "HÌNH THÀNH KIẾN THỨC (MỤC III)",
-        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-base">${c3_body}</div>`
+        body: `<div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-4 text-xl">${c3_body}</div>`
     });
 
-    // SLIDE 6: CHỐT KIẾN THỨC CỐT LÕI (NỘI DUNG GHI VỞ)
+    // SLIDE 6: SLIDE CHỐT KIẾN THỨC CỐT LÕI (NỘI DUNG GHI VỞ BẮT BUỘC)
     window.slideDeckData.push({
         title: "KIẾN THỨC CỐT LÕI (NỘI DUNG GHI VỞ)",
         tag: "CHỐT KIẾN THỨC BẮT BUỘC",
         body: `
-            <div class="bg-black/50 p-6 rounded-2xl border-2 border-amber-400/60 space-y-4 text-base">
-                <p class="text-amber-300 font-bold text-xl"><i class="fa-solid fa-book-bookmark mr-2"></i> Học sinh ghi nhớ các điểm then chốt:</p>
-                <p class="text-slate-200">• <strong>Bản chất:</strong> Nắm vững định nghĩa, cấu trúc và quy luật cơ bản của bài học theo SGK Kết nối tri thức.</p>
+            <div class="bg-black/50 p-6 rounded-2xl border-2 border-amber-400/60 space-y-4 text-xl">
+                <p class="text-amber-300 font-bold text-2xl"><i class="fa-solid fa-book-bookmark mr-2"></i> Học sinh ghi nhớ các điểm then chốt:</p>
+                <p class="text-slate-200">• <strong>Bản chất:</strong> Nắm vững định nghĩa, cấu trúc và quy luật cơ bản theo SGK Kết nối tri thức.</p>
                 <p class="text-slate-200">• <strong>Cơ chế:</strong> Diễn biến chuyển hóa, tương tác thích nghi bảo đảm ổn định di truyền.</p>
                 <p class="text-slate-200">• <strong>Ý nghĩa:</strong> Ứng dụng khoa học kỹ thuật vào sản xuất nông nghiệp và đời sống tại địa phương.</p>
             </div>
         `
     });
 
-    // SLIDE 7 - 12: ĐỦ 6 CÂU TRẮC NGHIỆM 4 LỰA CHỌN
+    // SLIDE 7 - 12: ĐỦ 6 CÂU TRẮC NGHIỆM 4 LỰA CHỌN (DẠNG 1)
     for (let i = 1; i <= 6; i++) {
         window.slideDeckData.push({
             title: `LUYỆN TẬP: TRẮC NGHIỆM ${i}`,
             tag: `DẠNG 1: 4 LỰA CHỌN (${i}/6)`,
             body: `
-                <div class="space-y-4 text-base">
-                    <p class="font-bold text-white text-lg">Câu ${i}: Nhận định nào sau đây phản ánh chính xác nhất bản chất khoa học của bài học?</p>
-                    <div class="grid grid-cols-2 gap-3 text-base">
+                <div class="space-y-4 text-xl">
+                    <p class="font-bold text-white text-2xl">Câu ${i}: Nhận định nào sau đây phản ánh chính xác nhất bản chất khoa học của bài học?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-lg">
                         <div class="p-4 bg-black/40 rounded-xl border border-slate-700">A. Không tuân theo các quy luật di truyền</div>
                         <div class="p-4 bg-black/40 rounded-xl border border-slate-700">B. Luôn bảo đảm sao chép chính xác và thích nghi</div>
                         <div class="p-4 bg-black/40 rounded-xl border border-slate-700">C. Tự nhân đôi không phụ thuộc năng lượng</div>
                         <div class="p-4 bg-black/40 rounded-xl border border-slate-700">D. Diễn ra ngẫu nhiên không kiểm soát</div>
                     </div>
                     <div class="pt-2">
-                        <button onclick="toggleSlideAnswer(this)" class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-sm">
-                            <i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng
+                        <button onclick="window.toggleSlideAnswer(this)" class="px-5 py-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-base flex items-center">
+                            <i class="fa-solid fa-eye mr-2"></i> Hiển thị đáp án đúng
                         </button>
-                        <div class="hidden mt-2 p-3 bg-emerald-950/80 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-base">
+                        <div class="hidden mt-3 p-4 bg-emerald-950/90 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-xl">
                             ➜ Đáp án đúng: B (Bảo đảm tính toàn vẹn và thích nghi sinh thái)
                         </div>
                     </div>
@@ -262,25 +366,25 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         });
     }
 
-    // SLIDE 13 - 16: ĐỦ 4 CÂU ĐÚNG / SAI
+    // SLIDE 13 - 16: ĐỦ 4 CÂU ĐÚNG / SAI (DẠNG 2)
     for (let i = 1; i <= 4; i++) {
         window.slideDeckData.push({
             title: `LUYỆN TẬP: TRẮC NGHIỆM ĐÚNG/SAI ${i}`,
             tag: `DẠNG 2: BỐI CẢNH THỰC NGHIỆM (${i}/4)`,
             body: `
-                <div class="space-y-3 text-base">
-                    <p class="font-bold text-amber-300 text-lg">Câu ${i}: Trong một nghiên cứu khoa học thực nghiệm về điều kiện môi trường sống:</p>
-                    <div class="space-y-2 bg-black/40 p-4 rounded-xl border border-slate-700 text-base">
+                <div class="space-y-3 text-xl">
+                    <p class="font-bold text-amber-300 text-2xl">Câu ${i}: Trong một nghiên cứu khoa học thực nghiệm về điều kiện môi trường sống:</p>
+                    <div class="space-y-2 bg-black/40 p-5 rounded-xl border border-slate-700 text-lg">
                         <p>a) Điều kiện nhiệt độ và độ ẩm tối ưu giúp quá trình chuyển hóa đạt hiệu suất cao nhất.</p>
                         <p>b) Mọi tác nhân đột biến đều làm tăng tốc độ sinh trưởng của cá thể sinh vật.</p>
                         <p>c) Nắm vững quy luật giúp nông dân chủ động phòng trừ dịch hại nâng cao năng suất.</p>
                         <p>d) Các biến đổi nội tại diễn ra hoàn toàn tự phát mà không cần năng lượng trao đổi.</p>
                     </div>
                     <div>
-                        <button onclick="toggleSlideAnswer(this)" class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-sm">
-                            <i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng
+                        <button onclick="window.toggleSlideAnswer(this)" class="px-5 py-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-base flex items-center">
+                            <i class="fa-solid fa-eye mr-2"></i> Hiển thị đáp án đúng
                         </button>
-                        <div class="hidden mt-2 p-3 bg-emerald-950/80 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-base">
+                        <div class="hidden mt-3 p-4 bg-emerald-950/90 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-xl">
                             ➜ Đáp án: a) ĐÚNG | b) SAI | c) ĐÚNG | d) SAI
                         </div>
                     </div>
@@ -289,20 +393,20 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         });
     }
 
-    // SLIDE 17 - 22: ĐỦ 6 CÂU TRẢ LỜI NGẮN
+    // SLIDE 17 - 22: ĐỦ 6 CÂU TRẢ LỜI NGẮN (DẠNG 3)
     for (let i = 1; i <= 6; i++) {
         window.slideDeckData.push({
             title: `LUYỆN TẬP: TRẢ LỜI NGẮN ${i}`,
             tag: `DẠNG 3: ĐIỀN CON SỐ (${i}/6)`,
             body: `
-                <div class="space-y-4 text-base">
-                    <p class="font-bold text-white text-lg">Câu ${i}: Một cấu trúc sinh học ban đầu trải qua ${i + 1} đợt phân bào liên tiếp sẽ tạo ra bao nhiêu cấu trúc con?</p>
-                    <p class="text-slate-300 italic">(Đáp án là con số cụ thể không quá 4 ký tự)</p>
+                <div class="space-y-4 text-xl">
+                    <p class="font-bold text-white text-2xl">Câu ${i}: Một cấu trúc sinh học ban đầu trải qua ${i + 1} đợt phân bào liên tiếp sẽ tạo ra bao nhiêu cấu trúc con?</p>
+                    <p class="text-slate-300 italic text-lg">(Đáp án là con số cụ thể không quá 4 ký tự)</p>
                     <div>
-                        <button onclick="toggleSlideAnswer(this)" class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-sm">
-                            <i class="fa-solid fa-eye mr-1"></i> Bấm để hiển thị đáp án đúng
+                        <button onclick="window.toggleSlideAnswer(this)" class="px-5 py-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold hover:bg-amber-500/30 transition text-base flex items-center">
+                            <i class="fa-solid fa-eye mr-2"></i> Hiển thị đáp án đúng
                         </button>
-                        <div class="hidden mt-2 p-3 bg-emerald-950/80 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-xl">
+                        <div class="hidden mt-3 p-4 bg-emerald-950/90 rounded-xl border border-emerald-500/60 font-bold text-emerald-300 text-2xl">
                             ➜ Đáp án chính xác: ${Math.pow(2, i + 1)}
                         </div>
                     </div>
@@ -311,19 +415,19 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
         });
     }
 
-    // SLIDE 23: VẬN DỤNG
+    // SLIDE 23: VẬN DỤNG & DỰ ÁN MỞ RỘNG (HĐ 4)
     window.slideDeckData.push({
         title: "HOẠT ĐỘNG 4: VẬN DỤNG THỰC TẾ",
         tag: "VẬN DỤNG & DỰ ÁN",
         body: `
-            <div class="grid grid-cols-2 gap-6 text-base">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xl">
                 <div class="bg-black/40 p-6 rounded-2xl border border-emerald-500/30 space-y-3">
-                    <h4 class="font-bold text-emerald-300 text-lg"><i class="fa-solid fa-house-laptop mr-2"></i> 1. Nhiệm vụ thực tế địa phương</h4>
+                    <h4 class="font-bold text-emerald-300 text-2xl"><i class="fa-solid fa-house-laptop mr-2"></i> 1. Nhiệm vụ thực tế địa phương</h4>
                     <p class="text-slate-200">• Tìm hiểu ứng dụng kỹ thuật và công nghệ sinh học tại huyện Mang Thít, tỉnh Vĩnh Long.</p>
                     <p class="text-slate-200">• Hoàn thành bài thu hoạch báo cáo nộp qua nhóm học tập trực tuyến.</p>
                 </div>
                 <div class="bg-black/40 p-6 rounded-2xl border border-amber-500/30 space-y-3">
-                    <h4 class="font-bold text-amber-300 text-lg"><i class="fa-solid fa-compass mr-2"></i> 2. Chuẩn bị cho bài học tiếp theo</h4>
+                    <h4 class="font-bold text-amber-300 text-2xl"><i class="fa-solid fa-compass mr-2"></i> 2. Chuẩn bị cho bài học tiếp theo</h4>
                     <p class="text-slate-200">• Đọc trước nội dung bài học mới trong SGK Kết nối tri thức.</p>
                     <p class="text-slate-200">• Quét mã QR ôn tập bài học trên hệ thống học liệu số của trường.</p>
                 </div>
@@ -335,18 +439,17 @@ window.buildPPTFromGiaoAn = function(subject, grade, book, lessonTitle) {
     window.renderSlideSafe();
 };
 
-// 6. GHI ĐÈ HÀM SWITCHVIEWTAB CỦA INDEX.HTML ĐỂ MỞ KHÓA DOM DỨT ĐIỂM
+// 7. GHI ĐÈ CHUYỂN TAB ĐỂ MỞ KHÓA DOM BẮT BUỘC
 window.switchViewTab = function(mode) {
     const btn5512 = document.getElementById('btn-tab-5512');
     const btnSlide = document.getElementById('btn-tab-slide');
     const btn7991 = document.getElementById('btn-tab-7991');
     const docContainer = document.getElementById('container-a4-doc');
-    const slideContainer = document.getElementById('container-slide-presentation');
+    let slideContainer = document.getElementById('container-slide-presentation');
     const btnDoc = document.getElementById('btn-export-doc');
     const btnPptx = document.getElementById('btn-export-pptx');
     const aiBtnLabel = document.getElementById('ai-action-btn-label');
 
-    // Đổi màu nút tab
     [btn5512, btnSlide, btn7991].forEach(b => {
         if (b) {
             b.classList.remove('bg-blue-600', 'text-white');
@@ -361,11 +464,19 @@ window.switchViewTab = function(mode) {
     }
 
     if (mode === 'slide') {
-        if (docContainer) docContainer.classList.add('hidden');
-        if (slideContainer) {
-            slideContainer.classList.remove('hidden');
-            slideContainer.style.display = 'block';
+        if (docContainer) {
+            docContainer.classList.add('hidden');
+            docContainer.style.setProperty('display', 'none', 'important');
         }
+        if (!slideContainer) {
+            slideContainer = document.createElement('div');
+            slideContainer.id = 'container-slide-presentation';
+            if (docContainer && docContainer.parentElement) docContainer.parentElement.appendChild(slideContainer);
+        }
+        slideContainer.classList.remove('hidden');
+        slideContainer.style.setProperty('display', 'block', 'important');
+        slideContainer.style.setProperty('visibility', 'visible', 'important');
+
         if (btnDoc) btnDoc.classList.add('hidden');
         if (btnPptx) btnPptx.classList.remove('hidden');
         if (aiBtnLabel) aiBtnLabel.innerText = "TẠO SLIDE GIẢNG DẠY BẰNG AI";
@@ -378,11 +489,11 @@ window.switchViewTab = function(mode) {
     } else {
         if (docContainer) {
             docContainer.classList.remove('hidden');
-            docContainer.style.display = 'block';
+            docContainer.style.setProperty('display', 'block', 'important');
         }
         if (slideContainer) {
             slideContainer.classList.add('hidden');
-            slideContainer.style.display = 'none';
+            slideContainer.style.setProperty('display', 'none', 'important');
         }
         if (btnDoc) btnDoc.classList.remove('hidden');
         if (btnPptx) btnPptx.classList.add('hidden');
@@ -402,7 +513,7 @@ window.switchViewTab = function(mode) {
     }
 };
 
-// 7. GHI ĐÈ HÀM HIỂN THỊ NỘI DUNG KHI CHỌN BÀI HỌC Ở CỘT TRÁI
+// 8. ĐỒNG BỘ HIỂN THỊ KHI CHỌN BÀI HỌC Ở CỘT TRÁI
 window.displayContentForCurrentLesson = function() {
     const realMode = window.getRealActiveMode();
     const subject = document.getElementById('sel-subject')?.value || "Sinh học";
@@ -410,18 +521,25 @@ window.displayContentForCurrentLesson = function() {
     const book = document.getElementById('sel-book')?.value || "Kết Nối Tri Thức Với Cuộc Sống";
     const lessonTitle = document.getElementById('active-selected-lesson-title')?.innerText?.trim() || "Bài 1: Giới thiệu khái quát môn Sinh học";
     const docContainer = document.getElementById('container-a4-doc');
-    const slideContainer = document.getElementById('container-slide-presentation');
+    let slideContainer = document.getElementById('container-slide-presentation');
     const statusInd = document.getElementById('content-source-indicator');
 
     const aiKey = `cached_ai_${realMode}_${subject}_${grade}_${lessonTitle}`.replace(/[^a-zA-Z0-9_]/g, '_');
     const cachedData = localStorage.getItem(aiKey);
 
     if (realMode === 'slide') {
-        if (docContainer) docContainer.classList.add('hidden');
-        if (slideContainer) {
-            slideContainer.classList.remove('hidden');
-            slideContainer.style.display = 'block';
+        if (docContainer) {
+            docContainer.classList.add('hidden');
+            docContainer.style.setProperty('display', 'none', 'important');
         }
+        if (!slideContainer) {
+            slideContainer = document.createElement('div');
+            slideContainer.id = 'container-slide-presentation';
+            if (docContainer && docContainer.parentElement) docContainer.parentElement.appendChild(slideContainer);
+        }
+        slideContainer.classList.remove('hidden');
+        slideContainer.style.setProperty('display', 'block', 'important');
+
         if (cachedData) {
             try {
                 window.slideDeckData = JSON.parse(cachedData);
@@ -438,11 +556,11 @@ window.displayContentForCurrentLesson = function() {
 
     if (docContainer) {
         docContainer.classList.remove('hidden');
-        docContainer.style.display = 'block';
+        docContainer.style.setProperty('display', 'block', 'important');
     }
     if (slideContainer) {
         slideContainer.classList.add('hidden');
-        slideContainer.style.display = 'none';
+        slideContainer.style.setProperty('display', 'none', 'important');
     }
 
     if (cachedData) {
@@ -462,29 +580,66 @@ window.displayContentForCurrentLesson = function() {
     }
 };
 
-// 8. BẮT TRỰC TIẾP CÁC NÚT ĐIỀU HƯỚNG SLIDE (NEXT / PREV)
-document.addEventListener('click', (e) => {
-    // Nút Next Slide
-    if (e.target && (e.target.id === 'btn-next-slide' || e.target.closest('#btn-next-slide'))) {
-        if (window.slideDeckData && window.slideDeckData.length > 0) {
-            if (window.currentSlideIndex < window.slideDeckData.length - 1) {
-                window.currentSlideIndex++;
-                window.renderSlideSafe();
-            }
-        }
-    }
-    // Nút Prev Slide
-    if (e.target && (e.target.id === 'btn-prev-slide' || e.target.closest('#btn-prev-slide'))) {
-        if (window.slideDeckData && window.slideDeckData.length > 0) {
-            if (window.currentSlideIndex > 0) {
-                window.currentSlideIndex--;
-                window.renderSlideSafe();
-            }
+// 9. ĐIỀU KHIỂN BÀN PHÍM (CHUYỂN SLIDE BẰNG PHÍM ◄ / ► VÀ PHÍM CÁCH)
+document.addEventListener('keydown', (e) => {
+    if (window.getRealActiveMode() === 'slide') {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+            e.preventDefault();
+            window.nextSlideCustom();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            e.preventDefault();
+            window.prevSlideCustom();
         }
     }
 });
 
-// 9. GHI ĐÈ BẢNG MA TRẬN 4 PHẦN CHUẨN 100%
+// 10. MA TRẬN 7991 TỰ PHÂN BỔ 2 CHIỀU (BẢO TOÀN THANG 10Đ)
+window.distributeMatrixFromTotals = function() {
+    const lessons = window.getRealSelectedLessons();
+    const numLessons = lessons.length;
+    window.BIOMASTER_MATRIX.counts = {};
+
+    lessons.forEach(les => {
+        window.BIOMASTER_MATRIX.counts[les] = { 
+            p1_b: 0, p1_h: 0, p1_vd: 0, 
+            p2_b: 0, p2_h: 0, p2_vd: 0, 
+            p3_b: 0, p3_h: 0, p3_vd: 0, 
+            p4_b: 0, p4_h: 0, p4_vd: 0 
+        };
+    });
+
+    const fields = ['p1_b', 'p1_h', 'p1_vd', 'p2_b', 'p2_h', 'p2_vd', 'p3_b', 'p3_h', 'p3_vd', 'p4_b', 'p4_h', 'p4_vd'];
+    fields.forEach(f => {
+        const total = parseInt(window.BIOMASTER_MATRIX.totals[f]) || 0;
+        const base = Math.floor(total / numLessons);
+        let remainder = total % numLessons;
+
+        lessons.forEach((les, idx) => {
+            window.BIOMASTER_MATRIX.counts[les][f] = base + (idx < remainder ? 1 : 0);
+        });
+    });
+};
+
+window.updateGlobalTotalField = function(field, value) {
+    window.BIOMASTER_MATRIX.totals[field] = parseInt(value) || 0;
+    window.distributeMatrixFromTotals();
+    window.renderMaTranDeKiemTra(
+        document.getElementById('sel-subject')?.value || "Sinh học",
+        document.getElementById('sel-grade')?.value || "10",
+        document.getElementById('sel-book')?.value || "Kết Nối Tri Thức Với Cuộc Sống"
+    );
+};
+
+window.updatePartScoreField = function(part, value) {
+    window.BIOMASTER_MATRIX.scores[part] = parseFloat(value) || 0;
+    window.renderMaTranDeKiemTra(
+        document.getElementById('sel-subject')?.value || "Sinh học",
+        document.getElementById('sel-grade')?.value || "10",
+        document.getElementById('sel-book')?.value || "Kết Nối Tri Thức Với Cuộc Sống"
+    );
+};
+
+// 11. BẢNG MA TRẬN 4 PHẦN VỪA KHÍT 1 TRANG A4
 window.renderMaTranDeKiemTra = function(subject, grade, book) {
     const docContainer = document.getElementById('container-a4-doc');
     if (!docContainer) return;
@@ -765,7 +920,7 @@ window.renderMaTranDeKiemTra = function(subject, grade, book) {
     `;
 };
 
-// 10. GHI ĐÈ NÚT KÍCH HOẠT AI TÁCH BIỆT 100% CẢ 3 PHÂN HỆ
+// 12. GHI ĐÈ NÚT KÍCH HOẠT AI TÁCH BIỆT 100%
 window.executeActionAI = async function() {
     const realMode = window.getRealActiveMode();
     const subject = document.getElementById('sel-subject')?.value || "Sinh học";
@@ -879,7 +1034,7 @@ Cuối bài ghi: "Giáo viên: Hồ Tấn Khải - Trường THPT Mang Thít".
     }
 };
 
-// 11. KHỞI TẠO TỰ ĐỘNG
+// 13. KHỞI TẠO TỰ ĐỘNG KHI TẢI XONG FILE
 setTimeout(() => {
     window.distributeMatrixFromTotals();
     const mode = window.getRealActiveMode();
