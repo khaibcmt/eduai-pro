@@ -1,9 +1,9 @@
 // ====================================================================================
 // FILE CẬP NHẬT TRUNG TÂM (update.js) - BIOMASTER AI | THPT MANG THÍT
-// Đồng bộ chuẩn 100% Phụ lục 1 (Môn Sinh học & Công nghệ - Khối 10, 11, 12)
+// Đồng bộ chuẩn 100% Phân phối chương trình (Sinh học & Công nghệ Nông nghiệp - Khối 10, 11, 12)
 // ====================================================================================
 
-console.log("🚀 Đang khởi chạy bản đồng bộ RAG Google Drive chuẩn THPT Mang Thít...");
+console.log("🚀 Đang khởi chạy bản đồng bộ PPCT & RAG Google Drive chuẩn THPT Mang Thít...");
 
 window.DRIVE_FOLDER_ID = "1YdagllVLNemL45ARCtxW_ES9E9izE2C0";
 
@@ -24,7 +24,7 @@ window.ACTIVE_GEMINI_MODELS = [
     }).join('');
 })();
 
-// 1. ĐỒNG BỘ CHUẨN DANH MỤC BÀI HỌC SGK CHO CẢ 2 MÔN & CẢ 3 KHỐI LỚP (10, 11, 12)
+// 1. ĐỒNG BỘ CHUẨN DANH MỤC BÀI HỌC SGK KHỚP 100% VỚI PPCT CỦA 2 MÔN VÀ CẢ 3 KHỐI LỚP (10, 11, 12)
 if (typeof sgkCurriculumDatabase !== 'undefined') {
     sgkCurriculumDatabase["Sinh học"] = {
         "10": [
@@ -37,80 +37,91 @@ if (typeof sgkCurriculumDatabase !== 'undefined') {
             "Bài 7: Tế bào nhân sơ",
             "Bài 8: Tế bào nhân thực",
             "Bài 9: Thực hành: Quan sát tế bào",
-            "Bài 10: Trao đổi chất qua màng sinh chất",
+            "Bài 10: Trao đổi chất qua màng tế bào",
             "Bài 11: Thực hành: Thí nghiệm co và phản co nguyên sinh",
             "Bài 12: Truyền tin tế bào",
-            "Bài 13: Khái quát về chuyển hóa vật chất và năng lượng",
+            "Bài 13: Khái quát chuyển hóa vật chất và năng lượng",
             "Bài 14: Phân giải và tổng hợp các chất trong tế bào",
-            "Bài 15: Thực hành: Một số thí nghiệm về enzyme",
+            "Bài 15: Thực hành: Thí nghiệm phân tích ảnh hưởng của enzyme",
             "Bài 16: Chu kì tế bào và nguyên phân",
             "Bài 17: Giảm phân",
-            "Bài 18: Thực hành: Làm và quan sát tiêu bản các kì phân bào",
+            "Bài 18: Thực hành: Quan sát nguyên phân và giảm phân",
             "Bài 19: Công nghệ tế bào",
-            "Bài 20: Sự đa dạng và phương thức dinh dưỡng của vi sinh vật",
-            "Bài 21: Sinh trưởng và sinh sản của vi sinh vật",
+            "Bài 20: Sự đa dạng và phương pháp nghiên cứu vi sinh vật",
+            "Bài 21: Trao đổi chất, sinh trưởng và sinh sản ở vi sinh vật",
             "Bài 22: Vai trò và ứng dụng của vi sinh vật",
-            "Bài 23: Thực hành: Một số phương pháp nghiên cứu vi sinh và sản phẩm lên men",
+            "Bài 23: Thực hành: Phương pháp nghiên cứu vi sinh và lên men",
             "Bài 24: Khái quát về virus",
-            "Bài 25: Một số bệnh do virus và các biến thể",
-            "Bài 26: Thực hành điều tra bệnh do virus"
+            "Bài 25: Một số bệnh do virus và các thành tựu ứng dụng",
+            "Bài 26: Thực hành: Điều tra bệnh do virus"
         ],
         "11": [
             "Bài 1: Khái quát về trao đổi chất và chuyển hóa năng lượng",
             "Bài 2: Trao đổi nước và khoáng ở thực vật",
-            "Bài 3: Thực hành thí nghiệm trao đổi nước và khoáng",
+            "Bài 3: Thực hành: Trao đổi nước và khoáng ở thực vật",
             "Bài 4: Quang hợp ở thực vật",
-            "Bài 5: Thực hành quang hợp ở thực vật",
+            "Bài 5: Thực hành: Quang hợp ở thực vật",
             "Bài 6: Hô hấp ở thực vật",
-            "Bài 7: Thực hành hô hấp ở thực vật",
-            "Bài 8: Dinh dưỡng và tiêu hóa ở động vật",
+            "Bài 7: Thực hành: Hô hấp ở thực vật",
+            "Bài 8: Dinh dưỡng và tiêu hoá ở động vật",
             "Bài 9: Hô hấp ở động vật",
             "Bài 10: Tuần hoàn ở động vật",
-            "Bài 11: Thực hành thí nghiệm về tuần hoàn",
-            "Bài 12: Miễn dịch ở người và động vật",
+            "Bài 11: Thực hành: Thí nghiệm về hệ tuần hoàn",
+            "Bài 12: Miễn dịch ở động vật",
             "Bài 13: Bài tiết và cân bằng nội môi",
             "Bài 14: Khái quát về cảm ứng ở sinh vật",
             "Bài 15: Cảm ứng ở thực vật",
-            "Bài 16: Thực hành cảm ứng ở thực vật",
+            "Bài 16: Thực hành: Cảm ứng ở thực vật",
             "Bài 17: Cảm ứng ở động vật",
             "Bài 18: Tập tính ở động vật",
-            "Bài 19: Sinh trưởng và phát triển ở sinh vật",
+            "Bài 19: Khái quát về sinh trưởng và phát triển ở sinh vật",
             "Bài 20: Sinh trưởng và phát triển ở thực vật",
-            "Bài 21: Thực hành bấm ngọn, tỉa cành",
+            "Bài 21: Thực hành: Bấm ngọn, tỉa cành, tính tuổi cây",
             "Bài 22: Sinh trưởng và phát triển ở động vật",
-            "Bài 23: Thực hành quan sát biến thái",
+            "Bài 23: Thực hành: Quan sát quá trình biến thái ở động vật",
             "Bài 24: Khái quát về sinh sản ở sinh vật",
             "Bài 25: Sinh sản ở thực vật",
-            "Bài 26: Thực hành nhân giống vô tính",
+            "Bài 26: Thực hành: Nhân giống bằng sinh sinh dưỡng và thụ phấn",
             "Bài 27: Sinh sản ở động vật",
-            "Bài 28: Ngành nghề liên quan đến sinh học cơ thể"
+            "Bài 28: Mối quan hệ giữa các quá trình sinh lí",
+            "Bài 29: Ngành nghề liên quan đến sinh học cơ thể"
         ],
         "12": [
-            "Bài 1: Gene và cơ chế truyền đạt thông tin di truyền",
-            "Bài 2: Thực hành tách chiết DNA",
+            "Bài 1: DNA và cơ chế tái bản",
+            "Bài 2: Gene, quá trình truyền đạt thông tin di truyền và hệ gene",
             "Bài 3: Điều hòa biểu hiện gene",
             "Bài 4: Đột biến gene",
-            "Bài 5: Nhiễm sắc thể và đột biến nhiễm sắc thể",
-            "Bài 6: Thực hành quan sát đột biến nhiễm sắc thể",
-            "Bài 7: Di truyền học Mendel",
-            "Bài 8: Quy luật di truyền của Morgan",
-            "Bài 9: Di truyền gene ngoài nhân",
-            "Bài 10: Kiểu gene, môi trường và kiểu hình",
-            "Bài 11: Di truyền quần thể",
-            "Bài 12: Di truyền học người",
-            "Bài 13: Ứng dụng di truyền học",
-            "Bài 14: Thực hành tìm hiểu thành tựu di truyền học",
-            "Bài 15: Bằng chứng tiến hóa",
-            "Bài 16: Học thuyết Darwin",
-            "Bài 17: Thuyết tiến hóa tổng hợp hiện đại",
-            "Bài 18: Phát sinh và phát triển sự sống",
-            "Bài 19: Môi trường và nhân tố sinh thái",
-            "Bài 20: Sinh thái học quần thể",
-            "Bài 21: Quần xã sinh vật",
-            "Bài 22: Hệ sinh thái",
-            "Bài 23: Chu trình sinh địa hóa",
-            "Bài 24: Sinh thái học phục hồi và bảo tồn",
-            "Bài 25: Thực hành tìm hiểu môi trường địa phương"
+            "Bài 5: Công nghệ gene",
+            "Bài 6: Thực hành: Tách chiết DNA",
+            "Bài 7: Cấu trúc và chức năng của nhiễm sắc thể",
+            "Bài 8: Học thuyết di truyền của Mendel",
+            "Bài 9: Mở rộng học thuyết Mendel",
+            "Bài 10: Di truyền giới tính và di truyền liên kết với giới tính",
+            "Bài 11: Liên kết gene và hoán vị gene",
+            "Bài 12: Đột biến nhiễm sắc thể",
+            "Bài 13: Di truyền học người và di truyền y học",
+            "Bài 14: Thực hành: Quan sát dạng đột biến nhiễm sắc thể",
+            "Bài 15: Di truyền gene ngoài nhân",
+            "Bài 16: Tương tác giữa kiểu gen với môi trường và thành tựu chọn giống",
+            "Bài 17: Thực hành: Thí nghiệm về thường biến",
+            "Bài 18: Di truyền học quần thể",
+            "Bài 19: Các bằng chứng tiến hóa",
+            "Bài 20: Quan niệm của Đacuyn về chọn lọc tự nhiên",
+            "Bài 21: Học thuyết tiến hóa tổng hợp hiện đại",
+            "Bài 22: Tiến hóa và quá trình phát sinh chủng loại",
+            "Bài 23: Môi trường và các nhân tố sinh thái",
+            "Bài 24: Sinh thái học quần thể",
+            "Bài 25: Thực hành: Xác định đặc trưng quần thể",
+            "Bài 26: Quần xã sinh vật",
+            "Bài 27: Thực hành: Tìm hiểu cấu trúc dinh dưỡng quần xã",
+            "Bài 28: Hệ sinh thái",
+            "Bài 29: Trao đổi chất và chuyển hóa năng lượng trong hệ sinh thái",
+            "Bài 30: Diễn thế sinh thái",
+            "Bài 31: Sinh quyển, khu sinh học và chu trình sinh - địa - hóa",
+            "Bài 32: Thực hành: Thiết kế hệ sinh thái nhân tạo",
+            "Bài 33: Sinh thái học phục hồi và bảo tồn đa dạng sinh vật",
+            "Bài 34: Phát triển bền vững",
+            "Bài 35: Dự án: Tìm hiểu thực trạng bảo tồn sinh thái tại địa phương"
         ]
     };
 
@@ -130,17 +141,20 @@ if (typeof sgkCurriculumDatabase !== 'undefined') {
             "Bài 12: Một số phương pháp chọn, tạo giống cây trồng",
             "Bài 13: Nhân giống cây trồng",
             "Bài 14: Thực hành: Nhân giống cây ăn quả bằng phương pháp ghép",
-            "Bài 15: Khái niệm về sâu, bệnh hại cây trồng",
+            "Bài 15: Sâu, bệnh hại cây trồng và ý nghĩa phòng trừ",
             "Bài 16: Một số sâu hại cây trồng thường gặp",
             "Bài 17: Một số bệnh hại cây trồng thường gặp và biện pháp phòng trừ",
-            "Bài 18: Ứng dụng công nghệ vi sinh phòng trừ sâu bệnh",
+            "Bài 18: Ứng dụng công nghệ vi sinh trong phòng trừ sâu, bệnh hại",
             "Bài 19: Quy trình trồng trọt và cơ giới hóa",
             "Bài 20: Công nghệ cao trong thu hoạch và bảo quản",
             "Bài 21: Chế biến sản phẩm trồng trọt",
-            "Bài 22: Thực hành: Chế biến xiro từ quả",
-            "Bài 23: Bảo vệ môi trường trong trồng trọt",
+            "Bài 22: Dự án trồng hoa trong chậu",
+            "Bài 23: Giới thiệu về trồng trọt công nghệ cao",
             "Bài 24: Một số công nghệ cao trong trồng trọt",
-            "Bài 25: Trồng cây không dùng đất"
+            "Bài 25: Công nghệ trồng cây không dùng đất",
+            "Bài 26: Sự cần thiết phải bảo vệ môi trường trong trồng trọt",
+            "Bài 27: Ứng dụng công nghệ vi sinh trong bảo vệ môi trường",
+            "Bài 28: Thực hành: Sử dụng rơm, rạ để trồng nấm rơm"
         ],
         "11": [
             "Bài 1: Vai trò và triển vọng của chăn nuôi",
@@ -148,11 +162,11 @@ if (typeof sgkCurriculumDatabase !== 'undefined') {
             "Bài 3: Khái niệm, vai trò của giống trong chăn nuôi",
             "Bài 4: Chọn giống vật nuôi",
             "Bài 5: Nhân giống vật nuôi",
-            "Bài 6: Ứng dụng công nghệ sinh học trong giống vật nuôi",
+            "Bài 6: Ứng dụng CNSH trong chọn và nhân giống vật nuôi",
             "Bài 7: Thức ăn và nhu cầu dinh dưỡng của vật nuôi",
             "Bài 8: Sản xuất và chế biến thức ăn chăn nuôi",
             "Bài 9: Bảo quản thức ăn chăn nuôi",
-            "Bài 10: Thực hành: Chế biến, bảo quản thức ăn",
+            "Bài 10: Thực hành: Chế biến, bảo quản thức ăn cho vật nuôi",
             "Bài 11: Vai trò của phòng, trị bệnh trong chăn nuôi",
             "Bài 12: Một số bệnh phổ biến ở lợn",
             "Bài 13: Một số bệnh phổ biến ở gia cầm",
@@ -163,60 +177,68 @@ if (typeof sgkCurriculumDatabase !== 'undefined') {
             "Bài 18: Chăn nuôi theo tiêu chuẩn VietGAP",
             "Bài 19: Chăn nuôi công nghệ cao",
             "Bài 20: Bảo quản và chế biến sản phẩm chăn nuôi",
-            "Bài 21: Bảo vệ môi trường trong chăn nuôi",
+            "Bài 21: Sự cần thiết bảo vệ môi trường trong chăn nuôi",
             "Bài 22: Xử lý chất thải chăn nuôi"
         ],
         "12": [
-            "Bài 1: Vai trò và triển vọng của lâm nghiệp",
-            "Bài 2: Các loại rừng ở Việt Nam",
-            "Bài 3: Sinh trưởng và phát triển của cây rừng",
-            "Bài 4: Trồng rừng",
-            "Bài 5: Chăm sóc và bảo vệ rừng",
-            "Bài 6: Khai thác tài nguyên rừng",
-            "Bài 7: Bảo vệ và phát triển rừng bền vững",
-            "Bài 8: Vai trò và triển vọng của thủy sản",
-            "Bài 9: Các nhóm thủy sản phổ biến",
-            "Bài 10: Môi trường nuôi thủy sản",
-            "Bài 11: Quản lý môi trường nuôi thủy sản",
-            "Bài 12: Thức ăn và dinh dưỡng thủy sản",
-            "Bài 13: Sinh sản của thủy sản",
-            "Bài 14: Ươm nuôi con giống thủy sản",
-            "Bài 15: Nuôi thương phẩm thủy sản",
-            "Bài 16: Bệnh ở thủy sản và biện pháp phòng trị",
-            "Bài 17: Thu hoạch và bảo quản sản phẩm thủy sản",
-            "Bài 18: Khai thác và bảo vệ nguồn lợi thủy sản"
+            "Bài 1. Vai trò và triển vọng của lâm nghiệp",
+            "Bài 2. Các hoạt động lâm nghiệp cơ bản và nguyên nhân suy thoái rừng",
+            "Bài 3. Vai trò, nhiệm vụ của trồng và chăm sóc rừng",
+            "Bài 4. Quy luật sinh trưởng và phát triển của cây rừng",
+            "Bài 5. Kĩ thuật trồng và chăm sóc rừng",
+            "Bài 6. Thực trạng của việc bảo vệ và khai thác rừng",
+            "Bài 7. Biện pháp bảo vệ và khai thác tài nguyên rừng",
+            "Bài 8. Vai trò và triển vọng của thuỷ sản",
+            "Bài 9. Các nhóm thuỷ sản và phương thức nuôi",
+            "Bài 10. Giới thiệu về môi trường nuôi thuỷ sản",
+            "Bài 11. Quản lí môi trường nuôi thuỷ sản",
+            "Bài 12. Biện pháp xử lí môi trường nuôi thuỷ sản",
+            "Bài 13. Vai trò của giống thuỷ sản",
+            "Bài 14. Sinh sản của cá và tôm",
+            "Bài 15. Ứng dụng CNSH trong giống thuỷ sản",
+            "Bài 16. Thức ăn thuỷ sản",
+            "Bài 17. Phương pháp bảo quản và chế biến thức ăn thuỷ sản",
+            "Bài 18. Ứng dụng CNSH trong bảo quản, chế biến thức ăn thuỷ sản",
+            "Bài 19. Quy trình nuôi một số loài thuỷ sản phổ biến",
+            "Bài 20. Nuôi thuỷ sản theo tiêu chuẩn VietGAP",
+            "Bài 21. Ứng dụng công nghệ cao trong nuôi thuỷ sản",
+            "Bài 22. Bảo quản và chế biến sản phẩm thuỷ sản",
+            "Bài 23. Vai trò của phòng, trị bệnh thuỷ sản",
+            "Bài 24. Một số bệnh thuỷ sản phổ biến và phòng trị",
+            "Bài 25. Ứng dụng CNSH trong phòng, trị bệnh thuỷ sản",
+            "Bài 26. Bảo vệ nguồn lợi thuỷ sản",
+            "Bài 27. Khai thác nguồn lợi thuỷ sản"
         ]
     };
 }
 
-// 2. KHO DỮ LIỆU ĐẶC TẢ PHỤ LỤC 1, 2, 3, 4 (THPT MANG THÍT)
+// 3. KHO DỮ LIỆU ĐẶC TẢ PHỤ LỤC 1, 2, 3, 4 (THPT MANG THÍT)
 window.MANG_THIT_CURRICULUM_DB = {
     "Sinh học_10": {
         "Bài 5": {
-            periods: "04 tiết (Tuần 5-6)",
+            periods: "04 tiết",
             yccd: [
                 "Nêu được khái niệm phân tử sinh học; Trình bày thành phần cấu tạo và vai trò của carbohydrate, lipid, protein, nucleic acid.",
-                "Phân tích được mối quan hệ giữa cấu tạo và vai trò của các phân tử sinh học.",
-                "[Hoạt động Phụ lục 2]: Chế tạo mô hình DNA 3D từ rác thải nhựa."
+                "Phân tích được mối quan hệ giữa cấu tạo và vai trò của các phân tử sinh học."
             ],
-            nls: "1.3.NC1b (CV 3456): Triển khai tổ chức và sắp xếp dữ liệu, thông tin số (Google Workspace/Padlet).",
+            nls: "1.3.NC1b (CV 3456): Triển khai tổ chức và sắp xếp dữ liệu, thông tin số.",
             aiCode: "10.C3 (QĐ 2422): Công nghệ AI & Kỹ thuật Prompt",
-            aiDesc: "Sử dụng công cụ AI (trợ lý ảo, mô hình giả lập) trực quan hóa cấu trúc không gian 3D đại phân tử (Protein, DNA)."
+            aiDesc: "Sử dụng công cụ AI (trợ lý ảo, mô hình giả lập) trực quan hóa cấu trúc không gian 3D đại phân tử."
         },
         "Bài 6": {
             periods: "02 tiết",
-            yccd: ["Thực hành nhận biết thành phần hóa học tế bào (đường khử, tinh bột, protein, lipid) bằng thuốc thử đặc trưng."],
+            yccd: ["Thực hành định tính xác định thành phần hóa học có trong tế bào (protein, lipid, carbohydrate)."],
             equipment: "Ống nghiệm (36), Đèn cồn (6), Kẹp gỗ (6), Pipette nhựa (6), Đĩa petri (12), Cối chày sứ (6), Thìa cà phê (6), Giấy lọc (18), Cốc thủy tinh (18), Giá ống nghiệm (6). Hóa chất: Benedict, Lugol, CuSO4 1%, NaOH 10%, Ethanol 90%, nước cất. Mẫu vật: Trứng gà, lạc, chuối chín, khoai tây, dầu thực vật."
         },
         "Bài 8": {
-            periods: "04 tiết (Tuần 9-11)",
+            periods: "04 tiết",
             yccd: [
-                "Mô tả cấu tạo và chức năng các thành phần tế bào nhân thực (nhân, tế bào chất, nội màng, ribosome, ti thể, lục lạp, màng sinh chất...).",
+                "Mô tả cấu tạo và chức năng các thành phần tế bào nhân thực (nhân, tế bào chất, màng sinh chất, bào quan).",
                 "So sánh cấu tạo tế bào nhân sơ và nhân thực, giữa thực vật và động vật."
             ],
-            nls: "6.1.NC1a (CV 3456): Phân tích cách AI hoạt động và nhận diện giới hạn của AI (ảnh AI tạo ra có thể đẹp nhưng chưa hoàn toàn chính xác tuyệt đối về sinh học).",
+            nls: "6.1.NC1a (CV 3456): Phân tích cách AI hoạt động và nhận diện giới hạn của AI.",
             aiCode: "10.D1 (QĐ 2422): Xác định mục tiêu và thành phần hệ thống AI",
-            aiDesc: "Đặt prompt chính xác cho ChatGPT/Gemini/Copilot so sánh các bào quan; sử dụng phần mềm mô phỏng 3D quan sát ti thể, lục lạp."
+            aiDesc: "Đặt prompt chính xác cho AI so sánh các bào quan; sử dụng phần mềm mô phỏng 3D quan sát ti thể, lục lạp."
         },
         "Bài 9": {
             periods: "02 tiết",
@@ -229,26 +251,26 @@ window.MANG_THIT_CURRICULUM_DB = {
             equipment: "Kính hiển vi (6), Lam kính (24), Lamen (1 hộp), Kim mũi mác (6), Kim mũi nhọn (6), Ống hút (6), Giấy thấm, Dao nhỏ. Hóa chất: Xanh methylen, NaCl 0,65% và 2%, nước sôi. Mẫu vật: Khoai tây, giá đỗ, hành tím hoặc thài lài tía."
         },
         "Bài 16": {
-            periods: "03 tiết (Tuần 19-20)",
+            periods: "03 tiết",
             yccd: [
                 "Trình bày các giai đoạn chu kì tế bào và diễn biến các kì của nguyên phân; Ý nghĩa nguyên phân.",
                 "Giải thích sự phân chia tế bào bất thường dẫn đến ung thư và cách phòng tránh."
             ],
             nls: "5.2.NC1b (CV 3456): Áp dụng công cụ mô phỏng trực tuyến tái hiện chu kì tế bào và sự vận động của NST.",
             aiCode: "10.A2 (QĐ 2422): Rủi ro đối với con người và dự án AI",
-            aiDesc: "Sử dụng Prompt cho AI hỗ trợ tính toán số lượng NST, chromatid, tâm động qua các kì nguyên phân; tìm kiếm nghiên cứu cơ chế thuốc điều trị ung thư."
+            aiDesc: "Sử dụng Prompt cho AI hỗ trợ tính toán số lượng NST, chromatid, tâm động qua các kì nguyên phân."
         },
         "Bài 18": {
             periods: "01 tiết",
-            yccd: ["Thực hành làm tiêu bản và quan sát các kì nguyên phân trên rễ hành và giảm phân trên châu chấu."],
+            yccd: ["Thực hành làm tiêu bản và quan sát các kì nguyên phân và giảm phân."],
             equipment: "Kính hiển vi (6), Lam kính (36), Lamen (1 hộp), Đĩa đồng hồ (6), Giấy thấm, Kéo, Kim mũi mác, Cốc thủy tinh, Ống hút. Hóa chất: Carmine acetic 2% hoặc orcein acetic 2%, HCl 1,5N, CH3COOH 5%, nước cất. Mẫu vật: Rễ hành, châu chấu, hoa hẹ/hoa hành."
         },
         "Bài 22": {
-            periods: "04 tiết (Tuần 28-29)",
+            periods: "04 tiết",
             yccd: ["Trình bày vai trò và cơ sở khoa học ứng dụng vi sinh vật trong thực tiễn (thực phẩm, kháng sinh, xử lí môi trường)."],
-            nls: "2.1.NC1b (CV 3456): Lựa chọn kênh truyền thông thông minh (Google Drive, Padlet, Canva Team) cộng tác làm sản phẩm số.",
+            nls: "2.1.NC1b (CV 3456): Lựa chọn kênh truyền thông thông minh cộng tác làm sản phẩm số.",
             aiCode: "10.D1 (QĐ 2422): Xác định mục tiêu hệ thống AI",
-            aiDesc: "Đặt câu lệnh tra cứu công thức lên men, xử lý lỗi sữa chua tách nước; dùng video AI mô phỏng nhà máy sản xuất kháng sinh."
+            aiDesc: "Đặt câu lệnh tra cứu công thức lên men, xử lý lỗi sữa chua tách nước; dùng video AI mô phỏng nhà máy."
         },
         "Bài 23": {
             periods: "02 tiết",
@@ -258,16 +280,16 @@ window.MANG_THIT_CURRICULUM_DB = {
     },
     "Công nghệ Nông nghiệp_10": {
         "Bài 6": {
-            periods: "02 tiết (Tuần 7)",
+            periods: "02 tiết",
             yccd: ["Thực hành xác định độ chua (pH) và độ mặn của đất đúng kĩ thuật an toàn."],
             equipment: "Máy đo pH (2), Cân kĩ thuật (4), Bình tam giác 100ml (10), Ống đong (4), Phễu thủy tinh (4), Bình định mức 1L (4). Hóa chất: Dung dịch KCl 1N, nước cất, mẫu đất, đồng hồ.",
             aiCode: "10.C2.3 (QĐ 2422): Ứng dụng AI trong học tập",
             aiDesc: "Nêu ví dụ sử dụng AI tra cứu bảng thang đo pH đất và gợi ý cây trồng phù hợp."
         },
         "Bài 8": {
-            periods: "02 tiết (Tuần 10)",
+            periods: "02 tiết",
             yccd: ["Nêu cơ sở khoa học và biện pháp sử dụng, bảo quản phân bón hóa học, hữu cơ, vi sinh."],
-            nls: "1.1.NC1b (CV 3456): Xác định nhu cầu thông tin; tìm kiếm dữ liệu bón phân 4 đúng trên môi trường số."
+            nls: "1.1.NC1b (CV 3456): Xác định nhu cầu thông tin; tìm kiếm dữ liệu bón phân trên môi trường số."
         },
         "Bài 10": {
             periods: "02 tiết",
@@ -280,7 +302,7 @@ window.MANG_THIT_CURRICULUM_DB = {
             equipment: "Dao ghép (45), Kéo cắt cành (4), Dây buộc nilon tự hủy (1 cuộn). Mẫu vật: Cành ghép, gốc ghép."
         },
         "Bài 17": {
-            periods: "02 tiết (Tuần 26)",
+            periods: "02 tiết",
             yccd: ["Nhận biết một số bệnh hại cây trồng thường gặp và đề xuất biện pháp phòng trừ."],
             aiCode: "10.C3.MR1 (QĐ 2422): Công nghệ AI trong nông nghiệp",
             aiDesc: "Trình bày ví dụ mô tả công nghệ thị giác máy tính và ứng dụng AI chẩn đoán bệnh qua hình ảnh lá cây."
@@ -291,7 +313,7 @@ window.MANG_THIT_CURRICULUM_DB = {
             equipment: "Lọ thủy tinh sạch có nắp (45). Nguyên liệu: Đường trắng 1 - 1,5kg, quả tươi (mơ, mận, nho, dâu, dứa...)."
         },
         "Bài 24": {
-            periods: "03 tiết (Tuần 30)",
+            periods: "03 tiết",
             yccd: ["Trình bày ứng dụng của công nghệ cao, IoT, cảm biến tự động hóa trong trồng trọt."],
             nls: "2.2.NC1a (CV 3456): Chia sẻ dữ liệu và trích dẫn nguồn số về các mô hình nông nghiệp công nghệ cao."
         },
@@ -303,30 +325,30 @@ window.MANG_THIT_CURRICULUM_DB = {
     },
     "Công nghệ Nông nghiệp_11": {
         "Bài 1": {
-            periods: "02 tiết (Tuần 1)",
+            periods: "02 tiết",
             yccd: ["Trình bày vai trò và triển vọng chăn nuôi trong bối cảnh CMCN 4.0; định hướng chăn nuôi bền vững."],
             equipment: "Laptop, Tivi, tranh ảnh/video tư liệu thành tựu chăn nuôi công nghệ cao.",
             aiCode: "11.C2.1 & 11.C3.1 (QĐ 2422): Kỹ thuật đặt Prompt tra cứu học liệu",
-            aiDesc: "Xác định cách đặt prompt phù hợp (nêu bối cảnh, yêu cầu tóm tắt ngắn gọn) để AI cung cấp thông tin chính xác về thành tựu chăn nuôi."
+            aiDesc: "Xác định cách đặt prompt phù hợp để AI cung cấp thông tin chính xác về thành tựu chăn nuôi."
         },
         "Bài 2": {
-            periods: "02 tiết (Tuần 2)",
+            periods: "02 tiết",
             yccd: ["Phân biệt các giống vật nuôi phổ biến và phương thức chăn nuôi chủ yếu."],
             equipment: "Laptop, Tivi, phiếu học tập số.",
-            nls: "NLS 1.1 & NLS 1.2 (CV 3456): Sử dụng từ khóa tìm kiếm thông tin giống vật nuôi trên môi trường số; đánh giá lựa chọn thông tin từ cổng thông tin chính thống."
+            nls: "NLS 1.1 & NLS 1.2 (CV 3456): Sử dụng từ khóa tìm kiếm thông tin giống vật nuôi trên môi trường số."
         },
         "Bài 7": {
-            periods: "03 tiết (Tuần 9)",
+            periods: "03 tiết",
             yccd: ["Trình bày thành phần dinh dưỡng thức ăn chăn nuôi và nhu cầu dinh dưỡng của vật nuôi."],
             equipment: "Laptop, Tivi, bảng thành phần dinh dưỡng thức ăn.",
             aiCode: "11.A1.2 & 11.B2.1 (QĐ 2422): Tư duy lấy con người làm trung tâm & Đạo đức AI",
-            aiDesc: "Dùng AI gợi ý bảng dinh dưỡng và khẩu phần ăn; học sinh so sánh đối chiếu với SGK và tiêu chuẩn ngành để phòng tránh rủi ro lệch thông tin."
+            aiDesc: "Dùng AI gợi ý bảng dinh dưỡng và khẩu phần ăn; học sinh so sánh đối chiếu với SGK."
         },
         "Bài 8": {
-            periods: "03 tiết (Tuần 11)",
+            periods: "03 tiết",
             yccd: ["Trình bày phương pháp sản xuất và chế biến thức ăn chăn nuôi (vật lí, hóa học, ủ chua vi sinh)."],
             equipment: "Tranh 'Chế biến thức ăn bằng phương pháp ủ chua', Laptop, Tivi.",
-            nls: "NLS 2.4 & NLS 3.1 (CV 3456): Hợp tác nhóm trên môi trường số; sử dụng Canva/PowerPoint tạo sơ đồ tư duy quy trình sản xuất."
+            nls: "NLS 2.4 & NLS 3.1 (CV 3456): Hợp tác nhóm trên môi trường số; sử dụng Canva/PowerPoint tạo sơ đồ tư duy."
         },
         "Bài 10": {
             periods: "02 tiết",
@@ -334,13 +356,13 @@ window.MANG_THIT_CURRICULUM_DB = {
             equipment: "Xô nhựa có nắp, màng nilon, chày sứ, cối sứ, cân. Nguyên liệu: Bột ngô, bột khoai/sắn, men rượu, nước sạch."
         },
         "Bài 18": {
-            periods: "02 tiết (Tuần 27)",
+            periods: "02 tiết",
             yccd: ["Trình bày khái niệm, lợi ích và yêu cầu cơ bản của quy trình chăn nuôi theo tiêu chuẩn VietGAP."],
             equipment: "Laptop, Tivi, mẫu biểu quy trình VietGAP số hóa.",
-            nls: "NLS 1.3 & NLS 4.2 (CV 3456): Tổ chức, lưu trữ dữ liệu nhật ký đàn vật nuôi dưới dạng tệp điện tử (Excel/Google Forms)."
+            nls: "NLS 1.3 & NLS 4.2 (CV 3456): Tổ chức, lưu trữ dữ liệu nhật ký đàn vật nuôi dưới dạng tệp điện tử."
         },
         "Bài 19": {
-            periods: "02 tiết (Tuần 28)",
+            periods: "02 tiết",
             yccd: ["Trình bày ứng dụng công nghệ cao trong chăn nuôi (chuồng kín, cảm biến, robot cho ăn, vắt sữa tự động)."],
             equipment: "Laptop, Tivi, video hệ thống cho ăn, vắt sữa tự động.",
             nls: "NLS 5.2 & NLS 5.3 (CV 3456): Xác định nhu cầu tự động hóa và giải pháp cảm biến giám sát trong trang trại."
@@ -745,4 +767,4 @@ QUY TẮC:
 if (typeof onFilterChange === 'function') {
     onFilterChange();
 }
-console.log("✅ Đã đồng bộ hoàn tất toàn bộ danh mục bài học 2 môn (Sinh học & Công nghệ) cả 3 khối (10, 11, 12) theo Phụ lục THPT Mang Thít!");
+console.log("✅ Đã đồng bộ hoàn tất PPCT chuẩn cho cả 2 môn (Sinh học & Công nghệ) ở cả 3 khối (10, 11, 12)!");
