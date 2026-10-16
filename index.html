@@ -2437,5 +2437,20 @@ Quy cách: Font Times New Roman 13pt. Không bọc thẻ markdown.`;
             }
         }
     </script>
+<!-- ==================== BỘ NẠP BẢN CẬP NHẬT TỰ ĐỘNG (HOT-PATCH LOADER) ==================== -->
+    <script>
+        (function() {
+            const patchScript = document.createElement('script');
+            // Tự động gắn timestamp để chống trình duyệt lưu cache cũ khi thầy vừa sửa file update.js
+            patchScript.src = './update.js?v=' + new Date().getTime();
+            patchScript.onload = function() {
+                console.log('✅ Đã nạp thành công bản cập nhật từ update.js!');
+            };
+            patchScript.onerror = function() {
+                console.info('ℹ️ Đang chạy bản gốc index.html (chưa có hoặc không dùng update.js).');
+            };
+            document.body.appendChild(patchScript);
+        })();
+    </script>
 </body>
 </html>
